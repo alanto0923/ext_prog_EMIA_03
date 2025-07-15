@@ -1,0 +1,19 @@
+domain,name,code
+Momentum,Price Momentum (14 days),"((CLOSE - DELAY(CLOSE, 14)) / DELAY(CLOSE, 14))"
+Mean Reversion,Mean Reversion (20 days),"(MEAN(CLOSE, 20) - CLOSE)"
+Volatility,20-Day Volatility,"STD(CLOSE, 20)"
+Fundamental,Price-to-Earnings Ratio (P/E),(CLOSE / EPS)
+Liquidity,Trading Volume,VOLUME
+Quality,Gross Profit Margin,(GROSS_PROFIT / REVENUE)
+GROWTH,Earnings Growth Rate,"(EPS / DELAY(EPS,1) - 1)"
+Technical,Moving Average (MA),"SMA(CLOSE, 20)"
+Macro Economics,GDP Growth Rate,"(GDP / DELAY(GDP, n)) - 1"
+Momentum,Relative Strength Index (RSI),"100 - ((100 / (1 + RS(CLOSE,14))) * RS(CLOSE,14))"
+Mean Reversion,Bollinger Band Squeeze,"STD(CLOSE,20) <= 2*SMALL(BANDS,20)"
+Volatility,VIX Index,"(VIX / DELAY(VIX, n)) - 1"
+Fundamental,Dividend Yield,(DIVIDENDS / PRICE)
+Liquidity,Order Flow Ratio,ORDER_VOLUME / CUMULATIVE_ORDER_VOLUME
+Quality,Price-to-Book Ratio (P/B),(PRICE / BOOK_VALUE)
+GROWTH,Earnings Yield,(EPS / PRICE)
+Technical,Stochastic Oscillator,"(CLOSE - DELAY(CLOSE,14)) / (DELAY(CLOSE,14) + 21*STD(CLOSE,20))"
+Macro Economics,Inflation Rate,"(INFLATION_RATE / DELAY(INFLATION_RATE, n)) - 1"

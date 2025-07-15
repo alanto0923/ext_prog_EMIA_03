@@ -1,0 +1,897 @@
+,Shares,Value,URL,Text,Insider,Position,Transaction,Start Date,Ownership,Ticker
+0,17,197.0,,Bought at price 11.60 per share.,Stuart (Ian),,,2025-03-27,D,0005.HK
+1,60347,685300.0,,Sold at price 11.36 per share.,Riley (Stuart),,,2025-03-20,D,0005.HK
+2,49805,,,,Riley (Stuart),,,2025-03-11,D,0005.HK
+3,23409,256984.0,,Sold at price 10.98 per share.,Riley (Stuart),,,2025-03-11,D,0005.HK
+4,38376,,,,Stuart (Ian),,,2025-03-11,D,0005.HK
+5,18038,197083.0,,Sold at price 10.93 per share.,Stuart (Ian),,,2025-03-11,D,0005.HK
+6,72686,,,,Roberts (Michael),,,2025-03-11,D,0005.HK
+7,37107,405431.0,,Sold at price 10.93 per share.,Roberts (Michael),,,2025-03-11,D,0005.HK
+8,21084,,,,Roberts (Michael),,,2025-03-11,D,0005.HK
+9,10764,118167.0,,Sold at price 10.98 per share.,Roberts (Michael),,,2025-03-11,D,0005.HK
+10,12542,,,,White (Suzanna),,,2025-03-11,D,0005.HK
+11,5557,60715.0,,Sold at price 10.93 per share.,White (Suzanna),,,2025-03-11,D,0005.HK
+12,15231,,,,White (Suzanna),,,2025-03-11,D,0005.HK
+13,6748,74079.0,,Sold at price 10.98 per share.,White (Suzanna),,,2025-03-11,D,0005.HK
+14,47218,535499.0,,Bought at price 11.34 per share.,Rosha (Surendra),,,2025-03-11,D,0005.HK
+15,7556,82556.0,,Sold at price 10.93 per share.,Rosha (Surendra),,,2025-03-11,D,0005.HK
+16,11177,,,,Rosha (Surendra),,,2025-03-11,D,0005.HK
+17,1789,19639.0,,Sold at price 10.98 per share.,Rosha (Surendra),,,2025-03-11,D,0005.HK
+18,88229,,,,Elhedery (Georges),,,2025-03-11,D,0005.HK
+19,41469,453090.0,,Sold at price 10.93 per share.,Elhedery (Georges),,,2025-03-11,D,0005.HK
+20,43803,,,,O'Byrne (Barry),,,2025-03-11,D,0005.HK
+21,7010,76591.0,,Sold at price 10.93 per share.,O'Byrne (Barry),,,2025-03-11,D,0005.HK
+22,47218,,,,Liao (David),,,2025-03-11,D,0005.HK
+23,7556,82556.0,,Sold at price 10.93 per share.,Liao (David),,,2025-03-11,D,0005.HK
+24,10785,,,,Liao (David),,,2025-03-11,D,0005.HK
+25,67319,,,,Kaur (Pam),,,2025-03-11,D,0005.HK
+26,31641,345709.0,,Sold at price 10.93 per share.,Kaur (Pam),,,2025-03-11,D,0005.HK
+27,11711,,,,Blackburn (Richard Martin),,,2025-03-11,D,0005.HK
+28,5505,60147.0,,Sold at price 10.93 per share.,Blackburn (Richard Martin),,,2025-03-11,D,0005.HK
+29,20724,,,,Blackburn (Richard Martin),,,2025-03-10,D,0005.HK
+30,9741,107978.0,,Sold at price 11.08 per share.,Blackburn (Richard Martin),,,2025-03-10,D,0005.HK
+31,9763,,,,Rosha (Surendra),,,2025-03-10,D,0005.HK
+32,1563,17325.0,,Sold at price 11.08 per share.,Rosha (Surendra),,,2025-03-10,D,0005.HK
+33,110465,,,,Roberts (Michael),,,2025-03-10,D,0005.HK
+34,56393,625116.0,,Sold at price 11.08 per share.,Roberts (Michael),,,2025-03-10,D,0005.HK
+35,277341,,,,Riley (Stuart),,,2025-03-10,D,0005.HK
+36,130351,1444940.0,,Sold at price 11.08 per share.,Riley (Stuart),,,2025-03-10,D,0005.HK
+37,67991,,,,Stuart (Ian),,,2025-03-10,D,0005.HK
+38,31956,354232.0,,Sold at price 11.08 per share.,Stuart (Ian),,,2025-03-10,D,0005.HK
+39,25576,,,,White (Suzanna),,,2025-03-10,D,0005.HK
+40,11357,125892.0,,Sold at price 11.08 per share.,White (Suzanna),,,2025-03-10,D,0005.HK
+41,96311,,,,Kaur (Pam),,,2025-03-10,D,0005.HK
+42,45267,501784.0,,Sold at price 11.08 per share.,Kaur (Pam),,,2025-03-10,D,0005.HK
+43,28516,,,,Liao (David),,,2025-03-10,D,0005.HK
+44,4563,50580.0,,Sold at price 11.08 per share.,Liao (David),,,2025-03-10,D,0005.HK
+45,42866,,,,O'Byrne (Barry),,,2025-03-10,D,0005.HK
+46,8961,99332.0,,Sold at price 11.08 per share.,O'Byrne (Barry),,,2025-03-10,D,0005.HK
+47,90636,,,,Elhedery (Georges),,,2025-03-10,D,0005.HK
+48,42599,472209.0,,Sold at price 11.08 per share.,Elhedery (Georges),,,2025-03-10,D,0005.HK
+49,92447,,,,Elhedery (Georges),,,2025-03-04,D,0005.HK
+50,43451,514763.0,,Sold at price 11.85 per share.,Elhedery (Georges),,,2025-03-04,D,0005.HK
+51,25909,,,,Blackburn (Richard Martin),,,2025-03-04,D,0005.HK
+52,12178,144272.0,,Sold at price 11.85 per share.,Blackburn (Richard Martin),,,2025-03-04,D,0005.HK
+53,73491,,,,O'Byrne (Barry),,,2025-03-04,D,0005.HK
+54,11759,139308.0,,Sold at price 11.85 per share.,O'Byrne (Barry),,,2025-03-04,D,0005.HK
+55,60300,,,,Liao (David),,,2025-03-04,D,0005.HK
+56,9648,114299.0,,Sold at price 11.85 per share.,Liao (David),,,2025-03-04,D,0005.HK
+57,186052,,,,Kaur (Pam),,,2025-03-04,D,0005.HK
+58,87445,1035960.0,,Sold at price 11.85 per share.,Kaur (Pam),,,2025-03-04,D,0005.HK
+59,38072,,,,White (Suzanna),,,2025-03-04,D,0005.HK
+60,16866,199811.0,,Sold at price 11.85 per share.,White (Suzanna),,,2025-03-04,D,0005.HK
+61,122381,,,,Riley (Stuart),,,2025-03-04,D,0005.HK
+62,57520,681439.0,,Sold at price 11.85 per share.,Riley (Stuart),,,2025-03-04,D,0005.HK
+63,63524,,,,Rosha (Surendra),,,2025-03-04,D,0005.HK
+64,10164,120412.0,,Sold at price 11.85 per share.,Rosha (Surendra),,,2025-03-04,D,0005.HK
+65,128841,,,,Roberts (Michael),,,2025-03-04,D,0005.HK
+66,65774,779224.0,,Sold at price 11.85 per share.,Roberts (Michael),,,2025-03-04,D,0005.HK
+67,58653,,,,Stuart (Ian),,,2025-03-04,D,0005.HK
+68,27567,326586.0,,Sold at price 11.85 per share.,Stuart (Ian),,,2025-03-04,D,0005.HK
+69,20000,236720.0,,Sold at price 11.84 per share.,White (Suzanna),,,2025-03-03,D,0005.HK
+70,16,184.0,,Bought at price 11.54 per share.,Stuart (Ian),,,2025-02-27,D,0005.HK
+71,182514,2035396.0,,Sold at price 11.15 per share.,O'Byrne (Barry),,,2025-02-21,D,0005.HK
+72,119018,1325265.0,,Sold at price 11.14 per share.,Riley (Stuart),,,2025-02-20,D,0005.HK
+73,114000,1272354.0,,Sold at price 11.16 per share.,Blackburn (Richard Martin),,,2025-02-20,D,0005.HK
+74,0,,,,Buckingham (Geraldine),,,2025-02-19,D,0005.HK
+75,0,,,,Duan (Rachel),,,2025-02-19,D,0005.HK
+76,0,,,,Elhedery (Georges),,,2025-02-19,D,0005.HK
+77,0,,,,Fairbairn (Dame Carolyn),,,2025-02-19,D,0005.HK
+78,0,,,,Forese (James A),,,2025-02-19,D,0005.HK
+79,0,,,,Guggenheimer (Steven),,,2025-02-19,D,0005.HK
+80,0,,,,Godbehere (Ann Frances),,,2025-02-19,D,0005.HK
+81,0,,,,Quinn (Noel),,,2025-02-19,D,0005.HK
+82,0,,,,Teo (Swee Lian),,,2025-02-19,D,0005.HK
+83,0,,,,Tucker (Mark Edward),,,2025-02-19,D,0005.HK
+84,0,,,,Nish (David Thomas),,,2025-02-19,D,0005.HK
+85,0,,,,Morparia (Kalpana),,,2025-02-19,D,0005.HK
+86,0,,,,Kuribre�a (Jos� Antonio Meade),,,2025-02-19,D,0005.HK
+87,0,,,,Murray (Eileen K),,,2025-02-19,D,0005.HK
+88,0,,,,Nelson (Brendan Robert),,,2025-02-19,D,0005.HK
+89,0,,,,BlackRock Advisors (UK) Limited,,,2025-02-14,D,0005.HK
+90,0,,,,"Ping An Asset Management Co., Ltd.",,,2025-02-14,D,0005.HK
+91,19,194.0,,Bought at price 10.25 per share.,Stuart (Ian),,,2025-01-27,D,0005.HK
+92,0,,,,Teo (Swee Lian),,,2024-12-31,D,0005.HK
+93,0,,,,"Ping An Asset Management Co., Ltd.",,,2024-12-31,D,0005.HK
+94,0,,,,Quinn (Noel),,,2024-12-31,D,0005.HK
+95,0,,,,Tucker (Mark Edward),,,2024-12-31,D,0005.HK
+96,0,,,,Murray (Eileen K),,,2024-12-31,D,0005.HK
+97,0,,,,Nelson (Brendan Robert),,,2024-12-31,D,0005.HK
+98,0,,,,Morparia (Kalpana),,,2024-12-31,D,0005.HK
+99,0,,,,Nish (David Thomas),,,2024-12-31,D,0005.HK
+100,0,,,,Kuribre�a (Jos� Antonio Meade),,,2024-12-31,D,0005.HK
+101,0,,,,BlackRock Advisors (UK) Limited,,,2024-12-31,D,0005.HK
+102,0,,,,Buckingham (Geraldine),,,2024-12-31,D,0005.HK
+103,0,,,,Godbehere (Ann Frances),,,2024-12-31,D,0005.HK
+104,0,,,,Duan (Rachel),,,2024-12-31,D,0005.HK
+105,0,,,,Elhedery (Georges),,,2024-12-31,D,0005.HK
+106,0,,,,Fairbairn (Dame Carolyn),,,2024-12-31,D,0005.HK
+107,0,,,,Guggenheimer (Steven),,,2024-12-31,D,0005.HK
+108,0,,,,Forese (James A),,,2024-12-31,D,0005.HK
+109,19,185.0,,Bought at price 9.76 per share.,Stuart (Ian),,,2024-12-27,D,0005.HK
+110,19,185.0,,Bought at price 9.76 per share.,Bingham (Jonathan),,,2024-12-27,D,0005.HK
+111,15,143.0,,Bought at price 9.56 per share.,Bingham (Jonathan),,,2024-12-19,D,0005.HK
+112,13,124.0,,Bought at price 9.56 per share.,Stuart (Ian),,,2024-12-19,D,0005.HK
+113,7288,69687.0,,Bought at price 9.56 per share.,Roberts (Michael),,,2024-12-19,D,0005.HK
+114,64,611.0,,Bought at price 9.56 per share.,Miyake (Jo),,,2024-12-19,D,0005.HK
+115,30,286.0,,Bought at price 9.56 per share.,Moss (Stephen),,,2024-12-19,D,0005.HK
+116,18,172.0,,Bought at price 9.56 per share.,O'Byrne (Barry),,,2024-12-19,D,0005.HK
+117,5936,56760.0,,Bought at price 9.56 per share.,Liao (David),,,2024-12-19,D,0005.HK
+118,15000,144240.0,,Bought at price 9.62 per share.,Nelson (Brendan Robert),,,2024-12-12,D,0005.HK
+119,20,185.0,,Bought at price 9.26 per share.,Stuart (Ian),,,2024-11-27,D,0005.HK
+120,21,194.0,,Bought at price 9.26 per share.,Bingham (Jonathan),,,2024-11-27,D,0005.HK
+121,41720,390624.0,,Bought at price 9.36 per share.,Elhedery (Georges),,,2024-11-05,D,0005.HK
+122,22,195.0,,Bought at price 8.88 per share.,Bingham (Jonathan),,,2024-10-28,D,0005.HK
+123,22,195.0,,Bought at price 8.88 per share.,Stuart (Ian),,,2024-10-28,D,0005.HK
+124,486396,,,,Kaur (Pam),,,2024-10-22,D,0005.HK
+125,3209,29224.0,,Bought at price 9.11 per share.,Matos (Nuno),,,2024-09-27,D,0005.HK
+126,32,291.0,,Bought at price 9.11 per share.,Moss (Stephen),,,2024-09-27,D,0005.HK
+127,6385,58148.0,,Bought at price 9.11 per share.,Liao (David),,,2024-09-27,D,0005.HK
+128,18,163.0,,Bought at price 9.11 per share.,O'Byrne (Barry),,,2024-09-27,D,0005.HK
+129,22,200.0,,Bought at price 9.12 per share.,Stuart (Ian),,,2024-09-27,D,0005.HK
+130,13,118.0,,Bought at price 9.11 per share.,Stuart (Ian),,,2024-09-27,D,0005.HK
+131,7838,71380.0,,Bought at price 9.11 per share.,Roberts (Michael),,,2024-09-27,D,0005.HK
+132,22,200.0,,Bought at price 9.12 per share.,Bingham (Jonathan),,,2024-09-27,D,0005.HK
+133,14,127.0,,Bought at price 9.11 per share.,Bingham (Jonathan),,,2024-09-27,D,0005.HK
+134,23,200.0,,Bought at price 8.71 per share.,Stuart (Ian),,,2024-08-27,D,0005.HK
+135,46219,,,,Quinn (Noel),,,2024-08-15,D,0005.HK
+136,29498,,,,Elhedery (Georges),,,2024-08-15,D,0005.HK
+137,174612,1488043.0,,Sold at price 8.52 per share.,Bell (Colin),,,2024-08-01,D,0005.HK
+138,22,191.0,,Bought at price 8.69 per share.,Stuart (Ian),,,2024-07-29,D,0005.HK
+139,779942,,,,Elhedery (Georges),,,2024-07-17,D,0005.HK
+140,22,192.0,,Bought at price 8.77 per share.,Stuart (Ian),,,2024-06-27,D,0005.HK
+141,40,346.0,,Bought at price 8.67 per share.,Stuart (Ian),,,2024-06-21,D,0005.HK
+142,24118,209199.0,,Bought at price 8.67 per share.,Roberts (Michael),,,2024-06-21,D,0005.HK
+143,59,511.0,,Bought at price 8.67 per share.,O'Byrne (Barry),,,2024-06-21,D,0005.HK
+144,19644,170392.0,,Bought at price 8.67 per share.,Liao (David),,,2024-06-21,D,0005.HK
+145,9873,85638.0,,Bought at price 8.67 per share.,Matos (Nuno),,,2024-06-21,D,0005.HK
+146,99,858.0,,Bought at price 8.67 per share.,Moss (Stephen),,,2024-06-21,D,0005.HK
+147,22,192.0,,Bought at price 8.75 per share.,Stuart (Ian),,,2024-05-28,D,0005.HK
+148,42146,375520.0,,Bought at price 8.91 per share.,Quinn (Noel),,,2024-05-08,D,0005.HK
+149,26899,239670.0,,Bought at price 8.91 per share.,Elhedery (Georges),,,2024-05-08,D,0005.HK
+0,292,,,,Lee (Yun Lien Irene),Independent Non-Executive Chairman,,2025-01-23,D,0011.HK
+0,197,1606.0,,Acquisition at price 8.15 per share.,Lee (Yuan Siong),Chief Executive Officer,,2025-03-17,D,1299.HK
+1,346132,,,,Lee (Yuan Siong),Chief Executive Officer,,2025-03-17,D,1299.HK
+2,522031,,,,Lee (Yuan Siong),Chief Executive Officer,,2025-02-21,D,1299.HK
+3,223,1605.0,,Acquisition at price 7.20 per share.,Lee (Yuan Siong),Chief Executive Officer,,2025-02-17,D,1299.HK
+4,239,1605.0,,Acquisition at price 6.72 per share.,Lee (Yuan Siong),Chief Executive Officer,,2025-01-15,D,1299.HK
+5,224,1611.0,,Acquisition at price 7.19 per share.,Lee (Yuan Siong),Chief Executive Officer,,2024-12-16,D,1299.HK
+6,215,1600.0,,Acquisition at price 7.44 per share.,Lee (Yuan Siong),Chief Executive Officer,,2024-11-15,D,1299.HK
+7,961,,,,Lee (Yuan Siong),Chief Executive Officer,,2024-11-15,D,1299.HK
+8,258,2192.0,,Acquisition at price 8.50 per share.,Lee (Yuan Siong),Chief Executive Officer,,2024-10-15,D,1299.HK
+9,227,1599.0,,Acquisition at price 7.05 per share.,Lee (Yuan Siong),Chief Executive Officer,,2024-09-16,D,1299.HK
+10,243,1608.0,,Acquisition at price 6.62 per share.,Lee (Yuan Siong),Chief Executive Officer,,2024-08-15,D,1299.HK
+11,222,1600.0,,Acquisition at price 7.21 per share.,Lee (Yuan Siong),Chief Executive Officer,,2024-07-15,D,1299.HK
+12,418,3003.0,,Acquisition at price 7.18 per share.,Lee (Yuan Siong),Chief Executive Officer,,2024-06-17,D,1299.HK
+13,200,1606.0,,Acquisition at price 8.03 per share.,Lee (Yuan Siong),Chief Executive Officer,,2024-05-16,D,1299.HK
+14,261,1593.0,,Acquisition at price 6.11 per share.,Lee (Yuan Siong),Chief Executive Officer,,2024-04-15,D,1299.HK
+15,198773,,,,Lee (Yuan Siong),Chief Executive Officer,,2024-03-24,D,1299.HK
+16,204,1601.0,,Acquisition at price 7.85 per share.,Lee (Yuan Siong),Chief Executive Officer,,2024-03-15,D,1299.HK
+17,315561,,,,Lee (Yuan Siong),Chief Executive Officer,,2024-02-21,D,1299.HK
+18,198,1596.0,,Acquisition at price 8.07 per share.,Lee (Yuan Siong),Chief Executive Officer,,2024-02-15,D,1299.HK
+19,194,1598.0,,Acquisition at price 8.24 per share.,Lee (Yuan Siong),Chief Executive Officer,,2024-01-15,D,1299.HK
+20,187,1596.0,,Acquisition at price 8.54 per share.,Lee (Yuan Siong),Chief Executive Officer,,2023-12-15,D,1299.HK
+21,784,,,,Lee (Yuan Siong),Chief Executive Officer,,2023-11-16,D,1299.HK
+22,172,1608.0,,Acquisition at price 9.35 per share.,Lee (Yuan Siong),Chief Executive Officer,,2023-11-15,D,1299.HK
+23,222,1953.0,,Acquisition at price 8.80 per share.,Lee (Yuan Siong),Chief Executive Officer,,2023-10-16,D,1299.HK
+24,60000,502002.0,,Acquisition at price 8.37 per share.,So (Chak-Kwong),Independent Non-Executive Director,,2023-10-04,D,1299.HK
+25,188,1592.0,,Acquisition at price 8.47 per share.,Lee (Yuan Siong),Chief Executive Officer,,2023-09-15,D,1299.HK
+26,176,1605.0,,Acquisition at price 9.12 per share.,Lee (Yuan Siong),Chief Executive Officer,,2023-08-15,D,1299.HK
+27,155,1590.0,,Acquisition at price 10.26 per share.,Lee (Yuan Siong),Chief Executive Officer,,2023-07-18,D,1299.HK
+28,234,2473.0,,Acquisition at price 10.57 per share.,Lee (Yuan Siong),Chief Executive Officer,,2023-06-15,D,1299.HK
+29,155,1598.0,,Acquisition at price 10.31 per share.,Lee (Yuan Siong),Chief Executive Officer,,2023-05-15,D,1299.HK
+30,148,1590.0,,Acquisition at price 10.74 per share.,Lee (Yuan Siong),Chief Executive Officer,,2023-04-17,D,1299.HK
+0,20000,122776.0,,Acquisition at price 6.14 per share.,Ng (Sing Yip),Independent Non-Executive Director,,2025-03-24,D,2318.HK
+0,20000,102418.0,,Acquisition at price 5.12 per share.,Tsai (Chao Chung Charles),Chief Executive Officer,,2023-08-04,D,0006.HK
+0,11000,79718.0,,Acquisition at price 7.25 per share.,Wang (Dongzhi),Chief Financial Officer,,2024-10-08,D,2688.HK
+1,10000,76560.0,,Acquisition at price 7.66 per share.,Zhang (Yuying),Chief Executive Officer,,2024-03-27,D,2688.HK
+2,5000,38664.0,,Acquisition at price 7.73 per share.,Wang (Dongzhi),Chief Financial Officer,,2024-03-26,D,2688.HK
+3,5000,39761.0,,Acquisition at price 7.95 per share.,Wang (Dongzhi),Chief Financial Officer,,2024-03-25,D,2688.HK
+4,3000,21706.0,,Acquisition at price 7.24 per share.,Wang (Dongzhi),Chief Financial Officer,,2023-12-29,D,2688.HK
+5,800,5467.0,,Acquisition at price 6.83 per share.,Wang (Dongzhi),Chief Financial Officer,,2023-12-19,D,2688.HK
+6,1000,6798.0,,Acquisition at price 6.80 per share.,Wang (Dongzhi),Chief Financial Officer,,2023-12-18,D,2688.HK
+7,33900,271559.0,,Acquisition at price 8.01 per share.,Liu (Jianfeng),President,,2023-08-28,D,2688.HK
+8,6700,88363.0,,Sale at price 13.19 per share.,Liu (Jianfeng),President,,2023-06-28,D,2688.HK
+9,5000,,,,Zheng (Hongtao),Director (Executive),,2023-06-28,D,2688.HK
+10,5000,,,,Zheng (Hongtao),Director (Executive),,2023-06-28,D,2688.HK
+0,13867,,,,Chan (Adriel Wenbwo),Chairman of the Board,,2024-09-25,D,0101.HK
+1,22567,,,,Lo (Wai Pak),Chief Executive Officer,,2024-09-25,D,0101.HK
+2,20000,14220.0,,Acquisition at price 0.71 per share.,Chan (Adriel Wenbwo),Chairman of the Board,,2024-08-08,D,0101.HK
+3,20000,14360.0,,Acquisition at price 0.72 per share.,Chan (Adriel Wenbwo),Chairman of the Board,,2024-08-07,D,0101.HK
+4,30000,21609.0,,Acquisition at price 0.72 per share.,Chan (Adriel Wenbwo),Chairman of the Board,,2024-08-06,D,0101.HK
+5,30000,21789.0,,Acquisition at price 0.73 per share.,Chan (Adriel Wenbwo),Chairman of the Board,,2024-08-05,D,0101.HK
+6,37443,,,,Chan (Adriel Wenbwo),Chairman of the Board,,2024-06-14,D,0101.HK
+7,72266,,,,Lo (Wai Pak),Chief Executive Officer,,2024-06-14,D,0101.HK
+8,120000,135036.0,,Acquisition at price 1.13 per share.,Chan (Adriel Wenbwo),Director (Executive),,2024-03-15,D,0101.HK
+9,120000,135744.0,,Acquisition at price 1.13 per share.,Chan (Adriel Wenbwo),Director (Executive),,2024-03-14,D,0101.HK
+10,204000,231234.0,,Acquisition at price 1.13 per share.,Chan (Adriel Wenbwo),Director (Executive),,2024-03-13,D,0101.HK
+11,56000,62720.0,,Acquisition at price 1.12 per share.,Chan (Adriel Wenbwo),Director (Executive),,2024-03-12,D,0101.HK
+12,75000,95122.0,,Acquisition at price 1.27 per share.,Lo (Wai Pak),Chief Executive Officer,,2023-08-21,D,0101.HK
+13,50000,64595.0,,Acquisition at price 1.29 per share.,Lo (Wai Pak),Chief Executive Officer,,2023-08-18,D,0101.HK
+14,50000,64370.0,,Acquisition at price 1.29 per share.,Lo (Wai Pak),Chief Executive Officer,,2023-08-17,D,0101.HK
+0,38465,,,,Pickerell (Blair Chilton),Former,,2025-03-31,D,0823.HK
+1,25468,120736.0,,Sale at price 4.74 per share.,Pickerell (Blair Chilton),Independent Non-Executive Director,,2025-03-14,D,0823.HK
+2,1000000,4691500.0,,Sale at price 4.69 per share.,Hongchoy (Kwok Lung George),Chief Executive Officer,,2025-03-06,D,0823.HK
+3,39747,,,,Chan (Yiu Cheong),Retired,,2025-02-14,D,0823.HK
+4,1491,,,,Brooke (Christopher John),Independent Non-Executive Director,,2024-12-27,D,0823.HK
+5,168,,,,Gu (Jialin),Independent Non-Executive Director,,2024-12-27,D,0823.HK
+6,17597,,,,Ng (Kok Siong),Independent Non-Executive Director,,2024-12-27,D,0823.HK
+7,199,,,,Yeung (Yun Chi Ann),Independent Non-Executive Director,,2024-12-27,D,0823.HK
+8,38459,,,,Tan (Poh Lee),Former,,2024-11-11,D,0823.HK
+9,1080,4777.0,,Sale at price 4.42 per share.,Brooke (Christopher John),Independent Non-Executive Director,,2024-08-21,D,0823.HK
+10,1136,,,,Brooke (Christopher John),Independent Non-Executive Director,,2024-08-13,D,0823.HK
+11,726,,,,Tan (Poh Lee),Independent Non-Executive Director,,2024-08-13,D,0823.HK
+12,8295,,,Conversion at price 0.00 per share.,Tan (Poh Lee),Independent Non-Executive Director,,2024-06-30,D,0823.HK
+13,24103,,,Conversion at price 0.00 per share.,Allen (Nicholas Charles),Chairman of the Board,,2024-06-30,D,0823.HK
+14,8725,,,,Brooke (Christopher John),Independent Non-Executive Director,,2024-06-30,D,0823.HK
+15,8725,,,Conversion at price 0.00 per share.,Chan (Yiu Cheong),Independent Non-Executive Director,,2024-06-30,D,0823.HK
+16,7642,,,Conversion at price 0.00 per share.,Griffiths (Ian Keith),Director (Non-Executive),,2024-06-30,D,0823.HK
+17,4216,,,Conversion at price 0.00 per share.,Gu (Jialin),Independent Non-Executive Director,,2024-06-30,D,0823.HK
+18,443731,,,Conversion at price 0.00 per share.,Hongchoy (Kwok Lung George),Chief Executive Officer,,2024-06-30,D,0823.HK
+19,113507,,,,Ng (Kok Siong),Director (Executive),,2024-06-30,D,0823.HK
+20,8664,,,,Pickerell (Blair Chilton),Independent Non-Executive Director,,2024-06-30,D,0823.HK
+21,24624,,,,Leong (Kwok Kuen),Former,,2024-02-29,D,0823.HK
+22,897,,,,Brooke (Christopher John),Independent Non-Executive Director,,2023-12-29,D,0823.HK
+23,574,,,,Tan (Poh Lee),Independent Non-Executive Director,,2023-12-29,D,0823.HK
+24,1075854,5842209.0,,Sale at price 5.43 per share.,Hongchoy (Kwok Lung George),Chief Executive Officer,,2023-08-03,D,0823.HK
+25,496,,,,Brooke (Christopher John),Independent Non-Executive Director,,2023-08-01,D,0823.HK
+26,3035,,,,Griffiths (Ian Keith),Director (Non-Executive),,2023-08-01,D,0823.HK
+27,454,,,,Tan (Poh Lee),Independent Non-Executive Director,,2023-08-01,D,0823.HK
+28,17187,,,Conversion at price 0.00 per share.,Tse (Pak Wing CPA),Independent Non-Executive Director,,2023-07-19,D,0823.HK
+29,15875,,,Conversion at price 0.00 per share.,Tse (Sau Ling CPA),Independent Non-Executive Director,,2023-07-19,D,0823.HK
+30,1662,,,,Tse (Pak Wing CPA),Independent Non-Executive Director,,2023-07-18,D,0823.HK
+31,0,,,,Leong (Kwok Kuen),Independent Non-Executive Director,,2023-07-06,I,0823.HK
+32,132826,,,,Ng (Kok Siong),Director (Executive),,2023-07-06,D,0823.HK
+33,24135,,,,Allen (Nicholas Charles),Chairman of the Board,,2023-06-30,D,0823.HK
+34,7968,,,,Brooke (Christopher John),Independent Non-Executive Director,,2023-06-30,D,0823.HK
+35,8320,,,,Chan (Yiu Cheong),Independent Non-Executive Director,,2023-06-30,D,0823.HK
+36,7465,,,,Griffiths (Ian Keith),Director (Non-Executive),,2023-06-30,D,0823.HK
+37,666579,,,,Hongchoy (Kwok Lung George),Chief Executive Officer,,2023-06-30,D,0823.HK
+38,3669,,,,Leong (Kwok Kuen),Independent Non-Executive Director,,2023-06-30,D,0823.HK
+39,8421,,,,Pickerell (Blair Chilton),Independent Non-Executive Director,,2023-06-30,D,0823.HK
+40,7942,,,,Tan (Poh Lee),Independent Non-Executive Director,,2023-06-30,D,0823.HK
+41,8604,,,,Tse (Pak Wing CPA),Independent Non-Executive Director,,2023-06-30,D,0823.HK
+42,7942,,,,Tse (Sau Ling CPA),Independent Non-Executive Director,,2023-06-30,D,0823.HK
+0,1000000,2550600.0,,Sale at price 2.55 per share.,Chen (Xuping),Chief Executive Officer,,2024-10-02,D,0960.HK
+1,200000,193620.0,,Acquisition at price 0.97 per share.,Chen (Xuping),Chief Executive Officer,,2024-09-11,D,0960.HK
+2,100000,102470.0,,Acquisition at price 1.02 per share.,Chan (Chi On Derek),Independent Non-Executive Director,,2024-09-10,D,0960.HK
+3,11467,14410.0,,Other at price 1.26 per share.,Churchouse (Frederick Peter),Independent Non-Executive Director,,2024-08-22,D,0960.HK
+4,13937,17514.0,,Other at price 1.26 per share.,Shen (Ying),Director (Executive),,2024-08-22,D,0960.HK
+5,595001,,,,Shen (Ying),Director (Executive),,2024-04-25,D,0960.HK
+6,246519,,,,Shen (Ying),Director (Executive),,2024-04-25,D,0960.HK
+7,1005821,,,,Zhang (Xuzhong),Director (Executive),,2024-04-25,D,0960.HK
+8,430824,,,,Zhang (Xuzhong),Director (Executive),,2024-04-25,D,0960.HK
+9,1127969,,,,Zhao (Yi),Chief Financial Officer,,2024-04-25,D,0960.HK
+10,485623,,,,Zhao (Yi),Chief Financial Officer,,2024-04-25,D,0960.HK
+11,1261310,,,,Chen (Xuping),Chief Executive Officer,,2024-04-25,D,0960.HK
+12,545443,,,,Chen (Xuping),Chief Executive Officer,,2024-04-25,D,0960.HK
+13,25000,40937.0,,Acquisition at price 1.64 per share.,Chan (Chi On Derek),Independent Non-Executive Director,,2023-10-04,D,0960.HK
+14,200000,397840.0,,Acquisition at price 1.99 per share.,Chen (Xuping),Chief Executive Officer,,2023-08-24,D,0960.HK
+15,507,,,,Xiang (Bing),Independent Non-Executive Director,,2023-08-21,D,0960.HK
+16,200000,449740.0,,Acquisition at price 2.25 per share.,Chen (Xuping),Chief Executive Officer,,2023-05-18,D,0960.HK
+17,384674,,,,Chen (Xuping),Chief Executive Officer,,2023-04-17,D,0960.HK
+18,164656,,,,Chen (Xuping),Chief Executive Officer,,2023-04-17,D,0960.HK
+19,333186,,,,Shen (Ying),Director (Executive),,2023-04-17,D,0960.HK
+20,141486,,,,Shen (Ying),Director (Executive),,2023-04-17,D,0960.HK
+21,526682,,,,Zhang (Xuzhong),Director (Executive),,2023-04-17,D,0960.HK
+22,228559,,,,Zhang (Xuzhong),Director (Executive),,2023-04-17,D,0960.HK
+23,617163,,,,Zhao (Yi),Chief Financial Officer,,2023-04-17,D,0960.HK
+24,269276,,,,Zhao (Yi),Chief Financial Officer,,2023-04-17,D,0960.HK
+0,300000,1154370.0,,Acquisition at price 3.85 per share.,Ip (Tak Chuen Edmond),Director (Executive),,2024-06-12,D,1113.HK
+1,157000,812302.0,,Sale at price 5.17 per share.,Roberts (Donald Jeffrey),Independent Non-Executive Director,,2023-09-21,D,1113.HK
+0,50000,140265.0,,Acquisition at price 2.81 per share.,Nie (Zhizhang),Director (Executive),,2024-07-25,D,1209.HK
+0,30000,75249.0,,Acquisition at price 2.51 per share.,Yeoh (Eng Kiong),Independent Non-Executive Director,,2025-01-06,D,1997.HK
+0,146000,269939.0,,Acquisition at price 1.85 per share.,Gui (Sheng Yue),Chief Executive Officer,,2024-12-03,D,0175.HK
+1,792000,1473753.0,,Acquisition at price 1.86 per share.,Gan (Jia Yue),Director (Executive),,2024-12-02,D,0175.HK
+2,684000,1271898.0,,Acquisition at price 1.86 per share.,Gui (Sheng Yue),Chief Executive Officer,,2024-12-02,D,0175.HK
+3,849000,1579819.0,,Acquisition at price 1.86 per share.,Li (Dong Hui),Director (Executive),,2024-12-02,D,0175.HK
+0,164883,71575.0,,Sale at price 0.43 per share.,Zhu (Shunyan),Chairman of the Board,,2024-06-18,D,0241.HK
+1,75125,,,,Tu (Yanwu),Chief Financial Officer,,2024-06-15,D,0241.HK
+2,331176,,,,Zhu (Shunyan),Chairman of the Board,,2024-06-15,D,0241.HK
+3,270225,,,,Shen (Difan),Chief Executive Officer,,2024-06-15,D,0241.HK
+4,192500,,,,Tu (Yanwu),Chief Financial Officer,,2023-09-15,D,0241.HK
+5,17575,11091.0,,Sale at price 0.63 per share.,Tu (Yanwu),Chief Financial Officer,,2023-06-19,D,0241.HK
+6,118979,75087.0,,Sale at price 0.63 per share.,Zhu (Shunyan),Chief Executive Officer,,2023-06-19,D,0241.HK
+7,66582,42019.0,,Sale at price 0.63 per share.,Shen (Difan),Director (Executive),,2023-06-19,D,0241.HK
+8,125000,,,,Shen (Difan),Director (Executive),,2023-06-15,D,0241.HK
+9,139950,,,,Shen (Difan),Director (Executive),,2023-06-15,D,0241.HK
+10,38500,,,,Tu (Yanwu),Chief Financial Officer,,2023-06-15,D,0241.HK
+11,49550,,,,Tu (Yanwu),Chief Financial Officer,,2023-06-15,D,0241.HK
+12,239092,,,,Zhu (Shunyan),Chief Executive Officer,,2023-06-15,D,0241.HK
+0,29000,25920.0,,Acquisition at price 0.89 per share.,Liu (Zhengjun),Director (Executive),,2024-06-27,D,0267.HK
+1,42000,40609.0,,Acquisition at price 0.97 per share.,Zhang (Wenwu),President,,2024-06-26,D,0267.HK
+2,44000,42420.0,,Acquisition at price 0.96 per share.,Zhang (Wenwu),President,,2024-06-25,D,0267.HK
+3,26000,24837.0,,Acquisition at price 0.96 per share.,Zhang (Wenwu),President,,2024-06-24,D,0267.HK
+4,13000,13516.0,,Acquisition at price 1.04 per share.,Wang (Guoquan),Director (Executive),,2024-06-06,D,0267.HK
+5,43000,44651.0,,Acquisition at price 1.04 per share.,Xi (Guo Hua),Chairman of the Board,,2024-06-06,D,0267.HK
+6,13000,13386.0,,Acquisition at price 1.03 per share.,Wang (Guoquan),Director (Executive),,2024-05-30,D,0267.HK
+7,43000,44079.0,,Acquisition at price 1.03 per share.,Xi (Guo Hua),Chairman of the Board,,2024-05-30,D,0267.HK
+8,13000,13971.0,,Acquisition at price 1.07 per share.,Wang (Guoquan),Director (Executive),,2024-05-27,D,0267.HK
+9,44000,47286.0,,Acquisition at price 1.07 per share.,Xi (Guo Hua),Chairman of the Board,,2024-05-27,D,0267.HK
+0,169000,591652.0,,Acquisition at price 3.50 per share.,Jiang (Xiang-rong),Director (Executive),,2024-09-04,D,0285.HK
+0,34007500,,,,Pudwill (Horst Julius),Chairman of the Board,,2024-12-31,D,0669.HK
+1,5000,65777.0,,Acquisition at price 13.16 per share.,Getz (Robert H),Independent Non-Executive Director,,2024-12-30,D,0669.HK
+2,40000,186872.0,,Conversion at price 4.67 per share.,Hesse (Johannes-Gerhard),Independent Non-Executive Director,,2024-12-23,D,0669.HK
+3,12500,,,,Hesse (Johannes-Gerhard),Independent Non-Executive Director,,2024-12-22,D,0669.HK
+4,12500,,,,Kracht (Caroline Christina),Independent Non-Executive Director,,2024-12-22,D,0669.HK
+5,12500,,,,Sullivan (Peter David),Independent Non-Executive Director,,2024-12-22,D,0669.HK
+6,34007500,,,,Pudwill (Stephan Horst),Director (Executive),,2024-12-06,D,0669.HK
+7,5000,58931.0,,Acquisition at price 11.79 per share.,Getz (Robert H),Independent Non-Executive Director,,2024-06-21,D,0669.HK
+8,58500,743160.0,,Acquisition at price 12.70 per share.,Pudwill (Horst Julius),Chairman of the Board,,2024-05-23,D,0669.HK
+9,91500,1197991.0,,Acquisition at price 13.09 per share.,Pudwill (Horst Julius),Chairman of the Board,,2024-05-21,D,0669.HK
+10,12500,,,,Hesse (Johannes-Gerhard),Independent Non-Executive Director,,2024-05-02,D,0669.HK
+11,100000,1311560.0,,Sale at price 13.12 per share.,Jojo (Camille),Director (Executive),,2024-03-15,D,0669.HK
+12,100000,1312150.0,,Acquisition at price 13.12 per share.,Pudwill (Horst Julius),Chairman of the Board,,2024-03-15,D,0669.HK
+13,750000,2071200.0,,Conversion at price 2.76 per share.,Pudwill (Stephan Horst),Director (Executive),,2024-03-15,D,0669.HK
+14,150000,1965750.0,,Sale at price 13.10 per share.,Pudwill (Stephan Horst),Director (Executive),,2024-03-15,D,0669.HK
+15,225000,2891430.0,,Sale at price 12.85 per share.,Pudwill (Stephan Horst),Director (Executive),,2024-03-14,D,0669.HK
+16,375000,4760475.0,,Sale at price 12.69 per share.,Pudwill (Stephan Horst),Director (Executive),,2024-03-13,D,0669.HK
+17,150000,,,,Pudwill (Horst Julius),Chairman of the Board,,2023-12-30,D,0669.HK
+18,25000,,,,Pudwill (Stephan Horst),Director (Executive),,2023-12-30,D,0669.HK
+19,25000,,,,Chan (Chi Chung CPA),Director (Executive),,2023-12-30,D,0669.HK
+20,25000,,,,Chan (Kin Wah Patrick),Director (Executive),,2023-12-30,D,0669.HK
+21,110000,1072247.0,,Acquisition at price 9.75 per share.,Galli (Joseph G Jr),Chief Executive Officer,,2023-08-25,D,0669.HK
+22,250000,2599000.0,,Acquisition at price 10.40 per share.,Pudwill (Horst Julius),Chairman of the Board,,2023-08-16,D,0669.HK
+23,5000,51386.0,,Acquisition at price 10.28 per share.,Getz (Robert H),Independent Non-Executive Director,,2023-08-11,D,0669.HK
+24,30000,311406.0,,Acquisition at price 10.38 per share.,Pudwill (Horst Julius),Chairman of the Board,,2023-07-07,D,0669.HK
+0,1894,,,,Li (Dong Sheng Thomas),Independent Non-Executive Director,,2025-03-30,D,0700.HK
+1,3786,,,,Stone (Ian Charles),Independent Non-Executive Director,,2025-03-30,D,0700.HK
+2,3384,,,,Yang (Siu Shun),Independent Non-Executive Director,,2025-03-30,D,0700.HK
+3,1894,,,,Ke (Yang),Independent Non-Executive Director,,2025-03-30,D,0700.HK
+4,2362,,,,Ke (Yang),Independent Non-Executive Director,,2025-03-24,D,0700.HK
+5,2362,,,,Li (Dong Sheng Thomas),Independent Non-Executive Director,,2025-03-24,D,0700.HK
+6,4725,,,,Stone (Ian Charles),Independent Non-Executive Director,,2025-03-24,D,0700.HK
+7,4200,,,,Yang (Siu Shun),Independent Non-Executive Director,,2025-03-24,D,0700.HK
+8,4427,228157.0,,Sale at price 51.54 per share.,Zhang (Xiulan),Independent Non-Executive Director,,2024-11-14,D,0700.HK
+9,30000,1717797.0,,Sale at price 57.26 per share.,Stone (Ian Charles),Independent Non-Executive Director,,2024-10-10,D,0700.HK
+10,1678,,,,Zhang (Xiulan),Independent Non-Executive Director,,2024-08-18,D,0700.HK
+11,25000,1181337.0,,Sale at price 47.25 per share.,Stone (Ian Charles),Independent Non-Executive Director,,2024-08-15,D,0700.HK
+12,16000,813822.0,,Sale at price 50.86 per share.,Yang (Siu Shun),Independent Non-Executive Director,,2024-05-16,D,0700.HK
+13,5499,,,,Stone (Ian Charles),Independent Non-Executive Director,,2024-04-15,D,0700.HK
+14,4888,,,,Yang (Siu Shun),Independent Non-Executive Director,,2024-04-15,D,0700.HK
+15,2749,,,,Zhang (Xiulan),Independent Non-Executive Director,,2024-04-15,D,0700.HK
+16,2749,,,,Ke (Yang),Independent Non-Executive Director,,2024-04-15,D,0700.HK
+17,2749,,,,Li (Dong Sheng Thomas),Independent Non-Executive Director,,2024-04-15,D,0700.HK
+18,1892,,,,Ke (Yang),Independent Non-Executive Director,,2024-03-30,D,0700.HK
+19,1892,,,,Li (Dong Sheng Thomas),Independent Non-Executive Director,,2024-03-30,D,0700.HK
+20,3785,,,,Stone (Ian Charles),Independent Non-Executive Director,,2024-03-30,D,0700.HK
+21,3378,,,,Yang (Siu Shun),Independent Non-Executive Director,,2024-03-30,D,0700.HK
+22,4725,,,,Stone (Ian Charles),Independent Non-Executive Director,,2024-03-24,D,0700.HK
+23,4200,,,,Yang (Siu Shun),Independent Non-Executive Director,,2024-03-24,D,0700.HK
+24,2362,,,,Ke (Yang),Independent Non-Executive Director,,2024-03-24,D,0700.HK
+25,2362,,,,Li (Dong Sheng Thomas),Independent Non-Executive Director,,2024-03-24,D,0700.HK
+26,14000,523762.0,,Sale at price 37.41 per share.,Stone (Ian Charles),Independent Non-Executive Director,,2024-03-21,D,0700.HK
+27,4599,,,,Stone (Ian Charles),Independent Non-Executive Director,,2024-03-20,D,0700.HK
+28,4057,,,,Yang (Siu Shun),Independent Non-Executive Director,,2024-03-20,D,0700.HK
+29,1623,,,,Ke (Yang),Independent Non-Executive Director,,2024-03-20,D,0700.HK
+30,2300,,,,Li (Dong Sheng Thomas),Independent Non-Executive Director,,2024-03-20,D,0700.HK
+31,12000,497821.0,,Sale at price 41.49 per share.,Yang (Siu Shun),Independent Non-Executive Director,,2023-11-16,D,0700.HK
+32,1619,,,,Ke (Yang),Independent Non-Executive Director,,2023-08-23,D,0700.HK
+33,1678,,,,Zhang (Xiulan),Independent Non-Executive Director,,2023-08-18,D,0700.HK
+34,20000,830204.0,,Sale at price 41.51 per share.,Yang (Siu Shun),Independent Non-Executive Director,,2023-08-17,D,0700.HK
+0,23439750,,,,Tung (Ching Sai),Chief Executive Officer,,2024-10-16,D,0868.HK
+1,3082257,,,,Tung (Ching Bor),Vice Chairman,,2024-10-16,D,0868.HK
+2,5589191,,,,Li (Ching Wai),Director (Non-Executive),,2024-10-16,D,0868.HK
+3,42591889,,,,Lee (Yin Yee),Chairman of the Board,,2024-10-16,D,0868.HK
+4,3766625,,,,Li (Ching Leung),Director (Non-Executive),,2024-10-16,D,0868.HK
+5,1375000,1585100.0,,Acquisition at price 1.15 per share.,Tung (Ching Sai),Chief Executive Officer,,2023-11-30,D,0868.HK
+6,349000,396917.0,,Acquisition at price 1.14 per share.,Tung (Ching Sai),Chief Executive Officer,,2023-11-29,D,0868.HK
+7,303000,345692.0,,Acquisition at price 1.14 per share.,Tung (Ching Bor),Vice Chairman,,2023-11-10,D,0868.HK
+8,1000000,1163700.0,,Acquisition at price 1.16 per share.,Tung (Ching Sai),Chief Executive Officer,,2023-11-07,D,0868.HK
+9,440000,520696.0,,Acquisition at price 1.18 per share.,Tung (Ching Sai),Chief Executive Officer,,2023-10-20,D,0868.HK
+10,800000,960640.0,,Acquisition at price 1.20 per share.,Tung (Ching Sai),Chief Executive Officer,,2023-10-19,D,0868.HK
+11,11617371,,,,Tung (Ching Sai),Chief Executive Officer,,2023-10-10,D,0868.HK
+12,1301753,,,,Sze (Nang Sze),Director (Non-Executive),,2023-10-10,D,0868.HK
+13,8549330,,,,Tung (Ching Bor),Vice Chairman,,2023-10-10,D,0868.HK
+14,17967925,,,,Lee (Yin Yee),Chairman of the Board,,2023-10-10,D,0868.HK
+15,500000,603600.0,,Acquisition at price 1.21 per share.,Tung (Ching Sai),Chief Executive Officer,,2023-10-09,D,0868.HK
+16,50000,61310.0,,Acquisition at price 1.23 per share.,Tung (Ching Sai),Chief Executive Officer,,2023-10-04,D,0868.HK
+17,2000000,2593400.0,,Acquisition at price 1.30 per share.,Tung (Ching Sai),Chief Executive Officer,,2023-09-26,D,0868.HK
+18,1000000,1349500.0,,Acquisition at price 1.35 per share.,Tung (Ching Sai),Chief Executive Officer,,2023-09-25,D,0868.HK
+19,43000,59795.0,,Acquisition at price 1.39 per share.,Tung (Ching Bor),Vice Chairman,,2023-08-21,D,0868.HK
+20,241000,348437.0,,Acquisition at price 1.45 per share.,Tung (Ching Bor),Vice Chairman,,2023-08-17,D,0868.HK
+21,218000,315947.0,,Acquisition at price 1.45 per share.,Tung (Ching Bor),Vice Chairman,,2023-08-16,D,0868.HK
+22,594000,864032.0,,Acquisition at price 1.45 per share.,Tung (Ching Bor),Vice Chairman,,2023-08-15,D,0868.HK
+23,369000,522909.0,,Acquisition at price 1.42 per share.,Tung (Ching Bor),Vice Chairman,,2023-08-14,D,0868.HK
+24,390000,568932.0,,Acquisition at price 1.46 per share.,Tung (Ching Bor),Vice Chairman,,2023-08-11,D,0868.HK
+25,812000,1189498.0,,Acquisition at price 1.46 per share.,Tung (Ching Sai),Chief Executive Officer,,2023-08-11,D,0868.HK
+26,760000,1174428.0,,Acquisition at price 1.55 per share.,Tung (Ching Sai),Chief Executive Officer,,2023-08-08,D,0868.HK
+27,1000000,1566300.0,,Acquisition at price 1.57 per share.,Tung (Ching Bor),Vice Chairman,,2023-08-08,D,0868.HK
+28,8047860,,,,Tung (Ching Sai),Chief Executive Officer,,2023-08-04,D,0868.HK
+29,571000,,,,Li (Ching Wai),Director (Non-Executive),,2023-08-04,D,0868.HK
+30,1664259,,,,Ng (Ngan Ho),Director (Non-Executive),,2023-08-04,D,0868.HK
+31,2454833,,,,Sze (Nang Sze),Director (Non-Executive),,2023-08-04,D,0868.HK
+32,14466346,,,,Lee (Yin Yee),Chairman of the Board,,2023-08-04,D,0868.HK
+33,762000,1229258.0,,Acquisition at price 1.61 per share.,Tung (Ching Sai),Chief Executive Officer,,2023-08-03,D,0868.HK
+34,877000,1382152.0,,Acquisition at price 1.58 per share.,Tung (Ching Sai),Chief Executive Officer,,2023-08-02,D,0868.HK
+0,10000,12027.0,,Acquisition at price 1.20 per share.,Sun (Yanjun),Director (Non-Executive),,2024-09-03,D,0881.HK
+1,20000,23588.0,,Acquisition at price 1.18 per share.,Sun (Yanjun),Director (Non-Executive),,2024-09-02,D,0881.HK
+2,426500,,,,Zhou (Xin),Director (Executive),,2024-03-27,D,0881.HK
+3,11000,22764.0,,Acquisition at price 2.07 per share.,Li (Yanwei),Independent Non-Executive Director,,2023-12-11,D,0881.HK
+4,850000,2984860.0,,Acquisition at price 3.51 per share.,Huang (Yi),Chairman of the Board,,2023-07-21,D,0881.HK
+5,800000,2728080.0,,Acquisition at price 3.41 per share.,Huang (Yi),Chairman of the Board,,2023-07-19,D,0881.HK
+6,1783000,6161156.0,,Acquisition at price 3.46 per share.,Li (Guo Qiang),Chief Executive Officer,,2023-05-29,D,0881.HK
+0,27364852,,,,Lee (Yin Yee),Chairman of the Board,,2024-10-16,D,0968.HK
+1,2866018,,,,Li (Man Yin),Director (Executive),,2024-10-16,D,0968.HK
+2,7768768,,,,Tung (Ching Sai),Director (Non-Executive),,2024-10-16,D,0968.HK
+3,75000,,,,Chu (Charn Fai),Director (Executive),,2024-03-15,D,0968.HK
+4,75000,59062.0,,Sale at price 0.79 per share.,Chu (Charn Fai),Director (Executive),,2024-03-15,D,0968.HK
+5,1000000,579800.0,,Acquisition at price 0.58 per share.,Tung (Ching Sai),Director (Non-Executive),,2023-11-30,D,0968.HK
+6,1000000,631700.0,,Acquisition at price 0.63 per share.,Tung (Ching Sai),Director (Non-Executive),,2023-11-07,D,0968.HK
+7,1000000,615300.0,,Acquisition at price 0.62 per share.,Tung (Ching Sai),Director (Non-Executive),,2023-10-25,D,0968.HK
+8,1000000,670800.0,,Acquisition at price 0.67 per share.,Tung (Ching Sai),Director (Non-Executive),,2023-10-20,D,0968.HK
+9,1000000,708200.0,,Acquisition at price 0.71 per share.,Tung (Ching Sai),Director (Non-Executive),,2023-10-19,D,0968.HK
+10,1000000,699000.0,,Acquisition at price 0.70 per share.,Tung (Ching Sai),Director (Non-Executive),,2023-10-04,D,0968.HK
+11,1100000,762410.0,,Acquisition at price 0.69 per share.,Tung (Ching Sai),Director (Non-Executive),,2023-09-26,D,0968.HK
+12,200000,141500.0,,Acquisition at price 0.71 per share.,Tung (Ching Sai),Director (Non-Executive),,2023-09-25,D,0968.HK
+0,187500,590437.0,,Conversion at price 3.15 per share.,Liu (Ming),Independent Non-Executive Director,,2025-03-31,D,0981.HK
+1,187500,1098993.0,,Sale at price 5.86 per share.,Liu (Ming),Independent Non-Executive Director,,2025-03-31,D,0981.HK
+2,47008,183.0,,Conversion at price 0.00 per share.,Fan (Ren Da),Independent Non-Executive Director,,2025-01-10,D,0981.HK
+3,83908,327.0,,Conversion at price 0.00 per share.,Liu (Ming),Independent Non-Executive Director,,2025-01-10,D,0981.HK
+4,91575,357.0,,Conversion at price 0.00 per share.,Wu (Hanming),Independent Non-Executive Director,,2024-09-04,D,0981.HK
+5,45492,177.0,,Conversion at price 0.00 per share.,Fan (Ren Da),Independent Non-Executive Director,,2024-07-04,D,0981.HK
+6,123468,481.0,,Conversion at price 0.00 per share.,Liu (Xunfeng),Chairman of the Board,,2024-05-28,D,0981.HK
+7,92500,360.0,,Conversion at price 0.00 per share.,Fan (Ren Da),Independent Non-Executive Director,,2024-04-03,D,0981.HK
+8,217877,849.0,,Conversion at price 0.00 per share.,Lau (Juen Yee Lawrence),Independent Non-Executive Director,,2024-04-03,D,0981.HK
+9,508447,1982.0,,Conversion at price 0.00 per share.,Liang (Mong Song Ph.D.),Co-Chief Executive Officer,,2024-04-03,D,0981.HK
+10,238347,470377.0,,Sale at price 1.97 per share.,Liang (Mong Song Ph.D.),Co-Chief Executive Officer,,2024-04-03,D,0981.HK
+11,63750,248.0,,Conversion at price 0.00 per share.,Liu (Ming),Independent Non-Executive Director,,2024-04-03,D,0981.HK
+12,105054,206378.0,,Sale at price 1.96 per share.,Liu (Ming),Independent Non-Executive Director,,2024-04-03,D,0981.HK
+13,438779,1711.0,,Conversion at price 0.00 per share.,Zhao (Haijun),Co-Chief Executive Officer,,2024-04-03,D,0981.HK
+14,203661,401924.0,,Sale at price 1.97 per share.,Zhao (Haijun),Co-Chief Executive Officer,,2024-04-03,D,0981.HK
+15,61875,241.0,,Conversion at price 0.00 per share.,Liu (Ming),Independent Non-Executive Director,,2023-09-27,D,0981.HK
+16,20571,51505.0,,Sale at price 2.50 per share.,Liu (Ming),Independent Non-Executive Director,,2023-09-27,D,0981.HK
+17,91575,357.0,,Conversion at price 0.00 per share.,Wu (Hanming),Independent Non-Executive Director,,2023-08-29,D,0981.HK
+18,91575,210540.0,,Sale at price 2.30 per share.,Wu (Hanming),Independent Non-Executive Director,,2023-08-29,D,0981.HK
+19,79783,,,,Gao (Yonggang),Chairman of the Board,,2023-06-30,D,0981.HK
+20,39701,103353.0,,Sale at price 2.60 per share.,Gao (Yonggang),Chairman of the Board,,2023-06-30,D,0981.HK
+21,79783,,,,Liang (Mong Song Ph.D.),Co-Chief Executive Officer,,2023-06-30,D,0981.HK
+22,30910,80468.0,,Sale at price 2.60 per share.,Liang (Mong Song Ph.D.),Co-Chief Executive Officer,,2023-06-30,D,0981.HK
+23,79783,,,,Zhao (Haijun),Co-Chief Executive Officer,,2023-06-30,D,0981.HK
+24,39701,103353.0,,Sale at price 2.60 per share.,Zhao (Haijun),Co-Chief Executive Officer,,2023-06-30,D,0981.HK
+0,1125232,,,,Zhao (John Huan),Director (Non-Executive),,2025-03-12,D,0992.HK
+1,1252399,,,Conversion at price 0.00 per share.,Yang (Yuanqing),Chief Executive Officer,,2025-03-01,D,0992.HK
+2,1252399,,,,Yang (Yuanqing),Chief Executive Officer,,2024-12-01,D,0992.HK
+3,99234,,,,Wang (Hsiueh Hong Cher),Independent Non-Executive Director,,2024-11-15,D,0992.HK
+4,78182,,,,Wang (Hsiueh Hong Cher),Independent Non-Executive Director,,2024-09-27,D,0992.HK
+5,78182,,,,Woo (Chin Wan),Independent Non-Executive Director,,2024-09-27,D,0992.HK
+6,78182,,,,Xue (Lan),Independent Non-Executive Director,,2024-09-27,D,0992.HK
+7,102614,,,,Yang (Lan),Independent Non-Executive Director,,2024-09-27,D,0992.HK
+8,78182,,,,Zhao (John Huan),Director (Non-Executive),,2024-09-27,D,0992.HK
+9,78182,,,,Brown (William Tudor),Independent Non-Executive Director,,2024-09-27,D,0992.HK
+10,78182,,,,Zhu (Linan),Director (Non-Executive),,2024-09-27,D,0992.HK
+11,78182,,,,Grabe (William Otto),Independent Non-Executive Director,,2024-09-27,D,0992.HK
+12,78182,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2024-09-27,D,0992.HK
+13,58637,,,,Thornton (John Lawson),Independent Non-Executive Director,,2024-09-27,D,0992.HK
+14,32203,,,,Yang (Lan),Independent Non-Executive Director,,2024-09-26,D,0992.HK
+15,100357,,,,Woo (Chin Wan),Independent Non-Executive Director,,2024-09-14,D,0992.HK
+16,100357,,,,Xue (Lan),Independent Non-Executive Director,,2024-09-14,D,0992.HK
+17,100357,,,,Yang (Lan),Independent Non-Executive Director,,2024-09-14,D,0992.HK
+18,100356,,,,Grabe (William Otto),Independent Non-Executive Director,,2024-09-14,D,0992.HK
+19,100356,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2024-09-14,D,0992.HK
+20,100356,,,,Brown (William Tudor),Independent Non-Executive Director,,2024-09-14,D,0992.HK
+21,100357,,,,Zhao (John Huan),Director (Non-Executive),,2024-09-14,D,0992.HK
+22,100357,,,,Zhu (Linan),Director (Non-Executive),,2024-09-14,D,0992.HK
+23,1252399,,,,Yang (Yuanqing),Chief Executive Officer,,2024-09-01,D,0992.HK
+24,479164,,,,Grabe (William Otto),Independent Non-Executive Director,,2024-08-20,D,0992.HK
+25,109448,138670.0,,Other at price 1.27 per share.,Grabe (William Otto),Independent Non-Executive Director,,2024-08-19,D,0992.HK
+26,87470,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2024-08-19,D,0992.HK
+27,3021,,,,Wang (Hsiueh Hong Cher),Independent Non-Executive Director,,2024-08-19,D,0992.HK
+28,26218,,,,Brown (William Tudor),Independent Non-Executive Director,,2024-08-19,D,0992.HK
+29,80602,,,,Brown (William Tudor),Independent Non-Executive Director,,2024-08-18,D,0992.HK
+30,80602,,,,Woo (Chin Wan),Independent Non-Executive Director,,2024-08-18,D,0992.HK
+31,80602,,,,Yang (Lan),Independent Non-Executive Director,,2024-08-18,D,0992.HK
+32,80602,,,,Zhao (John Huan),Director (Non-Executive),,2024-08-18,D,0992.HK
+33,80602,,,,Grabe (William Otto),Independent Non-Executive Director,,2024-08-18,D,0992.HK
+34,80602,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2024-08-18,D,0992.HK
+35,80602,,,,Zhu (Linan),Director (Non-Executive),,2024-08-18,D,0992.HK
+36,546976,,,,Yang (Yuanqing),Chief Executive Officer,,2024-06-03,D,0992.HK
+37,5325568,,,,Yang (Yuanqing),Chief Executive Officer,,2024-06-01,D,0992.HK
+38,862516,,,Conversion at price 0.00 per share.,Yang (Yuanqing),Chief Executive Officer,,2024-03-01,D,0992.HK
+39,24954,33737.0,,Other at price 1.35 per share.,Grabe (William Otto),Independent Non-Executive Director,,2024-01-15,D,0992.HK
+40,26842,36086.0,,Other at price 1.34 per share.,Grabe (William Otto),Independent Non-Executive Director,,2023-12-20,D,0992.HK
+41,21764,29259.0,,Other at price 1.34 per share.,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2023-12-20,D,0992.HK
+42,8133,10934.0,,Other at price 1.34 per share.,Brown (William Tudor),Independent Non-Executive Director,,2023-12-20,D,0992.HK
+43,50000,66090.0,,Sale at price 1.32 per share.,Brown (William Tudor),Independent Non-Executive Director,,2023-12-20,D,0992.HK
+44,752,1010.0,,Other at price 1.34 per share.,Wang (Hsiueh Hong Cher),Independent Non-Executive Director,,2023-12-20,D,0992.HK
+45,214004,281543.0,,Sale at price 1.32 per share.,Brown (William Tudor),Independent Non-Executive Director,,2023-12-19,D,0992.HK
+46,26921,33761.0,,Other at price 1.25 per share.,Grabe (William Otto),Independent Non-Executive Director,,2023-12-18,D,0992.HK
+47,513530,,,,Zhao (John Huan),Director (Non-Executive),,2023-12-18,D,0992.HK
+48,862516,,,,Yang (Yuanqing),Chief Executive Officer,,2023-12-01,D,0992.HK
+49,3582000,4438456.0,,Sale at price 1.24 per share.,Yang (Yuanqing),Chief Executive Officer,,2023-11-29,D,0992.HK
+50,23221482,29112771.0,,Conversion at price 1.25 per share.,Yang (Yuanqing),Chief Executive Officer,,2023-11-28,D,0992.HK
+51,6418000,8058440.0,,Sale at price 1.26 per share.,Yang (Yuanqing),Chief Executive Officer,,2023-11-28,D,0992.HK
+52,341131,423991.0,,Sale at price 1.24 per share.,Brown (William Tudor),Independent Non-Executive Director,,2023-11-21,D,0992.HK
+53,615714,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2023-11-17,D,0992.HK
+54,99234,,,,Wang (Hsiueh Hong Cher),Independent Non-Executive Director,,2023-11-15,D,0992.HK
+55,420357,461678.0,,Sale at price 1.10 per share.,Grabe (William Otto),Independent Non-Executive Director,,2023-10-11,D,0992.HK
+56,65966,,,,Grabe (William Otto),Independent Non-Executive Director,,2023-09-27,D,0992.HK
+57,32204,,,,Yang (Lan),Independent Non-Executive Director,,2023-09-26,D,0992.HK
+58,100356,,,,Woo (Chin Wan),Independent Non-Executive Director,,2023-09-14,D,0992.HK
+59,100356,,,,Xue (Lan),Independent Non-Executive Director,,2023-09-14,D,0992.HK
+60,100356,,,,Yang (Chih Yuan Jerry),Independent Non-Executive Director,,2023-09-14,D,0992.HK
+61,100356,,,,Yang (Lan),Independent Non-Executive Director,,2023-09-14,D,0992.HK
+62,100356,,,,Grabe (William Otto),Independent Non-Executive Director,,2023-09-14,D,0992.HK
+63,100356,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2023-09-14,D,0992.HK
+64,100356,,,,Zhu (Linan),Director (Non-Executive),,2023-09-14,D,0992.HK
+65,100356,,,,Zhao (John Huan),Director (Non-Executive),,2023-09-14,D,0992.HK
+66,100356,,,,Brown (William Tudor),Independent Non-Executive Director,,2023-09-14,D,0992.HK
+67,118626,,,,Brown (William Tudor),Independent Non-Executive Director,,2023-09-01,D,0992.HK
+68,118626,,,,Zhu (Linan),Director (Non-Executive),,2023-09-01,D,0992.HK
+69,118626,,,,Woo (Chin Wan),Independent Non-Executive Director,,2023-09-01,D,0992.HK
+70,118626,,,,Yang (Chih Yuan Jerry),Independent Non-Executive Director,,2023-09-01,D,0992.HK
+71,104244,,,,Yang (Lan),Independent Non-Executive Director,,2023-09-01,D,0992.HK
+72,118626,,,,Grabe (William Otto),Independent Non-Executive Director,,2023-09-01,D,0992.HK
+73,118626,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2023-09-01,D,0992.HK
+74,862517,,,,Yang (Yuanqing),Chief Executive Officer,,2023-09-01,D,0992.HK
+75,118626,,,,Zhao (John Huan),Director (Non-Executive),,2023-09-01,D,0992.HK
+76,411740,461025.0,,Sale at price 1.12 per share.,Brown (William Tudor),Independent Non-Executive Director,,2023-08-31,D,0992.HK
+77,58514,55857.0,,Other at price 0.95 per share.,Brown (William Tudor),Independent Non-Executive Director,,2023-08-21,D,0992.HK
+78,100826,96248.0,,Other at price 0.95 per share.,Yang (Chih Yuan Jerry),Independent Non-Executive Director,,2023-08-21,D,0992.HK
+79,121783,116254.0,,Other at price 0.95 per share.,Grabe (William Otto),Independent Non-Executive Director,,2023-08-21,D,0992.HK
+80,75023,71616.0,,Other at price 0.95 per share.,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2023-08-21,D,0992.HK
+81,80602,,,,Grabe (William Otto),Independent Non-Executive Director,,2023-08-18,D,0992.HK
+82,80602,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2023-08-18,D,0992.HK
+83,80602,,,,Brown (William Tudor),Independent Non-Executive Director,,2023-08-18,D,0992.HK
+84,80602,,,,Zhao (John Huan),Director (Non-Executive),,2023-08-18,D,0992.HK
+85,80602,,,,Zhu (Linan),Director (Non-Executive),,2023-08-18,D,0992.HK
+86,80602,,,,Woo (Chin Wan),Independent Non-Executive Director,,2023-08-18,D,0992.HK
+87,80602,,,,Yang (Chih Yuan Jerry),Independent Non-Executive Director,,2023-08-18,D,0992.HK
+88,80602,,,,Yang (Lan),Independent Non-Executive Director,,2023-08-18,D,0992.HK
+89,165770,179678.0,,Sale at price 1.08 per share.,Brown (William Tudor),Independent Non-Executive Director,,2023-07-14,D,0992.HK
+90,10336000,11151510.0,,Sale at price 1.08 per share.,Yang (Yuanqing),Chief Executive Officer,,2023-06-19,D,0992.HK
+91,19151656,12122998.0,,Conversion at price 0.63 per share.,Yang (Yuanqing),Chief Executive Officer,,2023-06-16,D,0992.HK
+92,8700000,9515190.0,,Sale at price 1.09 per share.,Yang (Yuanqing),Chief Executive Officer,,2023-06-16,D,0992.HK
+93,460396,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2023-06-14,D,0992.HK
+94,800227,,,,Yang (Chih Yuan Jerry),Independent Non-Executive Director,,2023-06-06,D,0992.HK
+95,2427206,,,,Yang (Yuanqing),Chief Executive Officer,,2023-06-01,D,0992.HK
+0,340086,,,,Su (Hua),Director (Executive),,2025-02-28,D,1024.HK
+1,2934448,,,,Su (Hua),Director (Executive),,2025-01-24,D,1024.HK
+2,3338648,,,,Su (Hua),Director (Executive),,2024-12-24,D,1024.HK
+3,208062,,,,Su (Hua),Director (Executive),,2024-11-29,D,1024.HK
+4,547868,,,,Su (Hua),Director (Executive),,2024-10-31,D,1024.HK
+5,3766704,,,,Su (Hua),Director (Executive),,2024-09-30,D,1024.HK
+6,3376428,,,,Su (Hua),Director (Executive),,2024-08-30,D,1024.HK
+7,2122662,,,,Su (Hua),Director (Executive),,2024-07-31,D,1024.HK
+8,515557,,,,Su (Hua),Director (Executive),,2024-06-06,D,1024.HK
+9,1239918,,,,Su (Hua),Director (Executive),,2024-04-30,D,1024.HK
+10,1446787,,,,Su (Hua),Director (Executive),,2024-03-28,D,1024.HK
+11,1905131,,,,Su (Hua),Director (Executive),,2024-02-29,D,1024.HK
+12,1765336,,,,Su (Hua),Director (Executive),,2024-01-31,D,1024.HK
+13,2335902,,,,Su (Hua),Director (Executive),,2023-12-21,D,1024.HK
+14,237290,,,,Su (Hua),Chairman of the Board,,2023-10-20,D,1024.HK
+15,8802649,,,,Zhang (Fei),Director (Non-Executive),,2023-10-18,D,1024.HK
+16,471414,,,,Su (Hua),Chairman of the Board,,2023-09-28,D,1024.HK
+17,717209,,,,Su (Hua),Chairman of the Board,,2023-07-31,D,1024.HK
+18,350339,,,,Su (Hua),Chairman of the Board,,2023-06-09,D,1024.HK
+19,1384180,,,,Zhang (Fei),Director (Non-Executive),,2023-04-13,D,1024.HK
+0,100000,375760.0,,Acquisition at price 3.76 per share.,Hui (Ching Lau),Chief Executive Officer,,2023-08-25,D,1044.HK
+1,200000,875660.0,,Acquisition at price 4.38 per share.,Hui (Ching Lau),Chief Executive Officer,,2023-06-02,D,1044.HK
+2,200000,849180.0,,Acquisition at price 4.25 per share.,Hui (Ching Lau),Chief Executive Officer,,2023-06-01,D,1044.HK
+3,309600,1410258.0,,Acquisition at price 4.56 per share.,Sze (Man Bok),Chairman of the Board,,2023-05-23,D,1044.HK
+4,100000,461030.0,,Acquisition at price 4.61 per share.,Hui (Ching Lau),Chief Executive Officer,,2023-05-18,D,1044.HK
+5,100000,439830.0,,Acquisition at price 4.40 per share.,Hui (Ching Lau),Chief Executive Officer,,2023-05-09,D,1044.HK
+6,200000,882580.0,,Acquisition at price 4.41 per share.,Hui (Ching Lau),Chief Executive Officer,,2023-05-05,D,1044.HK
+7,100000,436120.0,,Acquisition at price 4.36 per share.,Hui (Ching Lau),Chief Executive Officer,,2023-05-03,D,1044.HK
+8,200000,887540.0,,Acquisition at price 4.44 per share.,Hui (Ching Lau),Chief Executive Officer,,2023-05-02,D,1044.HK
+0,1000000,617000.0,,Acquisition at price 0.62 per share.,Cai (Dong Chen),Chairman of the Board,,2024-12-13,D,1093.HK
+1,484000,314938.0,,Acquisition at price 0.65 per share.,Cai (Dong Chen),Chairman of the Board,,2024-11-27,D,1093.HK
+2,400000,261080.0,,Acquisition at price 0.65 per share.,Cai (Dong Chen),Chairman of the Board,,2024-11-26,D,1093.HK
+3,1000000,653000.0,,Acquisition at price 0.65 per share.,Cai (Dong Chen),Chairman of the Board,,2024-11-25,D,1093.HK
+4,1000000,661600.0,,Acquisition at price 0.66 per share.,Cai (Dong Chen),Chairman of the Board,,2024-11-22,D,1093.HK
+5,200000,133880.0,,Acquisition at price 0.67 per share.,Cai (Dong Chen),Chairman of the Board,,2024-11-21,D,1093.HK
+6,400000,263360.0,,Acquisition at price 0.66 per share.,Cai (Dong Chen),Chairman of the Board,,2024-11-19,D,1093.HK
+7,1000000,591500.0,,Acquisition at price 0.59 per share.,Cai (Dong Chen),Chairman of the Board,,2024-09-09,D,1093.HK
+8,1700000,1048390.0,,Acquisition at price 0.62 per share.,Cai (Dong Chen),Chairman of the Board,,2024-08-29,D,1093.HK
+9,200000,121820.0,,Acquisition at price 0.61 per share.,Jiang (Hao),Director (Executive),,2024-08-29,D,1093.HK
+10,1000000,607000.0,,Acquisition at price 0.61 per share.,Cai (Dong Chen),Chairman of the Board,,2024-08-28,D,1093.HK
+11,800000,490880.0,,Acquisition at price 0.61 per share.,Cai (Dong Chen),Chairman of the Board,,2024-08-26,D,1093.HK
+12,1200000,730080.0,,Acquisition at price 0.61 per share.,Cai (Dong Chen),Chairman of the Board,,2024-08-23,D,1093.HK
+13,1378000,862214.0,,Acquisition at price 0.63 per share.,Cai (Dong Chen),Chairman of the Board,,2024-08-22,D,1093.HK
+14,1000000,627500.0,,Acquisition at price 0.63 per share.,Zhang (Cuilong),Chief Executive Officer,,2024-08-22,D,1093.HK
+15,9000000,6866100.0,,Conversion at price 0.76 per share.,Cai (Dong Chen),Chairman of the Board,,2024-04-11,D,1093.HK
+16,300000,228870.0,,Conversion at price 0.76 per share.,Chak (Kin Man),Director (Executive),,2024-04-11,D,1093.HK
+17,200000,152580.0,,Conversion at price 0.76 per share.,Jiang (Hao),Director (Executive),,2024-04-11,D,1093.HK
+18,1500000,1144350.0,,Conversion at price 0.76 per share.,Li (Chunlei),Director (Executive),,2024-04-11,D,1093.HK
+19,1500000,1144350.0,,Conversion at price 0.76 per share.,Pan (Weidong),Director (Executive),,2024-04-11,D,1093.HK
+20,1500000,1144350.0,,Conversion at price 0.76 per share.,Wang (Huaiyu),Director (Executive),,2024-04-11,D,1093.HK
+21,1500000,1144350.0,,Conversion at price 0.76 per share.,Wang (Zhenguo),Director (Executive),,2024-04-11,D,1093.HK
+22,4000000,3051600.0,,Conversion at price 0.76 per share.,Zhang (Cuilong),Chief Executive Officer,,2024-04-11,D,1093.HK
+0,13800000,6607440.0,,Sale at price 0.48 per share.,Tse (Ping),Director (Executive),,2024-09-30,D,1177.HK
+1,2000000,660800.0,,Acquisition at price 0.33 per share.,Tse (Theresa Y Y),Chairman of the Board,,2024-04-23,D,1177.HK
+2,5000000,1483500.0,,Acquisition at price 0.30 per share.,Tse (Eric S Y),Chief Executive Officer,,2024-04-19,D,1177.HK
+3,2500000,741250.0,,Acquisition at price 0.30 per share.,Tse (Theresa Y Y),Chairman of the Board,,2024-04-19,D,1177.HK
+4,14301117,,,,Tse (Hsin Stephen),Director (Executive),,2024-04-17,D,1177.HK
+5,14301117,,,,Tse (Ping),Director (Executive),,2024-04-17,D,1177.HK
+6,2081643374,,,,Cheng (Cheung Ling),Director (Executive),,2024-04-08,D,1177.HK
+7,197611387,,,,Tse (Hsin Stephen),Director (Executive),,2024-04-08,D,1177.HK
+8,5000000,2200500.0,,Acquisition at price 0.44 per share.,Tse (Ping),Director (Executive),,2023-07-06,D,1177.HK
+9,7000000,3133200.0,,Acquisition at price 0.45 per share.,Tse (Ping),Director (Executive),,2023-07-05,D,1177.HK
+10,10000000,4539000.0,,Acquisition at price 0.45 per share.,Tse (Ping),Director (Executive),,2023-07-04,D,1177.HK
+11,5000000,2202000.0,,Acquisition at price 0.44 per share.,Tse (Ping),Director (Executive),,2023-07-03,D,1177.HK
+12,10000000,4335000.0,,Acquisition at price 0.43 per share.,Tse (Ping),Director (Executive),,2023-06-30,D,1177.HK
+13,1500000,650700.0,,Acquisition at price 0.43 per share.,Tse (Theresa Y Y),Chairman of the Board,,2023-06-30,D,1177.HK
+0,122084,,,,Lin (Bin),Director (Executive),,2025-03-06,D,1810.HK
+1,30578,,,,Lin (Bin),Director (Executive),,2024-11-12,D,1810.HK
+2,1972010,,,,Lin (Bin),Director (Executive),,2024-08-15,D,1810.HK
+3,3334000,7704540.0,,Sale at price 2.31 per share.,Lin (Bin),Director (Executive),,2024-06-06,D,1810.HK
+4,3333000,7595573.0,,Sale at price 2.28 per share.,Lin (Bin),Director (Executive),,2024-06-05,D,1810.HK
+5,3333000,7580241.0,,Sale at price 2.27 per share.,Lin (Bin),Director (Executive),,2024-06-04,D,1810.HK
+6,2919485,,,,Lin (Bin),Director (Executive),,2024-03-14,D,1810.HK
+7,975476,,,,Lin (Bin),Director (Executive),,2023-11-15,D,1810.HK
+8,900656,,,,Lin (Bin),Director (Executive),,2023-08-21,D,1810.HK
+0,7812651,,,,Craps (Jan Eli B.),Chief Executive Officer,,2025-03-25,D,1876.HK
+1,1170035,,,,Craps (Jan Eli B.),Chief Executive Officer,,2025-03-01,D,1876.HK
+2,199476,,,,Craps (Jan Eli B.),Chief Executive Officer,,2024-12-13,D,1876.HK
+3,180612,,,,Craps (Jan Eli B.),Chief Executive Officer,,2023-12-14,D,1876.HK
+0,60000,51630.0,,Acquisition at price 0.86 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2025-01-17,D,1929.HK
+1,149800,127330.0,,Acquisition at price 0.85 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2025-01-14,D,1929.HK
+2,1240000,1047056.0,,Acquisition at price 0.84 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2025-01-13,D,1929.HK
+3,100000,83690.0,,Acquisition at price 0.84 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-12-30,D,1929.HK
+4,850000,716210.0,,Acquisition at price 0.84 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-08-21,D,1929.HK
+5,10000,8602.0,,Acquisition at price 0.86 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-08-20,D,1929.HK
+6,96400,80359.0,,Acquisition at price 0.83 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-08-15,D,1929.HK
+7,149200,124447.0,,Acquisition at price 0.83 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-08-13,D,1929.HK
+8,41600,34627.0,,Acquisition at price 0.83 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-08-08,D,1929.HK
+9,109800,92846.0,,Acquisition at price 0.85 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-08-05,D,1929.HK
+10,385200,334006.0,,Acquisition at price 0.87 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-08-02,D,1929.HK
+11,1990000,1749608.0,,Acquisition at price 0.88 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-08-01,D,1929.HK
+12,554600,491153.0,,Acquisition at price 0.89 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-07-31,D,1929.HK
+13,3805000,3481955.0,,Acquisition at price 0.92 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-07-30,D,1929.HK
+14,500000,467150.0,,Acquisition at price 0.93 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-07-29,D,1929.HK
+15,1508200,1406848.0,,Acquisition at price 0.93 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-07-26,D,1929.HK
+16,1568200,1721413.0,,Acquisition at price 1.10 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-06-24,D,1929.HK
+17,2126200,2418552.0,,Acquisition at price 1.14 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-06-21,D,1929.HK
+18,3991800,4571409.0,,Acquisition at price 1.15 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-06-20,D,1929.HK
+19,10000,11374.0,,Acquisition at price 1.14 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-06-19,D,1929.HK
+20,2253800,2539807.0,,Acquisition at price 1.13 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-06-18,D,1929.HK
+21,50000,55695.0,,Acquisition at price 1.11 per share.,Cheng (Kar Shun Henry),Chairman of the Board,,2024-06-17,D,1929.HK
+0,1500000,19711800.0,,Sale at price 13.14 per share.,Wang (Xing),Director (Non-Executive),,2025-03-21,D,2015.HK
+1,2000000,27583800.0,,Sale at price 13.79 per share.,Wang (Xing),Director (Non-Executive),,2025-03-20,D,2015.HK
+2,1500000,21077850.0,,Sale at price 14.05 per share.,Wang (Xing),Director (Non-Executive),,2025-03-19,D,2015.HK
+3,1500000,21425850.0,,Sale at price 14.28 per share.,Wang (Xing),Director (Non-Executive),,2025-03-18,D,2015.HK
+4,400000,4635720.0,,Sale at price 11.59 per share.,Li (Tie James),Chief Financial Officer,,2024-12-18,D,2015.HK
+5,96712,1120495.0,,Sale at price 11.59 per share.,Ma (Donghui),Director (Executive),,2024-12-18,D,2015.HK
+6,400000,,,,Li (Tie James),Chief Financial Officer,,2024-12-15,D,2015.HK
+7,200000,,,,Ma (Donghui),Director (Executive),,2024-12-15,D,2015.HK
+8,1798400,28015115.0,,Sale at price 15.58 per share.,Wang (Xing),Director (Non-Executive),,2024-03-28,D,2015.HK
+9,1413900,21428361.0,,Sale at price 15.16 per share.,Wang (Xing),Director (Non-Executive),,2024-03-27,D,2015.HK
+10,950000,14834155.0,,Sale at price 15.61 per share.,Wang (Xing),Director (Non-Executive),,2024-03-26,D,2015.HK
+11,400000,,,,Li (Tie James),Chief Financial Officer,,2023-12-15,D,2015.HK
+12,400000,7106120.0,,Sale at price 17.77 per share.,Li (Tie James),Chief Financial Officer,,2023-12-15,D,2015.HK
+13,200000,,,,Ma (Donghui),Director (Executive),,2023-12-15,D,2015.HK
+14,98094,1738107.0,,Sale at price 17.72 per share.,Ma (Donghui),Director (Executive),,2023-12-15,D,2015.HK
+15,865100,17743201.0,,Sale at price 20.51 per share.,Wang (Xing),Director (Non-Executive),,2023-09-15,D,2015.HK
+16,700600,14246841.0,,Sale at price 20.34 per share.,Wang (Xing),Director (Non-Executive),,2023-09-14,D,2015.HK
+17,139600,2836155.0,,Sale at price 20.32 per share.,Wang (Xing),Director (Non-Executive),,2023-09-13,D,2015.HK
+18,242600,4892465.0,,Sale at price 20.17 per share.,Wang (Xing),Director (Non-Executive),,2023-09-12,D,2015.HK
+0,35524,416167.0,,Sale at price 11.72 per share.,Bi (Mingwei CPA),Chief Financial Officer,,2024-05-06,D,2020.HK
+1,84000,,,,Bi (Mingwei CPA),Chief Financial Officer,,2024-05-01,D,2020.HK
+2,280000,,,,Lai (Shixian),Co-Chief Executive Officer,,2024-05-01,D,2020.HK
+3,150000,1291620.0,,Acquisition at price 8.61 per share.,Zheng (Jie),Director (Executive),,2024-01-24,D,2020.HK
+4,20000,,,,Yiu (Kin Wah),Independent Non-Executive Director,,2024-01-12,D,2020.HK
+5,13946,165723.0,,Sale at price 11.88 per share.,Bi (Mingwei CPA),Chief Financial Officer,,2023-05-04,D,2020.HK
+6,36000,,,,Bi (Mingwei CPA),Chief Financial Officer,,2023-05-01,D,2020.HK
+7,120000,,,,Lai (Shixian),Co-Chief Executive Officer,,2023-05-01,D,2020.HK
+0,91490,172778.0,,Sale at price 1.89 per share.,Zhou (Weichang),Chief Technology Officer,,2024-11-20,D,2269.HK
+1,297258,561371.0,,Sale at price 1.89 per share.,Chen (Zhisheng),Chief Executive Officer,,2024-11-20,D,2269.HK
+2,235759,,,,Chen (Zhisheng),Chief Executive Officer,,2024-11-12,D,2269.HK
+3,70727,,,,Zhou (Weichang),Chief Technology Officer,,2024-11-12,D,2269.HK
+4,1445000,2141923.0,,Acquisition at price 1.48 per share.,Li (Ge),Chairman of the Board,,2024-06-24,D,2269.HK
+5,1000000,1490700.0,,Acquisition at price 1.49 per share.,Li (Ge),Chairman of the Board,,2024-06-21,D,2269.HK
+6,200000,305380.0,,Acquisition at price 1.53 per share.,Li (Ge),Chairman of the Board,,2024-06-20,D,2269.HK
+7,52735,,,,Zhou (Weichang),Chief Technology Officer,,2024-06-17,D,2269.HK
+8,189040,,,,Chen (Zhisheng),Chief Executive Officer,,2024-06-17,D,2269.HK
+9,580209,850818.0,,Sale at price 1.47 per share.,Chen (Zhisheng),Chief Executive Officer,,2024-06-12,D,2269.HK
+10,95919,140655.0,,Sale at price 1.47 per share.,Zhou (Weichang),Chief Technology Officer,,2024-06-12,D,2269.HK
+11,90056,,,,Zhou (Weichang),Chief Technology Officer,,2024-06-11,D,2269.HK
+12,264866,,,,Chen (Zhisheng),Chief Executive Officer,,2024-06-11,D,2269.HK
+13,1183800,,,,Chen (Zhisheng),Chief Executive Officer,,2024-06-05,D,2269.HK
+14,189408,,,,Zhou (Weichang),Chief Technology Officer,,2024-06-05,D,2269.HK
+15,831000,1473778.0,,Acquisition at price 1.77 per share.,Li (Ge),Chairman of the Board,,2024-03-28,D,2269.HK
+16,5235500,19228420.0,,Acquisition at price 3.67 per share.,Li (Ge),Chairman of the Board,,2024-01-24,D,2269.HK
+17,25700,99695.0,,Acquisition at price 3.88 per share.,Tai (Jackson Peter),Independent Non-Executive Director,,2024-01-17,D,2269.HK
+18,100000,387370.0,,Acquisition at price 3.87 per share.,Hitchner III (Kenneth Walton),Independent Non-Executive Director,,2024-01-17,D,2269.HK
+19,120118,775529.0,,Sale at price 6.46 per share.,Chen (Zhisheng),Chief Executive Officer,,2023-11-17,D,2269.HK
+20,36041,232695.0,,Sale at price 6.46 per share.,Zhou (Weichang),Chief Technology Officer,,2023-11-17,D,2269.HK
+21,70727,,,,Zhou (Weichang),Chief Technology Officer,,2023-11-13,D,2269.HK
+22,1500000,9766800.0,,Sale at price 6.51 per share.,Zhou (Weichang),Chief Technology Officer,,2023-11-10,D,2269.HK
+23,500000,3157100.0,,Sale at price 6.31 per share.,Zhou (Weichang),Chief Technology Officer,,2023-11-09,D,2269.HK
+24,1500000,248100.0,,Conversion at price 0.17 per share.,Zhou (Weichang),Chief Technology Officer,,2023-11-08,D,2269.HK
+25,500000,82700.0,,Conversion at price 0.17 per share.,Zhou (Weichang),Chief Technology Officer,,2023-11-07,D,2269.HK
+26,33214,162343.0,,Sale at price 4.89 per share.,Zhou (Weichang),Chief Technology Officer,,2023-07-13,D,2269.HK
+27,119035,581819.0,,Sale at price 4.89 per share.,Chen (Zhisheng),Chief Executive Officer,,2023-07-13,D,2269.HK
+28,189040,,,,Chen (Zhisheng),Chief Executive Officer,,2023-06-16,D,2269.HK
+29,12,68.0,,Sale at price 5.70 per share.,Hitchner III (Kenneth Walton),Independent Non-Executive Director,,2023-06-16,D,2269.HK
+30,12,68.0,,Sale at price 5.70 per share.,Keller (William Robert),Independent Non-Executive Director,,2023-06-16,D,2269.HK
+31,52735,,,,Zhou (Weichang),Chief Technology Officer,,2023-06-16,D,2269.HK
+32,8291,,,,Hitchner III (Kenneth Walton),Independent Non-Executive Director,,2023-06-12,D,2269.HK
+33,4145,,,,Keller (William Robert),Independent Non-Executive Director,,2023-06-12,D,2269.HK
+34,292407,1658181.0,,Sale at price 5.67 per share.,Chen (Zhisheng),Chief Executive Officer,,2023-06-09,D,2269.HK
+35,42486,240929.0,,Sale at price 5.67 per share.,Zhou (Weichang),Chief Technology Officer,,2023-06-09,D,2269.HK
+36,94704,,,,Zhou (Weichang),Chief Technology Officer,,2023-06-05,D,2269.HK
+37,591900,,,,Chen (Zhisheng),Chief Executive Officer,,2023-06-05,D,2269.HK
+0,126410,,,,Gao (Fei),Chief Executive Officer,,2025-04-01,D,2319.HK
+1,438053,,,,Gao (Fei),Chief Executive Officer,,2024-05-13,D,2319.HK
+2,1372322,,,,Lu (Minfang),Vice Chairman,,2024-05-13,D,2319.HK
+3,126410,,,,Gao (Fei),Chief Executive Officer,,2024-04-02,D,2319.HK
+4,900,,,,Zhang (Ping),Director (Executive),,2023-11-22,D,2319.HK
+5,900,2880.0,,Sale at price 3.20 per share.,Zhang (Ping),Director (Executive),,2023-11-22,D,2319.HK
+6,1857000,,,,Zhang (Ping),Director (Executive),,2023-11-21,D,2319.HK
+7,1857000,6145555.0,,Sale at price 3.31 per share.,Zhang (Ping),Director (Executive),,2023-11-21,D,2319.HK
+8,50000,,,,Lu (Minfang),Chief Executive Officer,,2023-11-06,D,2319.HK
+9,70000,246134.0,,Sale at price 3.52 per share.,Lu (Minfang),Chief Executive Officer,,2023-11-06,D,2319.HK
+10,495000,1665774.0,,Sale at price 3.37 per share.,Lu (Minfang),Chief Executive Officer,,2023-11-03,D,2319.HK
+11,50000,166400.0,,Sale at price 3.33 per share.,Lu (Minfang),Chief Executive Officer,,2023-11-02,D,2319.HK
+12,10000,33233.0,,Sale at price 3.32 per share.,Lu (Minfang),Chief Executive Officer,,2023-11-01,D,2319.HK
+13,10000,33615.0,,Sale at price 3.36 per share.,Lu (Minfang),Chief Executive Officer,,2023-10-31,D,2319.HK
+14,30000,103530.0,,Sale at price 3.45 per share.,Lu (Minfang),Chief Executive Officer,,2023-10-12,D,2319.HK
+15,5000,16602.0,,Sale at price 3.32 per share.,Lu (Minfang),Chief Executive Officer,,2023-10-05,D,2319.HK
+16,9000,32201.0,,Sale at price 3.58 per share.,Lu (Minfang),Chief Executive Officer,,2023-09-13,D,2319.HK
+17,5000,17887.0,,Sale at price 3.58 per share.,Lu (Minfang),Chief Executive Officer,,2023-09-12,D,2319.HK
+18,64360,,,,Lu (Minfang),Chief Executive Officer,,2023-05-11,D,2319.HK
+19,24805,,,,Zhang (Ping),Director (Executive),,2023-05-11,D,2319.HK
+20,690199,,,,Lu (Minfang),Chief Executive Officer,,2023-05-05,D,2319.HK
+0,8668,,,,Chan (Chung Bun Bunny),Independent Non-Executive Director,,2025-04-01,D,2331.HK
+1,8668,,,,Koo (Fook Sun Louis),Independent Non-Executive Director,,2025-04-01,D,2331.HK
+2,8668,,,,Wang (Ya Fei Jane),Independent Non-Executive Director,,2025-04-01,D,2331.HK
+3,370650,,,,Kosaka (Takeshi),Director (Executive),,2024-09-02,D,2331.HK
+4,8666,,,,Chan (Chung Bun Bunny),Independent Non-Executive Director,,2024-04-01,D,2331.HK
+5,8666,,,,Koo (Fook Sun Louis),Independent Non-Executive Director,,2024-04-01,D,2331.HK
+6,217170,,,,Li (Ning),Chief Executive Officer,,2024-04-01,D,2331.HK
+7,28965,,,,Li (Qilin),Director (Executive),,2024-04-01,D,2331.HK
+8,8666,,,,Wang (Ya Fei Jane),Independent Non-Executive Director,,2024-04-01,D,2331.HK
+9,100000,168750.0,,Conversion at price 1.69 per share.,Wang (Ya Fei Jane),Independent Non-Executive Director,,2023-12-19,D,2331.HK
+10,247100,,,,Kosaka (Takeshi),Director (Executive),,2023-09-01,D,2331.HK
+0,45222,394855.0,,Sale at price 8.73 per share.,Zhang (Zhaohui),Director (Executive),,2025-03-28,D,2359.HK
+1,76899,574989.0,,Other at price 7.48 per share.,Chen (Minzhang),Co-Chief Executive Officer,,2024-12-13,D,2359.HK
+2,47462,354882.0,,Other at price 7.48 per share.,Hu (Edward),Director (Executive),,2024-12-13,D,2359.HK
+3,3075,22992.0,,Other at price 7.48 per share.,Shi (Ming),Chief Financial Officer,,2024-12-13,D,2359.HK
+4,50391,376783.0,,Other at price 7.48 per share.,Yang (Steve Qing),Co-Chief Executive Officer,,2024-12-13,D,2359.HK
+5,10647,80090.0,,Other at price 7.52 per share.,Chen (Minzhang),Co-Chief Executive Officer,,2024-12-12,D,2359.HK
+6,15967,120110.0,,Other at price 7.52 per share.,Hu (Edward),Director (Executive),,2024-12-12,D,2359.HK
+7,15967,120110.0,,Other at price 7.52 per share.,Yang (Steve Qing),Co-Chief Executive Officer,,2024-12-12,D,2359.HK
+8,24926,146534.0,,Other at price 5.88 per share.,Chen (Minzhang),Co-Chief Executive Officer,,2024-12-03,D,2359.HK
+9,17640,103702.0,,Other at price 5.88 per share.,Hu (Edward),Director (Executive),,2024-12-03,D,2359.HK
+10,18855,110844.0,,Conversion at price 5.88 per share.,Yang (Steve Qing),Co-Chief Executive Officer,,2024-12-03,D,2359.HK
+11,87546,,,,Chen (Minzhang),Co-Chief Executive Officer,,2024-12-02,D,2359.HK
+12,63429,,,,Hu (Edward),Director (Executive),,2024-12-02,D,2359.HK
+13,131856,,,,Li (Ge),Chief Executive Officer,,2024-12-02,D,2359.HK
+14,11747,,,,Shi (Ming),Chief Financial Officer,,2024-12-02,D,2359.HK
+15,66358,,,,Yang (Steve Qing),Co-Chief Executive Officer,,2024-12-02,D,2359.HK
+16,32078,,,,Zhang (Zhaohui),Director (Executive),,2024-12-02,D,2359.HK
+17,56399,325089.0,,Sale at price 5.76 per share.,Yang (Steve Qing),Co-Chief Executive Officer,,2024-11-27,D,2359.HK
+18,24926,,,,Chen (Minzhang),Co-Chief Executive Officer,,2024-11-25,D,2359.HK
+19,17640,,,,Hu (Edward),Director (Executive),,2024-11-25,D,2359.HK
+20,39432,,,,Li (Ge),Chief Executive Officer,,2024-11-25,D,2359.HK
+21,18855,,,,Yang (Steve Qing),Co-Chief Executive Officer,,2024-11-25,D,2359.HK
+22,13144,,,,Zhang (Zhaohui),Director (Executive),,2024-11-25,D,2359.HK
+23,81069,520284.0,,Sale at price 6.42 per share.,Hu (Edward),Director (Executive),,2024-11-21,D,2359.HK
+24,598,,,,Shi (Ming),Chief Financial Officer,,2024-04-18,D,2359.HK
+25,4891,,,,Shi (Ming),Chief Financial Officer,,2024-04-01,D,2359.HK
+26,76899,790713.0,,Other at price 10.28 per share.,Chen (Minzhang),Vice President,,2023-12-18,D,2359.HK
+27,5067,52101.0,,Other at price 10.28 per share.,Shi (Ming),Chief Financial Officer,,2023-12-18,D,2359.HK
+28,27139,279056.0,,Other at price 10.28 per share.,Yang (Steve Qing),Co-Chief Executive Officer,,2023-12-18,D,2359.HK
+29,24980,256856.0,,Other at price 10.28 per share.,Zhang (Zhaohui),Director (Executive),,2023-12-18,D,2359.HK
+30,10644,109416.0,,Other at price 10.28 per share.,Chen (Minzhang),Vice President,,2023-12-13,D,2359.HK
+31,15967,164134.0,,Other at price 10.28 per share.,Hu (Edward),Director (Executive),,2023-12-13,D,2359.HK
+32,8477,87140.0,,Other at price 10.28 per share.,Yang (Steve Qing),Co-Chief Executive Officer,,2023-12-13,D,2359.HK
+33,7096,72944.0,,Other at price 10.28 per share.,Zhang (Zhaohui),Director (Executive),,2023-12-13,D,2359.HK
+34,3137,32549.0,,Other at price 10.38 per share.,Hu (Edward),Director (Executive),,2023-12-11,D,2359.HK
+35,17445,180670.0,,Sale at price 10.36 per share.,Zhang (Zhaohui),Director (Executive),,2023-12-07,D,2359.HK
+36,35570,417997.0,,Other at price 11.75 per share.,Chen (Minzhang),Vice President,,2023-12-05,D,2359.HK
+37,87543,,,,Chen (Minzhang),Vice President,,2023-12-04,D,2359.HK
+38,24926,293331.0,,Other at price 11.77 per share.,Chen (Minzhang),Vice President,,2023-12-04,D,2359.HK
+39,66566,,,,Hu (Edward),Director (Executive),,2023-12-04,D,2359.HK
+40,19689,231702.0,,Other at price 11.77 per share.,Hu (Edward),Director (Executive),,2023-12-04,D,2359.HK
+41,131854,,,,Li (Ge),Chief Executive Officer,,2023-12-04,D,2359.HK
+42,11747,,,,Shi (Ming),Chief Financial Officer,,2023-12-04,D,2359.HK
+43,66358,,,,Yang (Steve Qing),Co-Chief Executive Officer,,2023-12-04,D,2359.HK
+44,9888,116362.0,,Other at price 11.77 per share.,Yang (Steve Qing),Co-Chief Executive Officer,,2023-12-04,D,2359.HK
+45,32076,,,,Zhang (Zhaohui),Director (Executive),,2023-12-04,D,2359.HK
+46,13144,154679.0,,Other at price 11.77 per share.,Zhang (Zhaohui),Director (Executive),,2023-12-04,D,2359.HK
+47,24926,,,,Chen (Minzhang),Vice President,,2023-11-23,D,2359.HK
+48,19689,,,,Hu (Edward),Director (Executive),,2023-11-23,D,2359.HK
+49,39432,,,,Li (Ge),Chief Executive Officer,,2023-11-23,D,2359.HK
+50,18855,,,,Yang (Steve Qing),Co-Chief Executive Officer,,2023-11-23,D,2359.HK
+51,13144,,,,Zhang (Zhaohui),Director (Executive),,2023-11-23,D,2359.HK
+52,900,9229.0,,Other at price 10.26 per share.,Shi (Ming),Chief Financial Officer,,2023-04-12,D,2359.HK
+0,2143,,,,Yang (Mun Tak Marjorie),Independent Non-Executive Director,,2025-03-31,D,3690.HK
+1,1734,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2025-03-20,D,3690.HK
+2,1734,,,,Shum (Heung Yeung),Independent Non-Executive Director,,2025-03-20,D,3690.HK
+3,1734,,,,Leng (Xuesong),Independent Non-Executive Director,,2025-03-20,D,3690.HK
+4,2143,,,,Yang (Mun Tak Marjorie),Independent Non-Executive Director,,2024-12-31,D,3690.HK
+5,3765146,,,,Mu (Rongjun),Director (Executive),,2024-12-20,D,3690.HK
+6,1734,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2024-12-20,D,3690.HK
+7,1734,,,,Shum (Heung Yeung),Independent Non-Executive Director,,2024-12-20,D,3690.HK
+8,1734,,,,Leng (Xuesong),Independent Non-Executive Director,,2024-12-20,D,3690.HK
+9,500000,,,,Mu (Rongjun),Director (Executive),,2024-09-30,D,3690.HK
+10,2000000,45466800.0,,Sale at price 22.73 per share.,Mu (Rongjun),Director (Executive),,2024-09-30,D,3690.HK
+11,2143,,,,Yang (Mun Tak Marjorie),Independent Non-Executive Director,,2024-09-30,D,3690.HK
+12,3230,62736.0,,Sale at price 19.42 per share.,Leng (Xuesong),Independent Non-Executive Director,,2024-09-26,D,3690.HK
+13,1616,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2024-09-20,D,3690.HK
+14,1616,,,,Shum (Heung Yeung),Independent Non-Executive Director,,2024-09-20,D,3690.HK
+15,13386623,,,,Mu (Rongjun),Director (Executive),,2024-08-30,D,3690.HK
+16,25500,364655.0,,Sale at price 14.30 per share.,Wang (Xing),Chief Executive Officer,,2024-08-29,D,3690.HK
+17,2143,,,,Yang (Mun Tak Marjorie),Independent Non-Executive Director,,2024-06-30,D,3690.HK
+18,1614,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2024-06-20,D,3690.HK
+19,1614,,,,Shum (Heung Yeung),Independent Non-Executive Director,,2024-06-20,D,3690.HK
+20,1614,,,,Leng (Xuesong),Independent Non-Executive Director,,2024-06-20,D,3690.HK
+21,3680072,,,,Mu (Rongjun),Director (Executive),,2024-06-17,D,3690.HK
+22,43484,644898.0,,Sale at price 14.83 per share.,Leng (Xuesong),Independent Non-Executive Chairman,,2024-06-13,D,3690.HK
+23,1000000,14065000.0,,Sale at price 14.06 per share.,Mu (Rongjun),Director (Executive),,2024-04-30,D,3690.HK
+24,1000000,14782500.0,,Sale at price 14.78 per share.,Mu (Rongjun),Director (Executive),,2024-04-26,D,3690.HK
+25,2143,,,,Yang (Mun Tak Marjorie),Independent Non-Executive Director,,2024-03-31,D,3690.HK
+26,1614,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2024-03-20,D,3690.HK
+27,1614,,,,Shum (Heung Yeung),Independent Non-Executive Director,,2024-03-20,D,3690.HK
+28,1614,,,,Leng (Xuesong),Independent Non-Executive Director,,2024-03-20,D,3690.HK
+29,4248771,,,,Mu (Rongjun),Director (Executive),,2024-02-20,D,3690.HK
+30,2143,,,,Yang (Mun Tak Marjorie),Independent Non-Executive Director,,2023-12-31,D,3690.HK
+31,1614,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2023-12-20,D,3690.HK
+32,1614,,,,Shum (Heung Yeung),Independent Non-Executive Director,,2023-12-20,D,3690.HK
+33,1614,,,,Leng (Xuesong),Independent Non-Executive Director,,2023-12-20,D,3690.HK
+34,2143,,,,Yang (Mun Tak Marjorie),Independent Non-Executive Director,,2023-09-30,D,3690.HK
+35,1000000,14207000.0,,Sale at price 14.21 per share.,Mu (Rongjun),Director (Executive),,2023-09-28,D,3690.HK
+36,1000000,14706000.0,,Sale at price 14.71 per share.,Mu (Rongjun),Director (Executive),,2023-09-27,D,3690.HK
+37,24000,360134.0,,Sale at price 15.01 per share.,Wang (Xing),Chief Executive Officer,,2023-09-26,D,3690.HK
+38,1614,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2023-09-20,D,3690.HK
+39,1614,,,,Shum (Heung Yeung),Independent Non-Executive Director,,2023-09-20,D,3690.HK
+40,1614,,,,Leng (Xuesong),Independent Non-Executive Director,,2023-09-20,D,3690.HK
+41,24586,,,,Leng (Xuesong),Independent Non-Executive Director,,2023-06-20,D,3690.HK
+42,1614,,,,Orr (Gordon Robert Halyburton),Independent Non-Executive Director,,2023-06-20,D,3690.HK
+43,1614,,,,Shum (Heung Yeung),Independent Non-Executive Director,,2023-06-20,D,3690.HK
+44,18000000,,,,Wang (Huiwen),Director (Non-Executive),,2023-05-29,D,3690.HK
+0,40800,,,,Lyu (Aifeng),Director (Executive),,2024-05-15,D,3692.HK
+1,82500,,,,Lyu (Aifeng),Director (Executive),,2024-05-15,D,3692.HK
+2,102000,,,,Lyu (Aifeng),Director (Executive),,2024-04-29,D,3692.HK
+3,206250,,,,Lyu (Aifeng),Director (Executive),,2024-04-29,D,3692.HK
+4,442000,,,,Sun (Yuan),Director (Executive),,2024-04-29,D,3692.HK
+5,396100,,,,Sun (Yuan),Director (Executive),,2024-04-29,D,3692.HK
+6,90000,,,,Lyu (Aifeng),Director (Executive),,2023-06-15,D,3692.HK
+7,400500,,,,Lyu (Aifeng),Director (Executive),,2023-04-29,D,3692.HK
+8,408100,,,,Sun (Yuan),Director (Executive),,2023-04-29,D,3692.HK
+0,104835,,,,Jin (Enlin CPA),Chief Executive Officer,,2025-04-01,D,6618.HK
+1,42276,,,,Jin (Enlin CPA),Chief Executive Officer,,2025-04-01,D,6618.HK
+2,2777,,,,Zhang (Jiyu),Independent Non-Executive Director,,2025-03-31,D,6618.HK
+3,9224,,,,Zhang (Jiyu),Independent Non-Executive Director,,2025-03-30,D,6618.HK
+4,9853,,,,Jin (Enlin CPA),Chief Executive Officer,,2025-01-01,D,6618.HK
+5,20000,79746.0,,Sale at price 3.99 per share.,Jin (Enlin CPA),Chief Executive Officer,,2024-12-12,D,6618.HK
+6,20000,79746.0,,Sale at price 3.99 per share.,Jin (Enlin CPA),Chief Executive Officer,,2024-12-11,D,6618.HK
+7,7165,,,,Chen (Xingyao),Independent Non-Executive Director,,2024-11-27,D,6618.HK
+8,7165,,,,Li (Ling),Independent Non-Executive Director,,2024-11-27,D,6618.HK
+9,8840419,,,,Liu (Qiangdong Richard),Chairman of the Board,,2024-10-15,D,6618.HK
+10,4934,,,,Jin (Enlin CPA),Chief Executive Officer,,2024-10-01,D,6618.HK
+11,8185,21966.0,,Sale at price 2.68 per share.,Jin (Enlin CPA),Chief Executive Officer,,2024-07-02,D,6618.HK
+12,20000,,,,Jin (Enlin CPA),Chief Executive Officer,,2024-07-01,D,6618.HK
+13,1916,6262.0,,Sale at price 3.27 per share.,Wu (Ying),Independent Non-Executive Director,,2024-04-08,D,6618.HK
+14,6823,,,,Wu (Ying),Independent Non-Executive Director,,2024-04-07,D,6618.HK
+15,15846,53947.0,,Sale at price 3.40 per share.,Jin (Enlin CPA),Chief Executive Officer,,2024-04-03,D,6618.HK
+16,596,2170.0,,Sale at price 3.64 per share.,Zhang (Jiyu),Independent Non-Executive Director,,2024-04-02,D,6618.HK
+17,52130,,,,Jin (Enlin CPA),Chief Executive Officer,,2024-04-01,D,6618.HK
+18,48333,,,,Jin (Enlin CPA),Chief Executive Officer,,2024-04-01,D,6618.HK
+19,2697,,,,Zhang (Jiyu),Independent Non-Executive Director,,2024-03-29,D,6618.HK
+20,9853,,,,Jin (Enlin CPA),Chief Executive Officer,,2024-01-01,D,6618.HK
+21,681,3487.0,,Sale at price 5.12 per share.,Chen (Xingyao),Independent Non-Executive Director,,2023-11-27,D,6618.HK
+22,681,3487.0,,Sale at price 5.12 per share.,Li (Ling),Independent Non-Executive Director,,2023-11-27,D,6618.HK
+23,2697,,,,Chen (Xingyao),Independent Non-Executive Director,,2023-11-26,D,6618.HK
+24,2697,,,,Li (Ling),Independent Non-Executive Director,,2023-11-26,D,6618.HK
+25,8840419,,,,Liu (Qiangdong Richard),Chairman of the Board,,2023-10-15,D,6618.HK
+26,4932,,,,Jin (Enlin CPA),Chief Executive Officer,,2023-10-01,D,6618.HK
+27,2086,13850.0,,Sale at price 6.64 per share.,Wu (Ying),Independent Non-Executive Director,,2023-05-17,D,6618.HK
+0,36627,,,,Gong (Wei),Chief Financial Officer,,2022-07-26,D,6690.HK
+1,59300,,,,Li (Huagang),Chief Executive Officer,,2022-07-26,D,6690.HK
+0,2800000,,,,Yang (June Lijuan),Chief Executive Officer,,2024-06-14,D,6862.HK
+1,2300000,,,,Yang (June Lijuan),Chief Executive Officer,,2024-06-13,D,6862.HK
+2,2800000,,,,Yang (June Lijuan),Chief Executive Officer,,2024-03-14,D,6862.HK
+0,14000000,,,,Liu (Qiangdong Richard),Chief Executive Officer,,2021-02-28,D,9618.HK
+0,99400,581748.0,,Sale at price 5.85 per share.,Xue (Lian),Director (Non-Executive),,2023-11-16,D,9633.HK
+1,1400000,8140440.0,,Sale at price 5.81 per share.,Xue (Lian),Director (Non-Executive),,2023-11-15,D,9633.HK
+2,600,3420.0,,Sale at price 5.70 per share.,Xue (Lian),Director (Non-Executive),,2023-11-08,D,9633.HK
+0,1206100,,,,Fan (Min),President,,2023-12-31,D,9961.HK
+0,676400,,,,Evans (John Michael),President,,2025-04-01,D,9988.HK
+1,10672,,,,Tsai (Chung Joseph),Chairman of the Board,,2025-04-01,D,9988.HK
+2,54128,,,,Wu (Wei),Director,,2025-04-01,D,9988.HK
+3,919744,,,Other at price 0.00 per share.,Tsai (Chung Joseph),Chairman of the Board,,2025-02-21,D,9988.HK
+4,320000,,,,Wu (Yongming),Chief Executive Officer,,2024-09-10,D,9988.HK
+5,1440000,,,,Tsai (Chung Joseph),Chairman of the Board,,2024-08-28,D,9988.HK
+6,6373336,,,,Tsai (Chung Joseph),Chairman of the Board,,2024-05-20,D,9988.HK

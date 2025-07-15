@@ -1,0 +1,837 @@
+Eects of Regional Trade Agreement to Local
+and Global Trade Purity Relationships?
+Siyu Huang1,Wensha Gou1, Hongbo Cai3
+Xiaomeng Li1* and Qinghua Chen1;2*
+1School of Systems Science, Beijing Normal University, Beijing, China
+2New England Complex Systems Institute, Cambridge, MA, USA
+3Business School, Beijing Normal University, Beijing, China
+*corresponding author: lixiaomeng@bnu.edu.cn,qinghuachen@bnu.edu.cn
+Abstract. In contrast to the rapid integration of the world economy,
+many regional trade agreements (RTAs) have also emerged since the
+early 1990s. This seeming contradiction has encouraged scholars and pol-
+icy makers to explore the true eects of RTAs, including both regional
+and global trade relationships. This paper denes synthesized trade re-
+sistance and decomposes it into natural and articial factors. Here, we
+separate the inuence of geographical distance, economic volume, overall
+increases in transportation and labor costs and use the expectation max-
+imization algorithm to optimize the parameters and quantify the trade
+purity indicator, which describes the true global trade environment and
+relationships among countries. This indicates that although global and
+most regional trade relations gradually deteriorated during the period
+2007-2017, RTAs generate trade relations among members, especially
+contributing to the relative prosperity of EU and NAFTA countries. In
+addition, we apply the network to reect the purity of the trade relations
+among countries. The eects of RTAs can be analyzed by comparing typ-
+ical trade unions and trade communities, which are presented using an
+empirical network structure. This analysis shows that the community
+structure is quite consistent with some trade unions, and the representa-
+tive RTAs constitute the core structure of international trade network.
+However, the role of trade unions has weakened, and multilateral trade
+liberalization has accelerated in the past decade. This means that more
+countries have recently tended to expand their trading partners outside
+of these unions rather than limit their trading activities to RTAs.
+Keywords: the gravity model ·international trade ·regional trade agreement
+·trade purity indicator ·EM algorithm.
+?Supported by the Chinese National Natural Science Foundation (71701018,
+61673070) and the National Social Sciences Fund, China (14BSH024).arXiv:2006.07329v1  [q-fin.GN]  29 May 2020II S. Huang et al.
+1 Introduction
+With the rapid development of international trade, as of 2020, the World Trade
+Organization (WTO) has 164 members representing 98 percent of world trade.
+However, in addition to this extensive multilateral trading system, the world has
+also witnessed unprecedented proliferation of regional trade agreements (RTAs)
+since the 1990s [8]. In 2013, 546 notications of RTAs were received by the Gen-
+eral Agreement on Taris and Trade (GATT)/WTO [19]. The role of RTAs raises
+questions among scholars and policy makers: what drives an increasing number
+of countries to join regional trade unions, and how will this aect regional trade
+patterns and globalization processes? Trade creation and trade diversion have
+been proposed to describe the eects of RTAs [14,35]. Trade creation refers to
+new trade arising between member countries due to the deduction of taris,
+while trade diversion means that imports from a low-cost outsider country are
+replaced by imports from a higher cost member country because of RTA [59].
+Some have advocated for RTAs by arguing that, unlike multilateral trade liber-
+alization, they promote\deeper" integration [9].
+Despite the controversy in the literature, previous studies usually focus on the
+inuence of RTAs on countries in given regions instead of quantitative analyses
+on a global scale. A common approach is to operationalize RTA membership as
+a categorical independent variable and analyze the inuence of trade unions on
+bilateral trade using a gravity model [57,50,29,39]. However, the roles of RTAs
+in regional and global trade dier, which can also be seen in the description
+of trade creation and trade diversion. It is not comprehensive to study them
+separately, and we need to break through the limitations of existing research.
+In fact, international trade is a complex system with global characteristics and
+regional structures, and we should analyze the eects of RTAs on both regional
+and global trade environments. It is necessary to use quantitative models and
+network methods to analyze global trade as a whole, and the inuence of other
+countries should not be ignored when discussing the trade ow between any two
+countries.
+RTAs are usually signed between neighboring countries, so their eects on
+regional trade are coupled with geographical distance and other factors. The
+innovation of this paper is to study and describe the trade purity relationship of
+countries, with some other typical factors, such as economic volume, geograph-
+ical distance, overall increases in transportation and labor costs, are separated.
+In contrast to the existing literature, which consistently increases observable
+variables to quantify trade costs [20,55,41], here, we dene synthesized trade re-
+sistance [2], decompose it into natural and articial factors, and propose a trade
+purity indicator (TPI) to describe the true trade environment and relationships
+between countries. The role of RTAs can be studied by comparing the TPI and
+its evolution within and outside a trade union. Here, we apply the expectation
+maximization (EM) algorithm to optimize the parameters and quantify the trade
+purity indicator. Compared with the exogenous parameter estimation in the ex-
+isting research on trade cost quantication [5,34,15,18], the method in this paperTitle Suppressed Due to Excessive Length III
+is more scientic and eective, and it could be extended to discuss the eects of
+RTAs on a number of countries around the world.
+Furthermore, international trade is a system that involves numerous coun-
+tries and trade relations, and complex network modeling has the advantage of
+analyzing a number of entities and complex relationships [54,60,62]. Addition-
+ally, network theory can also facilitate the examination of both local and global
+properties [63], which is consistent with the goal of our work. However, trade
+ows are a direct result of trade openness, and related studies usually apply
+trade ows to weight the network [54,50]. Since trade ows could be inuenced
+by a country's economic volume, geographical factors and articial barriers, we
+prefer trade resistance, which removes the impact of the economy, to reect the
+purity of the trade relationship between countries. In addition, communities in
+the international trade network are represented by clusters of countries where
+trade relations between countries in the same community are closer than those in
+dierent communities [50]. Therefore, comparing the members of typical trade
+unions and trade communities in the global trade network could facilitate re-
+search on the eectiveness of RTAs.
+The paper is organized as follows: Section 2 briey describes the data source
+and the gravity model with synthesized trade resistance. Here, we establish a
+maximum likelihood function to simultaneously estimate the unobserved pa-
+rameters and quantify the trade purity indicator. Section 3 presents the re-
+sults. Here, we focus on six typical RTAs: Belt and Road (BRI), European
+Union (EU), North American Free Trade Agreement (NAFTA), Organization
+of African Union (OAU), Caribbean Free Trade Area (CARIFTA), and Associ-
+ation of Southeast Asian Nations (ASEAN). We discuss the evolution of TPI at
+both the regional and global trade levels and analyze the eects of RTAs during
+the period 2007-2017. In addition, we discuss the evolution of trade communities
+based on network methods. This shows that the representative RTAs constitute
+the core structure of international trade network, but the role of trade unions
+has weakened and multilateral trade liberalization has accelerated in the past
+decade. Finally, Section 4 provides the conclusion and discussion.
+2 Data and Methods
+2.1 Data Source
+In this paper, we use trade data from the UN Comtrade Database, which includes
+198 countries/districts. Here, we choose the \Goods" type of product and use
+the annual total of all Hs commodities (Harmonized Commodity Description
+and Coding Systems). In view of dierences in time and statistical caliber, the
+ow data reported by the importer and exporter are not always the same. Here,
+we use the importer's report, with a supplement from exporters when the data
+are missing.
+For GDP (current US $), we use the World Bank national accounts data and
+OECD National Accounts data les. It is calculated without making deductionsIV S. Huang et al.
+Table 1. Data Description
+Indicator Indicator Description Data Source
+Trade Flows Country-to-Country Trade Flows, from UN
+Comtrade Database. For `Goods', `Hs' com-
+modities, annual data during the period
+2007-2017.https://comtrade.un.org/
+GDP GDP (current US $) for countries, from
+the World Bank database, with code
+NY.GDP.MKTP.CD., annual data during
+the period 2007-2017.https://data.worldbank.org/indicator/NY.
+GDP.MKTP.CD
+Distance Geographical distance between mean posi-
+tions of countries. The coordinate data are
+from Blue Marble Geographics.https://www.bluemarblegeo.com/index.php
+for depreciation of fabricated assets or for the depletion and degradation of
+natural resources. Data are in current US dollars. Dollar gures for GDP are
+converted from domestic currencies using single-year ocial exchange rates.
+There are several methods for calculating geographical distance. As some
+countries have many import and export ports, we do not choose the coordinates
+of the capital but use the mean position of the longitude and latitude to calculate
+the distance. A full description of the data sources is provided in Table 1.
+2.2 Quantifying Trade Resistance with a Gravity Model
+The gravity model is one of the most successful empirical methods in the eld of
+social science [2]. Specically, Isard and Tinbergen were pioneers in applying the
+gravity model to describe the patterns of bilateral aggregate trade ows among
+countries [36,56]. Their work spawned a vast empirical literature that appears
+to perform well at modeling trade ows and exploring the factors inuencing
+them [2,33,40], as 80%  90% of the variation in the ows could be captured by
+the tted relationship [1].
+Scholars have introduce possible explanatory variables and performed regres-
+sions with panel data to conrm whether trade growth or loss is more signi-
+cant [59,17,14,4]. However, it is impossible to include all the relevant factors,
+so the estimation of eects might be biased and inconsistent due to omitted
+variables, with the possibility of signicant over- or underestimation [50].
+In Tinbergen's gravity model, distance di;jis not limited to geographical
+distance, and it could be broadly construed to include all factors that might
+create trade resistance [56,40]. More recently, some papers have estimated syn-
+thesized trade costs or resistance from the observed pattern of production and
+trade across countries [16,48,6] and performed analyses based on quantied trade
+costs.
+Based on dened trade resistance ri;j, the improved model used in this paper
+is depicted by the following formula:
+Fi;j/(mimj)
+ri;j "ij (1)Title Suppressed Due to Excessive Length V
+wheremiandmjare the gross domestic products of countries iandj;ri;jis
+a dened composite variable; and is the parameter to be estimated with the
+expectation maximization algorithm as the latent parameter in section 2.3, "ijis
+error term. Here, if we consider ri;jto be symmetric, the mechanism described
+in equation 1 is similar to Anderson's structural gravity model [3,5] but with
+a simpler expression. Here, ri;jis representative of trade resistance, which we
+use as a composite of all the other factors that aect trade volumes other than
+countries' GDP. Equation 1 indicates that the trade amount Fi;jis proportional
+tomiandmjbut inversely proportional to the integrated eective distance
+between them, denoted ri;j.
+In contrast to the traditional gravity model, here, a country's geographical
+distancedi;jis replaced with trade resistance ri;j. The new model not only
+captures proximity or distance in terms of geographical distance but also fully
+demonstrates the true and comprehensive relationships between entities in the
+system, which is signicant for understanding the global economy, politics and
+culture [58].
+In the literature, the trade cost measure can be derived from a broader range
+of models [3], which have dierent methods and results in the parameter estima-
+tion, such as the elasticity of substitution [5], the Frechet parameter #[22], and
+the Pareto parameter [34,15,18]. With the estimated parameters and observed
+trade owFi;j,miandmj, the symmetrical trade resistance can be obtained
+from equation 1 using the least squares method.
+However, the existing exogenous parameter estimation method will introduce
+unnecessary errors and doubts about validity. However, further analysis of trade
+resistance will inevitably involve the estimation of latent variables or parame-
+ters, and here, we use the EM algorithm from machine learning. In addition,
+there are many zero values in bilateral migration data, which is also a problem
+that has long puzzled researchers [37,51,28,24]. Here, we use the pseudo maxi-
+mum likelihood (PML) method to preprocess the zero value ow; for details, see
+Appendix B.
+2.3 Decomposing Trade Resistance through the Expectation
+Maximization Algorithm (EM)
+For each pair of countries iandj, trade resistance ri;jis quantied by equation 1,
+and we assume that trade resistance can be separated into two components. The
+dataR=flnr1;2;:::;lnri;j;:::gcan be divided into two categories: I is mainly
+related to natural factors such as geographical distance di;j, and II is aected
+more by articial barriers than natural factors.
+lnri;j=a+blndi;j+i;j (ri;j)2I
+i;j (ri;j)2II:(2)
+Here,a;bare constants. i;jandi;jare normally distributed random vari-
+ables with dierent means and standard deviations, i;jN(0;1) andi;j
+N(; 2). How should one estimate parameters =f; 1;2;a;bgbased on
+observed data Rand place each ln ri;jinto the appropriate category?VI S. Huang et al.
+To solve the parameter problem of two mixed distributions, we apply a com-
+monly used method, namely, the EM algorithm. In statistics, the EM algorithm
+is an iterative method to nd the maximum likelihood or maximum a posteriori
+(MAP) estimates of the parameters in statistical models, where the algorithm
+depends on unobserved latent variables [21,38,45,32].
+The EM algorithm seeks to obtain the MLE (maximum likelihood estimate)
+of the marginal likelihood by iteratively applying the expectation step (E step)
+and maximization likelihood step (M step), with t= 1;2;:::representing the
+number of iterations. The detailed process is as follows:
+1. Expectation step (E step): In stept, based on the last estimation of
+the parameters ^(t 1), calculate the expected value of the probability of
+belonging to a certain category.
+Separately calculate the probabilities of observation ln ri;jbelonging to cat-
+egory I and category II.
+p1(ri;jj^(t 1)) =1p
+21exp [lnri;j (a+blndi;j)]2
+22
+1;
+p2(ri;jj^(t 1)) =1p
+22exp [lnri;j ]2
+22
+2:(3)
+Then, normalize them as follows:
+^(t)
+i;j=p1(ri;jj^(t 1))
+p1(ri;jj^(t 1)) +p2(ri;jj^(t 1)): (4)
+The unobserved latent variables =f1;2;1;3;:::;i;j;:::g, wherei;j(0
+i;j1) represents the probability of trade resistance ln ri;jbelonging to
+category I.
+2. Maximization likelihood step (M step): Based on the ^(t)
+obtained
+from the E step, we nd the parameter estimate (t)that maximizes this
+likelihood. The likelihood function LofRoccurring is multiplied by the
+expected probability of all trade resistances as follows:
+L(R;;) =Y
+i6=jfi;jp1(ri;jj)|{z}
+Category I+ (1 i;j)p2(ri;jj)|{z}
+Category IIg:
+The optimum value of (t)based on Rand ^(t)
+can be calculated from that
+function:
+^(t)= max
+logL(R;j^(t)
+)
+= max
+X
+i6=jlogf^(t)
+i;jp1(ri;jj) + (1 ^(t)
+i;j)p2(ri;jj)g:(5)Title Suppressed Due to Excessive Length VII
+2.4 Exploring Community Evolution based on the Extracted
+Backbone Trade Network
+Here, we regard countries as the nodes, and the relationship between two nodes
+can be described by an edge. The reciprocal of trade resistance is the weight of
+the edge. Since trade resistance is symmetric for country pair ( i;j), the network
+is also symmetric. For node i, the node cluster coecient Ciis calculated by the
+equation below [31]:
+Ci=2ei
+ki(ki 1)(6)
+whereeiis the number of edges connected to adjacent nodes and kidenotes
+the number of nodes that are adjacent to node i. The cluster coecient of the
+network is the mean of the cluster coecients of all nodes.
+To make the community classication more ecient, we apply the disparity
+lter method to obtain a backbone network [52].
+ij= 1 (k 1)Zpij
+0(1 x)k 2dx<s (7)
+whereijis the probability of an edge between node iandj,kindicates
+the degree of a given node, pijis the normalized weight of the edge and sis a
+signicance level for the null hypothesis.
+After extracting the backbone network, to classify the network into several
+communities, we apply the Louvain community detection algorithm [10] and
+evaluate the result using the Q index [47].
+Q=1
+2mX
+i;j
+wi;j AiAj
+2m
+(ci;cj); (8)
+wherewijis the weight of the edge between nodes iandj,Ai=P
+jwi;jis the
+sum of the weights of the edges attached to node i,ciis the community to which
+nodeibelongs, and (ci;cj) is 1 ifci=cjand 0 otherwise. m=1
+2P
+i;jwi;jis
+the sum of the edge weights. Based on the quantied trade resistances during
+the period 2007-2017, we can construct the backbone network of global trade for
+each year and attempt to explore the community classication of the network.
+3 Results and Discussion
+3.1 Alienation of Global Trade Relationships
+1. Trade Purity Indicator for Countries. Based on the extended gravity
+model, we can quantify the international trade resistance ri;jfor 198 entities
+(Figure 1). We suppose that most trade resistance can be divided into two cat-
+egories. The rst has low expected barriers, which are mainly related to natural
+factors such as geographical distance, and the other includes countries with rel-
+atively high articial trade barriers, such as trade restrictions, border blockades,VIII S. Huang et al.
+cultural dierences and political policies. It shows that most of the trade rela-
+tions among the United States (red dot), China (green dot) and other countries
+belong to the rst category, that is, most of the trade resistances are positively
+related to geographical distance, so they are concentrated near the blue dotted
+line (Figure 1 (a,c,e)). For the United States and China, only a small number of
+bilateral trade relations are aected by more articial barriers.
+Using the EM algorithm and the dened latent parameter = [a;b;; 1;2],
+we can t the distribution of trade resistance ri;jwell and obtain the charac-
+teristics of the two categories [38]. The ts of the distribution for 2007, 2012
+and 2017 all pass the Kolmogorov-Smirnov test, and the parameters eciently
+convert to the optimal values (Figure 1 (b,d,f)), which conrms our hypothesis
+of two categories of trade relations.
+Here, the trade resistance of each pair has a probability of belonging to the
+limited trade resistance group (natural barriers, or category I). For each country
+i, we dene the trade purity indicator TPIiby summing the probability that its
+trade relation ri;jbelongs to category I as TPIi= 1=NP
+jP(zij= 1j^), where
+Nis the number of countries, zijequals 1 when the trade relations between iand
+jbelong to category I, 0 otherwise. The TPI indicator provides a quantitative
+measure of the openness of a country's trade environment.
+2. Alienation of Trade Relationships between Countries. Figure 2 (a)
+shows the evolution of trade resistance. Dierent colors represent the distribu-
+tion of trade resistance for corresponding years. With optimized parameters, in
+the decade considered, the distribution of trade resistance (the expectations of
+categories I and II) shifts to the right overall, which indicates an average increase
+in global trade resistance during the period 2007-2017.
+Considering that global trade resistance could be aected by the growth of
+transportation costs or other factors, we also analyze the trend of the trade
+purity indicator from a more rigorous perspective. The distribution of the trade
+purity indicator (Figure 2(b)) also indicates the alienation of the global trade
+network. Obviously, the mean TPI decreased in from 2007 to 2017.Title Suppressed Due to Excessive Length IX
+(a) 2007
+ (b) 2007
+(c) 2012
+ (d) 2012
+(e) 2017
+ (f) 2017
+Fig. 1. Fitting the Distribution Characteristics of Trade Resistance, based on the Hy-
+pothesis of Two Categories. (a, c, e) Gray dots show the trade resistance between
+countries around the world. (b, d, f) Gray bars express the trade resistance quantied
+from the extended gravity model; the blue dotted line is the tted results with the EM
+algorithm.X S. Huang et al.
+(a)
+ (b)
+Fig. 2. Evolution of Trade Resistance during the Period 2007-2017. (a) Distribution
+of trade resistance ln rij. (b) Distribution of the trade purity indicator (TPI) in 2007,
+2012, and 2017.
+The alienation of global trade is thought-provoking. In recent years, some
+scholars have highlighted this trend in international trade [13,46]. To protect
+trade interests, some countries seek to maintain the friendly regional trade re-
+lations by signing trade agreements and creating trade unions. Since the 1990s,
+RTAs have proliferated, including regional unions with members that are geo-
+graphically near one another (e.g., EU, NAFTA) and countries or regional blocs
+with diverse and geographically distant partners (e.g., ASEAN and BRI) [27,7].
+The impact of RTAs has always interested politicians and scholars. Can RTAs
+adapt to such an international trade environment? Why might a government
+be willing to compromise its sovereignty and sign an agreement? The answer is
+interdependence. Based on the quantied TPI, we attempt to analyze the eects
+of regional trade unions in the following sections.
+3.2 Eects of Regional Trade Agreements (RTAs)
+The policies imposed by any government could aect the wellbeing not only
+of its own citizens but also those in other countries. Trade creation and trade
+diversion are common eects of RTAs identied in the recent literature [23,49],
+and in empirical work, their mixed eects are more complex; the results are
+dicult to quantify [11,42]. This paper attempts to describe the eects of RTAs
+on both global and local trade relationships through a quantitative model and
+empirical analysis.
+1. Relatively Closer Trade Relationships between Union Members.
+Here, we analyze six typical RTAs, including those between the 28 EU countries,Title Suppressed Due to Excessive Length XI
+Table 2. Average Trade Resistance Within and Outside Trade Unions
+YearBRI EU OAU CARIFTA ASEAN NAFATWorldMember Others Member Others Member Others Member Others Member Others Member Others
+2007 36.66 39.57 33.40 37.14 38.51 40.31 33.38 40.63 32.85 38.51 33.50 36.68 39.18
+2008 38.16 41.10 34.92 38.59 40.01 41.80 34.59 41.97 34.57 39.87 35.09 38.17 40.66
+2009 37.65 40.47 34.27 38.08 39.55 41.16 34.33 41.42 33.83 39.27 34.34 37.45 40.06
+2010 39.45 42.33 36.30 40.04 41.24 42.98 36.42 43.43 35.95 41.10 36.71 39.71 41.97
+2011 40.68 43.47 37.37 41.13 42.43 44.11 37.18 44.45 37.01 42.31 37.92 40.84 43.07
+2012 41.22 43.93 37.86 41.61 42.83 44.62 37.63 44.90 37.61 42.63 38.54 41.31 43.54
+2013 41.26 44.00 37.85 41.68 43.02 44.74 37.79 45.07 37.74 42.54 38.52 41.39 43.66
+2014 41.27 43.94 37.81 41.44 43.38 44.73 37.95 45.11 37.41 42.71 38.48 41.39 43.65
+2015 41.51 44.21 36.91 42.03 44.69 45.37 39.87 45.34 36.85 42.93 37.58 42.32 44.13
+2016 40.18 42.96 36.79 40.45 42.99 43.95 38.16 44.46 36.49 41.65 37.41 40.33 42.79
+2017 41.59 44.23 37.27 41.41 43.90 45.14 38.75 45.47 39.47 43.44 37.89 40.80 43.98
+52 OAU countries, 13 CARIFTA countries, 10 ASEAN countries, 3 NAFTA
+countries and 66 BRI countries.
+First, we compare the trade resistance within and outside the six unions. In
+Table 2, the average trade resistance between member countries is lower than
+that outside the unions. This demonstrates that the member countries of a union
+generally have closer trade relations with one another.
+Fig. 3. Trade Purity Indicator Within and Outside Unions During the Period 2007-
+2017. The X-coordinate expresses the TPI inside the union, and the y-coordinate ex-
+presses the TPI outside the union.
+In addition, in Figure 3, with the x-coordinate expressing the TPI within the
+union and the y-coordinate expressing the TPI beyond the union, the size of the
+dots is proportional to its proximity to the present (TPI in 2007 has the smallestXII S. Huang et al.
+radius, and TPI in 2017 has the largest radius); the solid three spots of the same
+color indicate the TPI in 2007, 2012 and 2017. Obviously, most spots are located
+below the diagonal, which means that the relationships between union members
+are closer than those with other countries outside the union.
+Therefore, it indicates that all trade unions help to lower average trade re-
+sistances and create closer trade relations among the members compared with
+other countries.
+2. Decreasing Trend in Trade Relationships for Union Members. These
+six unions can be divided into two types. Specically, the EU and NAFTA are
+type one, and most countries in these unions are developed countries. For these
+two RTAs, the spots move vertically over time (Figure 3). The TPI inside the
+unions barely changes, but the TPI outside the unions uctuates and tended to
+increase. BRI, OAU, CARIFTA and OAU are type two, and the spots of these
+unions move towards the bottom left. In brief, by comparing the TPIs in 2007
+and 2017, except for the EU and NAFTA, the TPIs within unions all declined.
+The trade environments of the EU and NAFTA are more friendly than those in
+the other four unions.
+In Figure 6 (in the Appendix), we can more clearly see these two types
+of unions. The red labels indicate a trade decit, while blue labels indicate a
+trade surplus, and the size of spots represents the net trade ow (exports minus
+imports). The EU and NAFTA (Figure 6(a)(e)) have fewer member countries,
+and have higher economic development and surplus trade ows. Therefore, the
+dots are highly concentrated. Other unions (BRI, OAU, CARIFTA and ASEAN
+(Figure 6(b)(c)(d)(f)) are more uneven, as the dots distributed from low TPI to
+high TPI, and some member countries have trade surplus, while the others have
+a trade decit. In addition, this indicates that the countries with surplus trade
+ows (blue label) have a higher TPI both inside and outside their unions.
+3.3 Comparison of Trade Unions and Trade Communities
+Trade unions are formed through agreements signed by countries. With the de-
+velopment of globalization, it is worth further exploring whether they can reect
+real trade anity. As mentioned in section 2.4, we extract the backbone of the
+global trade network based on quantied trade resistance and classify it into
+several communities. Trade communities are obtained from the analysis of the
+network structure, which can objectively describe the trade relationships be-
+tween countries.
+1. Communities in the Global Trade Network. In Figure 4, the nodes
+that share the same color are assigned to the same community. The modularity
+of classication is Q= 0:780 in 2007 and Q= 0:769 in 2017, which means that
+the classication is credible. There were some structural changes between 2007
+and 2017.Title Suppressed Due to Excessive Length XIII
+(a) 2007
+(b) 2017
+Fig. 4. Communities in the Global Trade Network in 2007 (a) and 2017 (b).
+First, in 2007, the communities show signicant regionality. The map (Figure
+4 (a)) shows that countries on the same continent are more likely to be clustered
+in the same community, conrming that geographical characteristics play an im-
+portant role in forming trade patterns. For most members, the six trade unions
+are signed among regional countries, and based on their relatively close trade re-
+lations, it is not dicult to understand that most members of RTAs are clustered
+in the same community. In 2017, the distribution of community members was
+more divergent. With the development of globalization, trade between countries
+is no longer restricted by geographical or transportation factors.
+Second, from the empirical results, over these ten years, the network density
+decreased, which means that countries in the global trade network are connected
+more loosely (the cluster coecient changed from 0.1370 to 0.1006).XIV S. Huang et al.
+There is another interesting phenomenon. Some countries are on the same
+continent and belong to the same RTA but are more closely related to coun-
+tries in other unions than the members of their RTAs. Most African countries
+have multiple RTA memberships [30], and the continent's east and west coasts
+belong to dierent marine routes in the global marine transport network [61].
+Therefore, it is easy to understand why eastern and western Africa are clus-
+tered into dierent communities. France, Spain, Portugal, and Belgium are EU
+countries, but they are classied into the community where most members are
+African countries. This shows that they have closer trade relations with African
+countries than with other EU members, which may be due to language, culture,
+colonial inuence and their trade structures.
+Here, we apply the external-internal index (E-I Index) and compare regional
+trade cohesion and global trade cohesion as follows:
+E-I index (degree )= EK IK
+EK+IK
+E-I index (weight )= EW IW
+EW +IW(9)
+External edges connect nodes from dierent communities, while internal
+edges connect two nodes belonging to the same community. EK andIKare
+the sum of external and internal degrees for all nodes; EW andIWare the
+sum of external and internal weights for all nodes. Based on the results of the
+backbone network in 2007 and 2017, the E-I index (degree) dropped from 0.2711
+to 0.1000, and the E-I index (weight) increased from -0.1019 to 0.0281. The re-
+lationships in the global trade network are more diversied, but trade intensity
+is concentrated in local communities.
+2. Correlation and Evolution of Unions and Communities. We have
+identied the trade unions resulting from negotiations between countries, and
+the trade communities clustered from the empirical data. What is the correlation
+between them? Do the members of trade unions truly have closer trade relations?
+Which trade unions have no obvious eect on restraining and helping member
+countries? To answer these questions, we measure the correlation coecient be-
+tween the members of trade unions and trade communities. Figure 5 shows the
+matrix of the Jaccard similarity coecient of six trade unions and ten typical
+communities. `Others' indicates countries that do not belong to the six unions.
+Green color means a greater correlation and a higher commonality of members
+between trade unions and communities. In contrast, yellow color means that the
+members of the union and community are basically dierent.
+In general, the similarity matrices of 2007 and 2017 have similar structures.
+Each trade union has only one or two grids with a great deal of green, which
+indicates that some trade unions and communities have high consistency in mem-
+bership. Several very green grids are shown in Figure 5 (a), which presents the
+overlap of ASEAN and community 6, BRI and community 0, CARIFTA and
+community 4, OAU and community 1, etc. The EU and NAFTA are relativelyTitle Suppressed Due to Excessive Length XV
+(a) 2007
+(b) 2017
+Fig. 5. The Similarity Matrix between Trade Unions and Trade Communities in 2007
+(a) and 2017 (b). `Num' means the number of members in the corresponding trade
+union or community.XVI S. Huang et al.
+`free' trade unions, and their members are not limited to one or two commu-
+nities, which overlap with several separate communities. In addition, in 2007,
+the `Other' countries that do not belong to six trade unions are also relatively
+concentrated in three communities, with a certain aggregation, and it is quite
+dierent from the results from 2017.
+The similarity was higher in 2007; that is, the trade unions were more simi-
+lar to the actual trading clustering result. In 2017, the role of the trade unions
+weakened. For most trade unions, the maximum matching of members to com-
+munities is decreasing. Here, the EU and NAFTA remain exceptions, having
+relatively higher similarity with communities 1 and 8. This might be due to
+their mature trading background. In addition, the TPIs of the EU and NAFTA
+remained stable, while the TPIs of other trade unions decreased (Figure 3). TPI
+indicates a trade-friendly relationship with other countries, while communities
+also reect the dierent trade relations between countries inside and outside the
+community. Therefore, it is reasonable and scientic to conclude that EU and
+NAFTA have particularities in both results. Compared with 2007, the commu-
+nity structure of \Other" countries has become more decentralized.
+In short, RTAs appear to have an impact that strengthened the formation
+of true trade relations [50]. Based on the similarity matrix, each trade union is
+mainly concentrated in one or two communities. However, in 2017, this kind of
+consistency clearly weakened, and multilateral trade liberalization has acceler-
+ated over the past decade.
+4 Conclusion and Discussion
+The innovation of this paper is to study and describe the trade purity relation-
+ships between countries, considering some other typical factors, such as economic
+volume, geographical distance, overall increased transportation and labor costs,
+are separated. In addition, this paper does not use the exogenous parameter esti-
+mation method, and we dene latent parameters and use the likelihood function
+and EM algorithm to quantify and analyze the trade purity indicator more sci-
+entically and eectively. In brief, the extended model prompts the development
+of the gravity model in theoretical research on international trade.
+In the empirical analysis, some unobserved characteristics of the trade re-
+lationships can simultaneously be dened and optimized, and the analysis uses
+a trade purity indicator to describe the trade environments and positions of
+countries in both regional and global trade relationships.
+With the data from the UN Comtrade Database, we quantify the interna-
+tional trade resistance of 198 countries/districts. This analysis shows that the
+trade relationships of the 198 entities can be divided into two categories. The
+trade resistance of countries in category I has an approximate log-linear rela-
+tion with geographical distance, and these countries have a relatively open and
+friendly trade environment, where the main trade barriers are natural factors.
+The countries in category II have higher articial trade barriers, and countries
+with poor trading environments frequently fall into category II. Here, we obtainTitle Suppressed Due to Excessive Length XVII
+well tted results using the EM algorithm from machine learning. All latent vari-
+ables converge rapidly to optimal points, which validates the extended gravity
+model proposed in this paper.
+In addition, this paper denes and identies a trade purity indicator for dif-
+ferent RTA countries during the period 2007-2017. It can describe the true trade
+environment and relationships. Countries with higher indicators have friendly
+trade environments and obtain large trade ows, such as the United States,
+China, Japan, Korea, South Africa, Singapore, Australia, and Malaysia. For
+these countries, most trade partnerships are mainly related to natural factors
+such as geographical distance, and they have no obvious trade barriers. The
+analysis of the indicator and its evolution could help to research the characteris-
+tics and trends of international trade. This indicates that although the global and
+most regional trade relations gradually deteriorated over the period 2007-2017,
+the RTAs bring closer trade relations between members, especially contributing
+to the relative prosperity of the EU and NAFTA.
+Finally, based on the trade resistance matrix, we build a network mapping
+the relationship of 198 countries/districts. The Louvain community detection
+method identies several communities in the global trade network. Here, we
+analyze the eects of RTAs by comparing the members of trade unions and
+communities. The results show that the representative RTAs constitute the core
+structure of international trade network, but the role of trade unions has weak-
+ened and multilateral trade liberalization has accelerated in the past decade.
+This means that more countries have recently tended to expand their trading
+partners outside their unions rather than limit their trading activities to their
+RTAs.XVIII S. Huang et al.
+Conicts of Interest
+The authors declare no conict of interest including any nancial, personal or
+other relationships with other people or organizations.
+Funding Statement
+This work was supported by the Chinese National Natural Science Foundation
+(71701018, 61673070), the National Social Sciences Fund, China (14BSH024),
+and the Beijing Normal University Cross-Discipline Project.
+Data Availability statement
+The empirical data used in this paper could be downloaded from sources listed
+in Table 1. Or please contact with Dr. Xiaomeng Li (lixiaomeng@bnu.edu.cn) to
+request the data.
+Acknowledgement
+We appreciate comments and helpful suggestions from Prof. Zengru Di, Hong-
+gang Li, Handong Li and Jiang Zhang.Title Suppressed Due to Excessive Length XIX
+References
+1. Anderson, J.E.: The gravity model. Annu. Rev. Econ. 3(1), 133{160 (2011)
+2. Anderson, J.E., Yotov, Y.V.: The changing incidence of geography. American Eco-
+nomic Review 100(5), 2157{2186 (2010)
+3. Anderson, S.P., Goeree, J.K., Holt, C.A.: The logit equilibrium: A perspective on
+intuitive behavioral anomalies. Southern Economic Journal 69(1), 21{47 (2002)
+4. Anderson, James E, v.W.: Gravity with gravitas : A solution to the border puzzle
+1. American Economic Review 93(1), 170{92 (2003)
+5. Anderson J E, V.W.E.: Trade costs. Journal of Economic Literature 42(3), 691{751
+(2004)
+6. Arvis J F, Duval Y, S.B.e.a.: Trade costs in the developing world: 19962010. World
+Trade Review 15(03), 451{474 (2016)
+7. Bagwell, K., Staiger, R.W.: Chapter 7 - the purpose of trade agreements. In: Hand-
+book of Commercial Policy, Handbook of Commercial Policy, vol. 1, pp. 379 { 434.
+North-Holland (2016)
+8. Bao, X., Wang, X.: The evolution and reshaping of globalization: A perspective
+based on the development of regional trade agreements. China & World Economy
+27(1), 51{71 (2019)
+9. Bhagwati, J.N., Panagariya, A.: The theory of preferential trade agreements: His-
+torical evolution and current trends. The American Economic Review 86(2), 82{87
+(1996)
+10. Blondel, V., Guillaume, J.L., Lambiotte, R., Lefebvre, E.: Fast unfolding of commu-
+nities in large networks. Journal of Statistical Mechanics Theory and Experiment
+2008 (04 2008)
+11. Bursher, M.E., Robinson, S., Thierfelder, K.: The impact of nafta on the united
+states. Journal of Economic perspectives 15(1), 125{144 (2001)
+12. Burger, M., Van Oort, F., Linders, G.J.: On the specication of the gravity model of
+trade: zeros, excess zeros and zero-inated estimation. Spatial Economic Analysis
+4(2), 167{190 (2009)
+13. Carden, A., W.: Commerce and culture in the global economy. Journal of Interdis-
+ciplinary Studies 20(1), 21{36 (2008)
+14. Carrre, C.: Revisiting the eects of regional trade agreements on trade ows with
+proper specication of the gravity model. European Economic Review 50(2), 223{
+247 (2006)
+15. Chaney, T.: Distorted gravity: The intensive and extensive margins of international
+trade. American Economic Review 98(4), 1707{1721 (2008)
+16. Chen, N., Novy, D.: Gravity, trade integration, and heterogeneity across industries.
+Journal of International Economics 85(2), 206{221 (2011)
+17. Cipollina, M., Salvatici, L.: Reciprocal trade agreements in gravity models: A meta-
+analysis. Review of International Economics 18(1), 63{80 (2010)
+18. Corcos G, Del Gatto M, M.G.e.a.: Productivity and rm selection: Quantifying
+the 'new' gains from trade. SSRN Electronic Journal 122(561), 754{798 (2011)
+19. Dai, M., Yotov, Y.V., Zylkin, T.: On the trade-diversion eects of free trade agree-
+ments. Economics Letters 122(2), 321{325 (2014)
+20. Deardor, A.V.: Local comparative advantage: Trade costs and the pattern of
+trade. Working Papers 10(1), 935 (2004)
+21. Dempster, A.P., Laird, N.M., Rubin, D.B.: Maximum likelihood from incomplete
+data via the em algorithm. Journal of the Royal Statistical Society 39(1), 1{38
+(1977)XX S. Huang et al.
+22. Eaton, J., Kortum, S.: Technology, geography, and trade. Econometrica 70(5),
+1741{1779 (2002)
+23. Emmett, Ross, B.: Jacob viner, the customs union issue. Journal of the History of
+Economic Thought 37(04), 629{630 (2015)
+24. Fatima Olanike Kareem, O.I.K.: The issues of zero values in trade data and mod-
+elling. Macro Management & Public Policies 01(01), 36{50 (2019)
+25. Fatima Olanike Kareem, O.I.K.: The issues of zero values in trade data and mod-
+elling. Macro Management & Public Policies 01(01), 36{50 (2019)
+26. Flowerdew, R., Aitkin, M.: A method of tting the gravity model based on the
+poisson distribution. Journal of regional science 22(2), 191{202 (1982)
+27. Foster, N., Poeschl, J., Stehrer, R.: The impact of preferential trade agreements
+on the margins of international trade. Economic Systems 35(1), 84{97 (2011)
+28. Francesc, O., Giovanni, P.: The eect of income and immigration policies on inter-
+national migration. Migration Studies 1(1), 1 (2013)
+29. Ghosh, S., Yamarik, S.: Are regional trading arrangements trade creating?:an ap-
+plication of extreme bounds analysis. Journal of International Economics 63(2),
+369{395 (2004)
+30. Gupta, S., Yang, Y.: Regional trade agreements in africa: Past performance and
+way forward. African Development Review 19(3), 399431 (2007)
+31. Hansen, D.L., Shneiderman, B., Smith, M.A.: Chapter 3 - social network analysis:
+Measuring, mapping, and modeling collections of connections. In: Analyzing Social
+Media Networks with NodeXL, pp. 31{50. Morgan Kaufmann (2011)
+32. Hastie, T., Tibshirani, R., Friedman, J.H.: The elements of statistical learning:
+data mining, inference, and prediction, vol. 27. Springer (2005)
+33. Head, K., Mayer, T.: Chapter 3 gravity equations: Workhorse,toolkit, and cook-
+book. In: Handbook of International Economics, vol. 4, pp. 131{195. Elsevier (2014)
+34. Helpman, E., Melitz, M., Rubinstein, Y.: Estimating trade ows: Trading partners
+and trading volumes. The quarterly journal of economics 123(2), 441{487 (2008)
+35. Isaac, S., Lawrence, O.: Trade creation and diversion eects of the east african
+community regional trade agreement: A gravity model analysis. Research Series
+166082, Economic Policy Research Centre (EPRC) (2013)
+36. Isard, W.: Location theory and trade theory: Short-run analysis. The Quarterly
+Journal of Economics 68(2), 305{320 (1954)
+37. J., M., C., Santos, Silva, Silvana, Tenreyro: The log of gravity. Review of Economics
+& Statistics 88(4), 641{658 (2006)
+38. Jordan, M.I., Lei, X.: On convergence properties of the em algorithm for gaussian
+mixtures. Neural Computation 8(1), 129{151 (1996)
+39. Jung, W.S., Wang, F., Stanley, H.E.: Gravity model in the korean highway. EPL
+(Europhysics Letters) 81(4), 48005 (2008)
+40. Krisztin, Tams, F.M.M.: The gravity model for international trade: Specication
+and estimation issues. Spatial Economic Analysis 10(4), 451{470 (2015)
+41. Liu, A., Lu, C., Wang, Z.: The roles of cultural and institutional distance in in-
+ternational trade: Evidence from china's trade with the belt and road countries.
+China Economic Review pp. 1{17 (2018)
+42. Magee, C.S.: New measures of trade creation and trade diversion. Journal of In-
+ternational Economics 75(2), 349{362 (2008)
+43. Manning, W.G., Mullahy, J.: Estimating log models: to transform or not to trans-
+form? Journal of health economics 20(4), 461{494 (2001)
+44. Mart nez-Zarzoso, I.: The log of gravity revisited. Applied Economics 45(3), 311{
+327 (2011)Title Suppressed Due to Excessive Length XXI
+45. Mclachlan, G.J., Krishnan, T.: The EM Algorithm and Extensions, Second Edition.
+John Wiley & Sons, Inc. (2007)
+46. Middleton, A.: Globalization, free trade, and the social impact of the decline of
+informal production: The case of artisans in quito, ecuador. World Development
+3(11), 1904 { 1928 (2007)
+47. Newman, M.E.J.: Detecting community structure in networks. European Physical
+Journal B 38(2), 321{330 (2004)
+48. Novy, D.: Gravity redux: Measuring international trade costs with panel data.
+Economic Inquiry 51(1), 101{121 (2012)
+49. Panagariya, A.: Preferential trade liberalization: the traditional theory and new
+developments. Journal of Economic literature 38(2), 287{331 (2000)
+50. Reyes, J., Wooster, R., Shirrell, S.: Regional trade agreements and the pattern of
+trade: A networks approach. World Economy 37(8), 1128{1151 (2014)
+51. Santos Silva, J. M. C., .T.S.: Trading partners and trading volumes: implementing
+the helpman-melitz-rubinstein model empirically. Oxford Bulletin of Economics &
+Statistics 77(1), 93{105 (2008)
+52. Serrano, M. A., Bogu~ n a, M., Vespignani, A.: Extracting the multiscale backbone of
+complex weighted networks. Proceedings of the National Academy of Sciences of
+the United States of America 106(16), 6483{6488 (2009)
+53. Silva, J.M.C.S., Tenreyro, S.: The log of gravity. Review of Economics & Statistics
+88(4), 641{658 (2006)
+54. Song, Z., Che, S., Yang, Y.: Topological relationship between trade network in
+the belt and road initiative area and global trade network. Progress in Geography
+36(11), 1340{1348 (2017)
+55. Tadesse, B., White, R., Huang, Z.: Does china's trade defy cultural barriers? In-
+ternational Review of Applied Economics 31(3), 398{428 (2017)
+56. Tinbergen, J.: Shaping the world economy. The International Executive 5(1), 27{30
+(1963)
+57. Vicard, V.: On trade creation and regional trade agreements: Does depth matter?
+Review of World Economics 145(2), 167{187 (2009)
+58. Wang, K., Li, X., Wang, X., Chen, Q., Bao, J.: Exploring the true relationship
+among countries from ow data of international trade and migration. International
+Conference on Complex Systems pp. 476{485 (2018)
+59. Yang, S., Martinez-Zarzoso, I.: A panel data analysis of trade creation and trade
+diversion eects: The case of aseanchina free trade area. China Economic Review
+29(C), 138{151 (2014)
+60. Zhang, C., Fu, J., Pu, Z.: A study of the petroleum trade network of countries
+along \the belt and road initiativ". Journal of Cleaner Production 222, 593{605
+(2019)
+61. Zhang, W., Deng, W., Wei, L.: Statistical properties of links of network: A survey
+on the shipping lines of worldwide marine transport network. Physica A Statistical
+Mechanics & Its Applications 502, 218{227 (2018)
+62. Zhang, Y.Q., Hai, Z., Zhang, W.B., Tie-Jun, H.A.: Network characteristics of urban
+population migration. Journal of Northeastern University 27(2), 169{172 (2006)
+63. Zhong, W., An, H., Gao, X., Sun, X.: The evolution of communities in the in-
+ternational oil trade network. Physica A Statistical Mechanics & Its Applications
+413(11), 42{52 (2014)XXII S. Huang et al.
+Appendix
+A Figures
+(a) EU
+ (b) BRI
+(c) OAU
+ (d) CARIFTA
+(e) NAFAT
+ (f) ASEAN
+Fig. 6. Trade resistance in six dierent trade unions for the year 2017. (a) for European
+Union (EU) countries. (b) for Belt and Road (BRI) countries. (c) for Organization
+of African Union (OAU) countries. (d) for Caribbean Free Trade Area (CARIFTA)
+countries. (e) for North American Free Trade Agreement (NAFTA) countries. (f) for
+Association of Southeast Asian Nations (ASEAN) countries.Title Suppressed Due to Excessive Length XXIII
+Figure 6 (Appendix) presents some detailed information. The x-coordinate ex-
+presses the TPI between a specic country and other countries in the same union,
+while the y-coordinate expresses the TPI between a specic country and other
+countries outside the union. The size of dots is proportional to the net trade ow,
+measured as the absolute value of the dierence between exports and imports;
+a red label means that the country had a trade decit, while a blue label means
+a trade surplus ow. Most dots are below the diagonal, which means that the
+TPIs of most countries inside the union are lower than those outside the union.
+In addition, countries with surplus trade ow (blue labels) have a higher TPI
+both inside and outside the union.
+B Pretreatment of Flow Zero Value
+For the gravity model (equation 1), Fi;jis the trade ow from country ito
+countryj;miandmjis the combined size of their economies; ri;jis the trade
+resistance need to be quantied. It is generally believed that the model cannot
+describe zero ow because the gravity is universal [25], even if the size of two
+countries is very small and the geographical distance or trade resistance is very
+large, as long as the volume mimjis not equal to zero and the resistance rij
+are not innite, the trade ow between them may be very small, but not zero.
+Fi;j'(mimj)
+ri;j "ij
+=exp(ln(mimj) lnri;j) "ij(10)
+However, the situation of zero-value ow is very common in the empirical
+data, around 50% in the global trade network [34], and it creates an additional
+problem for the log linear form of the gravity equation (including the traditional
+and structural gravity model in trade studies). In the early studies, some schol-
+ars often deal with the zeroes trade observation by truncation method, such as
+deleting them completely or substitute by small positive constant [26,12]. It's ob-
+viously not rigorous enough [25]. In reality, the zero-value trade ow is generally
+considered to be not observable or due to measurement errors from rounding.
+So stochastic versions of equation are used in empirical studies [53,34]. Here we
+can add an error term "ij, and assume that the error function is positive and
+obeys lognormal distribution [53], as ln "ijN(;2) in equation 10.
+E("ij) =e2+2=2
+Var("ij) = (e2 1)e22+2:
+For clarity, we assume X="ij, andY=X+Fi;j. The probability density
+function of the random variable Xis,
+fX(x) =8
+<
+:1p
+2xexp[ 1
+22(lnx )2]x>0
+0 x0XXIV S. Huang et al.
+The probability density function of Yis calculated as follows:
+FY(y) =P(Yy) =P(Fi;j+Xy) =P(Xy Fi;j) =FX(y Fi;j)
+fY(y) =F0
+Y(y) =fX(y Fi;j)1
+)fY(y) =8
+><
+>:1p
+2(y Fi;j)exp[ 1
+22(ln(y Fi;j) )2]y Fi;j>0
+0 y Fi;j0
+If we assume that trade resistance is bilateral, then we can simply deduce
+ri;jfor each pair of countries by the least square method with,
+min(= (Fi;j+"ij G(mimj)
+ri;j)2+ (Fj;i+"ji G(mimj)
+ri;j)2)
+@
+@ri;j= 0)r
+i;j'2(mimj)
+Fi;j+Fj;i+"ij+"ji
+Dierent kind of Pseudo Maximum Likelihood (PML) methods are proved to
+be eective to deal with the zero-valued trade ow and the logarithm transforma-
+tion [43,44,53]. The method in this paper is not exactly the same as the gravity
+model, and the main dierent is that we replace the geographical distance with
+ri;jwhich needs to be quantied. So we use the idea of PML, but improve the
+likelihood function here. Then, we maximize the probability E(Y) =E(X)+Fi;j,
+with the dened likelihood function,
+L=Y
+i;jp(E(X) +Fi;jj;) =Y
+i;jp(E(G(mimj)
+ri;j)j;)
+'Y
+i;jp(2(mimj)
+Fi;j+Fj;i+ 2E("ij)j;)
+With the method of maximum likelihood estimation, we can optimize the
+parameters andto get themax;(L), which make E(Y) =E(X) +Fi;jthe
+most likely to occur in reality.
+The optimized parameters are listed in Table 3, and Figure 7 shows the
+distribution of random error "ijduring 2007-2017. It can be seen that the mean
+value of random variables is basically around 1-2, and the variance is relatively
+small, which conforms to the basic assumption of statistical error in trade ows.Title Suppressed Due to Excessive Length XXV
+E("ij)
+2007 0.00694 0.00050 1.00697
+2008 0.00228 0.00020 1.00229
+2009 0.02364 0.00047 1.02392
+2010 0.56409 0.00027 1.75785
+2011 0.00339 0.00024 1.00340
+2012 0.01529 0.00072 1.01540
+2013 0.81314 0.00018 2.25498
+2014 0.05607 0.00061 1.05767
+2015 0.40263 0.00017 1.49575
+2016 0.31945 0.00028 1.37637
+2017 0.02362 0.00047 1.02390
+Table 3. Optimized Parameters
+Fig. 7. The random error obeys lognormal distribution during 2007-2017.

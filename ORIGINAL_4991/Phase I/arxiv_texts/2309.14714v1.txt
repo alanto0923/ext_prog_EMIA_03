@@ -1,0 +1,1087 @@
+arXiv:2309.14714v1  [math.AP]  26 Sep 2023Global bifurcation curves of nonlocal elliptic
+equations with oscillatory nonlinear term
+Tetsutaro Shibata
+Laboratory of Mathematics, Graduate School of Advanced Sci ence and Engineering,
+Hiroshima University, Higashi-Hiroshima, 739-8527, Japa n
+Abstract
+We study the one-dimensional nonlocal elliptic equation of Kirchhoﬀ type with
+oscillatory nonlinear term. We establish the precise asymp totic formulas for the bifur-
+cation curves λ(α) asα→ ∞andα→0, where α:=/bardbluλ/bardbl∞anduλis the solution
+associated with λ. We show that the second term of λ(α) is oscillatory as α→ ∞.
+Keywords: Nonlocalellipticequations, Oscillatory bifurcationcurves, Asympto tic formulas
+2020 Mathematics Subject Classiﬁcation: 34C23, 34F10
+1 Introduction
+We consider the following one-dimensional nonlocal elliptic equation
+
+
+−(b/bardblu′/bardbl2
+2+1)u′′(x) =λ(u(x)p+u(x)sin2u(x)), x∈I:= (0,1),
+u(x)>0, x∈I,
+u(0) =u(1) = 0,(1.1)
+wherep >1,b≥0 are given constants, λ >0 is a bifurcation parameter and /bardbl·/bardbl2denotes
+the usual L2-norm.
+The purpose of this paper is to establish the asymptotic formulas fo r bifurcation curves
+λ=λ(α) of (1.1) as α→ ∞to understand well how the oscillatory term gives eﬀect to the
+bifurcation curves. Here α:=/bardbluλ/bardbl∞anduλis a solution of (1.1) associated with λ >0.
+When we consider the case where b= 0, we use the following notation to avoid the confusion:
+
+
+−v′′(x) =µ(v(x)p+v(x)sin2v(x)), x∈I,
+v(x)>0, x∈I.
+v(0) =v(1) = 0,(1.2)
+whereµ >0 is the bifurcation parameter. It is well known by [12] that, for any givenα >0,
+there exists a unique solution pair ( µ,vα)∈R+×C2(¯I) of (1.2) with α=/bardblvα/bardbl∞. Besides,
+E-mail: tshibata@hiroshima-u.ac.jp
+12
+µis parameterized by αand a continuous function of α(cf. [12, Theorem 2.1]). So we write
+µ=µ(α).
+Equation (1.1) is the nonlocal elliptic problem of Kirchhoﬀ type motivat ed by the problem
+in [7]:
+
+−A/parenleftbigg/integraldisplay1
+0|u′(x)|qdx/parenrightbigg
+u′′(x) =λf(u(x)), x∈I,
+u(0) =u′(1) = 0,(1.3)
+whereA=A(y), which is called Kirchhoﬀ function (cf. [10, 15]), is a continuous func tion
+ofy≥0. Nonlocal problems have been investigated by many authors and t here are quite
+many manuscripts which treated the problems with the background s in physics, biology,
+engineering and so on. We refer to [1–4, 6–9, 11, 13, 14], and the re ferences therein. One of
+the main interests there are existence, nonexistence and the num ber of positive and nodal
+solutions. However, there seems to be a few works which considere d (1.3) from a view-point
+of bifurcation problems. We refer to [16–21] and the references t herein. As far as the author
+knows, there are no works which treat the nonlinear oscillatory eige nvalue problem such
+as (1.2). Therefore, there seems no works which treat nonlocal b ifurcation problems with
+oscillatory nonlinear term, so our results here seem to be novel. Our approach are mainly
+the time-map method and the complicated calculation of deﬁnite integ rals.
+The relationship between λ(α) andµ(α) is as follows. Let α >0 be an arbitrary given
+constant. Assume that there exists a solution pair ( λ(α),uα)∈R×C2(¯I) with/bardbluα/bardbl∞=α.
+Then we have
+−u′′
+α(x) =λ(α)
+b/bardblu′α/bardbl2
+2+1(uα(x)p+uα(x)sin2uα(x)). (1.4)
+We note that /bardbluα/bardbl∞=α. Then we ﬁnd that uα=vαandλ(α)
+b/bardblu′α/bardbl2
+2+1=µ(α), since the solution
+pair (µ(α),vα)∈R+×C2(¯I) of (1.2) with /bardblvα/bardbl∞=αis unique (cf. [12]). This implies
+λ(α) = (b/bardblv′
+α/bardbl2+1)µ(α). (1.5)
+Therefore, to obtain λ(α), we need to obtain both µ(α) and/bardblv′
+α/bardbl2.
+Now we state our results. We ﬁrst consider the case p >2.
+Theorem 1.1. Consider (1.2). Let p >2. Then as α→ ∞,
+µ(α) = 2(p+1)α1−p/braceleftbigg
+C0,p+/parenleftbigg
+C1+1
+2C11/parenrightbigg
+α1−p(1.6)
++1
+2(C12+C21)α−p+1
+2C22α−(p+1)+(C2+C3)α2(1−p)+o(α2(1−p))/bracerightbigg2
+,
+where
+C0,p:=/integraldisplay1
+01√
+1−sp+1ds, (1.7)
+C1:=−p+1
+8/integraldisplay1
+01−s2
+(1−sp+1)3/2ds, (1.8)3
+C11:=2
+p+1/integraldisplayπ/2
+0cos(2αsin2/(p+1θ)sin(3−p)/(p+1)dθ, (1.9)
+C12:=p−1
+2(p+1)/integraldisplayπ/2
+0(sin2α−sin(2αsin2/(p+1)θ))sin(1−p)/(p+1)θdθ (1.10)
++p+1
+4/integraldisplay1
+01−s
+(1−sp+1)3/2sin(2αs)ds,
+C21:=−1
+p+1/integraldisplayπ/2
+0sin(2αsin2/(p+1)θ)sin(3−p)/(p+1)θdθ (1.11)
+C22:=4(p−1)
+p+1/integraldisplayπ/2
+0(cos2α−cos(2αsin2/(p+1)θ))sin(1−p)/(p+1)θdθ, (1.12)
+C2=3(p+1)2
+128/integraldisplay1
+0(1−s2)2
+(1−sp+1)5/2ds, (1.13)
+C3=−3
+32(p+1)2/integraldisplay1
+0/parenleftbigg/integraldisplays
+01−y2
+(1−yp+1)5/2dy/parenrightbigg
+cos(2αs)ds. (1.14)
+Theorem 1.2. Consider (1.2). Let p >2andα≫1. Then the following asymptotic
+formula for /bardblv′
+α/bardbl2
+2holds.
+/bardblv′
+α/bardbl2
+2= 4α2{G0+G1α1−p+G2α−p+G3α−(p+1)+G4α2(1−p)+o(α2(1−p))},(1.15)
+where
+G0:=C0,pE0,p, (1.16)
+G1:=C0,pE1+/parenleftbigg
+C1+1
+2C11/parenrightbigg
+E0,p, (1.17)
+G2:=1
+2(C12+C12)E0,p+C0,pE2, (1.18)
+G3:=1
+2C22E0,p+C0,pE3, (1.19)
+G4:= (C2+C3)E0,p+C0,pE4+/parenleftbigg
+C1+1
+2C11/parenrightbigg
+E1, (1.20)
+E0,p:=/integraldisplay1
+0√
+1−sp+1ds, (1.21)
+E1:=p+1
+8/integraldisplay1
+01−s4
+√
+1−sp+1ds, (1.22)
+E2:=−1
+4/integraldisplayπ/2
+0{sin2α−sin2/(p+1)θsin(2αsin2/(p+1)θ)}sin(1−p)/(p+1)θdθ,(1.23)
+E3:=−1
+8/integraldisplay1
+0{cos2α−cos(2αsin2/(p+1)θ)}sin(1−p)/(p+1)dθ, (1.24)
+E4:=−(p+1)2
+128/integraldisplay1
+0(1−s2)2
+(1−sp+1)3/2ds, (1.25)4
+E5:=2
+p+1/integraldisplay1
+01−sp+1
+√
+1−s4ds. (1.26)
+Remark 1.3. We should note that the order of the lower terms of µ(α) in (1.6) changes
+according to p. Indeed, if we expand the bracket of the r.h.s. of (1.6), then the t erms with
+C2
+0,p,α1−p,αp,α−(p+1),α2(1−p),α1−2p
+appear. Then for α≫1, clearly, the ﬁrst term is C2
+0,pand the second is α1−p. Besides, we
+have
+
+
+α2(1−p)≫α−p≫α1−2p≫α−(p+1)(1< p <2),
+α−p∼α2(1−p)≫α−(p+1)∼α1−2p(p= 2),
+α−p≫α2(1−p)≫α−(p+1)≫α1−2p(2< p <3),
+α−p≫α−(p+1)∼α2(1−p)≫α1−2p(p= 3),
+α−p≫α−(p+1)≫α2(1−p)≫α1−2p(p >3).(1.27)
+Therefore, if p >2, then the third term in the bracket of the r.h.s. of (1.6) is α−p. However,
+if 1< p <2, then the third term is α2(1−p). Moreover, if pis very close to 1, then 1 −p/equalsdots0.
+Therefore, we have the sequence of the lower term, which are gre ater than α−pin (1.6). In
+principle, it is possible to calculate them precisely. However, since the calculation is long
+and tedious, we do not carry out here.
+Theorem 1.4. Consider (1.2).
+(i) Let1< p <2. Then as α→ ∞,
+µ(α) = 2(p+1)α1−p/braceleftbigg
+C0,p+/parenleftbigg
+C1+1
+2C11/parenrightbigg
+α1−p+(C2+C3)α2(1−p)+o(α2(1−p))/bracerightbigg2
+.(1.28)
+(ii) Letp= 2. Then as α→ ∞,
+µ(α) = 6α−1(1.29)
+×/braceleftbigg
+C0,p+/parenleftbigg
+C1+1
+2C11/parenrightbigg
+α−1+/parenleftbigg1
+2C12+1
+2C21+C2+C3/parenrightbigg
+α−2+o(α2(1−p))/bracerightbigg2
+.
+Theorem 1.5. Consider (1.2).
+(i) Let1< p <2. Then as α→ ∞,
+/bardblv′
+α/bardbl2
+2= 4α2{G0+G1α1−p+G4α2(1−p)+G2α−p+o(α2(1−p))}.(1.30)
+(ii) Letp= 2. Then as α→ ∞,
+/bardblv′
+α/bardbl2
+2= 4α2{G0+G1α−1+(G2+G4)α−2+o(α−2)}. (1.31)
+Theorems 1.4 and 1.5 are obtained directly from Theorems 1,1 and 1.2. So we omit the
+proofs.
+We now consider (1.1).5
+Theorem 1.6. Consider (1.1) with b >0.
+(i) Letp >2andα≫1. Then the following asymptotic formula for λ(α)holds.
+λ(α) = 2(p+1)α1−p/braceleftbigg
+C0,p+/parenleftbigg
+C1+1
+2C11/parenrightbigg
+α1−p(1.32)
++1
+2(C12+C21)α−p+1
+2C22α−(p+1)+C2α2(1−p)+o(α2(1−p))/bracerightbigg2
+×/braceleftbig
+4bα2{G0+G1α1−p+G2α−p+G3α−(p+1)+G4α2(1−p)+o(α2(1−p))}+1/bracerightbig
+.
+(ii) Letp= 2. Then as α→ ∞,
+λ(α) = 6α−1/braceleftbigg
+C0,p+/parenleftbigg
+C1+1
+2C11/parenrightbigg
+α−1+/parenleftbigg1
+2C12+1
+2C21+C2+C3/parenrightbigg
+α−2+o(α2(1−p))/bracerightbigg2
+×/braceleftbig
+4bα2{G0+G1α−1+(G2+G4)α−2+o(α−2)}+1/bracerightbig
+. (1.33)
+(iii) Let1< p <2Then as α→ ∞,
+λ(α) = 2(p+1)α1−p/braceleftbigg
+C0,p+/parenleftbigg
+C1+1
+2C11/parenrightbigg
+α1−p+C2α2(1−p)+o(α2(1−p))/bracerightbigg2
+×/braceleftbig
+4bα2{G0+G1α1−p+G4α2(1−p)+o(α2(1−p))}+1/bracerightbig
+. (1.34)
+We see from Theorem 1.6 that, roughly speaking, the asymptotic be haviors of λ(α) as
+α→ ∞are:
+λ(α)∼α3−p. (1.35)
+We obtain Theorem 1.6 immediately by (1.5), Theorems 1.1, 1.2, 1.4 and 1 .5. So we omit
+the proof.
+Now we establish the asymptotic formulas for µ(α) asα→0 to understand the entire
+structure of µ(α). We put
+H2:=−2
+p+1/integraldisplay1
+01−sp+1
+(1−s4)3/2ds, (1.36)
+Hn:=−22n−2(−1)n/braceleftbigg1
+(2n−1)!/integraldisplay1
+01−s2n−1
+(1−s4)3/2ds−1
+(2n)!/integraldisplay1
+01−s2n
+(1−s4)3/2ds/bracerightbigg
+(1.37)
+forn≥3. Furthermore, let
+L1:=−p+1
+8/integraldisplay1
+01−s4
+(1−sp+1)3/2ds, (1.38)
+L2:=−1
+2/integraldisplay1
+01√
+1−sp+1K(s)ds, (1.39)
+K(s) :=−23(p+1)/braceleftbigg1
+5!1−s5
+1−sp+1−1
+6!1−s6
+1−sp+1+O(α7−p)/bracerightbigg
+. (1.40)6
+Theorem 1.7. Consider (1.2).
+(i) Let1< p <3. Then as α→0,
+µ(α) = 2(p+1)α1−p/braceleftbig
+C0,p+L1α3−p+L2α5−p+O(α7−p)/bracerightbig2. (1.41)
+(ii) Letp= 3. Then as α→0,
+µ(α) = 4α−2/braceleftbigg
+C0,3+1
+2H3α2+O(α4)/bracerightbigg2
+. (1.42)
+(iii) Let3< p≤5. Then as α→0,
+µ(α) = 8α−2/braceleftbig
+C0,3+H2αp−3+H3α2+O(α4)/bracerightbig2. (1.43)
+(iv) Assume that p >5. Then as α→0,
+µ(α) = 8α−2/braceleftbig
+C0,3+H3α2+o(α2)/bracerightbig2. (1.44)
+Finally, we establish the asymptotic formulas for λ(α) asα→0.
+Theorem 1.8. Consider (1.1).
+(i) Let1< p <3. Then as α→0,
+λ(α) = 2(p+1)α1−p/braceleftbig
+C0,p+L1α3−p+L2α5−p+O(α7−p)/bracerightbig2(1.45)
+×/braceleftbig
+4bα2/braceleftbig
+E0,pC0,p+(E0,pL1+C0,pE1)α3−p+o(α3−p)/bracerightbig
++1/bracerightbig
+.
+(ii) Letp= 3. Then as α→0,
+λ(α) = 4α−2(1+4bE0.3C0,3α2+o(α2))/braceleftbigg
+C0,3+1
+2H3α2+O(α4)/bracerightbigg2
+.(1.46)
+(iii) Let3< p≤5. Then as α→0,
+λ(α) = 8α−2/braceleftbig
+C0,3+H2αp−3+H3α2+O(α4)/bracerightbig2(1.47)
+×/bracketleftbig
+4bα2/braceleftbig
+C0,3+H2αp−3+H3α2+O(α4)/bracerightbig/braceleftbig
+E0,3+E5αp−3(1+o(1))/bracerightbig
++1/bracketrightbig
+.
+(iv) Letp >5. Then as α→0,
+λ(α) = 8α−2/braceleftbig
+C0,3+H3α2+o(α2)/bracerightbig2(1.48)
+×/bracketleftbig
+4bα2/braceleftbig
+C0,3+H3α2+o(α2)/bracerightbig/braceleftbig
+E0,3+E5αp−3(1+o(1))/bracerightbig
++1/bracketrightbig
+.
+By Theorem 1.8, we see that as α→0,
+λ(α)∼/braceleftbiggα1−p(1< p≤3),
+α−2(p >3).(1.49)7
+2 Proofs of Theorems 1.1 and 1.2
+In this section, let p >2 and we consider (1.2). In what follows, Cdenotes various positive
+constants independent of α≫1. By [5], we know that if vαis a solution of (1.2), then vα
+satisﬁes
+vα(x) =vα(1−x),0≤x≤1
+2, (2.1)
+α:=/bardblvα/bardbl∞=vα/parenleftbigg1
+2/parenrightbigg
+, (2.2)
+v′
+α(x)>0,0≤x <1
+2. (2.3)
+We put
+f(θ) :=θp+θsin2θ, (2.4)
+F(θ) :=/integraldisplayθ
+0f(y)dy=1
+p+1θp+1+1
+4θ2−1
+4θsin2θ−1
+8cos2θ+1
+8.(2.5)
+Letα >0 be an arbitrary given constant. We write µ=µ(α) andvα:=vµ(α)in what
+follows. By (1.2), for x∈¯I, we have
+{v′′
+α(x)+µf(vα(x)}v′
+α(x) = 0. (2.6)
+By this and (2.2), for x∈¯I, we have
+1
+2v′
+α(x)2+µF(vα(x)) = constant = µF/parenleftbigg
+vα/parenleftbigg1
+2/parenrightbigg/parenrightbigg
+=µF(α). (2.7)
+By this and (2.3), for 0 ≤x≤1/2, we have
+v′
+α(x) =/radicalbig
+2µ(F(α)−F(vα(x))) (2.8)
+=/radicalbigg2µ
+p+1/radicalbigg
+(αp+1−vα(x)p+1)+p+1
+4(α2−vα(x)2)−Aα(vα(x))−Bα(vα(x)),
+where
+Aα(vα(x)) :=p+1
+4(αsin2α−vα(x)sin(2vα(x))), (2.9)
+Bα(vα(x)) :=p+1
+8(cos2α−cos(2vα(x))). (2.10)
+Note that Aα(vα(x))≪α2,Bα(vα(x))≪α2. By this and putting vα(x) =αs, we have
+1
+2=/integraldisplay1/2
+01dx (2.11)
+=/radicalbigg
+p+1
+2µ/integraldisplay1/2
+0v′
+α(x)dx/radicalBig
+(αp+1−vα(x)p)+p+1
+4(α2−vα(x)2)−Aα(vα(x))−Bα(vα(x))8
+=/radicalbiggp+1
+2µα(1−p)/2/integraldisplay1
+0ds/radicalBig
+(1−sp+1)+p+1
+4α1−p(1−s2)−1
+αp+1Aα(αs)−1
+αp+1Bα(αs)
+=/radicalbiggp+1
+2µα(1−p)/2/integraldisplay1
+01√
+1−sp+1ds/radicalBig
+1+p+1
+4α1−p1−s2
+1−sp+1−1
+αp+1Aα(αs)
+1−sp+1−1
+αp+1Bα(αs)
+1−sp+1.
+This along with Taylor expansion implies that
+√µ=/radicalbig
+2(p+1)α(1−p)/2(2.12)
+×/integraldisplay1
+01√
+1−sp+1/braceleftbigg
+1−p+1
+8α1−p1−s2
+1−sp+1+1
+21
+αp+1Aα(αs)
+1−sp+1+1
+21
+αp+1Bα(αs)
+1−sp+1
++3
+8/parenleftbiggp+1
+4α1−p1−s2
+1−sp+1/parenrightbigg2
+−3
+16(p+1)α−2p1−s2
+(1−sp+1)2Aα(αs)+o(α2(1−p))/bracerightBigg
+ds
+=/radicalbig
+2(p+1)α(1−p)/2/bracketleftbig
+C0,p+C1α1−p+I+II+C2α2(1−p)+III+o(α2(1−p))/bracketrightbig
+,
+where
+I=1
+2α−(p+1)I1:=1
+2α−(p+1)/integraldisplay1
+0Aα(αs)
+(1−sp+1)3/2ds, (2.13)
+II=1
+2α−(p+1)II1:=1
+2α−(p+1)/integraldisplay1
+0Bα(αs)
+(1−sp+1)3/2ds, (2.14)
+III=−3
+16(p+1)α−2p/integraldisplay1
+01−s2
+(1−sp+1)5/2Aα(αs)ds. (2.15)
+Lemma 2.1. Letα≫1. Then
+I1=/integraldisplay1
+0Aα(αs)
+(1−sp+1)3/2ds=C11α2+C12α, (2.16)
+II1=/integraldisplay1
+0Bα(αs)
+(1−sp+1)3/2ds=C21α+C22. (2.17)
+Proof.We ﬁrst note that the deﬁnite integrals C11,C12,C21,C22exist, since we have −1<
+(1−p)/(p+1)<(3−p)/(p+1). We ﬁrst prove (2.16). We put s:= sin2/(p+1)θ. Then by
+integration by parts, we have
+I1=p+1
+4α/integraldisplay1
+01√
+1−sp+1sin2α−sin(2αs)
+1−sp+1ds (2.18)
++p+1
+4α/integraldisplay1
+0(1−s)
+(1−sp+1)3/2sin(2αs)ds
+=1
+2α/integraldisplayπ/2
+01
+cos2θ/bracketleftbig/braceleftbig
+sin2α−sin(2αsin2/(p+1)θ)/bracerightbig
+sin(1−p)/(p+1)θ/bracketrightbig
+dθ
++p+1
+4α/integraldisplay1
+0(1−s)
+(1−sp+1)3/2sin(2αs)ds9
+=1
+2α/integraldisplayπ/2
+0(tanθ)′/bracketleftbig/braceleftbig
+sin2α−sin(2αsin2/(p+1)θ)/bracerightbig
+sin(1−p)/(p+1)θ/bracketrightbig
+dθ
++p+1
+4α/integraldisplay1
+0(1−s)
+(1−sp+1)3/2sin(2αs)ds
+=1
+2α/bracketleftbig
+tanθ/bracketleftbig/braceleftbig
+sin2α−sin(2αsin2/(p+1)θ/bracerightbig
+sin(1−p)/(p+1)θ/bracketrightbig/bracketrightbigπ/2
+0············ (∗)
+−1
+2α/integraldisplayπ/2
+0sinθ
+cosθ/braceleftbigg
+−4
+p+1αcos(2αsin2/(p+1θ)sin(2−2p)/(p+1)θcosθ
+−p−1
+p+1(sin2α−sin(2αsin2/(p+1)θ))sin−2p/(p+1)θcosθ/bracerightbigg
+dθ
++p+1
+4α/integraldisplay1
+0(1−s)
+(1−sp+1)3/2sin(2αs)ds
+=2
+p+1α2/integraldisplayπ/2
+0cos(2αsin2/(p+1θ)sin(3−p)/(p+1)dθ
++p−1
+2(p+1)α/integraldisplayπ/2
+0(sin2α−sin(2αsin2/(p+1)θ))sin(1−p)/(p+1)θdθ
++p+1
+4α/integraldisplay1
+0(1−s)
+(1−sp+1)3/2sin(2αs)ds
+:=C11α2+C12α.
+We remark that by l’Hˆ opital’s rule and direct calculation, we easily obta in that (∗) in (2.18)
+and (∗∗) in (2.19) below are equal to 0. Next, we put s:= sin2/(p+1)θ. Then by integration
+by parts, we have
+II1=1
+4/integraldisplayπ/2
+01
+cos2θ/braceleftbig
+cos2α−cos(2αsin2/(p+1)θ)/bracerightbig
+sin(1−p)/(p+1)θdθ (2.19)
+=1
+4/integraldisplayπ/2
+0(tanθ)′/braceleftbig
+cos2α−cos(2αsin2/(p+1)θ)/bracerightbig
+sin(1−p)/(p+1)θdθ
+=1
+4/bracketleftbig
+tanθ/braceleftbig
+cos2α−cos(2αsin2/(p+1)θ)/bracerightbig
+sin(1−p)/(p+1)θ/bracketrightbigπ/2
+0············ (∗∗)
+−1
+p+1α/integraldisplayπ/2
+0sin(2αsin2/(p+1)θ)sin(3−p)/(p+1)θdθ
++4(p−1)
+p+1/integraldisplayπ/2
+0(cos2α−cos(2αsin2/(p+1)θ))sin(1−p)/(p+1)θdθ
+=C21α+C22.
+Thus the proof is complete.
+Lemma 2.2. Letα≫1. Then
+III=C3α2(1−p)+o(α2(1−p)). (2.20)
+Proof.by (2.9) and (2.15), we have
+III=−3
+64(p+1)2α−2p/integraldisplay1
+01−s2
+(1−sp+1)5/2{αsin2α−αssin(2αs)}ds(2.21)10
+=−3
+64(p+1)2α−2p+1/integraldisplay1
+01−s2
+(1−sp+1)5/2{sin2α−sin(2αs)}ds
+−3
+64(p+1)2α−2p+1/integraldisplay1
+0(1−s2)(1−s)
+(1−sp+1)5/2sin(2αs)ds.
+:=−3
+64(p+1)2α−2p+1III1+O(α−2p+1).
+We show that III1∼α. We note that (1 −y2)/(1−yp+1)5/2≤(1−y2)−3/2for 0≤y≤1.
+By this and integration by parts, we have
+III1= lim
+ǫ→0/integraldisplay1−ǫ
+0d
+ds/parenleftbigg/integraldisplays
+01−y2
+(1−yp+1)5/2dy/parenrightbigg
+{sin2α−sin(2αs)}ds(2.22)
+= lim
+ǫ→0/bracketleftbigg/parenleftbigg/integraldisplays
+01−y2
+(1−yp+1)5/2dy/parenrightbigg
+{sin2α−sin(2αs)}/bracketrightbigg1−ǫ
+0
++2αlim
+ǫ→0/integraldisplay1−ǫ
+0/parenleftbigg/integraldisplays
+01−y2
+(1−yp+1)5/2dy/parenrightbigg
+cos(2αs)ds
+= 2α(1+o(1))/integraldisplay1
+0/parenleftbigg/integraldisplays
+01−y2
+(1−yp+1)5/2dy/parenrightbigg
+cos(2αs)ds.
+By this and (2.21), we have (2.20). Thus the proof is complete.
+Proof of Theorem 1.1. By (2.12) and Lemma 2.1, for α≫1, we obtain
+√µ=/radicalbig
+2(p+1)α(1−p)/2/braceleftbigg
+C0,p+(C1+1
+2C11)α1−p(2.23)
++1
+2(C12+C21)α−p+1
+2C22α−(p+1)+(C2+C3)α2(1−p)+o(α2(1−p))/bracerightbigg
+.
+By this, we obtain Theorem 1.1. Thus the proof is complete.
+We next prove Theorem 1.2.
+Lemma 2.3. Letvαbe the solution of (1.2) associated with µ >0such that /bardblvα/bardbl∞=α >0.
+Then for α≫1
+/bardblv′
+α/bardbl2
+2= 4α2{G0+G1α1−p+G2α−p+G3α−(p+1)+G4α2(1−p)+o(α2(1−p))}.(2.24)
+Proof.By (2.8), putting vα(x) =αsand Taylor expansion, we obtain
+/bardblv′
+α/bardbl2
+2= 2/integraldisplay1/2
+0v′
+α(x)v′
+α(x)dx (2.25)
+= 2/radicalbigg2µ
+p+1
+×/integraldisplay1/2
+0/radicalbigg
+(αp+1−vα(x)p)+p+1
+4(α2−vα(x)2)−Aα(vα(x))−Bα(vα(x))v′
+α(x)dx
+= 2/radicalbigg2µ
+p+1α(p+3)/2/integraldisplay1
+0√
+1−sp+111
+×/radicalbigg
+1+p+1
+4α1−p1−s2
+1−sp+1−1
+αp+1Aα(αs)
+1−sp+1−1
+αp+1Bα(αs)
+1−sp+1ds
+= 2/radicalbigg2µ
+p+1α(p+3)/2/integraldisplay1
+0√
+1−sp+1/braceleftbigg
+1+p+1
+8α1−p1−s2
+1−sp+1−1
+2αp+1Aα(αs)
+1−sp+1
+−1
+2αp+1Bα(αs)
+1−sp+1−(p+1)2
+128α2(1−p)/parenleftbigg1−s2
+1−sp+1/parenrightbigg2
++1
+64(p+1)2α−2p1−s2
+1−sp+1(αsin2α−αssin(2αs))+o(α2(1−p))/bracerightbigg
+ds.
+By putting s= sin2/(p+1)θ, we have
+/integraldisplay1
+0Aα(αs)√
+1−sp+1ds=p+1
+4α/integraldisplay1
+0sin2α−ssin(2αs)√
+1−sp+1ds (2.26)
+=1
+2α/integraldisplayπ/2
+0{sin2α−sin2/(p+1)θsin(2αsin2/(p+1)θ)}sin(1−p)/(p+1)θdθ,
+/integraldisplay1
+0Bα(αs)√
+1−sp+1ds=p+1
+8/integraldisplay1
+0cos2α−cos(2αs)√
+1−sp+1ds (2.27)
+=1
+4/integraldisplay1
+0{cos2α−cos(2αsin2/(p+1)θ)}sin(1−p)/(p+1)dθ.
+By (2.25)–(2.27), we have
+/bardblv′
+α/bardbl2
+2= 2/radicalbigg2µ
+p+1α(p+3)/2/braceleftbig
+E0,p+E1α1−p+E2α−p+E3α−(p+1)(2.28)
++E4α2(1−p)+o(α2(1−p))/bracerightbig
+.
+By this, (2.23)–(2.28), we have
+/bardblv′
+α/bardbl2
+2= 4α2/braceleftbigg
+C0,p+/parenleftbigg
+C1+1
+2C11/parenrightbigg
+α1−p+1
+2(C12+C21)α−p(2.29)
++1
+2C22α−(p+1)+(C2+C3)α2(1−p)+o(α2(1−p))/bracerightbigg
+×/braceleftbig
+E0,p+E1α1−p+E2α−p+E3α−(p+1)+E4α2(1−p)+o(α2(1−p))/bracerightbig
+= 4α2{G0+G1α1−p+G2α−p+G3α−(p+1)+G4α2(1−p)+o(α2(1−p))}.
+This implies (2.27). Thus the proof is complete.
+3 Proof of Theorem 1.7
+In this section, let 0 < α≪1. We put wα:=vα/α. By (2.5) and Taylor expansion, we have
+F(α) =1
+p+1αp+1+1
+4α2−1
+4α/braceleftBigg
+2α−1
+3!(2α)3+∞/summationdisplay
+n=3(−1)n−1
+(2n−1)!(2α)2n−1/bracerightBigg
+(3.1)12
+−1
+8/braceleftBigg
+1−1
+2!(2α)2+1
+4!(2α)4+∞/summationdisplay
+n=3(−1)n
+(2n)!(2α)2n/bracerightBigg
++1
+8,
+F(vα) =1
+p+1αp+1wp+1
+α+1
+4α2wα(x)2−1
+4αwα/braceleftBigg
+2αwα−1
+3!(2αwα)3+∞/summationdisplay
+n=3(−1)n−1
+(2n−1)!(2αwα)2n−1/bracerightBigg
+−1
+8/braceleftBigg
+1−1
+2!(2αwα)2+1
+4!(2αwα)4+∞/summationdisplay
+n=3(−1)n
+(2n)!(2αwα)2n/bracerightBigg
++1
+8. (3.2)
+By the same argument as that to obtain (2.8), for 0 ≤x≤1, we have
+1
+2α2w′
+α(x)2=µ/braceleftbigg1
+p+1αp+1(1−wα(x)p+1)+1
+4α4(1−wα(x)4) (3.3)
++1
+4α∞/summationdisplay
+n=3(−1)n
+(2n−1)!22n−1α2n−1(1−wα(x)2n−1)
+−1
+8∞/summationdisplay
+n=3(−1)n
+(2n)!22nα2n(1−wα(x)2n)/bracerightBigg
+.
+We put
+Hα(wα) :=1
+4∞/summationdisplay
+n=3(−1)n
+(2n−1)!22n−1α2n(1−wα(x)2n−1), (3.4)
+=∞/summationdisplay
+n=3(−1)n
+(2n−1)!22n−3α2n(1−wα(x)2n−1),
+Jα(wα) =−1
+8∞/summationdisplay
+n=3(−1)n
+(2n)!22nα2n(1−wα(x)2n) (3.5)
+=−∞/summationdisplay
+n=3(−1)n
+(2n)!22n−3α2n(1−wα(x)2n).
+We put
+Mα(wα) :=Hα(wα)+Jα(wα(x)) (3.6)
+=∞/summationdisplay
+n=3(−1)n22n−3/braceleftbigg1
+(2n−1)!(1−wα(x)2n−1)−1
+(2n)!(1−wα(x)2n)/bracerightbigg
+α2n.
+By this and (2.3), for 0 ≤x≤1/2, we have
+w′
+α(x) =/radicalbig
+2µα−1/radicalbigg
+1
+p+1αp+1(1−wα(x)p+1)+1
+4α4(1−wα(x)4)+Mα(wα).(3.7)
+(i) Let 1 < p <3. Then by (3.7), we have
+w′
+α(x) =/radicalbig
+2µα−2/radicalBigg
+αp+1
+p+1/radicalbig
+1−wα(x)p+1 (3.8)
+×/radicalBigg
+1+p+1
+4α3−p1−wα(x)4
+1−wα(x)p+1+K(wα)α5−p,13
+where
+K(wα(x)) :=−23(p+1)/braceleftbigg1
+5!1−wα(x)5
+1−wα(x)p+1−1
+6!1−wα(x)6
+1−wα(x)p+1/bracerightbigg
+. (3.9)
+By (3.8) and Taylor expansion, we have
+/radicalbiggµ
+2(p+1)α(p−1)/2= (3.10)
+=/integraldisplay1/2
+0w′
+α(x)
+/radicalbig
+1−wα(x)p+1/radicalBig
+1+p+1
+4α3−p1−wα(x)4
+1−wα(x)p+1+K(wα(x))α5−pdx
+=/integraldisplay1
+01√
+1−sp+1/braceleftbigg
+1−p+1
+8α3−p1−s4
+1−sp+1−1
+2K(s)α5−p+O(α5−p)/bracerightbigg
+ds.
+This implies from (1.7), (1.38) and (1.39) that
+√µ=/radicalbig
+2(p+1)α−(p−1)/2/braceleftbig
+C0,p+L1α3−p+L2α5−p+O(α7−p)/bracerightbig
+.(3.11)
+This implies (1.41).
+(ii) Letp= 3. Then by (3.7), we have
+w′
+α(x) =/radicalbig
+2µα−1/radicalbigg
+1
+2α4(1−wα(x)4)+Mα(wα(x)) (3.12)
+=√µα/radicalbig
+1−wα(x)4/radicalBigg
+1+2α−4Mα(wα(x))
+1−wα(x)4.
+This along with Taylor expansion implies that
+1
+2√µ=α−1/integraldisplay1/2
+0w′
+α(x)
+/radicalbig
+1−wα(x)4/radicalBig
+1+2α−4Mα(wα(x))
+1−wα(x)4dx
+=α−1/integraldisplay1
+01√
+1−s4/braceleftbigg
+1−α−4Mα(s)
+1−s4+O(α4)/bracerightbigg
+ds.
+By this, we obtain
+√µ= 2α−1/integraldisplay1
+01√
+1−s4/braceleftbigg
+1+8α2/parenleftbigg1
+5!1−s5
+1−s4−1
+6!1−s6
+1−s4/parenrightbigg
++O(α4)/bracerightbigg
+ds
+= 2α−1/braceleftbigg
+C0,3+1
+2H3α2+O(α4)/bracerightbigg
+.
+This implies (1.42).
+(iii) Let 3 < p≤5. Then by (3.7), we have
+1
+2/radicalbig
+2µ= 2α/integraldisplay1/2
+0w′
+α(x)
+α2/radicalbig
+1−wα(x)4/radicalBig
+1+4
+p+1αp−31−wα(x)p+1
+1−wα(x)4+Qα(wα(x)),(3.13)14
+where
+Qα(wα) := 4α−4Mα(wα)
+1−wα(x)4. (3.14)
+By this and Taylor expansion, we have
+/radicalbiggµ
+2= 2α−1/integraldisplay1
+01√
+1−s4(3.15)
+×/braceleftbigg
+1−2
+p+1αp−31−sp+1
+1−s4+α224
+5!1−s5
+1−s4−α224
+6!1−s6
+1−s4+O(α4)/bracerightbigg
+ds
+= 2α−1/braceleftbig
+C0,3+H2αp−3+H3α2+O(α4)/bracerightbig
+.
+This implies (1.43).
+(iv) Assume that p >5. Then by (3.15), we have
+/radicalbiggµ
+2= 2α−1/braceleftbig
+C0,3+H3α2+o(α2)/bracerightbig
+. (3.16)
+This implies (1.44). Thus the proof is complete.
+4 Proof of Theorem 8
+In this section, we assume that 0 < α≪1. By Taylor expansion, we have
+vα(x)sin2vα(x) =∞/summationdisplay
+n=1(−1)n−122n−1
+(2n)!vα(x)2n+1(4.1)
+=vα(x)3−1
+3vα(x)5+2
+45vα(x)7+O(vα(x)9).
+(i) Let 1 < p <3. Then by (2.8), (4.1), Taylor expansion and putting vα=θ=αs, we have
+/bardblv′
+α/bardbl2
+2= 2/integraldisplay1/2
+0v′
+α(x)v′
+α(x)dx (4.2)
+= 2/radicalbig
+2µ/integraldisplay1/2
+0/radicalbigg
+1
+p+1(αp+1−vα(x)p+1)+1
+4(α4−vα(x)4)(1+o(1))v′
+α(x)dx
+= 2/radicalbig
+2µ/integraldisplayα
+0/radicalbigg
+1
+p+1(αp+1−θp+1)+1
+4(α4−θ4)(1+o(1))dθ
+= 2/radicalbigg2µ
+p+1α(p+3)/2/integraldisplay1
+0√
+1−sp+1/radicalbigg
+1+p+1
+4α3−p1−s4
+1−sp+1(1+o(1))ds
+= 2/radicalbigg2µ
+p+1α(p+3)/2/integraldisplay1
+0√
+1−sp+1/braceleftbigg
+1+p+1
+8α3−p1−s4
+1−sp+1(1+o(1))/bracerightbigg
+ds
+= 2/radicalbigg
+2
+p+1√µα(p+3)/2/braceleftbig
+E0,p+E1α3−p+o(α3−p)/bracerightbig
+.15
+By this and (3.11), we have
+/bardblv′
+α/bardbl2
+2= 2/radicalbigg
+2
+p+1α(p+3)/2/braceleftbig
+E0,p+E1α3−p+o(α3−p)/bracerightbig
+(4.3)
+×/radicalbig
+2(p+1)α−(p−1)/2/braceleftbig
+C0,p+L1α3−p+L2α5−p+O(α7−p)/bracerightbig
+= 4α2/braceleftbig
+E0,pC0,p+(E0,pL1+C0,pE1)α3−p+o(α3−p)/bracerightbig
+.
+By this, (1.5) and Theorem 1.7 (i), we have
+λ(α) = 2(p+1)α1−p/braceleftbig
+C0,p+L1α3−p+L2α5−p+O(α7−p)/bracerightbig2(4.4)
+×/braceleftbig
+4bα2/braceleftbig
+E0,pC0,p+(E0,pL1+C0,pE1)α3−p+o(α3−p)/bracerightbig
++1/bracerightbig
+.
+(ii) Letp= 3. Then by (4.2) and putting s=vα(x)/α, we have
+/bardblv′
+α/bardbl2
+2= 2√µ(1+o(1))/integraldisplay1/2
+0/radicalbig
+α4−vα(x)4v′
+α(x)dx (4.5)
+= 2√µ(1+o(1))α3/integraldisplay1
+0√
+1−s4ds
+= 2√µα3E0,3(1+o(1)).
+By this, (1.5) and Theorem 1.7 (ii), we have
+/bardblv′
+α/bardbl2
+2= 2α3E0,3(1+o(1))2α−1/braceleftbigg
+C0,3+1
+2H3α2+O(α4)/bracerightbigg
+(4.6)
+= 4α2E0,3C0,3(1+o(1)).
+By this and Theorem 1.7 (ii), we have
+λ(α) = 4α−2(1+4bE0.3C0,3α2+o(α2))/braceleftbigg
+C0,3+1
+2H3α2+O(α4)/bracerightbigg2
+.(4.7)
+We next consider the case p >3. By (4.1), for 0 < x <1/2, we have
+1
+2v′
+α(x)2+µ/braceleftbigg1
+4vα(x)4+1
+p+1vα(x)p+1(1+o(1))/bracerightbigg
+=µ/braceleftbigg1
+4α4+1
+p+1αp+1(1+o(1))/bracerightbigg
+.(4.8)
+By this, for 0 ≤x≤1/2, we have
+v′
+α(x) =/radicalbiggµ
+2/radicalbig
+α4−vα(x)4/radicalBigg
+1+4
+p+1αp+1−vα(x)p+1
+α4−vα(x)4(1+o(1)) (4.9)
+By this, (3.16) and the same calculation as that of (4.2) and putting vα(x) =αs, we have
+/bardblv′
+α/bardbl2
+2=/radicalbig
+2µα3/integraldisplay1
+0√
+1−s4/radicalBigg
+1+4
+p+1αp−31−sp+1
+1−s4(1+o(1))ds (4.10)
+=/radicalbig
+2µα3/braceleftbig
+E0,3+E5αp−3(1+o(1))/bracerightbig
+= 4α2/braceleftbig
+C0,3+H2αp−3+H3α2+O(α4)/bracerightbig/braceleftbig
+E0,p+E5αp−3(1+o(1))/bracerightbig
+.16
+(iii) Let 3 < p≤5. Then by (1.5), (3.17) and (4.10), we have
+λ(α) = 8α−2/braceleftbig
+C0,3+H2αp−3+H3α2+O(α4)/bracerightbig2(4.11)
+×/bracketleftbig
+4bα2/braceleftbig
+C0,3+H2αp−3+H3α2+O(α4)/bracerightbig/braceleftbig
+E0,3+E5αp−3(1+o(1))/bracerightbig
++1/bracketrightbig
+.
+(iv) Letp >5. Then by (1.27), (3.16) and (4.10), we have
+λ(α) = 8α−2/braceleftbig
+C0,3+H3α2+o(α2)/bracerightbig2(4.12)
+×/bracketleftbig
+4bα2/braceleftbig
+C0,3+H3α2+o(α2)/bracerightbig/braceleftbig
+E0,3+E5αp−3(1+o(1))/bracerightbig
++1/bracketrightbig
+.
+Thus the proof of Theorem 1.8 is complete.
+References
+[1]C. O. Alves, F. J. S. A. Corr ´ea, T. F. Ma, Positive solutions for a quasilinear
+elliptic equation of Kirchhoﬀ type, Comput. Math. Appl. 49(2005), 85–93.
+[2]B. Cheng, New existence and multiplicity of nontrivial solutions for nonlocal ellipt ic
+Kirchhoﬀ type problems, J. Math. Anal. Appl. 394(2012), No. 2, 488–495.
+[3]F. J. S. A. Corr ˆea,On positive solutions of nonlocal and nonvariational elliptic
+problems, Nonlinear Anal. 59(2004), 1147–1155.
+[4]F. J. S. A. D. Corr ˆea, C. de Morais Filho, Onaclassofnonlocalellipticproblems
+via Galerkin method, J. Math. Anal. Appl. 310(2005), No. 1, 177–187.
+[5]B. Gidas, W. M. Ni, L. Nirenberg, Symmetry and related properties via the
+maximum principle, Comm. Math. Phys. 68(1979), 209–243.
+[6]C. S. Goodrich, A topological approach to nonlocal elliptic partial diﬀerential equa-
+tions on an annulus, Math. Nachr. 294(2021), 286–309.
+[7]C. S. Goodrich, A topological approach to a class of one-dimensional Kirchhoﬀ equa -
+tions,Proc. Amer. Math. Soc. Ser. B 8(2021), 158–172.
+[8]C. S. Goodrich, A one-dimensional Kirchhoﬀ equation with generalized convolution
+coeﬃcients, J. Fixed Point Theory Appl. 23(2021), No. 4, Paper No. 73, 23 pp.
+[9]C. S. Goodrich, C. Lizama, Existence and monotonicity of nonlocal boundary value
+problems: the one-dimensional case, Proc. Roy. Soc. Edinburgh Sect. A 152(2022) No.
+1, 1–27.
+[10]B. Guo, H. Ding, R. Wang, J. Zhou, Blowup for a Kirchhoﬀ-type parabolic equa-
+tion with logarithmic nonlinearity, Anal. Appl. (Singap.) 20(2022), No. 5, 1089–1101.
+[11]G. Infante, Gennaro, P. Pietramala, F. Adri ´an F. Tojo, Non-trivialsolutions
+of local and non-local Neumann boundary-value problems, Proc. Roy. Soc. Edinburgh
+Sect. A146(2016), No. 2, 337–369.17
+[12]T. Laetsch, Thenumber ofsolutionsofanonlineartwopointboundaryvalueprob lem,
+Indiana Univ. Math. J. 20(1970/71), 1–13.
+[13]Z. Liang, F. Li, J. Shi, Positive solutions to Kirchhoﬀ type equations with non-
+linearity having prescribed asymptotic behavior, Ann. Inst. H. Poincar´ e C Anal. Non
+Lin´ eaire 31(2014), No. 1, 155–167.
+[14]O. M´endez, O, On the eigenvalue problem for a class of Kirchhoﬀ-type equations, J.
+Math. Anal. Appl. 494(2021) No.2, Paper No. 124671, 15 pp.
+[15]X. Shao, G. Tang, Blow-up phenomena for a Kirchhoﬀ-type parabolic equation with
+logarithmic nonlinearity, Appl. Math. Lett. 116(2021), Paper No. 106969, 8 pp.
+[16]T. Shibata, Bifurcation diagrams of one-dimensional Kirchhoﬀ type equations, Adv.
+Nonlinear Anal. 12(2023), 356–368.
+[17]T. Shibata, Global and asymptotic behaviors of bifurcation curves of one-dime nsional
+nonlocal elliptic equations, J. Math. Anal. Appl. 516(2022), No. 2, 126525.
+[18]T. Shibata, Asymptoticbehaviorofsolutioncurvesofnonlocalone-dimensiona lelliptic
+equations, Bound. Value Probl. Paper No. 63, (2022).
+[19]T. Shibata, Asymptotics of solution curves of Kirchhoﬀ type elliptic equations wit h
+logarithmic Kirchhoﬀ function, Qual. Theory Dyn. Syst. 22(2023), No.2, Paper No. 64,
+16 pp.
+[20]R. Sta´nczy,Nonlocal elliptic equations, Nonlinear Anal. 47(2001), 3579–3584.
+[21]W. Wang, W. Tang, Bifurcation of positive solutions for a nonlocal problem,
+Mediterr. J. Math. 13(2016), 3955–3964.

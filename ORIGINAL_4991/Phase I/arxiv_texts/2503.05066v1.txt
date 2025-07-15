@@ -1,0 +1,1237 @@
+Capacity-Aware Inference: Mitigating the Straggler Effect in
+Mixture of Experts
+Shwai He1Weilin Cai2Jiayi Huang2Ang Li1
+1University of Maryland, College Park
+2The Hong Kong University of Science and Technology (Guangzhou)
+shwaihe@umd.edu, angliece@umd.edu
+Abstract
+The Mixture of Experts (MoE) is an effective
+architecture for scaling large language mod-
+els by leveraging sparse expert activation, op-
+timizing the trade-off between performance
+and efficiency. However, under expert paral-
+lelism, MoE suffers from inference inefficien-
+cies due to imbalanced token-to-expert assign-
+ment, where some experts are overloaded while
+others remain underutilized. This imbalance
+leads to poor resource utilization and increased
+latency, as the most burdened expert dictates
+the overall delay, a phenomenon we define
+as the Straggler Effect . To mitigate this, we
+propose Capacity-Aware Inference, including
+two key techniques: (1) Capacity-Aware To-
+ken Drop , which discards overloaded tokens
+to regulate the maximum latency of MoE, and
+(2)Capacity-Aware Token Reroute , which re-
+allocates overflowed tokens to underutilized ex-
+perts, balancing the token distribution. These
+techniques collectively optimize both high-load
+and low-load expert utilization, leading to a
+more efficient MoE inference pipeline. Exten-
+sive experiments demonstrate the effectiveness
+of our methods, showing significant improve-
+ments in inference efficiency, e.g., 0.2% aver-
+age performance increase and a 1.94 ×infer-
+ence speedup on Mixtral-8 ×7B-Instruct.
+1 Introduction
+In recent years, the rapid evolution of Large Lan-
+guage Models (LLMs) (OpenAI, 2024; Team,
+2024a; DeepSeek-AI et al., 2024b) has driven a
+wave of innovations, continuously expanding the
+frontiers of AI research and applications. Among
+the model architectural innovations, the Mixture of
+Experts (MoE) framework has emerged as a piv-
+otal technique for optimizing the cost-performance
+trade-off in LLMs. Specifically, MoE (Shazeer
+et al., 2017a; Fedus et al., 2022) enhances scalabil-
+ity by integrating multiple experts while activating
+only a subset per input. This selective activation
+10 20 30 40 50 60
+Expert ID01234567Normalized LoadMax Expert Latency
+Straggler Expert
+High-load Experts
+Low-load ExpertsFigure 1: Illustration of the Straggler Effect in MoE
+Inference , where the most burdened expert (i.e., Strag-
+gler Expert) dictates the overall latency.
+substantially improves model performance with-
+out a corresponding increase in computational cost,
+effectively balancing efficiency and performance.
+Despite the success of MoE, a key efficiency
+challenge lies in the imbalanced token-to-expert
+distribution, which results in some experts being
+overloaded while others remain underutilized (Lep-
+ikhin et al., 2021; Zoph et al., 2022). In the context
+of expert parallelism, low-load experts complete
+their computations faster but must wait for high-
+load experts to finish, leading to inefficient resource
+utilization and increased latency. As illustrated in
+Figure 1, this phenomenon is defined as the Strag-
+gler Effect , where the most burdened expert dic-
+tates the overall latency of the MoE layer.
+While auxiliary balance losses have been incor-
+porated into the training process to alleviate im-
+balance (Shazeer et al., 2017a; Fedus et al., 2022;
+DeepSeek-AI et al., 2024b), these techniques re-
+main ineffective in mitigating imbalance during
+inference. Specifically, as shown in Figure 1, our
+findings reveal a highly uneven token distribution
+among experts, with the highest-load expert han-
+dling more than seven times the expected average
+load. Moreover, managing such an imbalance dur-
+ing inference often incurs additional resource costs.
+For instance, DeepSeek-V3 addresses this issue by
+duplicating high-load experts and deploying themarXiv:2503.05066v1  [cs.LG]  7 Mar 2025redundantly (DeepSeek-AI et al., 2024b). This
+motivates us to explore efficient token-to-expert
+assignment through two key questions: (1) How to
+prevent extreme overloading in high-load experts?
+and (2) How can we utilize the available capacity
+of low-load experts?
+We address these challenges through Capacity-
+Aware Inference. For high-load experts, we intro-
+duce Capacity-Aware Token Drop , a technique that
+removes excessive tokens from overloaded experts.
+On the one hand, eliminating these excess tokens
+alleviates extreme load imbalances, significantly
+enhancing efficiency. On the other hand, drop-
+ping these tokens minimally impacts model perfor-
+mance, as they constitute only a small fraction of
+the total tokens. For low-load experts, we extend
+Token Drop with Capacity-Aware Token Reroute ,
+which leverages the available capacity of underuti-
+lized experts to process overflowed tokens. Token
+Reroute further enhances the performance of To-
+ken Drop within the capacity-constrained inference
+framework. Extensive experimental results vali-
+date the effectiveness of our proposed techniques,
+demonstrating significant improvements in both ef-
+ficiency and performance, e.g., 0.2% average per-
+formance increase and a 1.94 ×inference speedup
+in Mixtral-8 ×7B-Instruct. In short, our contribu-
+tions are in three folds:
+•We identify the Straggler Effect caused by to-
+ken imbalance at inference time in Mixture of
+Experts, highlighting the optimization poten-
+tial for reducing latency.
+•Toward token imbalance, we propose Token
+Drop and Token Reroute to enhance the bal-
+anced utilization of experts.
+•Experimental results demonstrate the effec-
+tiveness of Token Drop and Token Reroute,
+achieving significant improvements in expert
+utilization and inference efficiency.
+2 Related Works
+Mixture of Experts Models The Mixture of Ex-
+perts (MoE) is a kind of neural network architec-
+ture with an extended set of parameters (referred to
+as “experts”) controlled by a router, which is first
+introduced in the context of conditional computa-
+tion (Jacobs et al., 1991; Jordan and Jacobs, 1994).
+The potential of sparse activation in MoE is sub-
+sequently exploited by (Shazeer et al., 2017b) for
+efficient training and inference on pretrained mod-
+els with special designs, opening the door for MoEin various vision (Riquelme et al., 2021) and lan-
+guage (Lepikhin et al., 2020; Du et al., 2022; Fedus
+et al., 2022) scenarios. Attributed to its exceptional
+efficiency, MoE has been adopted as a foundational
+framework in the designs of large language mod-
+els (Jiang et al., 2024; Dai et al., 2024; Xue et al.,
+2024a; Zhu et al., 2024; Team, 2024b), achieving
+superior scaling laws at low computational costs.
+Despite these advancements, MoE still faces effi-
+ciency challenges in both training and inference
+(Cai et al., 2024), and our work specifically focuses
+on enhancing inference-time efficiency.
+Imbalance in Mixture of Experts The imbal-
+ance in token-to-expert assignments (Zhou et al.,
+2022; Chen et al., 2022) poses a significant chal-
+lenge to the deployment of Mixture of Experts
+(MoE). This imbalance leads to inefficiencies in
+memory, computation, and communication (He
+et al., 2023; Song et al., 2023; Xue et al., 2024b),
+making it a critical bottleneck for MoE scalabil-
+ity and deployment. To mitigate this issue, an
+auxiliary balance loss (Shazeer et al., 2017a) is
+incorporated into the training process to encour-
+age more uniform token distribution across ex-
+perts. Additionally, various training strategies have
+been introduced to further balance token assign-
+ments: Switch-Transformer (Fedus et al., 2022)
+and DeepSeek-V2 (DeepSeek-AI et al., 2024a) im-
+plement Token Drop to alleviate expert overload,
+while DeepSeek-V3 (DeepSeek-AI et al., 2024b)
+introduces an additional sequence-level auxiliary
+loss to prevent severe token imbalance.
+However, these techniques primarily focus on
+training and fail to ensure balanced token as-
+signments during inference. Instead, addressing
+token imbalance at inference often incurs addi-
+tional resource costs. For example, DeepSeek-V3
+(DeepSeek-AI et al., 2024b) mitigates this issue by
+duplicating high-load experts and deploying them
+redundantly. In contrast, our approach effectively
+balances token assignments without introducing
+additional computational overhead.
+3 Background and Motivation
+3.1 Extremely Imbalanced Expert Utilization
+A Mixture of Experts (MoE) layer consists of a
+collection of nexperts, {E1,E2, . . . ,En}and a
+routerGthat dynamically selects the most relevant
+experts for a given input x. The router computes
+selection scores G(x), for all experts and selectsthe top kexperts, resulting in a sparse activation:
+K= TopK(Softmax( G(x)), k). (1)
+The input xis processed by the selected experts,
+and their outputs are combined into a weighted
+sum based on the router’s scores. This process is
+mathematically expressed as:
+y=X
+i∈KG(x)i·Ei(x), (2)
+where Kdenotes the indices of selected experts,
+G(x)irepresents the selection score for the i-th
+expert, and Ei(x)is the output from the i-th ex-
+pert. In transformer models, the MoE layer usually
+replaces the feed-forward network (FFN) and only
+activates a subset of experts for each input.
+While experts in MoE can be deployed in paral-
+lel, imbalanced token-to-expert assignments lead to
+varying levels of expert utilization and introduce po-
+tential latency. Despite the incorporation of balanc-
+ing techniques during training, the load imbalance
+persists during inference. To further investigate this
+issue, we conduct preliminary experiments to ana-
+lyze expert-specific utilization patterns and assess
+the impact of imbalance on practical latency.
+To quantify expert utilization, we measure the
+load across different experts. Given an input batch
+x∈Rb×s×dwith batch size band sequence length
+s, the total number of tokens is t=bs. Since each
+token selects kout of nexperts, the expected token
+count per expert is:
+¯N=tk
+n. (3)
+However, due to imbalanced token assignments,
+some experts may receive more or fewer tokens
+than the expected value.
+0 10 20 30 40 50 60
+Expert ID01234567Normalized LoadRTE
+WinoGrande
+OBQA
+BoolQ
+PIQA
+Figure 2: Expert-wise load , where each load value
+is divided by ¯Nfor clarity. To ensure generality, we
+visualize loads across different datasets.
+Figure 2 illustrates the normalized peak tokens
+load for each expert to accommodate all tokenswithin a single layer of OLMoE, where some ex-
+perts receive an excessively large number of to-
+kens (e.g., more than seven times of average load),
+which resulting in significant latency. A detailed
+layer-by-layer analysis is provided in Appendix B.
+3.2 Motivation – the Straggler Effect
+Under the expert parallelism scenario, where the
+number of assigned tokens dictates the processing
+time of each expert, high-load experts become the
+bottleneck for overall latency within an MoE layer.
+Specifically, low-load experts remain idle while
+waiting for high-load experts to complete, leading
+to synchronization delays. Therefore, the latency
+of an MoE layer is given by:
+L∝max({Ni}n
+i=1), (4)
+where Nirepresents the number of tokens assigned
+to the i-th expert, with the total token allocation
+satisfyingPn
+i=1Ni=tk. According to Eq. 4,
+the latency follows the Straggler Effect: the most
+burdened expert dictates the overall latency of
+the MoE layer . In the worst case, all tokens are
+assigned to the same group of experts, underuti-
+lizing the parallel processing capability of MoE.
+Conversely, distributing tokens evenly across ex-
+perts maximizes computational efficiency and fully
+leverages the parallelism of multiple experts. With
+the bounds of the ideal and worst cases, the range
+of the highest load is given by:
+max({Ni}n
+i=1)∈[¯N,n¯N
+k]. (5)
+However, existing MoE models often adopt a drop-
+less strategy during inference, which fails to ad-
+dress token imbalance and can lead to significantly
+increased latency.
+Given that the imbalance stems from excessively
+high- and low-load experts, we address this issue
+by exploring the following questions: (1) Are there
+redundant tokens assigned to High-Load Experts ?
+That is, can the MoE model maintain its perfor-
+mance without these excess tokens? (2) Do Low-
+Load Experts matter? Should these experts be
+removed, or should their utilization be increased to
+sustain or even enhance overall efficacy?
+4 Methodology
+Token Drop Regulates the Latency of High-
+Load Experts To address the question aboutExpert ID Expert  Load
+Expert ID Expert Load(a) Capacity-Aware Token Drop
+Expert ID Expert ID 
+Expert  Load
+Expert Load (b) Capacity-Aware Token Reroute
+Figure 3: Illustrations of (a) Capacity-Aware Token Drop and (b) Capacity-Aware Token Reroute . Token Drop
+mitigates overload by discarding excess tokens from overloaded experts, while Token Reroute redistributes these
+tokens to underutilized experts, enhancing load balancing.
+overloaded experts, we first regulate their maxi-
+mum utilization. Specifically, we introduce expert
+capacity to control token allocation. Given a ca-
+pacity factor γ, the maximum number of tokens
+assigned to each expert (i.e., expert capacity) is
+defined as:
+C=γ¯N. (6)
+A higher γallows more tokens to be retained, but
+experts handling excessive tokens may introduce
+latency. Conversely, a lower γenforces stricter ca-
+pacity limits, reducing latency by discarding more
+tokens, but at the risk of performance degradation.
+With the involvement of expert capacity γ, we con-
+strain the upper bound of latency as follows:
+max({Ni}n
+i=1) =(
+γ¯N γ < 1
+within [¯N, γ ¯N]γ≥1,(7)
+where γis typically much smaller thann
+k. This
+constraint ensures that no expert exceeds the spec-
+ified capacity limit, effectively mitigating severe
+load imbalances and reducing latency.
+Specifically, when a capacity constraint is im-
+posed on each expert, experts must evaluate the
+volume of assigned tokens before execution. For
+experts with a load below the predefined capacity,
+there is no difference between capacity-constrained
+inference and traditional inference. However, when
+the load exceeds the capacity, experts must discard
+excess tokens to adhere to the constraint. To ad-
+dress this, we introduce a scoring function Sto
+evaluate each token:
+S(x) =
+s11s12. . . s 1n
+s21s22. . . s 2n
+............
+st1st2. . . s tn
+, (8)
+where sijdenotes the importance score of the map-
+ping from the i-th token to the j-th expert. Withthis score, each overflowed expert selectively dis-
+cards those with lower scores. For the j-th expert:
+Kj=Nj−C, (9)
+τj=KthValue (S[:, j], Kj), (10)
+where Kdenotes the number of overflowed tokens,
+τrepresents the K-th smallest value in S[:, j], serv-
+ing as a threshold to filter out excess tokens:
+Tj← {t| S[t, j]≤τj} (11)
+S[Tj, j]←0, (12)
+where Tjdenotes the indices of the rejected tokens
+from the j-th Expert. We mask the scores of the
+rejected tokens and prevent them from being sent
+to their corresponding overflowed experts.
+Regarding the specific scoring function, we ex-
+plore multiple efficient metrics and summarize
+them as follows:
+Order: Discarding later tokens once earlier to-
+kens have filled the expert capacity. This strategy
+was first introduced in Switch-Transformer (Fedus
+et al., 2022) during training, and we extend it to the
+inference phase.
+Reverse Order: Instead of discarding later to-
+kens, this approach removes earlier tokens to com-
+ply with the expert capacity constraint.
+Random: Dropping Excess tokens randomly to
+meet the predefined expert capacity constraints.
+Score: Using the gating score G(x)as an im-
+portance indicator and discarding tokens.
+Among these metrics, “Order” and “Reverse Or-
+der” are unstable, as shuffling sequences within a
+batch may result in different tokens being dropped
+(Hayes et al., 2024). “Random” assumes all tokens
+have an equal probability of being dropped. In
+contrast, “Score” is stable, unaffected by sequence
+order within a batch.Algorithm 1 Capacity-Aware Token Reroute
+Require: Expert Capacity C, Rounds R
+Ensure: Updated Scores S
+1:forr= 1, . . . , R do
+2: M←Top-k(S, k)
+3: ▷Indicator for top- kmappings
+4:Sr← S ⊙ M
+5: ▷Mask out the non-selected
+6: forj= 1, . . . , n do
+7: Nj← ||S r[:, j]||0
+8: ▷Compute the load
+9: Kj←Nj−C
+10: ▷Number of excess tokens
+11: ifk >0then
+12: τj←KthValue (Sr[:, j], Kj)
+13: ▷Threshold for filtering
+14: Tj← {t| Sr[t, j]≤τj}
+15: ▷Indices of retained tokens
+16: S[Tj, j]←0
+17: ▷Discard overflowed assignments
+18: end if
+19: end for
+20:end for
+Token Reroute Enhances the Utilization of Low-
+load Experts Token Drop exclusively targets
+overloaded experts by discarding overflowed to-
+kens that exceed expert capacity but does not ad-
+dress the underutilization of low-load experts. Next,
+we introduce Token Reroute to ensure a more bal-
+anced token-to-expert allocation. For tokens re-
+jected by overflowed experts, we reselect under-
+utilized experts based on the updated importance
+scores following Token Drop. As shown in Equa-
+tion 12, masking the mappings to overflowed ex-
+perts prevents these tokens from being reassigned
+to them, thereby encouraging their redistribution to
+other available experts. As illustrated in Algorithm
+1, the process of masking and recomputing can
+be repeated iteratively, gradually achieving a more
+balanced token-to-expert assignment. Notably, the
+extra cost of Token Routing is minimal, as it occurs
+before tokens are assigned to each expert and op-
+erates solely on the lightweight importance matrix.
+Additionally, overflowed experts and tokens that
+have already selected kexperts are excluded from
+subsequent iterations, further minimizing the addi-
+tional computational cost of the Top- koperation.5 Experiments
+In this section, we conduct experiments under
+capacity-aware inference for MoE, with deploy-
+ment details provided in Appendix A.
+5.1 Token Drop for High-load Experts
+Investigation on Token Drop Metrics To assess
+the effectiveness of different metrics in regulating
+token load to the target capacity, we compare var-
+ious approaches on OLMoE by discarding excess
+tokens and applying a range of capacity factors.
+As shown in Table 1, varying the dropping met-
+rics impacts performance at different levels. With
+higher capacities, the model maintains compara-
+ble performance even when using naive selection
+methods like “Random”. However, as the capac-
+ity factor decreases, performance degradation be-
+comes more pronounced, particularly for “Order”,
+“Reverse Order”, and “Random”. Notably, “Score”
+consistently outperforms other methods by a large
+margin, demonstrating the effectiveness of leverag-
+ing gating scores as an importance measure. Con-
+sequently, we adopt "Score" as the default metric.
+Efficiency Gains from Capacity-Constrained
+Inference We next explore the efficiency im-
+provements achieved by imposing expert capac-
+ity. Specifically, we employ distributed inference
+using eight A30 GPUs, utilizing an 8-way Data
+Parallelism (DP) and 8-way Expert Parallelism
+(EP) strategy through the Megatron-LM framework
+(Shoeybi et al., 2019). In Mixtral-8 ×7B-Instruct
+model, each GPU hosts a single expert, whereas,
+in models like OLMoE-Instruct, multiple experts
+must be deployed on a single GPU (e.g., eight ex-
+perts per GPU) due to GPU resource constraints.
+As illustrated in Figure 4, imposing constraints
+on expert capacity considerably accelerates infer-
+ence across the four tested MoE models, in com-
+parison to the baseline model without capacity lim-
+itations. The enhanced efficiency of each MoE
+layer (Figure 4 (a)) contributes to faster end-to-end
+inference (Figure 4 (b)). For instance, when the
+capacity factor γis set to 1.5, this configuration
+achieves a 1.94 ×speedup for a single MoE mod-
+ule and a 1.37 ×speedup for the entire end-to-end
+model. Furthermore, it is evident that the efficiency
+improves as the capacity decreases.
+Notably, the degree of acceleration is influenced
+by the numerical relationship between the num-
+ber of experts and GPUs in Expert Parallelism.
+In Mixtral- 8×7B-Instruct, one-to-one deploymentTable 1: Performance comparison across different capacity factors and selection metrics (i.e., Order, Reverse
+Order, Random, and Score). The baseline operates without capacity constraints, represented as +∞. Due to inherent
+randomness, we report the average performance over multiple random seeds.
+Method γ OBQA PIQA RTE WinoGrande BoolQ ARC-C HellaSwag MMLU Avg.
+Baseline +∞ 45.6 80.1 53.7 71.2 74.7 54.5 79.4 52.5 64.0
+Order
+3.043.6 75.8 53.1 71.2 74.4 50.5 78.6 51.7 62.4
+Reverse Order 44.8 76.1 50.9 71.0 74.8 52.8 78.7 51.7 62.6
+Random 44.0 76.3 52.0 71.3 75.0 53.5 78.9 51.8 62.9
+Score 45.2 79.9 51.6 71.7 74.4 55.2 79.2 51.9 63.6
+Order
+2.042.0 71.5 53.1 71.2 74.2 49.5 76.6 48.4 60.8
+Reverse Order 41.8 71.8 52.7 71.0 73.9 49.4 76.4 49.2 60.8
+Random 41.2 75.2 52.7 71.0 74.1 50.1 76.8 49.4 61.3
+Score 44.0 79.7 53.8 72.1 74.2 54.4 78.4 50.4 63.4
+Order
+1.538.8 67.1 48.7 68.5 73.3 46.3 54.0 43.7 55.1
+Reverse Order 40.2 67.3 52.7 70.1 72.7 45.5 54.4 45.2 56.0
+Random 39.6 72.1 57.8 68.3 73.8 45.8 74.2 45.2 59.6
+Score 43.2 76.1 56.3 69.9 73.4 52.9 77.1 47.5 62.1
+Order
+1.036.0 60.2 53.4 62.6 69.6 38.7 58.0 36.9 51.9
+Reverse Order 36.2 59.5 50.5 63.3 69.4 39.4 58.7 38.7 52.0
+Random 34.0 63.1 55.2 60.8 70.2 40.5 66.9 35.7 53.3
+Score 40.4 71.5 57.0 64.3 71.9 45.4 72.0 39.7 57.8
+Baseline =3.0
+=2.0
+=1.5
+=1.0
+OLMoE-Instruct Deepseek-V2-Lite Qwen1.5-MoE-Chat Mixtral-8×7B-Instruct1.01.52.02.5Speedup
+1.00 1.00 1.00 1.001.101.131.07 1.081.32
+1.231.311.66
+1.54
+1.301.491.94
+1.82
+1.411.662.57
+(a) Single MoE Layer
+OLMoE-Instruct Deepseek-V2-Lite Qwen1.5-MoE-Chat Mixtral-8×7B-Instruct1.01.21.41.6Speedup
+1.00 1.00 1.00 1.001.06 1.07
+1.04 1.031.18
+1.121.101.24 1.25
+1.181.211.371.46
+1.251.361.68 (b) End-to-End Model
+Figure 4: Speedup achieved by capacity-aware inference compared to the baseline without capacity constraints.
+maximizes the effectiveness of capacity-aware in-
+ference. Conversely, in models where multiple
+experts share a single GPU, the acceleration gains
+are relatively modest. This occurs because the ag-
+gregated load from multiple experts diminishes the
+proportion of reduced load, which is achieved by
+limiting the straggler expert. Additionally, we be-
+lieve that further system optimizations or allocating
+more GPUs for expert distribution would further
+enhance the potential of capacity-aware inference.
+Mitigating the Straggler Effect with Minimal
+Token Discarding Given that expert capacity en-
+forces MoE layers to discard overflowed tokens,
+we next establish the relationship between expert
+capacity and the corresponding number of dropped
+tokens. Specifically, for a capacity factor γ, thetotal proportion of dropped tokens is given by:
+DT=Pn
+i=1ReLU (Ni−γ¯N)Pn
+i=1Ni, (13)
+where ReLU (Ni−γ¯N)represent the number of
+dropped tokens for the i-th expert.
+Figure 5 visualizes the number of dropped tokens
+across different capacity factors for various test
+datasets, with a more detailed illustration provided
+in Appendix C. Although the most overloaded ex-
+pert receives much more tokens than the expected
+number of tokens ¯N, regulating the maximum ca-
+pacity has a limited impact on the overall number
+of accommodated tokens (e.g., reducing it by less
+than 20% under a capacity factor of 2.0), thereby
+maintaining competitive performance even after
+discarding overflow tokens. Moreover, dropping
+a small proportion of overflowed tokens can sig-0 1 2 3 4 5 6 7 8
+Capacity Factor 
+020406080100Dropped T okens (%)OBQA
+PIQA
+RTE
+WinoGrande
+BoolQFigure 5: Analysis of dropped tokens with respect to
+capacity factors.
+nificantly reduce the latency caused by overloaded
+experts (e.g., dropping 12% of overloaded tokens
+promotes the inference speed by 94% in Mixtral-
+8×7B-Instruct), highlighting the effectiveness of
+capacity-constrained inference in improving both
+performance and efficiency.
+5.2 Token Reroute to Low-load Experts
+Besides the experts overloaded with tokens, some
+low-load experts receive only a few tokens, raising
+important questions: Are these low-load experts
+redundant and removable, or should they be lever-
+aged to balance token allocation? Recent works
+(Lu et al., 2024; He et al., 2024) remove less im-
+portant experts to improve efficiency, while our
+proposed Token Reroute increases their utilization
+by redistributing tokens for a more balanced as-
+signment. Next, we investigate the significance of
+low-load experts and validate the effectiveness of
+Token Reroute.
+The Critical Role of Low-Load Experts To ex-
+plore the impact of low-load experts, we further
+compare dropping tokens (i.e., Token Drop) with
+skipping experts (i.e., Expert Drop). For Expert
+Drop, we adopt a conservative strategy that dynam-
+ically skips the 10% of experts with the lowest
+token loads. Notably, the proportion of tokens re-
+moved in Expert Drop is significantly lower than in
+Token Drop (2% in Expert Drop vs. 12% in Token
+Drop on OLMoE-Instruct).
+Despite this, as shown in Table 2, Expert Drop
+experiences significant performance degradation
+and is outperformed by Token Drop by a large
+margin. Moreover, due to the small proportion
+of tokens assigned to low-load experts, removing
+these experts provides only marginal improvementsin inference speed (less than a 5% speedup). These
+findings indicate that retaining low-load experts
+better preserves the performance of MoE models.
+Effectiveness of Token Reroute We examine
+the effectiveness of utilizing low-load experts by
+rerouting overflowed tokens to them (i.e., Token
+Reroute) instead of simply discarding these tokens
+to meet the target capacity. Comparing Token
+Reroute with Token Drop, redistributing excess
+tokens to low-load experts enhances performance,
+yielding a 0.9% improvement in the average per-
+formance of Qwen1.5-MoE-Chat. Furthermore,
+considering the performance degradation observed
+in Expert Drop, our findings highlight the crucial
+role of low-load experts in maintaining model ef-
+fectiveness.
+5.3 Ablation Study
+Model-Specific Imbalanced Property We ex-
+plore the imbalance property in various models,
+such as OLMoE, DeepSeek-V2-Lite and Qwen1.5-
+MoE, which differ in both architecture (e.g., depth
+and width) and training strategies (e.g., training
+from scratch (Muennighoff et al., 2024; DeepSeek-
+AI et al., 2024a) vs. training after upcycling (Jiang
+et al., 2024; Team, 2024b)).
+On the one hand, our findings in Appendix B
+reveal different training strategies result in signif-
+icantly varying levels of imbalance. Specifically,
+MoE models trained from scratch exhibit a much
+higher degree of imbalance. For instance, OLMoE
+and DeepSeek-V2-Lite experience peak expert-
+wise token allocations exceeding 5¯N, whereas
+Qwen1.5-MoE and Mixtral are upcycled from
+dense language models, maintain a more balanced
+distribution, with peak expert-wise allocations stay-
+ing below 3¯N. This is because upcycling initializes
+experts with the same parameters (Komatsuzaki
+et al., 2023), while experts are randomly initialized
+when training from scratch, leading to a greater
+imbalance in token assignments (Lo et al., 2024).
+On the other hand, despite the widespread use of
+auxiliary balance loss in MoE training, it does not
+guarantee balanced token assignments across ex-
+perts, as token distribution still varies significantly
+during inference on test data. This necessitates inte-
+grating expert capacity into the inference process.
+Capacity Factor Beyond the specific capacity
+values presented in Table 1, we further investigate a
+wide range of capacity factors in Figure 6, spanning
+from 0.0 to 3.0. We exclude values exceeding 3.0,Table 2: Comparison of Expert Drop, Token Drop and Token Reroute . The capacity factor γis set to 2.0 for
+OLMoE and DeepSeek-V2-Lite, and 1.5 for Qwen1.5-MoE-Chat and Mixtral-8 ×7B-Instruct. In Expert Drop, we
+only skip one out of eight experts for Mixtral-8 ×7B-Instruct, and 10% of the lowest load experts for other models.
+Model Method OBQA PIQA RTE WinoGrande BoolQ ARC-C HellaSwag MMLU GSM8K Avg.
+OLMoE-InstructBaseline 47.6 80.2 67.9 69.9 80.7 57.0 80.6 52.8 35.1 63.5
+Expert Drop 44.6 76.9 64.0 67.6 78.2 54.4 77.0 50.6 31.6 60.5
+Token Drop 47.8 77.9 64.6 69.2 80.0 57.2 79.7 51.5 32.4 62.3
+Token Reroute 47.2 79.4 66.3 70.5 80.9 57.1 80.3 52.3 34.4 63.2
+Qwen1.5-MoE-ChatBaseline 42.4 79.9 72.9 70.0 81.3 54.1 80.4 59.8 52.0 65.9
+Expert Drop 41.4 78.7 71.2 68.6 80.6 52.9 79.1 58.1 49.4 64.4
+Token Drop 40.4 78.8 72.6 69.1 80.9 53.0 80.0 59.3 51.9 65.1
+Token Reroute 43.4 79.1 72.6 69.6 81.1 53.4 80.3 59.3 52.1 65.6
+DeepSeek-V2-Lite-ChatBaseline 45.4 81.4 72.6 75.5 82.9 61.0 81.5 57.3 66.4 69.3
+Expert Drop 41.8 77.6 71.9 72.5 81.6 57.1 75.5 53.3 56.0 65.3
+Token Drop 45.2 78.3 72.6 74.0 83.2 59.3 80.9 57.3 62.7 68.2
+Token Reroute 45.4 79.4 73.3 75.4 83.2 60.4 81.5 57.2 64.1 68.9
+Mixtral-8 ×7B-InstructBaseline 47.4 84.8 71.8 82.5 88.5 71.7 87.5 70.2 64.2 74.3
+Expert Drop 46.8 83.2 70.1 81.3 87.6 67.1 85.6 66.2 62.3 72.2
+Token Drop 46.4 83.3 71.7 82.2 88.3 71.2 87.4 69.1 64.7 73.8
+Token Reroute 47.8 85.0 71.8 83.0 88.6 71.5 87.6 70.2 64.6 74.5
+WinoGrande ARC-C HellaSwag MMLU
+3.0 2.6 2.2 1.8 1.4 1.0 0.6 0.2
+Capacity Factor304050607080Performance (%)
+(a) OLMoE
+3.0 2.6 2.2 1.8 1.4 1.0 0.6 0.2
+Capacity Factor304050607080Performance (%)
+ (b) OLMoE-Instruct
+3.0 2.6 2.2 1.8 1.4 1.0 0.6 0.2
+Capacity Factor20304050607080Performance (%)
+ (c) Qwen1.5-MoE
+3.0 2.6 2.2 1.8 1.4 1.0 0.6 0.2
+Capacity Factor304050607080Performance (%)
+ (d) Qwen1.5-MoE-Chat
+Figure 6: Performance change as capacity factors decrease from 3.0 to 0.0.
+as their performance closely aligns with capacity-
+agnostic scenarios. By analyzing the performance
+changes when decreasing the capacity factor, we
+find that setting γto 2.0 is sufficient to maintain
+performance comparable to the original models.
+This means allowing each expert to handle utmost
+twice the average number of tokens maintains the
+performance of capacity-free inference. However,
+maintaining the performance becomes challenging
+under low capacity factors (e.g., 1.0), as high-load
+experts experience significant token drops.
+Rerouting Round The Token Reroute Algorithm
+iteratively discourages tokens from selecting over-
+flowed experts while encouraging their rerouting to
+other available experts, promoting a more balanced
+token distribution. As iterations progress, lower-
+score token-to-expert mappings are increasingly
+considered, further refining the redistribution pro-
+cess. Figure 7 illustrates the results across different
+iterations. In the first iteration, only excess tokens
+1 2 3 4 5
+Number of Iterations7072747678Performance (%)
+PIQA
+WinoGrande
+BoolQ
+HellaSwagFigure 7: Ablation study on the number of iterations for
+Token Reroute.
+are dropped, while token rerouting becomes more
+prominent in subsequent rounds. The first two
+rounds of token rerouting lead to significant per-
+formance improvements, after which performance
+begins to saturate. We attribute this saturation to the
+selection of additional low-score token-to-expert
+mappings, which have a smaller impact compared
+to the dominant token assignments.6 Conclusion
+In this paper, we first identify the imbalanced token-
+to-expert assignment in Mixture of Experts (MoE)
+and introduce the Straggler Effect in MoE infer-
+ence, where the highest-load expert becomes the
+efficiency bottleneck, dictating overall latency. To
+address this issue, we propose Capacity-Aware To-
+ken Drop, which alleviates excessive loads on indi-
+vidual experts, and Capacity-Aware Token Reroute,
+which enhances the utilization of underutilized ex-
+perts. Our findings and proposed methods offer
+valuable insights and effective strategies for im-
+proving MoE inference efficiency.
+Limitations
+Despite the progress we have made, our work still
+has certain limitations. First, our study focuses
+on a subset of MoE models, including OLMoE,
+Qwen1.5-MoE, DeepSeek-V2-Lite, and Mixtral.
+A promising direction for future work is to ex-
+tend our analysis and methods to other architec-
+tures to further validate their effectiveness across
+a broader range of MoE models. Second, our pro-
+posed Capacity-Aware Token Drop and Capacity-
+Aware Token Reroute strategies could be integrated
+into the training process, potentially enhancing
+both performance and efficiency.
+References
+2019. Winogrande: An adversarial winograd schema
+challenge at scale.
+Yonatan Bisk, Rowan Zellers, Ronan Le Bras, Jianfeng
+Gao, and Yejin Choi. 2019. Piqa: Reasoning about
+physical commonsense in natural language. Preprint ,
+arXiv:1911.11641.
+Weilin Cai, Juyong Jiang, Fan Wang, Jing Tang,
+Sunghun Kim, and Jiayi Huang. 2024. A survey
+on mixture of experts. Preprint , arXiv:2407.06204.
+Zixiang Chen, Yihe Deng, Yue Wu, Quanquan Gu,
+and Yuanzhi Li. 2022. Towards understanding the
+mixture-of-experts layer in deep learning. In Ad-
+vances in Neural Information Processing Systems .
+Christopher Clark, Kenton Lee, Ming-Wei Chang,
+Tom Kwiatkowski, Michael Collins, and Kristina
+Toutanova. 2019. Boolq: Exploring the surpris-
+ing difficulty of natural yes/no questions. Preprint ,
+arXiv:1905.10044.
+Peter Clark, Isaac Cowhey, Oren Etzioni, Tushar Khot,
+Ashish Sabharwal, Carissa Schoenick, and Oyvind
+Tafjord. 2018. Think you have solved questionanswering? try arc, the ai2 reasoning challenge.
+Preprint , arXiv:1803.05457.
+Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian,
+Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias
+Plappert, Jerry Tworek, Jacob Hilton, Reiichiro
+Nakano, Christopher Hesse, and John Schulman.
+2021. Training verifiers to solve math word prob-
+lems. arXiv preprint arXiv:2110.14168 .
+Damai Dai, Chengqi Deng, Chenggang Zhao, RX Xu,
+Huazuo Gao, Deli Chen, Jiashi Li, Wangding
+Zeng, Xingkai Yu, Y Wu, et al. 2024. Deepseek-
+moe: Towards ultimate expert specialization in
+mixture-of-experts language models. arXiv preprint
+arXiv:2401.06066 .
+DeepSeek-AI, Aixin Liu, Bei Feng, Bin Wang, Bingx-
+uan Wang, Bo Liu, Chenggang Zhao, Chengqi Dengr,
+Chong Ruan, Damai Dai, Daya Guo, Dejian Yang,
+Deli Chen, Dongjie Ji, Erhang Li, Fangyun Lin, Fuli
+Luo, Guangbo Hao, Guanting Chen, Guowei Li,
+H. Zhang, Hanwei Xu, Hao Yang, Haowei Zhang,
+Honghui Ding, Huajian Xin, Huazuo Gao, Hui Li,
+Hui Qu, J. L. Cai, Jian Liang, Jianzhong Guo, Ji-
+aqi Ni, Jiashi Li, Jin Chen, Jingyang Yuan, Junjie
+Qiu, Junxiao Song, Kai Dong, Kaige Gao, Kang
+Guan, Lean Wang, Lecong Zhang, Lei Xu, Leyi Xia,
+Liang Zhao, Liyue Zhang, Meng Li, Miaojun Wang,
+Mingchuan Zhang, Minghua Zhang, Minghui Tang,
+Mingming Li, Ning Tian, Panpan Huang, Peiyi Wang,
+Peng Zhang, Qihao Zhu, Qinyu Chen, Qiushi Du,
+R. J. Chen, R. L. Jin, Ruiqi Ge, Ruizhe Pan, Runxin
+Xu, Ruyi Chen, S. S. Li, Shanghao Lu, Shangyan
+Zhou, Shanhuang Chen, Shaoqing Wu, Shengfeng
+Ye, Shirong Ma, Shiyu Wang, Shuang Zhou, Shuip-
+ing Yu, Shunfeng Zhou, Size Zheng, T. Wang, Tian
+Pei, Tian Yuan, Tianyu Sun, W. L. Xiao, Wangding
+Zeng, Wei An, Wen Liu, Wenfeng Liang, Wenjun
+Gao, Wentao Zhang, X. Q. Li, Xiangyue Jin, Xi-
+anzu Wang, Xiao Bi, Xiaodong Liu, Xiaohan Wang,
+Xiaojin Shen, Xiaokang Chen, Xiaosha Chen, Xiao-
+tao Nie, Xiaowen Sun, Xiaoxiang Wang, Xin Liu,
+Xin Xie, Xingkai Yu, Xinnan Song, Xinyi Zhou,
+Xinyu Yang, Xuan Lu, Xuecheng Su, Y . Wu, Y . K.
+Li, Y . X. Wei, Y . X. Zhu, Yanhong Xu, Yanping
+Huang, Yao Li, Yao Zhao, Yaofeng Sun, Yaohui
+Li, Yaohui Wang, Yi Zheng, Yichao Zhang, Yiliang
+Xiong, Yilong Zhao, Ying He, Ying Tang, Yishi Piao,
+Yixin Dong, Yixuan Tan, Yiyuan Liu, Yongji Wang,
+Yongqiang Guo, Yuchen Zhu, Yuduan Wang, Yuheng
+Zou, Yukun Zha, Yunxian Ma, Yuting Yan, Yuxiang
+You, Yuxuan Liu, Z. Z. Ren, Zehui Ren, Zhangli
+Sha, Zhe Fu, Zhen Huang, Zhen Zhang, Zhenda Xie,
+Zhewen Hao, Zhihong Shao, Zhiniu Wen, Zhipeng
+Xu, Zhongyu Zhang, Zhuoshu Li, Zihan Wang, Zihui
+Gu, Zilin Li, and Ziwei Xie. 2024a. Deepseek-v2: A
+strong, economical, and efficient mixture-of-experts
+language model. Preprint , arXiv:2405.04434.
+DeepSeek-AI, Aixin Liu, Bei Feng, Bing Xue, Bingx-
+uan Wang, Bochao Wu, Chengda Lu, Chenggang
+Zhao, Chengqi Deng, Chenyu Zhang, Chong Ruan,
+Damai Dai, Daya Guo, Dejian Yang, Deli Chen,
+Dongjie Ji, Erhang Li, Fangyun Lin, Fucong Dai,Fuli Luo, Guangbo Hao, Guanting Chen, Guowei
+Li, H. Zhang, Han Bao, Hanwei Xu, Haocheng
+Wang, Haowei Zhang, Honghui Ding, Huajian Xin,
+Huazuo Gao, Hui Li, Hui Qu, J. L. Cai, Jian Liang,
+Jianzhong Guo, Jiaqi Ni, Jiashi Li, Jiawei Wang,
+Jin Chen, Jingchang Chen, Jingyang Yuan, Junjie
+Qiu, Junlong Li, Junxiao Song, Kai Dong, Kai Hu,
+Kaige Gao, Kang Guan, Kexin Huang, Kuai Yu, Lean
+Wang, Lecong Zhang, Lei Xu, Leyi Xia, Liang Zhao,
+Litong Wang, Liyue Zhang, Meng Li, Miaojun Wang,
+Mingchuan Zhang, Minghua Zhang, Minghui Tang,
+Mingming Li, Ning Tian, Panpan Huang, Peiyi Wang,
+Peng Zhang, Qiancheng Wang, Qihao Zhu, Qinyu
+Chen, Qiushi Du, R. J. Chen, R. L. Jin, Ruiqi Ge,
+Ruisong Zhang, Ruizhe Pan, Runji Wang, Runxin
+Xu, Ruoyu Zhang, Ruyi Chen, S. S. Li, Shanghao
+Lu, Shangyan Zhou, Shanhuang Chen, Shaoqing Wu,
+Shengfeng Ye, Shengfeng Ye, Shirong Ma, Shiyu
+Wang, Shuang Zhou, Shuiping Yu, Shunfeng Zhou,
+Shuting Pan, T. Wang, Tao Yun, Tian Pei, Tianyu
+Sun, W. L. Xiao, Wangding Zeng, Wanjia Zhao, Wei
+An, Wen Liu, Wenfeng Liang, Wenjun Gao, Wenqin
+Yu, Wentao Zhang, X. Q. Li, Xiangyue Jin, Xianzu
+Wang, Xiao Bi, Xiaodong Liu, Xiaohan Wang, Xi-
+aojin Shen, Xiaokang Chen, Xiaokang Zhang, Xi-
+aosha Chen, Xiaotao Nie, Xiaowen Sun, Xiaoxiang
+Wang, Xin Cheng, Xin Liu, Xin Xie, Xingchao Liu,
+Xingkai Yu, Xinnan Song, Xinxia Shan, Xinyi Zhou,
+Xinyu Yang, Xinyuan Li, Xuecheng Su, Xuheng Lin,
+Y . K. Li, Y . Q. Wang, Y . X. Wei, Y . X. Zhu, Yang
+Zhang, Yanhong Xu, Yanhong Xu, Yanping Huang,
+Yao Li, Yao Zhao, Yaofeng Sun, Yaohui Li, Yao-
+hui Wang, Yi Yu, Yi Zheng, Yichao Zhang, Yifan
+Shi, Yiliang Xiong, Ying He, Ying Tang, Yishi Piao,
+Yisong Wang, Yixuan Tan, Yiyang Ma, Yiyuan Liu,
+Yongqiang Guo, Yu Wu, Yuan Ou, Yuchen Zhu, Yud-
+uan Wang, Yue Gong, Yuheng Zou, Yujia He, Yukun
+Zha, Yunfan Xiong, Yunxian Ma, Yuting Yan, Yux-
+iang Luo, Yuxiang You, Yuxuan Liu, Yuyang Zhou,
+Z. F. Wu, Z. Z. Ren, Zehui Ren, Zhangli Sha, Zhe
+Fu, Zhean Xu, Zhen Huang, Zhen Zhang, Zhenda
+Xie, Zhengyan Zhang, Zhewen Hao, Zhibin Gou,
+Zhicheng Ma, Zhigang Yan, Zhihong Shao, Zhipeng
+Xu, Zhiyu Wu, Zhongyu Zhang, Zhuoshu Li, Zihui
+Gu, Zijia Zhu, Zijun Liu, Zilin Li, Ziwei Xie, Ziyang
+Song, Ziyi Gao, and Zizheng Pan. 2024b. Deepseek-
+v3 technical report. Preprint , arXiv:2412.19437.
+Nan Du, Yanping Huang, Andrew M Dai, Simon Tong,
+Dmitry Lepikhin, Yuanzhong Xu, Maxim Krikun,
+Yanqi Zhou, Adams Wei Yu, Orhan Firat, et al. 2022.
+Glam: Efficient scaling of language models with
+mixture-of-experts. In International Conference on
+Machine Learning , pages 5547–5569. PMLR.
+William Fedus, Barret Zoph, and Noam Shazeer. 2022.
+Switch transformers: Scaling to trillion parameter
+models with simple and efficient sparsity. Journal of
+Machine Learning Research , 23(120):1–39.
+Leo Gao, Jonathan Tow, Baber Abbasi, Stella Biderman,
+Sid Black, Anthony DiPofi, Charles Foster, Laurence
+Golding, Jeffrey Hsu, Alain Le Noac’h, Haonan Li,
+Kyle McDonell, Niklas Muennighoff, Chris Ociepa,Jason Phang, Laria Reynolds, Hailey Schoelkopf,
+Aviya Skowron, Lintang Sutawika, Eric Tang, An-
+ish Thite, Ben Wang, Kevin Wang, and Andy Zou.
+2023. A framework for few-shot language model
+evaluation.
+Jamie Hayes, Ilia Shumailov, and Itay Yona. 2024.
+Buffer overflow in mixture of experts. In Neurips
+Safe Generative AI Workshop 2024 .
+Shwai He, Liang Ding, Daize Dong, Boan Liu, Fuqiang
+Yu, and Dacheng Tao. 2023. PAD-net: An efficient
+framework for dynamic networks. In Proceedings
+of the 61st Annual Meeting of the Association for
+Computational Linguistics (Volume 1: Long Papers) ,
+pages 14354–14366, Toronto, Canada. Association
+for Computational Linguistics.
+Shwai He, Daize Dong, Liang Ding, and Ang Li.
+2024. Demystifying the compression of mixture-
+of-experts through a unified framework. Preprint ,
+arXiv:2406.02500.
+Dan Hendrycks, Collin Burns, Steven Basart, Andy Zou,
+Mantas Mazeika, Dawn Song, and Jacob Steinhardt.
+2021. Measuring massive multitask language under-
+standing. Preprint , arXiv:2009.03300.
+Robert A Jacobs, Michael I Jordan, Steven J Nowlan,
+and Geoffrey E Hinton. 1991. Adaptive mixtures of
+local experts. Neural computation , 3(1):79–87.
+Albert Q Jiang, Alexandre Sablayrolles, Antoine
+Roux, Arthur Mensch, Blanche Savary, Chris Bam-
+ford, Devendra Singh Chaplot, Diego de las Casas,
+Emma Bou Hanna, Florian Bressand, et al. 2024.
+Mixtral of experts. arXiv preprint arXiv:2401.04088 .
+Michael I Jordan and Robert A Jacobs. 1994. Hierarchi-
+cal mixtures of experts and the em algorithm. Neural
+computation , 6(2):181–214.
+Aran Komatsuzaki, Joan Puigcerver, James Lee-Thorp,
+Carlos Riquelme Ruiz, Basil Mustafa, Joshua Ainslie,
+Yi Tay, Mostafa Dehghani, and Neil Houlsby. 2023.
+Sparse upcycling: Training mixture-of-experts from
+dense checkpoints. In The Eleventh International
+Conference on Learning Representations .
+Dmitry Lepikhin, HyoukJoong Lee, Yuanzhong Xu,
+Dehao Chen, Orhan Firat, Yanping Huang, Maxim
+Krikun, Noam Shazeer, and Zhifeng Chen. 2020.
+Gshard: Scaling giant models with conditional com-
+putation and automatic sharding. arXiv preprint
+arXiv:2006.16668 .
+Dmitry Lepikhin, HyoukJoong Lee, Yuanzhong Xu,
+Dehao Chen, Orhan Firat, Yanping Huang, Maxim
+Krikun, Noam Shazeer, and Zhifeng Chen. 2021.
+{GS}hard: Scaling giant models with conditional
+computation and automatic sharding. In Interna-
+tional Conference on Learning Representations .
+Ka Man Lo, Zeyu Huang, Zihan Qiu, Zili Wang, and Jie
+Fu. 2024. A closer look into mixture-of-experts in
+large language models. Preprint , arXiv:2406.18219.Xudong Lu, Qi Liu, Yuhui Xu, Aojun Zhou, Siyuan
+Huang, Bo Zhang, Junchi Yan, and Hongsheng Li.
+2024. Not all experts are equal: Efficient expert
+pruning and skipping for mixture-of-experts large
+language models. Preprint , arXiv:2402.14800.
+Todor Mihaylov, Peter Clark, Tushar Khot, and Ashish
+Sabharwal. 2018. Can a suit of armor conduct elec-
+tricity? a new dataset for open book question answer-
+ing.Preprint , arXiv:1809.02789.
+Niklas Muennighoff, Luca Soldaini, Dirk Groeneveld,
+Kyle Lo, Jacob Morrison, Sewon Min, Weijia Shi,
+Pete Walsh, Oyvind Tafjord, Nathan Lambert, Yuling
+Gu, Shane Arora, Akshita Bhagia, Dustin Schwenk,
+David Wadden, Alexander Wettig, Binyuan Hui, Tim
+Dettmers, Douwe Kiela, Ali Farhadi, Noah A. Smith,
+Pang Wei Koh, Amanpreet Singh, and Hannaneh
+Hajishirzi. 2024. Olmoe: Open mixture-of-experts
+language models. Preprint , arXiv:2409.02060.
+OpenAI. 2024. Gpt-4 technical report. Preprint ,
+arXiv:2303.08774.
+Carlos Riquelme, Joan Puigcerver, Basil Mustafa,
+Maxim Neumann, Rodolphe Jenatton, André Su-
+sano Pinto, Daniel Keysers, and Neil Houlsby. 2021.
+Scaling vision with sparse mixture of experts. Ad-
+vances in Neural Information Processing Systems ,
+34:8583–8595.
+Noam Shazeer, Azalia Mirhoseini, Krzysztof Maziarz,
+Andy Davis, Quoc Le, Geoffrey Hinton, and Jeff
+Dean. 2017a. Outrageously large neural net-
+works: The sparsely-gated mixture-of-experts layer.
+Preprint , arXiv:1701.06538.
+Noam Shazeer, Azalia Mirhoseini, Krzysztof Maziarz,
+Andy Davis, Quoc Le, Geoffrey Hinton, and Jeff
+Dean. 2017b. Outrageously large neural networks:
+The sparsely-gated mixture-of-experts layer. arXiv
+preprint arXiv:1701.06538 .
+Mohammad Shoeybi, Mostofa Patwary, Raul Puri,
+Patrick LeGresley, Jared Casper, and Bryan Catan-
+zaro. 2019. Megatron-lm: Training multi-billion
+parameter language models using model parallelism.
+arXiv preprint arXiv:1909.08053 .
+Yixin Song, Zeyu Mi, Haotong Xie, and Haibo Chen.
+2023. Powerinfer: Fast large language model
+serving with a consumer-grade gpu. Preprint ,
+arXiv:2312.12456.
+Gemini Team. 2024a. Gemini 1.5: Unlocking multi-
+modal understanding across millions of tokens of
+context. Preprint , arXiv:2403.05530.
+Qwen Team. 2024b. Qwen1.5-moe: Matching 7b model
+performance with 1/3 activated parameters".
+Alex Wang, Amanpreet Singh, Julian Michael, Felix
+Hill, Omer Levy, and Samuel R. Bowman. 2019.
+GLUE: A multi-task benchmark and analysis plat-
+form for natural language understanding. In the Pro-
+ceedings of ICLR.Fuzhao Xue, Zian Zheng, Yao Fu, Jinjie Ni, Zang-
+wei Zheng, Wangchunshu Zhou, and Yang You.
+2024a. Openmoe: An early effort on open
+mixture-of-experts language models. arXiv preprint
+arXiv:2402.01739 .
+Leyang Xue, Yao Fu, Zhan Lu, Luo Mai, and Mahesh
+Marina. 2024b. Moe-infinity: Activation-aware ex-
+pert offloading for efficient moe serving. Preprint ,
+arXiv:2401.14361.
+Rowan Zellers, Ari Holtzman, Yonatan Bisk, Ali
+Farhadi, and Yejin Choi. 2019. Hellaswag: Can
+a machine really finish your sentence? Preprint ,
+arXiv:1905.07830.
+Yanqi Zhou, Tao Lei, Hanxiao Liu, Nan Du, Yanping
+Huang, Vincent Y Zhao, Andrew M. Dai, Zhifeng
+Chen, Quoc V Le, and James Laudon. 2022. Mixture-
+of-experts with expert choice routing. In Advances
+in Neural Information Processing Systems .
+Tong Zhu, Xiaoye Qu, Daize Dong, Jiacheng Ruan,
+Jingqi Tong, Conghui He, and Yu Cheng. 2024.
+Llama-moe: Building mixture-of-experts from
+llama with continual pre-training. arXiv preprint
+arXiv:2406.16554 .
+Barret Zoph, Irwan Bello, Sameer Kumar, Nan Du,
+Yanping Huang, Jeff Dean, Noam Shazeer, and
+William Fedus. 2022. St-moe: Designing stable and
+transferable sparse expert models. arXiv preprint
+arXiv:2202.08906 .A Implementation Details
+Models We mainly focus on lightweight MoE
+models (less than 20B parameter budget). We con-
+duct experiments on OLMoE (Muennighoff et al.,
+2024), Qwen1.5-MoE (Team, 2024b), DeepSeek-
+V2-Lite (DeepSeek-AI et al., 2024a) and Mixtral
+(Jiang et al., 2024), due to their competitive perfor-
+mance and widespread adoption.
+Datasets To evaluate model performance, we re-
+port normalized zero-shot or few-shot accuracy
+on the LM-Harness benchmark. The number of
+shots for each task is detailed in Table 3, which in-
+cludes multiple tasks: ARC-C (Clark et al., 2018),
+BoolQ (Clark et al., 2019), HellaSwag (Zellers
+et al., 2019), MMLU (Hendrycks et al., 2021),
+OBQA (Mihaylov et al., 2018), PIQA (Bisk et al.,
+2019), RTE (Wang et al., 2019), WinoGrande (ai2,
+2019) and GSM8K (Cobbe et al., 2021). The eval-
+uation code is based on EleutherAI’s LM Harness
+framework (Gao et al., 2023).
+Table 3: Experimental settings for evaluation tasks.
+“Norm” refers to the normalization performed with re-
+spect to the length of the input.
+Task Number of few-shot Metric
+BoolQ 0 Accuracy
+RTE 0 Accuracy
+OBQA 0 Accuracy (Norm)
+PIQA 0 Accuracy (Norm)
+MMLU 5 Accuracy
+WinoGrande 5 Accuracy
+GSM8K 5 Exact Match
+HellaSwag 10 Accuracy (Norm)
+ARC-C 25 Accuracy (Norm)
+B Layer-wise Expert Load
+To analyze imbalanced token assignments, we mea-
+sure the expert load for each expert by tracking the
+peak expert load while running MoE models on
+various test datasets. Figure 8, 9, 10 and 11 present
+the full results for the normalized layer-wise expert
+load for OLMoE, DeepSeek-V2, Qwen1.5-MoE,
+and Mixtral-8 ×7B-Instruct, respectively.
+C Dropped tokens Calculation
+Based on Equation 13, we calculate the total num-
+ber of dropped tokens across experts in each layer
+under different capacity factors, as illustrated in
+Figures 12, 14, 13, and 15.Expert ID02468LoadLayer 1
+Expert IDLayer 2
+Expert ID02468LoadLayer 3
+Expert IDLayer 4
+Expert ID02468LoadLayer 5
+Expert IDLayer 6
+Expert ID02468LoadLayer 7
+Expert IDLayer 8
+Expert ID02468LoadLayer 9
+Expert IDLayer 10
+Expert ID02468LoadLayer 11
+Expert IDLayer 12
+Expert ID02468LoadLayer 13
+Expert IDLayer 14
+0 10 20 30 40 50 60
+Expert ID02468LoadLayer 15
+0 10 20 30 40 50 60
+Expert IDLayer 16
+RTE WinoGrande OBQA BoolQ PIQAFigure 8: Layer-wise expert load in OLMoE-Instruct.Expert ID0510LoadLayer 2
+Expert IDLayer 3
+Expert ID0510LoadLayer 4
+Expert IDLayer 5
+Expert ID0510LoadLayer 6
+Expert IDLayer 7
+Expert ID0510LoadLayer 8
+Expert IDLayer 9
+Expert ID0510LoadLayer 10
+Expert IDLayer 11
+Expert ID0510LoadLayer 12
+Expert IDLayer 13
+Expert ID0510LoadLayer 14
+Expert IDLayer 15
+Expert ID0510LoadLayer 16
+Expert IDLayer 17
+Expert ID0510LoadLayer 18
+Expert IDLayer 19
+Expert ID0510LoadLayer 20
+Expert IDLayer 21
+Expert ID0510LoadLayer 22
+Expert IDLayer 23
+Expert ID0510LoadLayer 24
+Expert IDLayer 25
+0 10 20 30 40 50 60
+Expert ID0510LoadLayer 26
+0 10 20 30 40 50 60
+Expert IDLayer 27
+RTE WinoGrande OBQA BoolQ PIQAFigure 9: Layer-wise expert load in Deepseek-V2-Lite.Expert ID05LoadLayer 1
+Expert IDLayer 2
+Expert ID05LoadLayer 3
+Expert IDLayer 4
+Expert ID05LoadLayer 5
+Expert IDLayer 6
+Expert ID05LoadLayer 7
+Expert IDLayer 8
+Expert ID05LoadLayer 9
+Expert IDLayer 10
+Expert ID05LoadLayer 11
+Expert IDLayer 12
+Expert ID05LoadLayer 13
+Expert IDLayer 14
+Expert ID05LoadLayer 15
+Expert IDLayer 16
+Expert ID05LoadLayer 17
+Expert IDLayer 18
+Expert ID05LoadLayer 19
+Expert IDLayer 20
+Expert ID05LoadLayer 21
+Expert IDLayer 22
+0 10 20 30 40 50 60
+Expert ID05LoadLayer 23
+0 10 20 30 40 50 60
+Expert IDLayer 24
+RTE WinoGrande OBQA BoolQ PIQAFigure 10: Layer-wise expert load in Qwen1.5-MoE-Chat.Expert ID0.02.5LoadLayer 1
+Expert IDLayer 2
+Expert ID0.02.5LoadLayer 3
+Expert IDLayer 4
+Expert ID0.02.5LoadLayer 5
+Expert IDLayer 6
+Expert ID0.02.5LoadLayer 7
+Expert IDLayer 8
+Expert ID0.02.5LoadLayer 9
+Expert IDLayer 10
+Expert ID0.02.5LoadLayer 11
+Expert IDLayer 12
+Expert ID0.02.5LoadLayer 13
+Expert IDLayer 14
+Expert ID0.02.5LoadLayer 15
+Expert IDLayer 16
+Expert ID0.02.5LoadLayer 17
+Expert IDLayer 18
+Expert ID0.02.5LoadLayer 19
+Expert IDLayer 20
+Expert ID0.02.5LoadLayer 21
+Expert IDLayer 22
+Expert ID0.02.5LoadLayer 23
+Expert IDLayer 24
+Expert ID0.02.5LoadLayer 25
+Expert IDLayer 26
+Expert ID0.02.5LoadLayer 27
+Expert IDLayer 28
+Expert ID0.02.5LoadLayer 29
+Expert IDLayer 30
+0 1 2 3 4 5 6 7
+Expert ID0.02.5LoadLayer 31
+0 1 2 3 4 5 6 7
+Expert IDLayer 32
+RTE WinoGrande OBQA BoolQ PIQAFigure 11: Layer-wise expert load in Mixtral-8 ×7B-Instruct.050100Dropped T okens (%)Layer 1
+ Layer 2
+050100Dropped T okens (%)Layer 3
+ Layer 4
+050100Dropped T okens (%)Layer 5
+ Layer 6
+050100Dropped T okens (%)Layer 7
+ Layer 8
+050100Dropped T okens (%)Layer 9
+ Layer 10
+050100Dropped T okens (%)Layer 11
+ Layer 12
+050100Dropped T okens (%)Layer 13
+ Layer 14
+0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5
+050100Dropped T okens (%)Layer 15
+0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5
+Layer 16
+OBQA PIQA RTE WinoGrande BoolQFigure 12: Dropped tokens with respect to capacity factors in OLMoE-Instruct.050100DT (%)Layer 2
+ Layer 3
+050100DT (%)Layer 4
+ Layer 5
+050100DT (%)Layer 6
+ Layer 7
+050100DT (%)Layer 8
+ Layer 9
+050100DT (%)Layer 10
+ Layer 11
+050100DT (%)Layer 12
+ Layer 13
+050100DT (%)Layer 14
+ Layer 15
+050100DT (%)Layer 16
+ Layer 17
+050100DT (%)Layer 18
+ Layer 19
+050100DT (%)Layer 20
+ Layer 21
+050100DT (%)Layer 22
+ Layer 23
+050100DT (%)Layer 24
+ Layer 25
+0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5
+050100DT (%)Layer 26
+0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5
+Layer 27
+OBQA PIQA RTE WinoGrande BoolQFigure 13: Dropped tokens with respect to capacity factors in DeepSeek-V2-Chat.050100DT (%)Layer 1
+ Layer 2
+050100DT (%)Layer 3
+ Layer 4
+050100DT (%)Layer 5
+ Layer 6
+050100DT (%)Layer 7
+ Layer 8
+050100DT (%)Layer 9
+ Layer 10
+050100DT (%)Layer 11
+ Layer 12
+050100DT (%)Layer 13
+ Layer 14
+050100DT (%)Layer 15
+ Layer 16
+050100DT (%)Layer 17
+ Layer 18
+050100DT (%)Layer 19
+ Layer 20
+050100DT (%)Layer 21
+ Layer 22
+0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5
+050100DT (%)Layer 23
+0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5
+Layer 24
+OBQA PIQA RTE WinoGrande BoolQFigure 14: Dropped tokens with respect to capacity factors in Qwen-1.5-MoE-Chat.050100DT (%)Layer 2
+ Layer 3
+050100DT (%)Layer 4
+ Layer 5
+050100DT (%)Layer 6
+ Layer 7
+050100DT (%)Layer 8
+ Layer 9
+050100DT (%)Layer 10
+ Layer 11
+050100DT (%)Layer 12
+ Layer 13
+050100DT (%)Layer 14
+ Layer 15
+050100DT (%)Layer 16
+ Layer 17
+050100DT (%)Layer 18
+ Layer 19
+050100DT (%)Layer 20
+ Layer 21
+050100DT (%)Layer 22
+ Layer 23
+050100DT (%)Layer 24
+ Layer 25
+0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5
+050100DT (%)Layer 26
+0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5
+Layer 27
+OBQA PIQA RTE WinoGrande BoolQFigure 15: Dropped tokens with respect to capacity factors in Mixtral-8 ×7B-Instruct.

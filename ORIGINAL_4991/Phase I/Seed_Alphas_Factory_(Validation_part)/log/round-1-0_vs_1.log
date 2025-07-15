@@ -1,0 +1,1224 @@
+--- INFO ---
+Comparing combined_factor_analysis_results.xlsx vs combined_factor_analysis_results_1.xlsx
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/1-preamble.md: [Errno 2] No such file or directory: './prompt_new_made/1-preamble.md'...
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+The error message you're seeing indicates that the Python script is trying to read a file named `1-preamble.md` in the directory `./prompt_new_made`, but this file does not exist.
+
+Here are some steps you can take to resolve this issue:
+
+### 1. Check if the file exists
+Make sure that the file `1-preamble.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/1-preamble.md` (on Linux/Mac) or `dir ./prompt_new_made\1-preamble.md` (on Windows).
+
+### 2. Verify file path
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./prompt_new_made/`). Make sure to include spaces correctly.
+
+### 3. Use absolute paths or relative paths with caution
+If you're using an absolute path, ensure it's correct and points to the actual location of the file. If you're using a relative path, make sure it's correct and takes into account any directory changes that might occur during execution.
+
+### 4. Handle non-existent files
+You can use Python's `os` module to check if the file exists before trying to read it:
+
+```python
+import os
+
+file_path = './prompt_new_made/1-preamble.md'
+if not os.path.exists(file_path):
+    print(f"File {file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+```
+
+### 5. Consider using a try-except block
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the file:
+
+```python
+import os
+
+file_path = './prompt_new_made/1-preamble.md'
+try:
+    with open(file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issue and successfully read your files.
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/2-file_structure.md: [Errno 2] No such file or directory: './pr...
++ HK Data from HK_stock_earning_reports.xlsx
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+It seems like you're experiencing two separate issues:
+
+1. The first error is related to a Markdown file that doesn't exist.
+2. The second error is related to an Excel file that doesn't exist.
+
+Here are some steps you can take to resolve these issues:
+
+### 1. Check if the Markdown file exists
+
+Make sure that the file `2-file_structure.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/2-file_structure.md` (on Linux/Mac) or `dir ./prompt_new_made\2-file_structure.md` (on Windows).
+
+### 2. Verify file path for Excel file
+
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./data/HK_stock_earning_reports.xlsx`). Make sure to include spaces correctly.
+
+### 3. Handle non-existent files
+
+You can use Python's `os` module to check if the files exist before trying to read them:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/2-file_structure.md'
+if not os.path.exists(markdown_file_path):
+    print(f"File {markdown_file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+
+# Excel file
+excel_file_path = './data/HK_stock_earning_reports.xlsx'
+if not os.path.exists(excel_file_path):
+    print(f"File {excel_file_path} does not exist.")
+```
+
+### 4. Consider using a try-except block
+
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the files:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/2-file_structure.md'
+try:
+    with open(markdown_file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {markdown_file_path} does not exist.")
+
+# Excel file
+excel_file_path = './data/HK_stock_earning_reports.xlsx'
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issues and successfully read your files.
+
+### Additional suggestions:
+
+* Make sure that the directory paths are correct and match the actual location of the files.
+* Consider using absolute paths instead of relative paths to avoid potential issues with directory changes.
+* If you're working with large files or complex file structures, consider using a more robust file handling approach, such as using a library like `pathlib` or `os.path.join`.
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/3-index1.md: [Errno 2] No such file or directory: './prompt_new...
++ Ref: combined_factor_analysis_results.xlsx
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+It seems like you're experiencing another issue with a Markdown file that doesn't exist.
+
+Here are some steps you can take to resolve this issue:
+
+### 1. Check if the Markdown file exists
+
+Make sure that the file `3-index1.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/3-index1.md` (on Linux/Mac) or `dir ./prompt_new_made\3-index1.md` (on Windows).
+
+### 2. Verify file path
+
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./prompt_new_made`). Make sure to include spaces correctly.
+
+### 3. Handle non-existent files
+
+You can use Python's `os` module to check if the files exist before trying to read them:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/3-index1.md'
+if not os.path.exists(markdown_file_path):
+    print(f"File {markdown_file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+
+# Excel file
+excel_file_path = './data/combined_factor_analysis_results.xlsx'
+if not os.path.exists(excel_file_path):
+    print(f"File {excel_file_path} does not exist.")
+```
+
+### 4. Consider using a try-except block
+
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the files:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/3-index1.md'
+try:
+    with open(markdown_file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {markdown_file_path} does not exist.")
+
+# Excel file
+excel_file_path = './data/combined_factor_analysis_results.xlsx'
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issue and successfully read your files.
+
+### Additional suggestions:
+
+* Make sure that the directory paths are correct and match the actual location of the files.
+* Consider using absolute paths instead of relative paths to avoid potential issues with directory changes.
+* If you're working with large files or complex file structures, consider using a more robust file handling approach, such as using a library like `pathlib` or `os.path.join`.
+
+Also, note that if the Excel file is not found, it will throw an error. You might want to add some additional logic to handle this case, for example by providing a default value or skipping the file.
+
+```python
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist. Skipping...")
+    # Add some default value or skip the file here
+```
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/4-index2.md: [Errno 2] No such file or directory: './prompt_new...
++ Data for combined_factor_analysis_results.xlsx & combined_factor_analysis_results_1.xlsx
++ Instruction: Respond '1' or '2'
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+2
+--- INFO ---
+Selected better alpha index: 2 (combined_factor_analysis_results_1.xlsx)
+--- INFO ---
+'combined_factor_analysis_results_1.xlsx' selected as new best over 'combined_factor_analysis_results.xlsx'.
+--- INFO ---
+Comparing combined_factor_analysis_results.xlsx vs combined_factor_analysis_results_1.xlsx
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/1-preamble.md: [Errno 2] No such file or directory: './prompt_new_made/1-preamble.md'...
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+The error message you're seeing indicates that the Python script is trying to read a file named `1-preamble.md` in the directory `./prompt_new_made`, but this file does not exist.
+
+Here are some steps you can take to resolve this issue:
+
+### 1. Check if the file exists
+Make sure that the file `1-preamble.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/1-preamble.md` (on Linux/Mac) or `dir ./prompt_new_made\1-preamble.md` (on Windows).
+
+### 2. Verify file path
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./prompt_new_made/`). Make sure to include spaces correctly.
+
+### 3. Use absolute paths or relative paths with caution
+If you're using an absolute path, ensure it's correct and points to the actual location of the file. If you're using a relative path, make sure it's correct and takes into account any directory changes that might occur during execution.
+
+### 4. Handle non-existent files
+You can use Python's `os` module to check if the file exists before trying to read it:
+
+```python
+import os
+
+file_path = './prompt_new_made/1-preamble.md'
+if not os.path.exists(file_path):
+    print(f"File {file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+```
+
+### 5. Consider using a try-except block
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the file:
+
+```python
+import os
+
+file_path = './prompt_new_made/1-preamble.md'
+try:
+    with open(file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issue and successfully read your files.
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/2-file_structure.md: [Errno 2] No such file or directory: './pr...
++ HK Data from HK_stock_earning_reports.xlsx
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+It seems like you're experiencing two separate issues:
+
+1. The first error is related to a Markdown file that doesn't exist.
+2. The second error is related to an Excel file that doesn't exist.
+
+Here are some steps you can take to resolve these issues:
+
+### 1. Check if the Markdown file exists
+
+Make sure that the file `2-file_structure.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/2-file_structure.md` (on Linux/Mac) or `dir ./prompt_new_made\2-file_structure.md` (on Windows).
+
+### 2. Verify file path for Excel file
+
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./data/HK_stock_earning_reports.xlsx`). Make sure to include spaces correctly.
+
+### 3. Handle non-existent files
+
+You can use Python's `os` module to check if the files exist before trying to read them:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/2-file_structure.md'
+if not os.path.exists(markdown_file_path):
+    print(f"File {markdown_file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+
+# Excel file
+excel_file_path = './data/HK_stock_earning_reports.xlsx'
+if not os.path.exists(excel_file_path):
+    print(f"File {excel_file_path} does not exist.")
+```
+
+### 4. Consider using a try-except block
+
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the files:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/2-file_structure.md'
+try:
+    with open(markdown_file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {markdown_file_path} does not exist.")
+
+# Excel file
+excel_file_path = './data/HK_stock_earning_reports.xlsx'
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issues and successfully read your files.
+
+### Additional suggestions:
+
+* Make sure that the directory paths are correct and match the actual location of the files.
+* Consider using absolute paths instead of relative paths to avoid potential issues with directory changes.
+* If you're working with large files or complex file structures, consider using a more robust file handling approach, such as using a library like `pathlib` or `os.path.join`.
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/3-index1.md: [Errno 2] No such file or directory: './prompt_new...
++ Ref: combined_factor_analysis_results.xlsx
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+It seems like you're experiencing another issue with a Markdown file that doesn't exist.
+
+Here are some steps you can take to resolve this issue:
+
+### 1. Check if the Markdown file exists
+
+Make sure that the file `3-index1.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/3-index1.md` (on Linux/Mac) or `dir ./prompt_new_made\3-index1.md` (on Windows).
+
+### 2. Verify file path
+
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./prompt_new_made`). Make sure to include spaces correctly.
+
+### 3. Handle non-existent files
+
+You can use Python's `os` module to check if the files exist before trying to read them:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/3-index1.md'
+if not os.path.exists(markdown_file_path):
+    print(f"File {markdown_file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+
+# Excel file
+excel_file_path = './data/combined_factor_analysis_results.xlsx'
+if not os.path.exists(excel_file_path):
+    print(f"File {excel_file_path} does not exist.")
+```
+
+### 4. Consider using a try-except block
+
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the files:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/3-index1.md'
+try:
+    with open(markdown_file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {markdown_file_path} does not exist.")
+
+# Excel file
+excel_file_path = './data/combined_factor_analysis_results.xlsx'
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issue and successfully read your files.
+
+### Additional suggestions:
+
+* Make sure that the directory paths are correct and match the actual location of the files.
+* Consider using absolute paths instead of relative paths to avoid potential issues with directory changes.
+* If you're working with large files or complex file structures, consider using a more robust file handling approach, such as using a library like `pathlib` or `os.path.join`.
+
+Also, note that if the Excel file is not found, it will throw an error. You might want to add some additional logic to handle this case, for example by providing a default value or skipping the file.
+
+```python
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist. Skipping...")
+    # Add some default value or skip the file here
+```
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/4-index2.md: [Errno 2] No such file or directory: './prompt_new...
++ Data for combined_factor_analysis_results.xlsx & combined_factor_analysis_results_1.xlsx
++ Instruction: Respond '1' or '2'
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+2
+--- INFO ---
+Selected better alpha index: 2 (combined_factor_analysis_results_1.xlsx)
+--- INFO ---
+'combined_factor_analysis_results_1.xlsx' selected as new best over 'combined_factor_analysis_results.xlsx'.
+--- INFO ---
+Comparing combined_factor_analysis_results.xlsx vs combined_factor_analysis_results_1.xlsx
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/1-preamble.md: [Errno 2] No such file or directory: './prompt_new_made/1-preamble.md'...
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+The error message you're seeing indicates that the Python script is trying to read a file named `1-preamble.md` in the directory `./prompt_new_made`, but this file does not exist.
+
+Here are some steps you can take to resolve this issue:
+
+### 1. Check if the file exists
+Make sure that the file `1-preamble.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/1-preamble.md` (on Linux/Mac) or `dir ./prompt_new_made\1-preamble.md` (on Windows).
+
+### 2. Verify file path
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./prompt_new_made/`). Make sure to include spaces correctly.
+
+### 3. Use absolute paths or relative paths with caution
+If you're using an absolute path, ensure it's correct and points to the actual location of the file. If you're using a relative path, make sure it's correct and takes into account any directory changes that might occur during execution.
+
+### 4. Handle non-existent files
+You can use Python's `os` module to check if the file exists before trying to read it:
+
+```python
+import os
+
+file_path = './prompt_new_made/1-preamble.md'
+if not os.path.exists(file_path):
+    print(f"File {file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+```
+
+### 5. Consider using a try-except block
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the file:
+
+```python
+import os
+
+file_path = './prompt_new_made/1-preamble.md'
+try:
+    with open(file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issue and successfully read your files.
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/2-file_structure.md: [Errno 2] No such file or directory: './pr...
++ HK Data from HK_stock_earning_reports.xlsx
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+It seems like you're experiencing two separate issues:
+
+1. The first error is related to a Markdown file that doesn't exist.
+2. The second error is related to an Excel file that doesn't exist.
+
+Here are some steps you can take to resolve these issues:
+
+### 1. Check if the Markdown file exists
+
+Make sure that the file `2-file_structure.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/2-file_structure.md` (on Linux/Mac) or `dir ./prompt_new_made\2-file_structure.md` (on Windows).
+
+### 2. Verify file path for Excel file
+
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./data/HK_stock_earning_reports.xlsx`). Make sure to include spaces correctly.
+
+### 3. Handle non-existent files
+
+You can use Python's `os` module to check if the files exist before trying to read them:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/2-file_structure.md'
+if not os.path.exists(markdown_file_path):
+    print(f"File {markdown_file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+
+# Excel file
+excel_file_path = './data/HK_stock_earning_reports.xlsx'
+if not os.path.exists(excel_file_path):
+    print(f"File {excel_file_path} does not exist.")
+```
+
+### 4. Consider using a try-except block
+
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the files:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/2-file_structure.md'
+try:
+    with open(markdown_file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {markdown_file_path} does not exist.")
+
+# Excel file
+excel_file_path = './data/HK_stock_earning_reports.xlsx'
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issues and successfully read your files.
+
+### Additional suggestions:
+
+* Make sure that the directory paths are correct and match the actual location of the files.
+* Consider using absolute paths instead of relative paths to avoid potential issues with directory changes.
+* If you're working with large files or complex file structures, consider using a more robust file handling approach, such as using a library like `pathlib` or `os.path.join`.
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/3-index1.md: [Errno 2] No such file or directory: './prompt_new...
++ Ref: combined_factor_analysis_results.xlsx
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+It seems like you're experiencing another issue with a Markdown file that doesn't exist.
+
+Here are some steps you can take to resolve this issue:
+
+### 1. Check if the Markdown file exists
+
+Make sure that the file `3-index1.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/3-index1.md` (on Linux/Mac) or `dir ./prompt_new_made\3-index1.md` (on Windows).
+
+### 2. Verify file path
+
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./prompt_new_made`). Make sure to include spaces correctly.
+
+### 3. Handle non-existent files
+
+You can use Python's `os` module to check if the files exist before trying to read them:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/3-index1.md'
+if not os.path.exists(markdown_file_path):
+    print(f"File {markdown_file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+
+# Excel file
+excel_file_path = './data/combined_factor_analysis_results.xlsx'
+if not os.path.exists(excel_file_path):
+    print(f"File {excel_file_path} does not exist.")
+```
+
+### 4. Consider using a try-except block
+
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the files:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/3-index1.md'
+try:
+    with open(markdown_file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {markdown_file_path} does not exist.")
+
+# Excel file
+excel_file_path = './data/combined_factor_analysis_results.xlsx'
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issue and successfully read your files.
+
+### Additional suggestions:
+
+* Make sure that the directory paths are correct and match the actual location of the files.
+* Consider using absolute paths instead of relative paths to avoid potential issues with directory changes.
+* If you're working with large files or complex file structures, consider using a more robust file handling approach, such as using a library like `pathlib` or `os.path.join`.
+
+Also, note that if the Excel file is not found, it will throw an error. You might want to add some additional logic to handle this case, for example by providing a default value or skipping the file.
+
+```python
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist. Skipping...")
+    # Add some default value or skip the file here
+```
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/4-index2.md: [Errno 2] No such file or directory: './prompt_new...
++ Data for combined_factor_analysis_results.xlsx & combined_factor_analysis_results_1.xlsx
++ Instruction: Respond '1' or '2'
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+2
+--- INFO ---
+Selected better alpha index: 2 (combined_factor_analysis_results_1.xlsx)
+--- INFO ---
+'combined_factor_analysis_results_1.xlsx' selected as new best over 'combined_factor_analysis_results.xlsx'.
+--- INFO ---
+Comparing combined_factor_analysis_results.xlsx vs combined_factor_analysis_results_1.xlsx
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/1-preamble.md: [Errno 2] No such file or directory: './prompt_new_made/1-preamble.md'...
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+The error message you're seeing indicates that the Python script is trying to read a file named `1-preamble.md` in the directory `./prompt_new_made`, but this file does not exist.
+
+Here are some steps you can take to resolve this issue:
+
+### 1. Check if the file exists
+Make sure that the file `1-preamble.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/1-preamble.md` (on Linux/Mac) or `dir ./prompt_new_made\1-preamble.md` (on Windows).
+
+### 2. Verify file path
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./prompt_new_made/`). Make sure to include spaces correctly.
+
+### 3. Use absolute paths or relative paths with caution
+If you're using an absolute path, ensure it's correct and points to the actual location of the file. If you're using a relative path, make sure it's correct and takes into account any directory changes that might occur during execution.
+
+### 4. Handle non-existent files
+You can use Python's `os` module to check if the file exists before trying to read it:
+
+```python
+import os
+
+file_path = './prompt_new_made/1-preamble.md'
+if not os.path.exists(file_path):
+    print(f"File {file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+```
+
+### 5. Consider using a try-except block
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the file:
+
+```python
+import os
+
+file_path = './prompt_new_made/1-preamble.md'
+try:
+    with open(file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issue and successfully read your files.
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/2-file_structure.md: [Errno 2] No such file or directory: './pr...
++ HK Data from HK_stock_earning_reports.xlsx
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+It seems like you're experiencing two separate issues:
+
+1. The first error is related to a Markdown file that doesn't exist.
+2. The second error is related to an Excel file that doesn't exist.
+
+Here are some steps you can take to resolve these issues:
+
+### 1. Check if the Markdown file exists
+
+Make sure that the file `2-file_structure.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/2-file_structure.md` (on Linux/Mac) or `dir ./prompt_new_made\2-file_structure.md` (on Windows).
+
+### 2. Verify file path for Excel file
+
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./data/HK_stock_earning_reports.xlsx`). Make sure to include spaces correctly.
+
+### 3. Handle non-existent files
+
+You can use Python's `os` module to check if the files exist before trying to read them:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/2-file_structure.md'
+if not os.path.exists(markdown_file_path):
+    print(f"File {markdown_file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+
+# Excel file
+excel_file_path = './data/HK_stock_earning_reports.xlsx'
+if not os.path.exists(excel_file_path):
+    print(f"File {excel_file_path} does not exist.")
+```
+
+### 4. Consider using a try-except block
+
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the files:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/2-file_structure.md'
+try:
+    with open(markdown_file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {markdown_file_path} does not exist.")
+
+# Excel file
+excel_file_path = './data/HK_stock_earning_reports.xlsx'
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issues and successfully read your files.
+
+### Additional suggestions:
+
+* Make sure that the directory paths are correct and match the actual location of the files.
+* Consider using absolute paths instead of relative paths to avoid potential issues with directory changes.
+* If you're working with large files or complex file structures, consider using a more robust file handling approach, such as using a library like `pathlib` or `os.path.join`.
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/3-index1.md: [Errno 2] No such file or directory: './prompt_new...
++ Ref: combined_factor_analysis_results.xlsx
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+It seems like you're experiencing another issue with a Markdown file that doesn't exist.
+
+Here are some steps you can take to resolve this issue:
+
+### 1. Check if the Markdown file exists
+
+Make sure that the file `3-index1.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/3-index1.md` (on Linux/Mac) or `dir ./prompt_new_made\3-index1.md` (on Windows).
+
+### 2. Verify file path
+
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./prompt_new_made`). Make sure to include spaces correctly.
+
+### 3. Handle non-existent files
+
+You can use Python's `os` module to check if the files exist before trying to read them:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/3-index1.md'
+if not os.path.exists(markdown_file_path):
+    print(f"File {markdown_file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+
+# Excel file
+excel_file_path = './data/combined_factor_analysis_results.xlsx'
+if not os.path.exists(excel_file_path):
+    print(f"File {excel_file_path} does not exist.")
+```
+
+### 4. Consider using a try-except block
+
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the files:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/3-index1.md'
+try:
+    with open(markdown_file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {markdown_file_path} does not exist.")
+
+# Excel file
+excel_file_path = './data/combined_factor_analysis_results.xlsx'
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issue and successfully read your files.
+
+### Additional suggestions:
+
+* Make sure that the directory paths are correct and match the actual location of the files.
+* Consider using absolute paths instead of relative paths to avoid potential issues with directory changes.
+* If you're working with large files or complex file structures, consider using a more robust file handling approach, such as using a library like `pathlib` or `os.path.join`.
+
+Also, note that if the Excel file is not found, it will throw an error. You might want to add some additional logic to handle this case, for example by providing a default value or skipping the file.
+
+```python
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist. Skipping...")
+    # Add some default value or skip the file here
+```
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/4-index2.md: [Errno 2] No such file or directory: './prompt_new...
++ Data for combined_factor_analysis_results.xlsx & combined_factor_analysis_results_1.xlsx
++ Instruction: Respond '1' or '2'
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+2
+--- INFO ---
+Selected better alpha index: 2 (combined_factor_analysis_results_1.xlsx)
+--- INFO ---
+'combined_factor_analysis_results_1.xlsx' selected as new best over 'combined_factor_analysis_results.xlsx'.
+--- INFO ---
+Comparing combined_factor_analysis_results.xlsx vs combined_factor_analysis_results_1.xlsx
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/1-preamble.md: [Errno 2] No such file or directory: './prompt_new_made/1-preamble.md'...
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+The error message you're seeing indicates that the Python script is trying to read a file named `1-preamble.md` in the directory `./prompt_new_made`, but this file does not exist.
+
+Here are some steps you can take to resolve this issue:
+
+### 1. Check if the file exists
+Make sure that the file `1-preamble.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/1-preamble.md` (on Linux/Mac) or `dir ./prompt_new_made\1-preamble.md` (on Windows).
+
+### 2. Verify file path
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./prompt_new_made/`). Make sure to include spaces correctly.
+
+### 3. Use absolute paths or relative paths with caution
+If you're using an absolute path, ensure it's correct and points to the actual location of the file. If you're using a relative path, make sure it's correct and takes into account any directory changes that might occur during execution.
+
+### 4. Handle non-existent files
+You can use Python's `os` module to check if the file exists before trying to read it:
+
+```python
+import os
+
+file_path = './prompt_new_made/1-preamble.md'
+if not os.path.exists(file_path):
+    print(f"File {file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+```
+
+### 5. Consider using a try-except block
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the file:
+
+```python
+import os
+
+file_path = './prompt_new_made/1-preamble.md'
+try:
+    with open(file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issue and successfully read your files.
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/2-file_structure.md: [Errno 2] No such file or directory: './pr...
++ HK Data from HK_stock_earning_reports.xlsx
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+It seems like you're experiencing two separate issues:
+
+1. The first error is related to a Markdown file that doesn't exist.
+2. The second error is related to an Excel file that doesn't exist.
+
+Here are some steps you can take to resolve these issues:
+
+### 1. Check if the Markdown file exists
+
+Make sure that the file `2-file_structure.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/2-file_structure.md` (on Linux/Mac) or `dir ./prompt_new_made\2-file_structure.md` (on Windows).
+
+### 2. Verify file path for Excel file
+
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./data/HK_stock_earning_reports.xlsx`). Make sure to include spaces correctly.
+
+### 3. Handle non-existent files
+
+You can use Python's `os` module to check if the files exist before trying to read them:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/2-file_structure.md'
+if not os.path.exists(markdown_file_path):
+    print(f"File {markdown_file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+
+# Excel file
+excel_file_path = './data/HK_stock_earning_reports.xlsx'
+if not os.path.exists(excel_file_path):
+    print(f"File {excel_file_path} does not exist.")
+```
+
+### 4. Consider using a try-except block
+
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the files:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/2-file_structure.md'
+try:
+    with open(markdown_file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {markdown_file_path} does not exist.")
+
+# Excel file
+excel_file_path = './data/HK_stock_earning_reports.xlsx'
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issues and successfully read your files.
+
+### Additional suggestions:
+
+* Make sure that the directory paths are correct and match the actual location of the files.
+* Consider using absolute paths instead of relative paths to avoid potential issues with directory changes.
+* If you're working with large files or complex file structures, consider using a more robust file handling approach, such as using a library like `pathlib` or `os.path.join`.
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/3-index1.md: [Errno 2] No such file or directory: './prompt_new...
++ Ref: combined_factor_analysis_results.xlsx
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+It seems like you're experiencing another issue with a Markdown file that doesn't exist.
+
+Here are some steps you can take to resolve this issue:
+
+### 1. Check if the Markdown file exists
+
+Make sure that the file `3-index1.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/3-index1.md` (on Linux/Mac) or `dir ./prompt_new_made\3-index1.md` (on Windows).
+
+### 2. Verify file path
+
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./prompt_new_made`). Make sure to include spaces correctly.
+
+### 3. Handle non-existent files
+
+You can use Python's `os` module to check if the files exist before trying to read them:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/3-index1.md'
+if not os.path.exists(markdown_file_path):
+    print(f"File {markdown_file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+
+# Excel file
+excel_file_path = './data/combined_factor_analysis_results.xlsx'
+if not os.path.exists(excel_file_path):
+    print(f"File {excel_file_path} does not exist.")
+```
+
+### 4. Consider using a try-except block
+
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the files:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/3-index1.md'
+try:
+    with open(markdown_file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {markdown_file_path} does not exist.")
+
+# Excel file
+excel_file_path = './data/combined_factor_analysis_results.xlsx'
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issue and successfully read your files.
+
+### Additional suggestions:
+
+* Make sure that the directory paths are correct and match the actual location of the files.
+* Consider using absolute paths instead of relative paths to avoid potential issues with directory changes.
+* If you're working with large files or complex file structures, consider using a more robust file handling approach, such as using a library like `pathlib` or `os.path.join`.
+
+Also, note that if the Excel file is not found, it will throw an error. You might want to add some additional logic to handle this case, for example by providing a default value or skipping the file.
+
+```python
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist. Skipping...")
+    # Add some default value or skip the file here
+```
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/4-index2.md: [Errno 2] No such file or directory: './prompt_new...
++ Data for combined_factor_analysis_results.xlsx & combined_factor_analysis_results_1.xlsx
++ Instruction: Respond '1' or '2'
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+2
+--- INFO ---
+Selected better alpha index: 2 (combined_factor_analysis_results_1.xlsx)
+--- INFO ---
+'combined_factor_analysis_results_1.xlsx' selected as new best over 'combined_factor_analysis_results.xlsx'.
+--- INFO ---
+Comparing combined_factor_analysis_results.xlsx vs combined_factor_analysis_results_1.xlsx
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/1-preamble.md: [Errno 2] No such file or directory: './prompt_new_made/1-preamble.md'...
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+The error message you're seeing indicates that the Python script is trying to read a file named `1-preamble.md` in the directory `./prompt_new_made`, but this file does not exist.
+
+Here are some steps you can take to resolve this issue:
+
+### 1. Check if the file exists
+Make sure that the file `1-preamble.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/1-preamble.md` (on Linux/Mac) or `dir ./prompt_new_made\1-preamble.md` (on Windows).
+
+### 2. Verify file path
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./prompt_new_made/`). Make sure to include spaces correctly.
+
+### 3. Use absolute paths or relative paths with caution
+If you're using an absolute path, ensure it's correct and points to the actual location of the file. If you're using a relative path, make sure it's correct and takes into account any directory changes that might occur during execution.
+
+### 4. Handle non-existent files
+You can use Python's `os` module to check if the file exists before trying to read it:
+
+```python
+import os
+
+file_path = './prompt_new_made/1-preamble.md'
+if not os.path.exists(file_path):
+    print(f"File {file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+```
+
+### 5. Consider using a try-except block
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the file:
+
+```python
+import os
+
+file_path = './prompt_new_made/1-preamble.md'
+try:
+    with open(file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issue and successfully read your files.
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/2-file_structure.md: [Errno 2] No such file or directory: './pr...
++ HK Data from HK_stock_earning_reports.xlsx
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+It seems like you're experiencing two separate issues:
+
+1. The first error is related to a Markdown file that doesn't exist.
+2. The second error is related to an Excel file that doesn't exist.
+
+Here are some steps you can take to resolve these issues:
+
+### 1. Check if the Markdown file exists
+
+Make sure that the file `2-file_structure.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/2-file_structure.md` (on Linux/Mac) or `dir ./prompt_new_made\2-file_structure.md` (on Windows).
+
+### 2. Verify file path for Excel file
+
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./data/HK_stock_earning_reports.xlsx`). Make sure to include spaces correctly.
+
+### 3. Handle non-existent files
+
+You can use Python's `os` module to check if the files exist before trying to read them:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/2-file_structure.md'
+if not os.path.exists(markdown_file_path):
+    print(f"File {markdown_file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+
+# Excel file
+excel_file_path = './data/HK_stock_earning_reports.xlsx'
+if not os.path.exists(excel_file_path):
+    print(f"File {excel_file_path} does not exist.")
+```
+
+### 4. Consider using a try-except block
+
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the files:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/2-file_structure.md'
+try:
+    with open(markdown_file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {markdown_file_path} does not exist.")
+
+# Excel file
+excel_file_path = './data/HK_stock_earning_reports.xlsx'
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issues and successfully read your files.
+
+### Additional suggestions:
+
+* Make sure that the directory paths are correct and match the actual location of the files.
+* Consider using absolute paths instead of relative paths to avoid potential issues with directory changes.
+* If you're working with large files or complex file structures, consider using a more robust file handling approach, such as using a library like `pathlib` or `os.path.join`.
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/3-index1.md: [Errno 2] No such file or directory: './prompt_new...
++ Ref: combined_factor_analysis_results.xlsx
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+It seems like you're experiencing another issue with a Markdown file that doesn't exist.
+
+Here are some steps you can take to resolve this issue:
+
+### 1. Check if the Markdown file exists
+
+Make sure that the file `3-index1.md` actually exists in the specified location (`./prompt_new_made`). You can do this by opening a terminal or command prompt and navigating to the directory where the script is located, then typing `ls ./prompt_new_made/3-index1.md` (on Linux/Mac) or `dir ./prompt_new_made\3-index1.md` (on Windows).
+
+### 2. Verify file path
+
+Double-check that the file path in your Python script is correct. The error message suggests that the directory name contains a space (`./prompt_new_made`). Make sure to include spaces correctly.
+
+### 3. Handle non-existent files
+
+You can use Python's `os` module to check if the files exist before trying to read them:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/3-index1.md'
+if not os.path.exists(markdown_file_path):
+    print(f"File {markdown_file_path} does not exist.")
+else:
+    # Read the file or handle its existence as needed.
+
+# Excel file
+excel_file_path = './data/combined_factor_analysis_results.xlsx'
+if not os.path.exists(excel_file_path):
+    print(f"File {excel_file_path} does not exist.")
+```
+
+### 4. Consider using a try-except block
+
+Wrap your file reading code in a `try`-`except` block to catch any exceptions that might occur when trying to read the files:
+
+```python
+import os
+
+# Markdown file
+markdown_file_path = './prompt_new_made/3-index1.md'
+try:
+    with open(markdown_file_path, 'r') as f:
+        # Read the file or handle its contents.
+except FileNotFoundError:
+    print(f"File {markdown_file_path} does not exist.")
+
+# Excel file
+excel_file_path = './data/combined_factor_analysis_results.xlsx'
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist.")
+```
+
+By following these steps and using appropriate error handling techniques, you should be able to resolve the issue and successfully read your files.
+
+### Additional suggestions:
+
+* Make sure that the directory paths are correct and match the actual location of the files.
+* Consider using absolute paths instead of relative paths to avoid potential issues with directory changes.
+* If you're working with large files or complex file structures, consider using a more robust file handling approach, such as using a library like `pathlib` or `os.path.join`.
+
+Also, note that if the Excel file is not found, it will throw an error. You might want to add some additional logic to handle this case, for example by providing a default value or skipping the file.
+
+```python
+try:
+    import pandas as pd  # Import pandas library if needed
+    df = pd.read_excel(excel_file_path)  # Read the Excel file
+except FileNotFoundError:
+    print(f"File {excel_file_path} does not exist. Skipping...")
+    # Add some default value or skip the file here
+```
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Error reading file ./prompt_new_made/4-index2.md: [Errno 2] No such file or directory: './prompt_new...
++ Data for combined_factor_analysis_results.xlsx & combined_factor_analysis_results_1.xlsx
++ Instruction: Respond '1' or '2'
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+2
+--- INFO ---
+Selected better alpha index: 2 (combined_factor_analysis_results_1.xlsx)
+--- INFO ---
+'combined_factor_analysis_results_1.xlsx' selected as new best over 'combined_factor_analysis_results.xlsx'.

@@ -1,0 +1,1160 @@
+Eurographics Conference on Visualization (EuroVis) 2021
+R. Borgo, G. E. Marai, and T. von Landesberger
+(Guest Editors)Volume 40 (2021 ),Number 3
+iQUANT: Interactive Quantitative Investment Using Sparse
+Regression Factors
+Xuanwu Yue1;4
+, Qiao Gu2
+, Deyun Wang3
+, Huamin Qu4
+and Yong Wang5
+1Sinovation Ventures AI Institute, China
+2Robotics Institute, Carnegie Mellon University, USA
+3Institute of Software, Chinese Academy of Sciences, China
+4The Hong Kong University of Science and Technology, Hong Kong, China
+5School of Computing and Information Systems, Singapore Management University, Singapore
+Abstract
+The model-based investing using ﬁnancial factors is evolving as a principal method for quantitative investment. The main
+challenge lies in the selection of effective factors towards excess market returns. Existing approaches, either hand-picking
+factors or applying feature selection algorithms, do not orchestrate both human knowledge and computational power. This
+paper presents iQUANT, an interactive quantitative investment system that assists equity traders to quickly spot promising
+ﬁnancial factors from initial recommendations suggested by algorithmic models, and conduct a joint reﬁnement of factors and
+stocks for investment portfolio composition. We work closely with professional traders to assemble empirical characteristics of
+“good” factors and propose effective visualization designs to illustrate the collective performance of ﬁnancial factors, stock
+portfolios, and their interactions. We evaluate iQUANT through a formal user study, two case studies, and expert interviews,
+using a real stock market dataset consisting of 3000 stocks 6000 days56 factors.
+CCS Concepts
+•Human-centered computing !Visual analytics; Visualization design and evaluation methods; Information visualization;
+1. Introduction
+Quantitative investment using algorithmic trading has accounted
+for over 85% of transactions in US stock markets since 2012
+[GK13]. There is a growing demand for machine learning mod-
+els that can describe and explain the price change of an individual
+or a portfolio of stocks in the market. Factor investing is one of
+the most widely used strategies in quantitative investment. In a fac-
+tor investing paradigm [Tsi18, FF92, FF04], a selective collection
+of ﬁnancial variables called factors (e.g., a company’s fundamental
+data and its growth measures) are used as input predictors and stock
+returns are set as target outcomes to build predictive models. With
+these models, traders forecast future stock returns regularly in or-
+der to construct time-sensitive portfolios composed of a small set of
+high-return securities. The returns of these securities are expected
+to beat the average market return, which is known as the excess re-
+turn. Recent global surveys show that the factor investing paradigm
+is employed by 90% of institutional investors to manage at least
+part of their portfolio [MAHG16]. The percentage of assets traded
+with factor investing is over 30% in size and still fast-growing.
+Despite the prevalence of factor investing, selecting an effective
+set of factors for market investment is a difﬁcult task. There can be
+hundreds of candidate factors or more available for predictive mod-els. Currently, most quantitative traders manually select factors by
+comparing their corresponding portfolio returns in a standard back-
+testing. Such a trial-and-error approach is indirect, less intuitive,
+and often requires an exhaustive search in the vast combinatorial
+factor space. To compute returns from a set of factors, a predictive
+model and stock portfolio need to be constructed, whose interac-
+tions with the selected factors are not fully understood and utilized
+in the current approach. Traders must also speculate an initial fac-
+tor selection for evaluation. On the other hand, feature selection
+methods in machine learning research [GE03] have been applied
+to this domain, but not as an end-to-end approach like many other
+ﬁelds. Algorithm-selected factors are mostly used as a reference or
+starting point of the manual selection process, as these factors (es-
+pecially in black-box models) are not trusted by traders until they
+can be explained and evaluated. There are currently few tools that
+can combine human intelligence (e.g., prior knowledge of a fac-
+tor’s utility) and computational power (e.g., assessing stability and
+sensitivity of a factor) for factor selection in stock markets.
+This work is committed to three essential requirements of inter-
+active factor investing. First, traders need an intuitive and compre-
+hensive way to assess the performance of numerous factors with
+respect to excess returns. Second, high-performance factors need
+to be selected and reﬁned together with high-return stocks in the
+© 2021 The Author(s)
+Computer Graphics Forum © 2021 The Eurographics Association and John
+Wiley & Sons Ltd. Published by John Wiley & Sons Ltd.arXiv:2104.11485v1  [cs.HC]  23 Apr 2021Xuanwu Yue et al. / iQUANT: Interactive Quantitative Investment Using Sparse Regression Factors
+construction of an investment portfolio. Third, portfolios need to
+be evaluated and compared in the industry-standard backtesting for
+their returns in both past and future outlook. To meet these re-
+quirements, we present iQUANT (i nteractive Q uantitative invest-
+ment U sing spA rse regressioN facTors), a visual analytics system
+that seamlessly integrates human and algorithmic factor selection
+for effective factor investing in stock markets. iQUANT enjoys the
+best of both worlds from human intelligence by a heuristic search
+in the combinatorial factor space and from computational power
+by summarizing and presenting key performance metrics of factors
+and stocks in close interactions. The contributions of this work can
+be summarized as follows.
+We explore the use of sparse regression models as the initial
+feature selection method for factor investing. Sparse regression
+models are preferred as they optimize the procedure between fac-
+tor selection and stock prediction in the same process. Perfor-
+mance metrics of factors are computed, including not only their
+feature weights, but also the factor contribution that describes its
+importance to the prediction.
+We introduce elaborate visualization designs that comprehen-
+sively illustrate the performance of factors in the regression
+model to predict the prices of candidate stocks. Our designs are
+based on expert studies about empirical characteristics of valu-
+able factors, including stability and sensitivity.
+On top of the visualization interface, we propose an interaction
+framework for factor investing that allows traders to jointly se-
+lect high-performance factors and high-return stocks in an in-
+tegrated model-building and portfolio-construction process. By
+our framework, traders can iteratively reﬁne the factor selection
+and stock portfolio based on visual evidence shown in the inter-
+face. The industry-standard backtesting is also supported.
+We evaluate iQUANT in a formal user study comparing with
+baseline alternatives. Case studies with domain experts on tar-
+geted user tasks are conducted using a real stock market dataset.
+Expert feedback about iQUANT is also reported and discussed.
+2. Related Work
+2.1. Financial Data Visualization
+Financial data, such as stock/fund prices and economic indicators,
+has been widely used by traders and investors to guide their in-
+vestment decisions. Many visualization approaches have been pro-
+posed to support interactive analysis of ﬁnancial data in the past
+decades [KCA16, DML14, Teg99, RKD16, TLL20, LWW20].
+Since the target users are often not visualization experts, classi-
+cal designs such as line charts and bar charts are popular in ﬁ-
+nancial visualization for better usability [CGK07,ZJGK10,SB13,
+YSZ19, YBL19]. For example, Chang et al. [CGK07] applied
+multiple coordinated views with enhanced line charts and matrix
+designs to illustrate the time-varying wire transactions in banking.
+Ziegler et al. [ZJGK10] designed color-coded bars to display rela-
+tive changes in asset prices over time. Sorenson and Brath [SB13]
+combined continuous line charts with icon-based event representa-
+tions to inform users about the important context of ﬁnancial data.
+With the ever-increasing data size, ﬁnancial visualization methods
+are often integrated with automatic analytics to support visual anal-
+ysis of ﬁnancial data [Šim03, STKF07, SBTK08, VV99, ZJGK10].Meanwhile, versatile visualizations beyond classical charts have
+also been developed to cope with the complexity of modern ﬁ-
+nancial data, e.g., Growth Matrix [KNS06,ZNK07], wedge charts
+[DBBS08], and 3D visualizations [TS08, NB04].
+Currently, few studies have been done in integrating visual-
+ization into the factor investing process. Some existing stud-
+ies [CHL03,RSE09,SLFE11] apply visualizations to help manage
+investment portfolios. FundExplorer [CHL03] introduces a dis-
+torted treemap to visualize both the composition of a fund’s port-
+folio and the remaining stocks. Their design facilitates the conve-
+nient retrieval of complementary funds to achieve portfolio diversi-
+ﬁcation. FinVis [RSE09] employs visualization to help non-experts
+understand the expected returns, risks and the changing context of
+multiple portfolios. PortfolioCompare [SLFE11] displays the vari-
+ability and correlation of a portfolio’s risks and returns by scatter-
+plots and distribution charts. Their designs can assist users in mak-
+ing better investments according to their risk preferences. None of
+these visualization tools is integrated with predictive and feature
+selection models for factor investing.
+2.2. Interactive Feature Selection
+Feature selection is a key step in machine learning. Prior studies
+have focused on algorithmic feature selections [LCW17], whose
+mechanism and reasoning are often opaque to users. Inspired
+by prior research on predictive model visualization [LXL18,
+PKWQ20,ZWLC19,MQB19,EASD19], interactive feature selec-
+tions have been widely studied. These studies allow users to vi-
+sually explore the feature space by novel representations and in-
+teractive interfaces. Seo and Shneiderman [JS04] proposed a rank-
+by-feature framework for the exploration of multidimensional data.
+Data features are ranked and visualized by scatter plots, bar charts,
+etc. Johansson and Johansson [JJ09] utilized parallel coordinates to
+visualize data features, with the order determined by user-deﬁned
+metrics.
+On the other hand, there are some works considering the re-
+lationship between features and predictive models. For example,
+SmartStripes [MBD11] combines interactive feature selection by
+allowing users to explore the dependencies between features and
+algorithms. INFUSE [KPB14] integrates feature selection with pre-
+diction models and a glyph-based design to inform users about the
+feature performance with respect to the prediction performance.
+iFEED [BS16] and FeatureMiner [CLL16] visualize the feature
+performance by line charts, bar charts and scatter plots. Prospec-
+tor [KPN16] applies partial dependence diagnostics to analyze the
+correlation among features, data values, and prediction results. Re-
+gressionExplorer [DvVH19] combines feature space visualization
+of regression models with a dynamic subgroup of data analysis.
+Existing studies summarize the feature dependency or perfor-
+mance by hybrid quality measures (e.g., feature ranking), but the
+temporal evolution of features are rarely considered. In factor in-
+vesting, the temporal dynamics of ﬁnancial factors (features) and
+their inﬂuence on the prediction model are crucial, which makes
+existing work not suitable for our scenario.
+3. System Overview
+In this section, the technical background of interactive factor invest-
+ing is introduced, on which key user requirements are summarized.
+© 2021 The Author(s)
+Computer Graphics Forum © 2021 The Eurographics Association and John Wiley & Sons Ltd.Xuanwu Yue et al. / iQUANT: Interactive Quantitative Investment Using Sparse Regression Factors
+To meet these requirements, four user tasks are deﬁned which are
+achieved by a pipeline design in our system.
+3.1. Background
+Historically, factor investing originated from the Capital Asset
+Pricing Model (CAPM) proposed by Sharpe [Sha64] and Linter
+[Lin65], which uses a single factor of a stock’s sensitivity to market
+returns to explain stock returns. Then, researchers and practitioners
+continued to discover new factors related to stock returns. Notably,
+Fama and French [FF92] proposed the famous three-factor model
+which considers a size factor (large v.s. small capitalization stocks)
+and a value factor (high v.s. low book-to-market ratios) in addi-
+tion to the market sensitivity factor. Later, many factors explaining
+stock returns were discovered, including a company’s recent fun-
+damental data [Asn97], the long-term income growth of compa-
+nies [PLdSSV98, DS97], etc.
+In a typical quantitative investment scenario for stock markets,
+traders hold a portfolio composed of a collection of individual
+stocks appropriately mixed in value. The portfolio is adjusted in
+regular time intervals, which is also known as the trading cycle.
+Depending on the style of traders and funds, the trading cycle can
+range from one day/week (e.g., private equity) to several months
+(e.g., public funds). By the factor investing paradigm, at the begin-
+ning of each trading cycle, traders pick a few factors based on their
+experience, domain knowledge, market status and factor returns.
+Quantitative models are then built up over historical market data,
+which try to establish linkages between factors and stock returns.
+Both machine learning and statistical models have been applied in
+this stage [CG20]. From model-predicted stock returns, traders fur-
+ther apply a trading strategy to determine how to adjust their in-
+vestment assets, i.e., when and which stocks to buy/sell. Because
+it is extremely hard to forecast how the portfolio adjustment deci-
+sion performs in the upcoming trading cycle, a standard backtesting
+helps to evaluate its returns on historical data. The model consis-
+tently earns excess returns to the market, or at least in recent cycles,
+is considered good in the context of quantitative investment.
+3.2. Task Characterization
+The factor investing paradigm introduced above seems straightfor-
+ward. However, due to the closedness of the quantitative investment
+community, we only came to this understanding after pilot studies
+with expert traders in several mutual funds, both public and pri-
+vate ones. In the interviews, almost all of them mentioned a key
+difﬁculty in the factor investing practice, the selection of valuable
+factors. While during their long-term jobs, a number of factor com-
+binations proven in the past have been accumulated, they never stop
+ﬁnding and evaluating new factors because stock ﬂuctuations in the
+future can hardly be entirely the same as the past. In a sense, the
+ability to discover new factors is the central competence of quanti-
+tative traders and accounts for most of their performance difference.
+As we learned from experts in the interview, the current factor
+selection process is mostly done manually. A major user pain point
+lies in that the evaluation of selected factors are indirect, less intu-
+itive, and often requires an exhaustive search in the vast combinato-
+rial factor space to identify the best factor collection. In the standard
+backtesting of quantitative models, to be able to compute model re-
+turns, the learning/statistical algorithm and the focused stock needto be determined in addition to the factor selection. Importantly,
+these model returns are often the result of interactions among fac-
+tor, model and stock selections. Users often require a tedious trial-
+and-error comparison process to determine factors. As such a pro-
+cess is done in every trading cycle, efﬁciency is also a critical con-
+sideration not to be neglected. Meanwhile, automatic factor selec-
+tions by machine learning algorithms (e.g., feature selection) have
+been incorporated in a trader’s job. Due to explainability concerns,
+these algorithm-picked factors are only used as a starting point or
+reference for manual factor selection until traders can understand
+their working mechanism. To this end, interactive factor investing
+systems that can integrate feature selection, model building, and
+human intelligence in heuristic factor search, as well as visually
+explain selected factors are of great demand. Below we summarize
+key user requirements collected from our expert studies.
+R1. Direct and intuitive factor evaluation. As there are a large
+number of candidate factors, for a given pool of stocks, the system
+should recommend an initial factor selection for users to start with
+(R1.1 ). Importance measures of these factors should be computed
+in the context of quantitative models to account for the interaction
+between factors and models. These factor importance and the per-
+formance of underlying stock/model need to be presented compre-
+hensively to allow intuitive factor evaluation ( R1.2 ).
+R2. Interaction support for factor and portfolio selection.
+Based on evaluations of factor and stock performance, the system
+should support appropriate interaction to help construct stock port-
+folios to invest. This requires interactions to jointly select and reﬁne
+factors and stocks, as well as a mechanism to help users understand.
+R3. Integrated model building and backtesting. In the fac-
+tor selection and evaluation, the system should automatically train
+quantitative models to predict stock returns based on selected fac-
+tors and stocks, algorithmically or jointly ( R3.1 ). In factor invest-
+ing, backtesting of these models should be performed to compare
+portfolio returns and guide investment decisions ( R3.2 ).
+To meet the requirements of expert traders, we target to build a
+visual analytics system that can support the following key tasks.
+T1. Selection of an initial pool of stocks and factors. Traders
+can start from all the stocks in the market for their investment analy-
+sis. More frequently, s/he focuses on a few sectors (per funder’s re-
+quirements) and picked several stocks from each sector to construct
+a balanced initial stock portfolio. Our system provides an interface
+to allow users to manually determine the initial stock portfolio from
+the list of stocks organized by sectors. Initial factor selections are
+automatically recommended based on the stock portfolio. ( R1.1 )
+T2. Evaluation of factors through visualization. Our system
+illustrates the performance of individual factors in a comprehensive
+visualization interface. Users can visually identify valuable factors
+by examining key dimensions such as stability and sensitivity. The
+stock returns of quantitative models are also displayed. ( R1.2 )
+T3. Interactive joint factor reﬁnement and portfolio adjust-
+ment. Traders select factors and stocks to construct investment
+portfolios in an interactive and iterative manner. Upon each reﬁne-
+ment of factors or stock portfolio, the stock return of the resulting
+model is displayed immediately, which provides visual evidence
+for user’s heuristic factor search. ( R2)
+© 2021 The Author(s)
+Computer Graphics Forum © 2021 The Eurographics Association and John Wiley & Sons Ltd.Xuanwu Yue et al. / iQUANT: Interactive Quantitative Investment Using Sparse Regression Factors
+T4. Evaluation and comparison of portfolio returns. To com-
+pute portfolio returns, quantitative models are automatically built
+up over selected factors ( R3.1 ). Traders compare the temporal dy-
+namics of returns from alternative portfolios and select the best
+portfolio in a standard backtesting ( R3.2 ).
+3.3. System Design
+We propose iQUANT, a visual analytics system supporint all the
+four user tasks deﬁned above. iQUANT features a pipelined design
+as shown in Figure 1. In the ﬁrst stage, the system takes three types
+of stock market data. The ﬁrst type is stock transaction data, notably
+the stock daily opening/closing prices. The second type is market
+information, including but not limited to ﬁnancial statements (total
+assets, debts, cash ﬂows, etc.), market news, and ﬁnancial reports.
+The third and most critical part of data are factors computed from
+stock transactions and market information, which is used in our sys-
+tem for user selection and model building. In this application, we
+apply data from a major stock market consisting of 3,000 stocks
+during 30 years (1990-2018). The data is collected from both ex-
+ternal sources (e.g., open APIs for transaction data) or by internal
+computations (e.g., ﬁnancial factors). The underlying technique of
+our system can be easily extended to support other stock markets.
+In the second stage of Figure 1, we integrate a sparse regression
+model to carry out factor selection and return prediction simultane-
+ously. The performance of selected factors and predictive models
+are visualized in iQUANT . The result of interactive factor invest-
+ing is evaluated in a standard backtesting view in the ﬁnal stage.
+The iQUANT system is a web-based full-stack application. All
+data are stored in MongoDB. The front-ends use Vue.js and D3.js
+libraries. The sparse regression model is time-consuming. How-
+ever, it only takes20 seconds in the back-end to compute a sector
+(dozen) of stocks and respond to the web browser. All performance
+is measured in a laptop requesting a four-CPU cloud server. We
+expect to upgrade the server to further reduce computation time.
+4. Predictive Analytics
+4.1. Sparse Regression Model
+The interactive factor investing approach takes two steps to make
+ﬁnal decisions on portfolio adjustment. First, the collection of ﬁ-
+nancial factors are used to build models on the pool of candidate
+stocks for investment. Second, traders evaluate the predicted stock
+returns by the model and decide on the portfolio adjustment. In
+iQUANT, the second step is achieved by user interactions with the
+interface to understand the model output, and using existing trad-
+ing strategies/algorithms (beyond the scope of this paper). In this
+part, we describe a suite of sparse regression models applied in the
+ﬁrst step to jointly recommend factors (i.e. feature selection) and
+predict stock returns (i.e., model optimization). The sparse regres-
+sion model is a popularly-used one in industry. Users can replace
+it with other statistics/machine learning models with similar output
+format. We include the sparse regression model to demonstrate the
+workﬂow of iQUANT.
+Consider the model for a stock ¡during a time period of G=
+[T+1;T+L], where Lis the length of Gand any time t2Gin-
+dicates the tth trading day. Gis further partitioned into Ntrading
+Figure 1: iQUANT system pipeline composed of two modules: the sparse
+regression model for feature selection and prediction, and the visualization
+of factors and stocks for factor selection and portfolio construction.
+cycles:f[T+1;T+D];;[T+ (N 1)D+1;T+ND]g, where
+Dindicates the length of a trading cycle by days, D=L=N. Take
+the ﬁrst trading cycle t1= [T+1;T+D]as an example, the
+market information in a previous training period [1;T]is used
+in the predictive modeling. Tdenotes the ﬁxed length of train-
+ing period by days. Similarly, for the modeling of the ith trad-
+ing cycle ti= [T+ (i 1)D+1;T+iD], the training period of
+[(i 1)D+1;(i 1)D+T]is used.
+On stock ¡, denote the actual daily stock returns by percent-
+age in the time period [1;T+L+1]byy= (y1;;yT+L+1). Let
+the model take Ffactors as input. Their normalized factor values
+in[1;T+L+1]compose a matrix X= (x1;;xT+L+1)where
+xi= (xi1;;xiF)0. The modeling of stock ¡inGtakes Nsteps,
+corresponding to the trading cycles of t1;;tN, respectively. Con-
+sider the ith trading cycle ti, a sub-vector of actual stock returns is
+used as outcomes, denoted by y(i)= (y(i 1)D+2;;y(i 1)D+T+1).
+A sub-factor-matrix is used as the design matrix (predictors), de-
+noted by X(i)= (x(i 1)D+1;;x(i 1)D+T). We ﬁt a sparse regres-
+sion model:
+y(i)=w(i)0X(i)+b(i)+e(i)(1)
+Subject to the objective function:
+Minimize Lasso NLL=NLL+1
+2l[ajjw(n)jj1+(1 a)jjw(n)jj2
+2]
+(2)
+where w(i)= (w(i)
+1;;w(i)
+F)0denotes the weight vector of ﬁnancial
+factors in the ﬁtted model, b(i)is the bias, e(i)is the error term,jjjj 1
+(jjjj 2) isL1(L2) norm of the vector. Dis set to 21 (average number
+of monthly trading days). The best weight vector is computed by
+minimizing the negative log likelihood (NLL) of a linear regression
+term plus L1andL2penalty terms of the weight vector. The penalty
+terms shrink the weight of unimportant factors to zero. On each
+trading cycle, the model is applied to predict daily stock returns.
+Note that landain Eq. (2) control the degree of model sparsity
+and weights between L1andL2terms. In this work, we provide
+three choices of modeling: a=1 (without the L2term), the famous
+Lasso model [Tib96] with a ﬁxed l;LassoCV model using 10-
+fold cross-validation to determine lof the Lasso model [UGH09];
+anda=0:5, a balanced Elastic Net model ( ELNetApp ) [ZH05].
+The trade-off of the three models in predictive performance and
+the number of selected features can be found in recent literature
+[Tib96] [UGH09] [ZH05].
+© 2021 The Author(s)
+Computer Graphics Forum © 2021 The Eurographics Association and John Wiley & Sons Ltd.Xuanwu Yue et al. / iQUANT: Interactive Quantitative Investment Using Sparse Regression Factors
+(a) (b)
+(c)(d)
+(e)
+(f)
+Figure 2: Interactive selection of four stocks from the Chemical sector in 2015 using a two-factor model ( lagretn +stddvol): (a) control panel; (b) factor view;
+(c) stock view by sectors; (d) factor list for selection; (e) stock return view for portfolio construction; (f) backtesting view for evaluation of returns.
+The sparse regression model achieves feature selection ( L1and
+L2penalty terms) and model optimization (regression term) simul-
+taneously. This is extremely helpful to alleviate the overﬁtting ef-
+fect in the factor investing case when the number of predictors
+(F=56 in our implementation) is comparable to the number of
+training samples ( T=200). Though we apply a basic linear regres-
+sion for stock prediction, the sparse models with L1andL2penal-
+ties can be easily extended to support more sophisticated models
+such as nonlinear models using customized kernel functions.
+4.2. Financial Factors
+For factor computation, we adopt the result of a latest white paper
+on the target stock market [Tsi18], which recommends six types of
+56 factors with each factor characterizes a key aspect of a stock:
+Transaction friction : 17 factors delineating overall status of a
+company (e.g., ﬁrm size by its market value, age of a ﬁrm) and
+transaction statistics (e.g., volatility, risks measured by stock re-
+turns compared with the market return);
+Momentum : 5 factors computing daily stock returns in the re-
+cent 6/12 months, the change of momentum, and specially de-
+ﬁned momentums;
+Value : 8 factors including the famous book-to-market ratio pro-
+posed by Fama and French [FF92], the asset-to-market ratio, and
+other company performance related ratios;
+Growth : 11 factors describing the growth of a company’s asset,
+debt, market value, sales, proﬁt, tax, etc;
+Proﬁtability : 8 factors quantifying return on equity, return on
+asset, and other factors related to company proﬁts;
+Liquidity : 7 factors characterizing the liquidity performance of
+a company, including current ratio, quick ratio, cash ﬂow to debt
+ratio, etc.For the above factors, the ranges of their values differ signiﬁ-
+cantly from each other. Also, their values can change dramatically
+along with the stock market. Since all the factor values are nor-
+malized initially, the relative importance of each factor can be as-
+sessed, which can facilitate the factor analysis. The sparse regres-
+sion model in iQUANT outputs three measures to delineate the im-
+portance of each factor in the prediction. Take the jth factor in the
+ith trading cycle (e.g., daily, monthly or quarterly) as an example,
+the three measures are as follows:
+Factor weight learned in the model, denoted by w(i)
+j;
+Factor value changing in a daily basis, denoted by X(i);
+Contribution of factors to the prediction of daily stock returns,
+denoted by åT+iD
+k=T+(i 1)D+1w(i)
+jxk j.
+By collecting the feedback from traders in our pilot study, we
+further extracted three metrics that are widely-used in industry to
+delineate the utilization of each factor. These two metrics are visu-
+alized in iQUANT to aid the interactive factor selection and stock
+portfolio construction process.
+Sensitivity : a metric that indicates whether the utilization of a
+factor can be replaced by other factors. The sensitivity is com-
+puted by (xi
+ j xi)+where xi
+ jdenotes the prediction error by
+removing the jth factor from sparse regression models, xide-
+notes the prediction error of the original model;
+Stability : a good factor for the predictive model should have sta-
+ble contributions in a long period of time before conﬁdently ap-
+plied. Quantitatively, it is measured by the number of times the
+factor’s contribution to a stock’s prediction ﬂips from negative to
+positive or from positive to negative.
+© 2021 The Author(s)
+Computer Graphics Forum © 2021 The Eurographics Association and John Wiley & Sons Ltd.Xuanwu Yue et al. / iQUANT: Interactive Quantitative Investment Using Sparse Regression Factors
+5. Visualization
+5.1. Control Panel
+The control panel in Figure 2(a) allows users to select an initial
+pool of stocks for analysis ( T1). S/he can input the stock code to
+select an individual stock or choose an entire sector of stocks from
+a sector list. All the selected stocks will appear in the bottom part of
+the control panel, aggregated by sectors. Next, users need to specify
+a time period and a model for factor investing. Finally, users click
+the “Draw” button to visualize factors related to the selected stocks.
+5.2. Factor View
+Factor view (Figure 2(b)) is designed to provide traders with a
+quick overview of ﬁnancial factors relevant to the selected stocks
+and time period. These factors are initially recommended by sparse
+models in iQUANT ( T1). The model measures the importance of
+each factor by its weight, value, or contribution to the prediction of
+stock returns. By default, traders ﬁrst look at the contribution mea-
+sure which covers both its current value and the overall weight. The
+contribution can be either positive or negative depending on the re-
+lationship between the factor and stock returns. According to our
+expert study, they also consider several other metrics in the factor
+evaluation and selection process, including the temporal stability of
+factors and their sensitivity in the model. ( T2)
+To meet the above design requirements, we propose a cus-
+tomized visual design to integrate time-varying factor importance
+metrics in a single factor view. As shown in Figure 2(b), the x-axis
+of the view indicates a timeline divided into multiple time units
+(months by default). Each factor is visualized as a series of ﬁlled
+circles in these time units. On each circle, the color hue encodes
+factor type, the color opacity encodes the factor sensitivity to the
+model, and the circle radius represents the aggregated factor im-
+portance to all the selected stocks. Three importance metrics can
+be displayed by the checkboxes in the top row of the factor view:
+weight, value, and contribution (default). All the circles on the same
+time unit are vertically aligned by a ﬁxed order of their correspond-
+ing factors to facilitate factor tracking and comparison along the
+timeline. As each factor can have a positive or negative contribu-
+tion in different time units, we depict positive and negative factors
+as circles above and below the x-axis respectively.
+User interactions are designed in the factor view to help identify
+useful factors for modeling. When a user hovers a factor circle, all
+the circles representing the same factor are linked by a curved line
+to reveal its stability over time. (Figure 2(b)). Also, a tooltip will
+be displayed, showing the detailed information of the factor circle
+such as factor type, name, sensitivity and importance metric. The
+user can interactively ﬁlter factors to reduce visual complexity.
+Alternative designs of the factor view have been considered.
+The line chart is the most intuitive form to visualize factor impor-
+tance over time. When we have as many as 56 factors, line charts
+suffer from severe visual clutter. Stacked ﬂow chart [BW08] is an-
+other possible visual design. A quick overview of factor composi-
+tion can be provided, but it is not good at displaying the temporal
+dynamics of individual factors (especially for unimportant factors).
+For the circle layout, we also experimented with circle packing
+in which positive and negative factors are placed separately. The
+Figure 3: Alternative designs of the circle layout in the factor view: (a)
+circle packing; (b) layered circle packing.
+circle packing leads to more compact visualization (Figure 3(a)).
+However, our domain experts complained that the design made it
+difﬁcult to track individual factors across the timeline. The relative
+position of the same factor circle varied a lot across different time
+units. In an improved layered circle packing (Figure 3(b)), which
+is similar to a matrix design, the same type of factors is aligned
+horizontally. It facilitates tracking of the same factor, but the space
+usage is inefﬁcient and the connecting lines on factors lead to heavy
+crossings. The current design is a good trade-off between space us-
+age and effectiveness compared with other alternative designs.
+5.3. Stock View
+Stock view (Figure 2(c)) splits the aggregated factor time series in
+the factor view according to their importance to individual stocks.
+This helps to evaluate the factor performance among different
+stocks and sectors ( T2). The visual design is challenging, as the
+space for each stock is limited and there could be many factors rel-
+evant to a stock. On each factor, there are also multiple attributes to
+be visualized, e.g., the magnitude and polarity of importance (con-
+tribution), the model bias, and the trend of the stock price.
+In our design, the visualization of each stock follows a similar
+layout to the display in the factor view. As shown in Figure 2(c), the
+x-axis is a timeline divided into units. At each time unit, a stock bar
+is drawn (the yellow bar of Figure 6 (d)), whose height represents
+the ratio of stock price change in this time unit and width represents
+the rate of prediction error on the price change by models. A red
+(green) bar indicates a rise (drop) of the stock price. On top of and
+below each stock bar, there are two factor glyphs which summarize
+the factors having a positive and negative contribution to the price
+change in the predictive model.
+The factor glyph at the top and bottom in Figure 6 (d) has a
+circular shape, and is composed of one inner circle and six angular
+sectors in the outside. The radius of the inner circle encodes the
+model bias. Each outer sector represents one type of factors, with
+the size of each sector indicating the sum of all factor’s importance
+in this type. On each factor glyph, the top-5 factors with the high-
+est importance in all factor types are displayed. When more than
+one factor from the same type belongs to the top-5, a V oronoi di-
+agram is drawn to pack these factors in the same angular sector.
+Each region in the V oronoi diagram corresponds to one factor, with
+the region size indicating its importance. The sum of all the other
+factor’s importance out of the top-5 category is represented by the
+grey region close to the glyph center. When users hover a V oronoi
+region of one factor, a line will be drawn to connect all the V oronoi
+regions of this factor over time. Meanwhile, a tooltip showing the
+factor type, name and importance will also appear. When the factor
+© 2021 The Author(s)
+Computer Graphics Forum © 2021 The Eurographics Association and John Wiley & Sons Ltd.Xuanwu Yue et al. / iQUANT: Interactive Quantitative Investment Using Sparse Regression Factors
+does not belong to the top-5 category, the line will be linked to zero
+position on the x-axis.
+Alternative designs such as line chart and stream-
+graph [HHN00] are commonly used for visualizing temporal
+evolution of variables. In our scenario, the top-5 factors can
+be quite different in separate time units, making line charts or
+streamgraph discontinuous over time and hard to track by users.
+Commodity designs such as stacked bar charts and pie charts
+are also considered. Nevertheless, the stacked bar chart is not
+scalable to support dozens of factors in the same view. The pie
+chart can clearly show the percentage of each factor in importance,
+but again the relative position of the same factor can vary a lot
+in different units, making it hard to compare the evolution of the
+same factor. iQUANT is designed for ﬁnancial factor selection,
+which makes it inevitable to consider much domain knowledge
+and incorporate different factors in our design. This can increase
+the design complexity and it takes some time for user to learn,
+but most of our users can be well prepared after a training session
+of about 10 minutes as indicated in Section 6.3, which we would
+argue is a reasonable learning effort.
+5.4. Factor List
+Factor list (Figure 2(d)) aggregates factor data together to depict
+the overall factor performance ( T2). The six types of factors are
+listed in rows, with factors in one type uniformly distributed as fac-
+tor bars in the same row. Each factor bar represents the positive and
+negative contribution of the factor in the entire time period, using
+the height of the bar above and below the x-axis respectively. Users
+can manually select factors by clicking factor bars, then the stock
+prediction models are re-built using the selected factors after trig-
+gering the “Draw” button. The factor performance in the stock view
+is also updated for iterative factor/stock selection. ( T3)
+5.5. Stock Return View
+Stock return view (Figure 2(e)) is organized by sectors. In each ex-
+pandable sector box, the investment returns of all stocks in that sec-
+tor are calculated by backtesting and displayed in multiple grey line
+charts. An additional blue line indicates the market return. Users
+could select promising stocks in the stock view and examine their
+returns by the lines highlighted in red. The stocks could be selected
+in the return view and added into a portfolio table. A “Backtest”
+button will trigger the backtesting computation by the selected fac-
+tors (factor list) and selected stocks (portfolio table).
+5.6. Backtesting View
+Backtesting view (Figure 2(f)) evaluates the investment perfor-
+mance of the selected portfolio ( T4). Backtesting calculates the
+portfolio returns using historical stock data. The blue line indicates
+the average return in the market and the grey one indicates the port-
+folio return. A dotted line after the selected time period represents
+the predicted return in future. Comparison among multiple portfo-
+lios is enabled by adding more portfolio from the stock return view.
+5.7. Multiple Views Interaction
+iQUANT supports interactions among multiple views for compre-
+hensive evaluation of factor performance ( T2) and interactive se-
+lection of stocks and factors ( T3).Selection of factors : Users can select/de-select factors by click-
+ing factor circles in the factor view, V oronoi regions in the stock
+view, and factor bars in the factor list. Each change to the factor
+selection will trigger updates in all the views simultaneously.
+Selection of stocks : An initial collection of stocks can be se-
+lected in the control panel. Users can further compose an invest-
+ment portfolio by clicking the stock name in the stock view or the
+return curve in the stock return view. This helps to interactively
+and iteratively reﬁne stock selection according to their returns or
+the performance of relevant factors.
+6. User Experiment
+6.1. Design
+We conducted a formal user study to compare the effectiveness of
+iQUANT visualization design with a baseline factor visualization
+using commodity multiple line charts (See the supplementary mate-
+rial for more details of the baseline factor visualization used). Since
+there is no efﬁcient tool that can fulﬁll the tasks mentioned in Task
+Characterization , we chose to compare iQUANT with the widely-
+used line charts in the stock market. In both designs, the time series
+of ﬁnancial factors and stock prices were displayed. Users were re-
+quired to complete multiple tasks involving the selection of factors
+and stocks for investment, which corresponded well with T1T3in
+Task Characterization . In total, 14 expert quantitative traders were
+recruited as subjects, who were paid for their valuable time. We
+applied a between-subject design that subjects were randomly as-
+signed to two groups of equal size. The seven subjects in each group
+will complete all the tasks with only one visualization, iQUANT or
+baseline. The experiment was composed of two sessions. In the ﬁrst
+training session, subjects were presented with a tutorial and allowed
+a trial usage of iQUANT to be tested. In the subsequent formal test
+session, each subject took seven tasks. To alleviate the inﬂuence of
+ﬁnancial data on the result and increase statistical power, we pre-
+sented two stock data. Each subject was required to complete all
+the tasks with both data using the tested visualization. The full doc-
+uments of the experiment design are provided in Appendix A. The
+user tasks can be categorized into four groups.
+Q1/Q2 ( factor selection by contribution ): Among all the factors,
+which factors have the highest positive/negative contribution to the
+return of a particular stock during a given time period?
+Q3 (factor selection by stability ): Among all the factors, which
+factors have the highest unstable contribution to the return of a
+particular stock during a given time period?
+Q4/Q5 ( factor selection by contribution to a sector of stocks ):
+Among all the factors, which factors have the highest posi-
+tive/negative contribution to the return of all stocks in a particular
+sector during a given time period?
+Q6/Q7 ( stock selection by factor contribution ): Among all the
+stocks in a given sector, whose return receive the highest posi-
+tive/negative contribution from a selected factor during a given
+time period?
+For each question, the subject was required to provide 1 2 an-
+swers. Because of the between-subject design, subjects were not
+asked for their subjective rating on each visualization (no within-
+© 2021 The Author(s)
+Computer Graphics Forum © 2021 The Eurographics Association and John Wiley & Sons Ltd.Xuanwu Yue et al. / iQUANT: Interactive Quantitative Investment Using Sparse Regression Factors
+subject comparison). Instead, we collected their verbal feedback on
+the pros and cons of each design.
+6.2. Result and Analysis
+We compute the accuracy of each user’s response to a question by
+comparing them with top-2 answers. The overall accuracy is mea-
+sured by the number of correct answers to each question. In Fig-
+ure 4, we depict the accuracy and completion time of four groups
+of seven questions. Because both accuracy and time do not follow
+normal distributions, we apply the Mann-Whitney test to analyze.
+On task accuracy (Figure 4(a)), the result reveals that, for factor
+selection by contribution (Q1/Q2), by stability (Q3), and stock se-
+lection by factor contribution (Q6/Q7), the accuracy of iQUANT is
+signiﬁcantly higher than the baseline design: U=324:0;p=:024
+for Q1/Q2; U=30:0;p=:001 for Q3; U=207:0;p< :001
+for Q6/Q7. The average task accuracies are 1.14 0.14 (iQUANT)
+and 0.960.07 (baseline) for Q1/Q2; 1.29 0.27 (iQUANT) and
+0.430.3 (baseline) for Q3; 1.36 0.19 (iQUANT) and 0.82 0.15
+(baseline) for Q6/Q7. For factor selection in a sector (Q4/Q5),
+the accuracy difference between the iQUANT and baseline is not
+signiﬁcant ( U=364:0;p=:15), though the average accuracy of
+iQUANT (1.00.0) is higher than the baseline (0.93 0.1).
+On task completion time (Figure 4(b)), the result reveals that,
+for factor selection by stability (Q3), the completion time using
+iQUANT is signiﬁcantly shorter than the baseline design ( U=
+30:5;p=:002). The average completion times are 27.2s 3.8s
+(iQUANT) and 50.9s 12.8s (baseline). For factor selection by con-
+tribution (Q1/Q2), in a sector of stocks (Q4/Q5), and stock se-
+lection by factor contribution (Q6/Q7), the completion time us-
+ing iQUANT is not signiﬁcantly shorter than the baseline design:
+U=359:0;p=:58 for Q1/Q2; U=367:0;p=:68 for Q4/Q5;
+U=342:0;p=:41 for Q6/Q7. The average completion times
+are 17.1s3.4s (iQUANT) and 16.2 3.6s (baseline) for Q1/Q2;
+15.9s3.4s (iQUANT) and 15.9s 4.5s (baseline) for Q4/Q5;
+20.4s3.6s (iQUANT) and 29.3s 9.0s (baseline) for Q6/Q7.
+The study result indicates that, on most tasks, iQUANT leads to
+higher task accuracy than the baseline design. The only exception
+happens on the factor selection task for a sector of stocks (Q4/Q5).
+It is found that in the stock data used for these two questions, the
+factor having the highest positive/negative contribution is quite sep-
+arated from all the other factors. Hence, only the top-1 factor is used
+as the correct answer, and in both designs, subjects could easily
+identify this factor (a 100% accuracy for iQUANT). For similarly
+easy tasks (Q1/Q2 and Q6/Q7), though the baseline design in most
+case helps to identify one (but only one) top factor, the accuracy
+of iQUANT is signiﬁcantly higher because subjects could quickly
+discover more top factors in comparison to the baseline design. For
+the hard task of selecting factors by stability (Q3), the advantage
+of iQUANT in accuracy becomes the highest. Meanwhile, on com-
+pletion time, iQUANT is favored only in the hard task of Q3, for
+which the iQUANT design can better support temporal comparison
+and analytics of factor contribution. For the other tasks, the com-
+pletion time is similar in both iQUANT and baseline design.
+6.3. Expert Feedback
+In the user experiment, experts also provided valuable feedback
+about several aspects of iQUANT .
+Figure 4: User experiment results: (a) the number of correct answers pro-
+vided by users in two visualization designs; (b) the task completion time.
+On positive aspects, some experts stressed that iQUANT pre-
+sented an effective way to visually compare salient factors among
+different sectors of the market. In practice, the factor constituent
+and dynamics are truly different across sectors, which is of great
+importance to factor investing. As supported by the study result,
+experts also found iQUANT to be useful in analyzing the tempo-
+ral dimension of factors, as well as the relationship between factors
+and stocks, which are exactly our design goal. Overall, subjects
+reported the iQUANT interface to be user-friendly, as our design
+was similar to their familiar and popular tools. Some experts even
+commented that our design could be part of standard stock market
+analysis tools (e.g., the work from Bloomberg [SB13]).
+On the other hand, it was suggested that the interface could incor-
+porate more statistical information according to the industry stan-
+dard (e.g., the change of stock holdings in the backtesting view).
+The V oronoi map for top-5 factors could be reduced to only show
+the top-3 or less, in order to better reveal the most salient signal for
+the stock market. More detailed visual encoding could be applied to
+distinguish the factors of the same type, which are now depicted in
+the same color. Notably, we thought the complexity of the interface
+could raise learning issues. During the study, most subjects could
+be well prepared after a 10-minute training session, as indicated by
+the high task accuracy in applying iQUANT.
+7. Case Study
+7.1. Selection of Investment Time
+We ﬁrst invited a fund manager to select the best investment time
+for individual stock with iQUANT. He looked at the year of 2016.2-
+2017.1 when the market index rose by 15.7%. From a list of candi-
+dates, the manager examined each stock until a feasible investment
+time for excess return is identiﬁed.
+The manager reported stock in the Computer sector (code:
+002351.SZ) for which the composite index of the whole sector
+rose by 2.5%. In his analysis, the Lasso model was selected. As
+shown in Figure 5(a1), the initial factor view displays a summary
+of important factors recommended by the Lasso model. In the fac-
+tor list view (Figure 5(a2)), the manager identiﬁed several useful
+factors having large contribution to the stock return. He hovered
+these factors one by one to examine their performance in the given
+period. The AM factor (asset-to-market ratio) was chosen because
+its contributions are stable in the ﬁrst six months: all negative to
+the rise of stock prices. There are two months when the factor sen-
+© 2021 The Author(s)
+Computer Graphics Forum © 2021 The Eurographics Association and John Wiley & Sons Ltd.Xuanwu Yue et al. / iQUANT: Interactive Quantitative Investment Using Sparse Regression Factors
+(b1)(a1)
+(b2)(a2)
+(b3)(a3)
+(b4)(a4)
+Figure 5: The selection of investment time during 2016.2-2017.1 on 002351.SZ by: (a) a single-factor model ( AM); (b) a two-factor model ( AM+volumed ).
+The manager switched from a single-factor model to a two-factor model to optimize his investment strategy.
+sitivity is high, as indicated by opaque colors. By this one-factor
+model, the investment return (red curve in Figure 5(a3)) surpasses
+the stock price change (blue curve) by 26.5% at the end of the pe-
+riod. A maximal return of 11% can also be forecast for the next
+three months, as shown by the grey dotted curve in the backtest-
+ing view of Figure 5(a4). Notably, the manager suggested applying
+the model from June when the AM factor has been stable for four
+months and enjoys a high sensitivity in the latest month (May). In
+case this strategy was adopted, an excess return of 39.1% could be
+earned in June when the overall market only rose by 1.6%.
+To optimize the investment for the whole year, the manager ex-
+plored other factors that can characterize the price change in the
+second half of the year. He found that the volumed factor was com-
+plementary to AM, as the volumed factor contributed to the model
+mainly from July (Figure 5(b1)). By applying a AM+volumed two-
+factor model, a return of 81.8% can be obtained by the end of
+the period, which is 14.5% more than the one-factor model (Fig-
+ure 5(b3)). Notably, the predicted return for the next three months
+increases to 40.9% with the new model (Figure 5(b4)).
+7.2. Selection of Stock Portfolio
+In the second scenario, we invited the fund manager to select a port-
+folio of stocks to invest from an initial stock pool in a given time
+period. The sector-based division was adopted. The manager ana-
+lyzed every candidate sector, and combined the selected stocks in
+each sector into a ﬁnal portfolio for investment. The year of 2015
+was considered when the market experienced a spike with the max-
+imal index climbing as high as 60% in the ﬁrst six months. The
+yearly growth was 9.4% after the downturn in the second half of
+the year. It is thus an appropriate scenario to test whether our tool
+can improve factor investing even in rapidly changing markets.
+The manager ﬁrst studied the Chemical sector which had a simi-
+lar trend to the market in 2015. The factor view in Figure 2(b) visu-
+alizes an initial collection of factors using the ELNetApp model. It
+can be seen in the factor view that many factors are quite stable over
+time. Different from the study on individual stocks, for portfolio
+construction, the manager would like to select both valuable factors
+and a set of stocks whose selected factors behave in a similarly sta-
+ble and effective way. Our tool provides support with an interactive
+selection process. Users can click on each important factor in thefactor list (Figure 2(d)) and scroll in the stock view (Figure 2(c)) to
+identify candidate stocks. By this process, the manager found factor
+lagretn , which had a moderate overall contribution to stock returns
+of the sector (Figure 2(d)) and the contribution was stable on sev-
+eral individual stocks. As shown in Figure 6(a), the selected stocks
+share similar patterns on lagretn . When the stock price started to
+rise again from September (notice red/green bars in Figure 2(c)),
+the contribution of lagretn reversed to negative and stayed for few
+months, as shown by the connecting lines in Figure 6(a). It is found
+in Figure 6(b) that ﬁve stocks (red lines) sharing this pattern on la-
+gretn receive excess returns above the sector average (blue line).
+The prediction performance in Figure 6(c) (grey dotted line) also
+surpasses the market average (blue dotted line).
+The manager proceeded to interactively examine all the ﬁve se-
+lected stocks. In the factor list view, he checked again all the can-
+didate factors and found the factor stddvol, which had a favorable
+pattern as the factor lagretn on all the selected stocks. After apply-
+ing the two factors together (Figure 2(d)), the stock returns were
+re-computed and updated in Figure 2(e). One stock appeared to re-
+ceive less return after adding the second factor, while all the other
+four stocks remained superior to the sector average. In the back-
+testing view (Figure 2(f)), the ﬁnal portfolio of two factors and four
+stocks (red lines) turned out to be better than the single-factor port-
+folio (grey lines) in both the backtest performance in 2015 (solid
+lines) and an outlook in the ﬁrst three months of 2016 (dotted lines).
+In another study, we asked the manager to work in the Household
+Appliances sector in the same year of 2015. By repeating a similar
+process, he was able to build a two-factor model of size+retnmax .
+Three stocks having stable contributions were selected. The port-
+folio returns in both 2015 and 2016 (outlook) are better than the
+market average. We omit screenshots due to the space limit.
+By comparing the visual analysis result in the above two sec-
+tors, it is noticed that the Appliance sector is almost exclusively
+inﬂuenced by the transaction factors, while the Chemical sector is
+inﬂuenced by transaction factors and other types of factors such as
+momentum, value, and growth (Figure 2(d)). We hypothesize that
+because of their relationship, the Chemical sector is not only af-
+fected by transactions in the stock market but also linked to the
+price of crude oil, which is independently traded.
+© 2021 The Author(s)
+Computer Graphics Forum © 2021 The Eurographics Association and John Wiley & Sons Ltd.Xuanwu Yue et al. / iQUANT: Interactive Quantitative Investment Using Sparse Regression Factors
+(a) (b)
+(d)(c)(d)
+Figure 6: Portfolio construction from the Chemical sector using the single factor ( lagretn ) in 2015: (a) lagretn factor contributed similarly to theses three
+stocks; (b) selected high return stocks for portfolio; (c) backtesting results from the portfolio; (d) a detailed illustration of the Voronoi-based glyph.
+8. Discussion
+The sparse regression model and its ﬂexibility. In our system,
+users routinely start from an initial set of factors recommended
+by the build-in sparse regression model, which potentially limits
+the ﬂexibility of factor investing by iQUANT . This issue is alle-
+viated from three directions: in the factor list view (Figure 2(d)),
+users can manually select any set of factors as the starting point of
+analysis; the sparsity parameter of the regression model ( l) can be
+tuned in the backend to offer more or less initial factors; ﬁnally, the
+iQUANT system is fully compatible with any other sparse models
+or a combination of feature selection and prediction models.
+The joint human-model approach and its advantage. We have
+mentioned in previous sections, the model-only approach in fac-
+tor selection suffers from the interpretability issue. Traders need to
+understand the factor before applied in practice. Also, a human is
+better in a heuristic search of the best combination within the vast
+factor space. More importantly, in the ﬁnancial domain, there is no
+model that works in the long term. It will be critical to have human
+stand by models, and would be better to early adjust accordingly.
+The visual design and its learning curve. Notice that stock
+traders may not have a strong background in visualization. Thus,
+we tried to strike a balance between the intuitiveness and expres-
+siveness of visualization. On one hand, classical designs such as bar
+charts and line charts are employed in iQUANT , due to their intu-
+itiveness and users’ familiarity. On the other hand, our designs are
+tailored to the target users. For example in the factor view, green/red
+are used to indicate the decline/rise of stock prices, according to the
+convention of our target market. The effectiveness of iQUANT de-
+sign is conﬁrmed by the user study result and expert feedback. Most
+subjects found iQUANT easy to learn and understand.
+The user study and its design choices. We evaluated iQUANT
+through a formal user study focusing on the performance of fac-
+tor/stock selection. The study would have accounted for more
+stages of iQUANT by looking at the ﬁnal stock returns, or the ac-
+curacy in predicting. We stayed in the scope of evaluating factors
+for two reasons. First, the stock return by an interactive factor in-
+vesting system is determined in complex interactions among fac-
+tor/stock selection, predictive model, and trading strategy. A higher
+stock return in the study may or may not be directly correlated with
+a better factor selection design. Second, there is currently no com-mercial tool that supports end-to-end interactive factor investing.
+We compare iQUANT with a baseline design, which is not natively
+integrated with prediction models and trading strategies.
+The deployment of iQUANT and its extensibility. The invest-
+ment industry is highly closed as the winning secret can be too
+valuable to disclose. This closedness prohibits a more practical ap-
+proach to directly optimize deployed tools. Instead, we developed a
+homegrown interactive factor investing pipeline and an end-to-end
+system. Because of the complexity of quantitative investment, we
+mainly focus on improving the factor selection in the pipeline. We
+demonstrated the effectiveness of iQUANT by using the 20-year
+real stock market data. However, our system can also be deployed
+to take in real-time data. As a next step, we plan to customize and
+integrate iQUANT into the production system of our industrial col-
+laborators, in the hope of making real impacts on the industry.
+9. Conclusion
+This paper presents iQUANT, a visual analytics system that seam-
+lessly integrates algorithmic and user-steered feature selection
+methods for interactive factor investing. On the analytics side, we
+explore the use of sparse regression models that jointly optimizing
+factor selection and stock prediction processes. On the visualiza-
+tion side, we propose multiple coordinated visual designs to com-
+prehensively illustrate importance metrics of each factor, including
+its positive/negative contribution to models, the factor stability and
+sensitivity. On top of the prediction model and visualization design,
+iQUANT develops an interactive framework that encloses factor
+reﬁnement and portfolio construction in the same visual analytics
+loop. With iQUANT , traders can optimize their investment strat-
+egy and evaluate them in industry-standard backtesting. We demon-
+strate the value of iQUANT through one formal user study and two
+case studies, using a real stock market dataset recording the stock
+data in the past 30 years. On the selection of investment time and
+stock portfolio, our domain experts achieved excess returns from
+both individual stock and sector-based portfolios.
+Acknowledgment
+We thank the anonymous reviewers for their valuable comments
+and Prof. Lei Shi for his constructive suggestions on this project.
+This work is partially supported by a research collaboration grant
+from Microsoft Research Asia.
+© 2021 The Author(s)
+Computer Graphics Forum © 2021 The Eurographics Association and John Wiley & Sons Ltd.Xuanwu Yue et al. / iQUANT: Interactive Quantitative Investment Using Sparse Regression Factors
+References
+[Asn97] A SNESS C. S.: The interaction of value and momentum strate-
+gies. Financial Analysts Journal 53 , 2 (1997), 29–36. doi:10.2469/
+faj.v53.n2.2069 . 3
+[BS16] B ANG H., S ELVA D.: ifeed: Interactive feature extraction
+for engineering design. In ASME 2016 International Design En-
+gineering Technical Conferences and Computers and Information
+in Engineering Conference (2016), American Society of Mechani-
+cal Engineers, pp. V007T06A037–V007T06A037. doi:10.1115/
+DETC2016-60077 . 2
+[BW08] B YRON L., W ATTENBERG M.: Stacked graphs - geometry &
+aesthetics. IEEE Transactions on Visualization and Computer Graphics
+14, 6 (2008), 1245–1252. doi:10.1109/TVCG.2008.166 . 6
+[CG20] C OQUERET G., G UIDA T.:Machine Learning for Factor Invest-
+ing: R Version . CRC Press, 2020. 3
+[CGK07] C HANG R., G HONIEM M., K OSARA R., R IBARSKY W.,
+YANG J., S UMA E., Z IEMKIEWICZ C., K ERN D., S UDJIANTO A.:
+Wirevis: Visualization of categorical, time-varying data from ﬁnancial
+transactions. In 2007 IEEE Symposium on Visual Analytics Science and
+Technology (Oct 2007), pp. 155–162. doi:10.1109/VAST.2007.
+4389009 . 2
+[CHL03] C SALLNER C., H ANDTE M., L EHMANN O., , S TASKO J.:
+Fundexplorer: Supporting the diversiﬁcation of mutual fund portfolios
+using context treemaps. In IEEE Symposium on Information Visualiza-
+tion 2003 (Oct 2003), pp. 203–208. doi:10.1109/INFVIS.2003.
+1249027 . 2
+[CLL16] C HENG K., L IJ., L IUH.: Featureminer: A tool for interac-
+tive feature selection. In Proceedings of the 25th ACM International
+on Conference on Information and Knowledge Management (New York,
+NY , USA, 2016), CIKM ’16, ACM, pp. 2445–2448. doi:10.1145/
+2983323.2983329 . 2
+[DBBS08] D AOH. T., B AZINET A. L., B ERTHIER R., S HNEIDERMAN
+B.: Nasdaq velocity and forces: An interactive visualization of activity
+and change. Journal of Universal Computer Science 14 , 9 (2008), 1391–
+1410. doi:10.3217/jucs-014-09-1391 . 2
+[DML14] D UMAS M., M CGUFFIN M. J., L EMIEUX V. L.:
+Financevis.net-a visual survey of ﬁnancial data visualizations. In
+IEEE Conference on information Visualization (2014), vol. 2. 2
+[DS97] D ECHOW P. M., S LOAN R. G.: Returns to contrarian investment
+strategies: Tests of naive expectations hypotheses. Journal of Financial
+Economics 43 , 1 (1997), 3–27. 3
+[DvVH19] D INGEN D., VAN’TVEER M., H OUTHUIZEN P., M E-
+STROM E. H. J., K ORSTEN E. H., B OUWMAN A. R., VAN WIJKJ.:
+Regressionexplorer: Interactive exploration of logistic regression models
+with subgroup analysis. IEEE Transactions on Visualization and Com-
+puter Graphics 25 , 1 (2019), 246–255. doi:10.1109/TVCG.2018.
+2865043 . 2
+[EASD19] E L-ASSADY M., S PERRLE F., D EUSSEN O., K EIM D.,
+COLLINS C.: Visual analytics for topic model optimization based on
+user-steerable speculative execution. IEEE Transactions on Visualiza-
+tion and Computer Graphics 25 , 1 (2019), 374–384. doi:10.1109/
+TVCG.2018.2864769 . 2
+[FF92] F AMA E. F., F RENCH K. R.: The cross-section of expected
+stock returns. The Journal of Finance 47 , 2 (1992), 427–465. doi:
+10.1111/j.1540-6261.1992.tb04398.x . 1, 3, 5
+[FF04] F AMA E. F., F RENCH K. R.: The capital asset pricing model:
+Theory and evidence. Journal of Economic Perspectives 18 , 3 (2004),
+25–46. doi:10.1257/0895330042162430 . 1
+[GE03] G UYON I., E LISSEEFF A.: An introduction to variable and fea-
+ture selection. The Journal of Machine Learning Research 3 (2003),
+1157–1182. doi:10.5555/944919.944968 . 1
+[GK13] G LANTZ M., K ISSELL R.: Multi-Asset Risk Modeling: Tech-
+niques for a Global Economy in an Electronic and Algorithmic Trading
+Era. Academic Press, 2013. 1[HHN00] H AVRE S., H ETZLER B., N OWELL L.: Themeriver: visual-
+izing theme changes over time. In Proceedings of IEEE Symposium
+on Information Visualization 2000. (Oct 2000), pp. 115–123. doi:
+10.1109/INFVIS.2000.885098 . 7
+[JJ09] J OHANSSON S., J OHANSSON J.: Interactive dimensionality re-
+duction through user-deﬁned combinations of quality metrics. IEEE
+Transactions on Visualization and Computer Graphics 15 , 6 (2009),
+993–1000. doi:10.1109/TVCG.2009.153 . 2
+[JS04] J INWOOK SEO, SHNEIDERMAN B.: A rank-by-feature frame-
+work for unsupervised multidimensional data exploration using low di-
+mensional projections. In IEEE Symposium on Information Visualization
+(Oct 2004), pp. 65–72. doi:10.1109/INFVIS.2004.3 . 2
+[KCA16] K OS., C HOI., A FZAL S., Y AUC., C HAE J., M ALIK A.,
+BECK K., J ANG Y., R IBARSKY W., E BERT D. S.: A survey on visual
+analysis approaches for ﬁnancial data. Computer Graphics Forum 35 , 3
+(2016), 599–617. doi:10.1111/cgf.12931 . 2
+[KNS06] K EIMD. A., N IETZSCHMANN T., S CHELWIES N., S CHNEI -
+DEWIND J., S CHRECK T., Z IEGLER H.: A spectral visualiza-
+tion system for analyzing ﬁnancial time series data. In Pro-
+ceedings of the Eighth Joint Eurographics / IEEE VGTC Confer-
+ence on Visualization (Aire-la-Ville, Switzerland, Switzerland, 2006),
+Eurographics Association, pp. 195–202. URL: http://dx.
+doi.org/10.2312/VisSym/EuroVis06/195-202 ,doi:10.
+2312/VisSym/EuroVis06/195-202 . 2
+[KPB14] K RAUSE J., P ERER A., B ERTINI E.: Infuse: Interactive fea-
+ture selection for predictive modeling of high dimensional data. IEEE
+Transactions on Visualization and Computer Graphics 20 , 12 (2014),
+1614–1623. doi:10.1109/TVCG.2014.2346482 . 2
+[KPN16] K RAUSE J., P ERER A., N GK.: Interacting with predictions:
+Visual inspection of black-box machine learning models. In Proceedings
+of the 2016 CHI Conference on Human Factors in Computing Systems
+(New York, NY , USA, 2016), ACM, pp. 5686–5697. doi:10.1145/
+2858036.2858529 . 2
+[LCW17] L IJ., C HENG K., W ANG S., M ORSTATTER F., T REVINO
+R. P., T ANG J., L IUH.: Feature selection: A data perspective.
+ACM Computing Surveys 50 , 6 (2017), 94:1–94:45. doi:10.1145/
+3136625 . 2
+[Lin65] L INTNER J.: The valuation of risk assets and the selection of
+risky investments in stock portfolios and capital budgets. The Review of
+Economics and Statistics 47 , 1 (1965), 13–37. URL: http://www.
+jstor.org/stable/1924119 . 3
+[LWW20] L INY., W ONG K., W ANG Y., Z HANG R., D ONG B., Q UH.,
+ZHENG Q.: Taxthemis: Interactive mining and exploration of suspicious
+tax evasion groups. IEEE Transactions on Visualization and Computer
+Graphics (2020). 2
+[LXL18] L IUS., X IAO J., L IUJ., W ANG X., W UJ., Z HUJ.: Vi-
+sual diagnosis of tree boosting methods. IEEE Transactions on Vi-
+sualization and Computer Graphics 24 , 1 (2018), 163–173. doi:
+10.1109/TVCG.2017.2744378 . 2
+[MAHG16] M CCOMBE M., A NGA., H OGAN K., G ELFAND Y.:The
+rise of factor investing . BlackRock, 2016. 1
+[MBD11] M AY T., B ANNACH A., D AVEY J., R UPPERT T.,
+KOHLHAMMER J.: Guiding feature subset selection with an inter-
+active visualization. In Proceedings of 2011 IEEE Conference on Visual
+Analytics Science and Technology (VAST) (Oct 2011), pp. 111–120.
+doi:10.1109/VAST.2011.6102448 . 2
+[MQB19] M ING Y., Q UH., B ERTINI E.: Rulematrix: visualizing and
+understanding classiﬁers with rules. IEEE Transactions on Visualiza-
+tion and Computer Graphics 25 , 1 (2019), 342–352. doi:10.1109/
+TVCG.2018.2864812 . 2
+[NB04] N ESBITT K. V., B ARRASS S.: Finding trading patterns in stock
+market data. IEEE Computer Graphics and Applications 24 , 5 (2004),
+45–55. doi:10.1109/MCG.2004.28 . 2
+[PKWQ20] P URIA., K UB. K., W ANG Y., Q UH.: Rankbooster: Visual
+© 2021 The Author(s)
+Computer Graphics Forum © 2021 The Eurographics Association and John Wiley & Sons Ltd.Xuanwu Yue et al. / iQUANT: Interactive Quantitative Investment Using Sparse Regression Factors
+analysis of ranking predictions. In Proceedings of EuroVis 2020 (short
+paper) (2020), pp. 175–179. 2
+[PLdSSV98] P ORTA R. L., L OPEZ -DESILANES F., S HLEIFER A.,
+VISHNY R. W.: Law and ﬁnance. Journal of Political Economy 106 ,
+6 (1998), 1113–1155. doi:10.1086/250042 . 3
+[RKD16] R ODRIGUEZ J., K ACZMAREK P., D EPEW D.: Visualizing ﬁ-
+nancial data . Wiley Online Library, 2016. 2
+[RSE09] R UDOLPH S., S AVIKHIN A., E BERT D. S.: Finvis: Applied vi-
+sual analytics for personal ﬁnancial planning. In 2009 IEEE Symposium
+on Visual Analytics Science and Technology (Oct 2009), pp. 195–202.
+doi:10.1109/VAST.2009.5333920 . 2
+[SB13] S ORENSON E., B RATH R.: Financial visualization case study:
+Correlating ﬁnancial timeseries and discrete events to support investment
+decisions. In 17th International Conference on Information Visualisation
+(2013), pp. 232–238. doi:10.1109/IV.2013.31 . 2, 8
+[SBTK08] S CHRECK T., B ERNARD J., T EKUSOVA T., K OHLHAMMER
+J.: Visual cluster analysis of trajectory data with interactive koho-
+nen maps. In 2008 IEEE Symposium on Visual Analytics Science
+and Technology (Oct 2008), pp. 3–10. doi:10.1109/VAST.2008.
+4677350 . 2
+[Sha64] S HARPE W. F.: Capital asset prices: A theory of market equi-
+librium under conditions of risk. The Journal of Finance 19 , 3 (1964),
+425–442. URL: http://www.jstor.org/stable/2977928 . 3
+[Šim03] Š IMUNI ´CK.: Visualization of stock market charts. In The 11th
+International Conference in Central Europe on Computer Graphics, Vi-
+sualization and Computer Vision (2003), vol. 3, pp. 129–132. 2
+[SLFE11] S AVIKHIN A., L AMH. C., F ISHER B., E BERT D. S.: An
+experimental study of ﬁnancial portfolio selection with visual analytics
+for decision support. In 44th Hawaii International Conference on System
+Sciences (2011), pp. 1–10. doi:10.1109/HICSS.2011.54 . 2
+[STKF07] S CHRECK T., T EKUŠOVÁ T., K OHLHAMMER J., F ELLNER
+D.: Trajectory-based visual analysis of large ﬁnancial time series data.
+ACM SIGKDD Explorations Newsletter 9 , 2 (2007), 30–37. doi:10.
+1145/1345448.1345454 . 2
+[Teg99] T EGARDEN D. P.: Business information visualization. Commu-
+nications of the Association for Information Systems 1 , 4 (1999), 1–38.
+doi:10.17705/1CAIS.00104 . 2
+[Tib96] T IBSHIRANI R.: Regression shrinkage and selection via the
+lasso. Journal of the Royal Statistical Society: Series B (Methodologi-
+cal) 58 , 1 (1996), 267–288. doi:10.1111/j.2517-6161.1996.
+tb02080.x . 4
+[TLL20] T SANG K. W., L IH., L AMF. M., M UY., W ANG Y., Q UH.:
+Tradao: A visual analytics system for trading algorithm optimization.
+arXiv preprint arXiv:2008.11319 (2020). 2
+[TS08] T EKUSOVA T., S CHRECK T.: Visualizing time-dependent data
+in multivariate hierarchic plots - design and evaluation of an economic
+application. In 2008 12th International Conference Information Visuali-
+sation (July 2008), pp. 143–150. doi:10.1109/IV.2008.51 . 2
+[Tsi18] White paper for the list of quantitative factors in a major stock
+market, 2018. URL: http://mscf.pbcsf.tsinghua.edu.cn/
+uploadfile/2018/0316/20180316025702935.pdf . 1, 5
+[UGH09] U SAIM. G., G ODDARD M. E., H AYES B. J.: Lasso with
+cross-validation for genomic selection. Genetics Research 91 , 6 (2009),
+427–436. doi:10.1017/S0016672309990334 . 4
+[VV99] V ANWIJKJ. J., V ANSELOW E. R.: Cluster and calendar based
+visualization of time series data. In Proceedings 1999 IEEE Symposium
+on Information Visualization (InfoVis’99) (Oct 1999), pp. 4–9. doi:
+10.1109/INFVIS.1999.801851 . 2
+[YBL19] Y UEX., B AIJ., L IUQ., T ANG Y., P URIA., L IK., Q UH.:
+sportfolio: Stratiﬁed visual analysis of stock portfolios. IEEE Transac-
+tions on Visualization and Computer Graphics 26 , 1 (2019), 601–610.
+2[YSZ19] Y UEX., S HUX., Z HUX., D UX., Y UZ., P APADOPOULOS
+D., L IUS.: Bitextract: Interactive visualization for extracting bitcoin
+exchange intelligence. IEEE Transactions on Visualization and Com-
+puter Graphics 25 , 1 (2019), 162–171. doi:10.1109/TVCG.2018.
+2864814 . 2
+[ZH05] Z OUH., H ASTIE T.: Regularization and variable selection
+via the elastic net. Journal of the Royal Statistical Society. Series B
+(Statistical Methodology) 67 , 2 (2005), 301–320. doi:10.1111/j.
+1467-9868.2005.00503.x . 4
+[ZJGK10] Z IEGLER H., J ENNY M., G RUSE T., K EIM D. A.: Visual
+market sector analysis for ﬁnancial time series data. In 2010 IEEE Sym-
+posium on Visual Analytics Science and Technology (Oct 2010), pp. 83–
+90.doi:10.1109/VAST.2010.5652530 . 2
+[ZNK07] Z IEGLER H., N IETZSCHMANN T., K EIM D. A.: Relevance
+driven visualization of ﬁnancial performance measures. In Eurograph-
+ics/IEEE TCVG Symposium on Visualization (2007), pp. 19–26. doi:
+10.2312/VisSym/EuroVis07/019-026 . 2
+[ZWLC19] Z HAO X., W UY., L EED. L., C UIW.: iforest: Interpreting
+random forests via visual analytics. IEEE Transactions on Visualiza-
+tion and Computer Graphics 25 , 1 (2019), 407–416. doi:10.1109/
+TVCG.2018.2864475 . 2
+© 2021 The Author(s)
+Computer Graphics Forum © 2021 The Eurographics Association and John Wiley & Sons Ltd.

@@ -1,0 +1,1053 @@
+arXiv:1406.3396v2  [q-fin.PM]  2 Oct 2014Factor Models for Alpha Streams
+Zura Kakushadze§†‡1
+§Quantigic/circleRSolutions LLC
+1127 High Ridge Road #135, Stamford, CT 069052
+†Department of Physics, University of Connecticut
+1 University Place, Stamford, CT 06901
+‡Free University of Tbilisi, Business School & School of Phys ics
+240, David Agmashenebeli Alley, Tbilisi, 0159, Georgia
+(June 12, 2014; revised: September 3, 2014)
+Abstract
+We propose a framework for constructing factor models for al pha streams.
+Our motivation is threefold. 1) When the number of alphas is l arge, the sam-
+ple covariance matrix is singular. 2) Its out-of-sample sta bility is challenging.
+3) Optimization of investment allocation into alpha stream s can be tractable
+for a factor model alpha covariance matrix. We discuss vario us risk factors for
+alphassuchas: styleriskfactors; clusterriskfactorsbas edonalphataxonomy;
+principal components; and also using the underlying tradab les (stocks) as al-
+phariskfactors, for whichcomputingthefactor loadings an dfactor covariance
+matrices does not involve any correlations with alphas, and their number is
+much larger than that of the relevant principal components. We draw insight
+from stock factor models, but also point out substantial diﬀe rences.
+1Zura Kakushadze, Ph.D., is the President of Quantigic/circleRSolutions LLC, an Adjunct Profes-
+sor at the University of Connecticut, and a Full Professor at Free University of Tbilisi. Email:
+zura@quantigic.com
+2DISCLAIMER: This address is used by the corresponding author fo r no purpose other than
+to indicate his professional aﬃliation as is customary in publications. I n particular, the contents
+of this paper are not intended as an investment, legal, tax or any ot her such advice, and in no way
+represent views of Quantigic Solutions LLC, the website www.quantig ic.comor any of their other
+aﬃliates.1 Motivation and Summary
+It appears to be a natural tendency that the number of investab le alpha streams3
+growswithtime. Intheoldendays, alphas, whichcanbethoughtofa ssetsofinstruc-
+tions for taking predeﬁned positions in underlying tradables at spec iﬁed times, were
+built “by hand”. Nowadays, many thousands of alpha streams can b e datamined
+in an automated fashion. With that comes an “embarrassment of th e riches” of
+sorts – there are too many alpha streams and comparatively too fe w historical ob-
+servations. As a result, making predictions about future perform ance of these alpha
+streams becomes challenging, not only in terms of out-of-sample st ability, but also
+computing the alpha covariance matrix based on the alpha stream tim e series – the
+sample covariance matrix is badly singular, precisely due to too few ob servations.
+Asaresult, allocatinginvestment into alargenumber ofalpha stream s,i.e., com-
+puting optimal weights for such allocation, becomes nontrivial. Even if one employs
+the simplest optimization criterion and maximizes the Sharpe ratio of t he combined
+alpha stream portfolio, one runs into an issue: this optimization requ ires inverting
+the alpha covariance matrix, which is singular. And even if one someho w regular-
+izes the covariance matrix, it is not all that stable out-of-sample. T he question we
+ponder in this note is how to approach this issue in a systematic way.
+We look to history for insight. When the number of underlying tradab les –
+stocks – became too large, one had to deal with a conceptually similar problem. To
+reliably compute a sample covariance matrix for stock (daily) return s, one would
+needaprohibitively largenumber ofobservations(tradingdays),4evenforauniverse
+of 2,000-2,500 tickers. And even if that much history existed, going back a decade
+or longer makes little sense for many practical applications, becaus e the relevant
+time horizons are much shorter, and many strategies are much sho rter lived. A way
+aroundthisdiﬃculty istoemployamulti-factorriskmodel,5whereoneassumesthat
+stock returns have some intrinsic speciﬁc risk, which must be measu red empirically,
+plus factor risk, which is a linear combination of the underlying risk fac tors,6whose
+numberFSismuchsmallerthanthennumberofstocks NS. Thecorrelationsbetween
+stocks then are attributed solely to their exposure to these risk f actors, so the oﬀ-
+diagonal elements of the stock covariance matrix are determined b y theFS×FS
+factor covariance matrix, computing which requires many fewer ob servations than
+computing the NS×NSstock covariance matrix, and it is also expected to be much
+more stable out-of-sample for a suitably chosen set of risk factor s.
+Onecandoessentiallythesameforalphas–build factor modelsfor alphastreams .
+3For a partial list of hedge fund literature, see, e.g., [1]-[20] and references therein.
+4There is always the issue of what to do with new tickers that have little to no history. This
+is not what we refer to here.
+5For a partial list of factor model and related literature, see, e.g., [21]-[60] and references
+therein.
+6Examples of such risk factors are momentum, size, liquidity, volatility , growth, value, etc.
+(style risk factors), exposures to (sub-)industries (industry r isk factors), principal components
+(“beta”-like risk factors), etc.
+1Out of thousands of alphas one may construct, many are closely co rrelated to each
+other for a variety of reasons, including how they are constructe d. However, there
+arealso substantial diﬀerences between alpha factor models ands tock factormodels.
+The purpose of this note is to set forth a framework for construc ting factor models
+for alpha streams and discuss various approaches and intricacies a rising therein.
+One additional motivation for factor models for alpha streams is tha t, when
+a number of alpha streams is traded on the same execution platform , allocation
+weights7are allowed to be negative. Furthermore, if trades are crossed be tween
+diﬀerent alphas, portfolio turnover reduces [101, 102, 103], fur ther complicating
+the weight optimization problem. With these additional challenges, th e investment
+allocation problem into alpha streams becomes rather diﬃcult to tack le for a general
+alphacovariancematrix,8especiallyoncelinearandnonlinearcostsareaddedand/or
+optimization criteria beyond maximizing the Sharpe ratio are consider ed,9but can
+be tractable if the alpha covariance matrix has a factor model form [105, 106].
+The remainder of this note is organized as follows. In Section 2 we set up our
+notations. In Section 3 we discuss optimization for singular alpha cov ariance matrix
+via itsregularization andhow it reduces to a (generalized) weighted r egression in the
+singular limit. In Section 4 we set forth the framework for factor mo dels for alpha
+streams. We discuss style risk factors for alphas, cluster risk fac tors based on alpha
+taxonomy and associated issues, and principal component risk fac tors that arise in
+the regression limit of Section 3. We then discuss using underlying tra dables as risk
+factors for alphas and how to compute the corresponding factor loadings matrices.
+ConcludingremarksareinSection5. AppendixAdiscusses someaspe ctsofcapacity,
+which is one of the style factors one may choose to use. Appendix B d iscusses some
+aspects of constructing the factor covariance matrix and speciﬁ c risk.
+2 Deﬁnitions and Setup
+We have Nalphasαi,i= 1,...,N. Each alpha is actually a time series αi(ts),
+s= 0,1,...,M, wheret0is the most recent time. Below αirefers to αi(t0).
+LetCijbe the covariance matrix of the Ntime series αi(ts). Let Ψ ijbe the
+corresponding correlation matrix, i.e.,
+Cij=σiσjΨij (1)
+where Ψ ii= 1.
+IfM≪N, which is the case in most practical applications with N≫1, thenCij
+is (nearly) degenerate with M“large” eigenvalues and the remainder having “small”
+values, which can be positive or negative. These small values are zer os distorted by
+computational rounding.10
+7For a partial list of portfolio selection literature, see, e.g., [61]-[100] and references therein.
+8Even if it is made positive-deﬁnite via a deformation (see, e.g., [104, 102]).
+9E.g., maximizing P&L with volatility bounded from above.
+10Actually, this assumes that there are no N/As in any of the alpha time series. If some or all
+22.1 Alpha Weight Optimization
+Suppose we wish to allocate investment Iinto our Nalphas. We need to ﬁnd the
+alpha weights wisuch that
+N/summationdisplay
+i=1|wi|= 1 (2)
+where the modulus accounts for the fact that some weighs can be n egative if the
+alphas are traded on the same execution platform. For the sake of simplicity, let
+us assume no transaction costs – they are not important for point we are trying to
+arrive at here. Portfolio P&L, volatility and Sharpe ratio are given by
+P=IN/summationdisplay
+i=1αiwi (3)
+R=I/parenleftBiggN/summationdisplay
+i,j=1Cijwiwj/parenrightBigg1
+2
+(4)
+S=P
+R(5)
+The simplest weight optimization criterion is to maximize the Sharpe rat io:
+S→max (6)
+If the covariance matrix Cis nonsingular, then the Sharpe ratio is maximized by
+the following alpha weights wi:
+wi=ξN/summationdisplay
+j=1C−1
+ijαj (7)
+whereC−1
+ijis the inverse of Cij, andξis a normalization constant ﬁxed by (2).
+3 Singular Covariance Matrix
+WhenCis singular, one can regularize it by deforming it: C→Γ. Such regulariza-
+tion can be parameterized as follows:
+Γ≡C+ǫ∆ (8)
+whereǫis a regularization parameter (Γ →Cwhenǫ→0), and ∆ ijis a nonsingular
+symmetric N×Nmatrix.11Next, we discuss what the inverse of Γ looks like.
+alpha time series contain N/As in non-uniform manner and the correla tion matrix is computed by
+omitting such pair-wise N/As, then the resulting correlation matrix m ay have negative eigenvalues
+that are not “small” in the sense used above, i.e., they are not zeros distorted by computational
+rounding. For the sake of simplicity, here we assume that there are no N/As.
+11More generally, there can be a vector of regularization parameter s, and ∆ need not be
+nonsingular for Γ to be nonsingular, but such additional intricacies d o not change the conclusions
+drawn herein, so we will keep things simple.
+33.1 Deformed Covariance Matrix
+LetV(a)
+ibeNright eigenvectors of Cijcorresponding to its eigenvalues λ(a),a=
+1,...,N:
+C V(a)=λ(a)V(a)(9)
+with no summation over a. LetUbe theN×Nmatrix of eigenvectors V(a),i.e.,
+theath column of Uis the vector V(a):
+Uij≡V(j)
+i (10)
+Let Λ be the diagonal matrix of the eigenvalues λ(a):
+Λij≡δijλ(j)(11)
+with no summation over j. Then
+C=UΛUT(12)
+Note that, because Cis symmetric, Ucan be chosen to be orthonormal: UTU= 1.
+LetJbe the subset of large eigenvalues λ(j),j∈J. LetJ′be the subset of small
+eigenvalues. (Note that J∪J′={1,...,N}and|J|=M.)12Let (no summation
+overj)
+/tildewideΛij≡δij/tildewideλ(j)(13)
+/tildewideλ(j)≡λ(j), j∈J (14)
+/tildewideλ(j)≡0, j∈J′(15)
+I.e.,/tildewideΛ is obtained by setting the small eigenvalues in Λ to zero. Let
+/tildewideC≡U/tildewideΛUT(16)
+Since the small eigenvalues are dueto computational rounding, we c an use/tildewideCinstead
+ofCin the deﬁnition (8) of Γ:
+Γ≡/tildewideC+ǫ∆ (17)
+Note that/tildewideCis exactly singular.
+However, ∆ is nonsingular and can also be decomposed as follows:
+∆ =X Z XT(18)
+whereXTX= 1 and
+Zij≡δijvj (19)
+is a diagonal matrix of the eigenvalues viof ∆, which is assumed positive-deﬁnite.
+12If some alphas were exactly 100% (anti-)correlated, then |J|would be smaller than M. For
+the sake of simplicity, here we are assuming that no alphas are exact ly 100% (anti-)correlated.
+43.2 Inverse Γ
+Note that
+Γ =X/tildewideΓXT(20)
+/tildewideΓ≡ǫ Z+/tildewideΩ/tildewideΩT(21)
+/tildewideΩ≡XTΩ (22)
+and Ω is an N×Mmatrix (recall that |J|=M) deﬁned as follows (no summation
+overA):
+ΩiA≡UiA/radicalbig
+/tildewideλ(A) (23)
+A∈J (24)
+We have
+Γ−1=X/tildewideΓ−1XT(25)
+and
+/tildewideΓ−1=ǫ−1Z−1−ǫ−2Z−1/tildewideΩQ−1/tildewideΩTZ−1(26)
+whereQ−1
+ABis the inverse of QABdeﬁned as
+QAB≡δAB+/tildewideQAB (27)
+/tildewideQ≡ǫ−1/tildewideΩTZ−1/tildewideΩ (28)
+In the limit ǫ→0 we have:
+Γ−1=ǫ−1/bracketleftbig
+∆−1−∆−1Ω (ΩT∆−1Ω)−1ΩT∆−1/bracketrightbig
++O(1) (29)
+In fact, the eigenvalues /tildewideλAofCdo not even enter. Indeed, let us restrict Usuch
+that it is an N×Mmatrix:U≡(UiA). Then we have
+Γ−1=ǫ−1Θ+O(1) (30)
+where
+Θ≡∆−1−∆−1U(UT∆−1U)−1UT∆−1(31)
+I.e., in the small ǫ(near-singular) limit, to the leading order the inverse of Γ is
+determined solely by the inverse of the regulator matrix ∆ and the eig envectors UiA
+ofCcorresponding to its large eigenvalues. Furthermore, in this limit the weights
+are given by
+wi=/tildewideξN/summationdisplay
+j=1Θijαj (32)
+where/tildewideξis a normalization constant ﬁxed by the weight normalization condition (2).
+So, the weights for S→max in the singular limit are controlled by the choice of the
+regulator matrix ∆.
+53.3 Diagonal ∆: Weighted Regression
+When ∆ is diagonal, S→max in the singular limit reduces to a simple weighted
+regression. Indeed, let
+∆ij=δijvj (33)
+We then have
+wi=/tildewideξ
+vi/parenleftBigg
+αi−N/summationdisplay
+j=1αj
+vjK/summationdisplay
+A,B=1UiAUjB/hatwideQ−1
+AB/parenrightBigg
+≡/tildewideξ
+viεi (34)
+where/hatwideQ−1
+ABis the inverse of
+/hatwideQAB≡N/summationdisplay
+i=11
+viUiAUiB (35)
+Note that
+N/summationdisplay
+i=1wiUiA≡0 (36)
+Infact,εiaretheresiduals ofaweighted regression (withweights 1 /vi) ofαioverUiA
+(without an intercept). For non-diagonal ∆ we have a generalized m atrix-weighted
+regression.
+3.4 A Simple Regularization
+A simple regularization is given by:
+Γ≡(1−q)D+q C≡qΓ1 (37)
+Dij≡δijCjj (38)
+Whenq→1, we have ǫ≡(1−q)/q→0. The inversion of Γ 1then produces the
+above weighted regression with vi=Cii,i.e., the weights are inverse variances.
+4 Factor Model
+Looking at (16), one recognizes a multi-factor model – well, of a ver y special form,
+that is, as it has vanishing speciﬁc risk. Its deformed version, (17) , with diagonal
+∆, however, has non-zero speciﬁc risk. The factor loadings matrix is simply the
+N×MmatrixUiA, and the factor covariance matrix is a diagonal M×Mmatrix
+/tildewideΛAB=δAB/tildewideλ(B),A,B∈J(see Subsection 3.2 for deﬁnitions). The Mrisk factors
+comprising the columns of the factor loadings matrix UiAare nothing but the ﬁrst
+Mprincipal components of the covariance matrix Cij. This is essentially all in the
+spirit of the APT risk model.
+6Here we can ask if we can construct more general multi-factor risk models for
+alpha streams. There are two main reasons for doing so. The oﬀ-dia gonal elements
+ofCijare not expected to be particularly stable out-of-sample. This inst ability is in-
+herited by theprincipal components and the factor loadingsmatrix U. Furthermore,
+here we have at most Mrisk factors, which typically is small because the number of
+observations is limited for alpha streams – including due to their ephem eral nature.
+So, we wish to increase the number of risk factors and improve their out-of-sample
+stability. How can we achieve this?
+The key observation here is that, whatever we use as the risk fact ors, we cannot
+use the alpha correlations or correlations ofother quantities with a lphasto construct
+the factor loading matrix or compute the factor covariance matrix – if we do this, we
+will not get much beyond the Mfactors based on the principal components because
+the number of observations for alphas is limited to M+ 1. So, we need to build
+risk factors that are not based on correlations with alphas and for which we can
+compute the factor covariance matrix based on a number of obser vations, call it
+MF, such that MF≫M, or use risk factors for which the factor covariance matrix
+is readily available one way or another. Before we discuss some ways o f approaching
+this problem, let us set up our notations ﬁrst.
+4.1 Generalities
+Just as in the case of a stock multi-factor risk model, instead of Nalphas, one deals
+withF≪Nrisk factors and the covariance matrix Cijis replaced by Γ ijgiven by
+Γ≡Ξ+Ω Φ ΩT(39)
+Ξij≡ξ2
+iδij (40)
+whereξiis the speciﬁc risk for each αi; ΩiAis anN×Ffactor loadings matrix; and
+ΦABis the factor covariance matrix, A,B= 1,...,F.I.e., the random processes Υ i
+corresponding to Nalphas are modeled via Nrandom processes zi(corresponding
+to speciﬁc risk) together with Frandom processes fA(corresponding to factor risk):
+Υi=zi+F/summationdisplay
+A=1ΩiAfA (41)
+/an}bracketle{tzi,zj/an}bracketri}ht= Ξij (42)
+/an}bracketle{tzi,fA/an}bracketri}ht= 0 (43)
+/an}bracketle{tfA,fB/an}bracketri}ht= ΦAB (44)
+/an}bracketle{tΥi,Υj/an}bracketri}ht= Γij (45)
+Instead of an N×Nalpha covariance matrix Cijwe now have an F×Ffactor co-
+variance matrix Φ AB, which is expected to be more stable out-of-sample. Assuming
+allξi>0 and Φ ABis positive-deﬁnite, then Γ ijis also positive deﬁnite.13
+13Strictly speaking, positive-deﬁniteness of Γ ijdoes not require, e.g., positive-deﬁniteness of
+ΦAB, but consideringthe practicalnature ofour discussionhere, we w ill not try to be most general.
+74.2 Risk Factors
+We have already discussed the principal component approach abov e. The question
+we wish to address is what other risk factors we can build for alphas. The analogy
+with the stock multi-factor models is a good starting point.
+One approach to constructing a factor model for alphas is to have Fstylestyle risk
+factors and Fclustercluster risk factors. In the case of stocks, cluster risk factors are
+usually referred to as industry risk factors. Since here we are dea ling with alphas,
+we will refer to such risk factors as cluster risk factors. In the ca se of alphas, the
+following style factors a prioriappear to be appropriate: 1) volatility, 2) turnover,14
+and 3) momentum. One may wish to add other style factors dependin g on how
+alphas are constructed, etc. One other (perhaps more diﬃcult to implement) style
+factor one may wish to consider is capacity,15i.e., how much capital each alpha can
+absorb on its own; this requires modeling impact ( i.e., nonlinear trading costs). We
+comment on capacity in Appendix A.
+Inthecase ofstocks, cluster factorsare(usually) based onindu stry classiﬁcation.
+In the case of alphas, one can use a taxonomy of alphas, i.e., one classiﬁes alphas
+according to how they are constructed – if the required data is ava ilable, that is.
+Out of thousands of alphas one may construct, many are very simila r to each other
+by construction. It is then clear that this similarity makes them more correlated,
+just as stocks belonging to the same industry are more correlated . Just as in the
+case of stocks, it therefore makes sense to treat clusters as ris k factors and model
+correlationsbetweenalphasbasedonsuchriskfactorsasoppose dtocomputing them
+directly based on a large number Nof the time series corresponding to individual
+alphas. One diﬃculty with the alpha classiﬁcation approach, however , is that the
+details of how each alpha is constructed must be known to those who build the
+factor model for alphas, and that is not always the case. Further more, in the case
+of stocks, the industry classiﬁcation generally is a very stable cons truct – companies
+do not tend to jump industries often.16Alphas, however, are ephemeral by nature.
+So, the style risk factors we described above are more-or-less ea sy to implement,
+but the alpha classiﬁcation not so much. Unfortunately, the numbe r of style risk
+factorsisnotlargeenoughtomakesubstantial diﬀerence compar edwithMprincipal
+14TurnoverroughlycanbethoughtofasbeinganalogoustoADDV(av eragedailydollarvolume,
+which can be viewed as a measure of liquidity) to market capitalization r atio in the case of stocks.
+Becauseturnovertypicallyishighlycorrelatedwithalpha’sholdinghor izon(the shortertheholding
+horizon, the higher the turnover), including the turnover style ris k factor in an alpha factor model
+aﬀects the weightingofdiﬀerent holdinghorizonalphaswhen using su ch factormodel in regressions
+and/oroptimization (and this itself depends on how the turnoverris kfactor is deﬁned). We discuss
+the eﬀect of diﬀerent holding horizons in more detail in Section 5.
+15Capacity roughly can be thought of as being analogous to market ca pitalization (or size) in
+the case of stocks.
+16Here we do not consider ticker de-listings, M&As, ticker changes or new ticker additions as
+an “instability”. An instability in an industry classiﬁcation would mean th at it was based on some
+underlying aspects of companies that would make tickers change ind ustries frequently. That would
+be a poorly constructed industry classiﬁcation.
+8component riskfactors, because Mcanbesubstantial ( e.g., ifthetimeseriesisbased
+on daily alphas with a 1-year look-back). One straightforward way t o increase the
+number of style factors is to break up each style factor into quant iles. If the number
+of quantiles kis uniform over Fstylestyle risk factors, then this way we increase
+the number of such risk factors to Fk
+style, which can be substantial. However, the
+eﬀective number of the resulting style risk factors, while quite possibly larger than
+Fstyle, may not be as large as Fk
+stylebecause of high correlations between various
+quantiles. Nonetheless, the quantile method is a simple way of squeez ing more juice
+out of style risk factors.
+Anotherthoughtistousethewell-establishedriskfactorsforsto cksasriskfactors
+foralphas, atleastforthosealphaswhoseunderlyingtradablesar estocks.17Ifalphas
+themselves have no intrinsic risk management, then this is a sound ap proach – in
+fact, one may very well wish to do risk management in this way. Howev er, normally
+alphasareexpected tobehedgedagainstmost riskfactors, soint hiscaseriskfactors
+for stocks are already (essentially) “factored” out of alphas.18
+4.3 Underlying Tradables as Risk Factors
+However, even if risk factors for stocks are factored out, spec iﬁc risks for stocks are
+not. So, the idea is to use the underlying tradables – the stocks the mselves – as risk
+factors.19One needs to quantify this, i.e., we need to construct the factor loadings
+matrix and the factor covariance matrix. Here is one way of doing th is.
+For concreteness, let the underlying tradables be U.S. equities (th is is not a
+critical assumption), so Alabels stocks in the universe traded by the combined
+alphas. In the 0th approximation the covariance matrix is diagonal: Φ AB=vAδAB,
+wherevAare the historical variances for stock returns RA. To compute vAeven
+if, say,F= 2,500, there is no need to go back 10 years, because variances are
+substantially more stable than covariances. So, the look-back for computing vA
+can be much shorter, e.g., monthly or annual. Beyond the 0th approximation Φ AB
+is not diagonal. The oﬀ-diagonal elements themselves need to be mod eled via a
+factor model approach for stocks; however, as we discussed ab ove, these are readily
+available (see footnote 17). No alpha correlations or correlations w ith alphas are
+needed to obtain Φ AB.
+17Here one can use one’s multi-factor risk model of choice, such as BA RRA, Northﬁeld, Ax-
+ioma, Quantigic, SunGard APT, etc.One can also use industry classiﬁcations, i.e., use industries
+(or equivalent groupings, sometimes referred to as sub-industrie s) as risk factors, e.g., based on
+Bloomberg, GICS, ICB, etc.
+18In case they are not, one can get a relatively large number of such r isk factors for which the
+factor covariance matrix is either readily available if one uses a multi-f actor risk model for stocks,
+or easily computable based on multi-year look-backs for daily stock r eturns. We will comment on
+how to build the corresponding factor loadings matrices below. Also, some alphas intentionally
+may have risk exposure, and care is needed not to suppress such a lphas inadvertently.
+19The underlying tradables need not be stocks. They can be any instr uments. The idea applies
+all the same. Also, this idea has much broader applicability beyond alph a streams (see below).
+9The next step is to identify Ω iA. As we mentioned above, the information about
+how individual alphas are constructed may not be available to us. How ever, the
+position data for each alpha had better be available to us if we are to t rade them.
+Let this position data be PiAs, which is the dollar holding of the alpha labeled by i
+in the stock labeled by Aat time labeled by ts, normalized so that/summationtext
+A|PiAs|= 1
+for each given pair i,s. We need to construct Ω iAfromPiAs– assuming there is
+no other data available to us, that is. I.e., we need to get rid of the time series
+indexs. The obvious choice20ΩiA≡/summationtext
+sPiAsdoes not work as the sign of PiAs
+ﬂips over time frequently (assuming alphas have short holding period s). Basically,
+ΩiA≡/summationtext
+sPiAsis essentially as unstable as Cor( αi,RA), which cannot produce more
+thanMindependent risk factors. It is clear that we need an unsigned quantity to
+deﬁne Ω iA. We can use
+ΩiA≡/summationdisplay
+s|PiAs| (46)
+This is no longer unstable or similar to Cor( αi,RA). However, there is a regime
+where this deﬁnition may not work or may produce the eﬀective numb er of risk
+factorsF1lower21(or even substantially lower) than F. If most alphas are trading
+most stocks at their trading bounds most of the time, and if these b ounds are
+essentially uniform, then it is clear that in this case most Ω iAdeﬁned this way will
+be close to each other – the extreme case being Ω iA≡γ, whereγis independent of
+iandA, in which case we would have only a single risk factor proportional to a unit
+vector (a.k.a. intercept). The in-between case is where the eﬀect ive number of risk
+factors based on (46) is 1 < F1< F. IfF1≪F, then most bounds are saturated, so
+we can still keep the F1risk factors based on (46)22and add more risk factors based
+on a quadratic invariant. We cannot use any covariances w.r.t. s, so we can choose:
+ΩiA≡/radicalbig
+Var(PiAs) (47)
+where Var is the variance w.r.t. sfor each given pair i,A. There is an alternative
+deﬁnition
+ΩiA≡/radicalbig
+Var(|PiAs|) (48)
+which, however, is not expected to make a huge diﬀerence. Furthe rmore, one can
+use MAD instead of√
+Var, but these are minor details, which are not going to make
+it or break it. So, with (46), (47) and/or (48), one should be able to capture the
+Frisk factors, or a substantial number of them much greater than M. And this
+can be done for alphas with overnight holdings and purely intraday alp has (as well
+as alphas that receive substantial contributions both from overn ight holdings and
+20The sum over scan be,e.g., monthly or annual for alphas with overnight holdings and shorter
+for intraday alphas (see below).
+21F1is the number of nonzero (or, in practice, “non-small”) eigenvalues of the matrix Ω Φ ΩT.
+22In practice, when mixing non-uniformly deﬁned risk factors, one mu st deal with the issue of
+how to deﬁne the factor covariancematrix for such mixed factors , including relative normalizations
+between non-uniformly deﬁned risk factors. In this regard, some times it is simpler to have a
+uniformly deﬁned set of risk factors.
+10intraday realized P&L). When dealing with intraday (components of) alphas, the
+variances in (47) and (48) are understood as appropriately deﬁne d intraday.
+We have been cavalier with the normalization of Ω iAas deﬁned in (46), (47)
+and/or (48). This is because once Ω iAare identiﬁed, they need to be properly
+normalized anyway in order to construct the speciﬁc risks, which will complete the
+risk model. This is a nontrivial step, which we will not delve into here.23
+The risk factors in (46), (47) and (48) are deﬁned this way becaus e the premise is
+that, whatever theriskfactorsonedeﬁnes, thefactorcovaria ncematrixΦ ABiseither
+readily available or computable without using the alpha correlations or correlations
+with alphas24. Basically, assuming the only information available is the position
+dataPiAs, there is not much of a choice in deﬁning Ω iA.
+Also, let us emphasize that the idea of using underlying tradables as r isk factors
+applies beyond alphas. If we have any Nprocesses Xis,i= 1,...,Ndetermined by
+Fprocesses YAs,A= 1,...,FviaXis=/summationtextF
+A=1PiAsYAs, wherePiAsare previsible,
+then we can use YAsas risk factors for Xisso long as the PiAsdata is available to
+us. And this need not even be in the context of trading or ﬁnance.25
+Let us summarize by giving an outline for constructing risk factors f or alphas.
+To simplify things, let us not mix diﬀerent deﬁnitions of the factor load ings matrix.
+Let us focus on the deﬁnition (47) uniformly across all alphas. This g ives the factor
+loadings up to an overall normalization factor . The factor covariance matrix Φ AB
+thenisjustthecovariancematrixforstockslabeledby A= 1,...,F. Thiscovariance
+matrix Φ ABcan itself be modeled as a factor model (see footnote 17). In a simp ler
+approximation one could use a diagonal Φ AB=vAδAB, wherevAare stock return
+variances. Also, if the risk management is done at the level of individu al alphas,
+then one may wish to remove from the deﬁnition of the alpha risk fact ors the linear
+combinations of stocks corresponding to the stock risk factors. I.e., in this case the
+factor loadings matrix Ω iAis replaced by another factor loadings matrix Ω′
+iA′, where
+A′= 1,...,F′, andF′=F−FS, whereFSis the number of stock risk factors. On
+the other hand, if the risk management is not done at the level of ind ividual alphas,
+then, as mentioned above, one can use the stock risk factors the mselves as the alpha
+risk factors. Let Λ Aabe the factor loadings matrix for the stock risk factors, where
+a= 1,...,F S. Then we can deﬁne Pias≡/summationtextF
+A=1PiAsΛAa, and use this Piasas above
+to deﬁne the corresponding FSalpha risk factors Ω ia(up to a normalization factor).
+Finally, let usnotethat wecancombine theaforementionedalpha fac torloadings
+matrices Ω iAor Ωia(or Ω′
+iA′plus Ω ia) with alpha style risk factors as well as the
+principal component risk factors, etc., if desired. One then needs to deal with the
+aforementioned issue of proper relative normalization of non-unifo rmly deﬁned risk
+factors. Another issue is that such non-uniformly deﬁned risk fac tors generally have
+23In fact, this step is the key ingredient to building a successful fact or model and is treated as
+proprietary knowhow by factor model providers, including Quantig ic.
+24Using alpha variances is ﬁne as they are much more stable than covar iances and, unlike
+covariances, do not limit the number of risk factors to M.
+25E.g., health risk factors, etc.
+11nonzero correlations. Even if the factor covariance matrix for ea ch set is known,
+the factor covariance matrix across the sets is not necessarily kn own. Here one can
+take a factor model approach and treat each set as a “superclus ter” and compute
+the factor covariance matrix between the “superclusters” using the alpha covariance
+matrix. Thus, let us assume that we have two (properly normalized) sets of risk
+factors Ω(1)
+iA1and Ω(2)
+iA2with the (properly normalized) factor covariance matrices
+Φ(1)
+A1B1and Φ(2)
+A2B2, respectively, with A1,B1= 1,...,F 1, andA2,B2= 1,...,F 2. Let
+f(1)≡N/summationdisplay
+i=1F1/summationdisplay
+A1=1αiν(1)
+A1Ω(1)
+iA1(49)
+f(2)≡N/summationdisplay
+i=1F2/summationdisplay
+A2=1αiν(2)
+A2Ω(2)
+iA2(50)
+whereν(1)andν(2)are some weights – we can choose, e.g., equal weighting. Then
+the covariance between f(1)andf(2)is given by
+/angbracketleftbig
+f(1),f(2)/angbracketrightbig
+=N/summationdisplay
+i,j=1F1/summationdisplay
+A1=1F2/summationdisplay
+A2=1CijΩ(1)
+iA1Ω(1)
+iA2ν(1)
+A1ν(2)
+A2(51)
+whereCijis the sample alpha covariance matrix computed using the actual alph a
+time series. Since here we have a single (or a few, in case we have a few more risk
+factor sets) covariance and M≫1, this covariance can be acceptably stable. Then,
+up to an overall normalization factor , insteadofthe0thapproximationΦ A1A2= 0, in
+theﬁrstapproximationwecansetΦ A1A2≈/angbracketleftbig
+f(1),f(2)/angbracketrightbig
+. Notethatthismethodcanbe
+usedinthecaseofquantiledstylefactorswediscussed aboveaslon gasthenumber of
+such quantiled style factors Fk
+styleis not larger (and preferably – for stability reasons
+– is much smaller) than M. In this case instead of two sets as above we have Fk
+style
+sets.26To reiterate, in the above discussion the (relative) normalizations o f the
+factor loadings matrices corresponding to non-uniformly deﬁned f actor loadings can
+be tricky, and they are ﬁxed when the speciﬁc risks are computed.27
+5 Concluding Remarks
+Our primary motivation for considering factor models for alphas str eams is twofold
+(see Section 4). First, the oﬀ-diagonal elements of the sample cov ariance matrix
+Cijare not expected to be particularly stable out-of-sample. Second , whenM < N
+(recall that M+1 is the number of observations in the alpha time series based on
+whichCijis computed), which typically is the case in practice including due to the
+26And this method also applies to the style risk factors themselves, wh enk= 1.
+27Computation ofthe speciﬁc risks, which, as mentioned above, is a pr oprietarytopic, is outside
+of the scope of this paper.
+12ephemeral nature of alphas, then Cijis singular with only Mnonzero eigenvalues.
+In fact, in most practical applications M≪N.
+In this regard, using alpha factor models – at least, for the purpos es of alpha
+weight allocation(via regression or optimization) – is warranted when the number of
+alphasNis large. Indeed, we must have F≪N(recall that Fis the number of risk
+factors). If one is dealing with, say, a dozen or so alphas, then for any reasonable
+historical track record (that one would feel comfortable with to t rade these alphas
+moving forward), the sample covariance matrix is non-singular. Fur thermore, in
+such a case replacing the sample covariance matrix with a factor mod el covariance
+matrix based on, say, half a dozen risk factors would appear to be a n overkill. If, for
+some reason, it is imperative to have F < Nrisk factors, in the case of such small
+None can simply take the ﬁrst Fprincipal components of the sample covariance
+matrix as such factors. Anything else would appear to be overly con trived.28
+Furthermore, a large number of almost 100% correlated alphas wou ld imply
+that the true number of independent alphas is much lower. While it is re latively
+straightforward to construct a large number of highly correlated alphas (e.g., one
+can take simple mean-reversion and/or momentum alphas and tweak parameters),
+it is much harder to construct a large number of alphas with low corre lations. It
+takes a large number of quant researchers and developers and su bstantial hardware
+capabilities (for data mining purposes) to construct a large number of not-too-
+correlated alphas. All such eﬀorts are highly proprietary, so it is no t practicable to
+cite applications or tests of our framework and methods to/on rea l-life alphas.29
+The purpose ofthis paper is toset upa general framework for con structing factor
+models for alpha streams with the view of elucidating it as a viable possib ility. It
+appears that many practitioners might not have even considered f actor models for
+alphas streams, likely due to the fact that usually practitioners view more familiar
+factor models for equities such as BARRA, Northﬁeld, Axioma, etc., as something
+one acquires from a provider, not something one builds in-house. Ho wever, both
+equities and alpha factor models can be built in-house. In fact, in the case of factor
+models foralphas thereis no other choice but tobuild them in-house, asthe required
+informationrelatingtothealphasishighlyproprietaryandoftenrat herspeciﬁcfrom
+shop-to-shop in what details of alphas are available.30As “standardized” alpha
+factor models appear unlikely, custom alpha factor models are the w ay to go.
+In footnote 14 we mentioned the eﬀect of the turnover risk facto r on alphas
+with diﬀerent holding horizons. For literature on combining signals with diﬀerent
+half-lives, see [89, 90, 96]. In the case of alphas, the holding horizon s are related to
+turnover: the shorter the holding horizon, thehigher the turnov er. However, there is
+28In this regard, there is a similarity with equities: if one is trading a coup le of dozen stocks,
+equity factormodels are not useful (at least, not in their applicatio nsthat we focus on here). When
+one is trading, say, 1,000-2,500 stocks, then using factor models f or equities is warranted.
+29And not because this has not been done.
+30E.g., as mentioned in Section 4.2, in some cases information may be available to create alpha
+taxonomy, in others only the position data may be available, which is ins uﬃcient for taxonomy.
+13anotherpracticalconsideration. Typically, lowturnover strateg ieshavelowerSharpe
+ratio and lower return on capital and higher capacity than higher tu rnover strate-
+gies. Higher Sharpe ratio/return strategies often enjoy higher p erformance fees,
+while their lower turnover counterparts can have substantially lowe r performance
+fees, but high capacity yields large dollar amounts in management fee s. Because of
+these considerations, in practical applications mixing strategies wit h vastly diﬀer-
+ent turnovers usually is not simply a question of weight allocation. On t he other
+hand, weighting alphas with varying but in the same ballpark turnover s can be
+handled through appropriately deﬁning the turnover style risk fac tor.31However,
+one must also incorporate trading costs into optimization (or regre ssion), which re-
+quires accounting for turnover reduction – when alphas are combin ed, some trades
+are crossed, and the resultant portfolio turnover is reduced. Tu rnover reduction
+signiﬁcantly diﬀerentiates alpha portfolio optimization problem from s tock portfolio
+optimization problem, but the former is still tractable.32In this regard, holding
+horizons aﬀect alpha weights, among other ways, via trading costs .
+A Capacity
+In Subsection 4.2 we mentioned capacity as a possible risk factor. He re we discuss
+capacity brieﬂy. If there are no costs or only linear costs are pres ent, portfolio
+capacityisunlimited. Onceweintroducenonlinearcosts(impact), po rtfoliocapacity
+has a ﬁnite bound. Capacity is simply the value of the investment level I=I∗at
+which the P&L (computed for optimized alpha weights) is maximized. Le tα≡/summationtextN
+i=1αiwifor the optimized weights. The P&L is given by
+P=α I−L D−1
+nQ Dn=T/parenleftbigg
+/tildewiderM I−1
+nQ Tn−1In/parenrightbigg
+(52)
+whereD=I Tis the dollar amount traded, Lis the linear cost per dollar traded,
+Tis the turnover, the impact coeﬃcient Qand power n >1 are model-dependent
+(and can be measured empirically), and
+/tildewiderM≡α
+T−L (53)
+is the eﬀective “proﬁt margin”, which includes linear costs (but not im pact).
+The P&L is maximized at
+I∗=1
+T/parenleftBigg/tildewiderM
+Q/parenrightBigg1
+n−1
+(54)
+31E.g., one can deﬁne it via a log of turnover, further conformed to a nor mal distribution.
+Alternatively, one can, say, choose to suppress high turnover st rategies (to mitigate trading costs)
+even more and deﬁne the turnover risk factor without taking a log.
+32See [105, 106], which utilize the spectral model of turnover reduct ion of [102].
+14Note that the capacity I∗increases as the turnover Tdecreases. At the capacity
+bound we have the following P&L
+P∗=M∗T I∗=n−1
+n/parenleftBigg/tildewiderMn
+Q/parenrightBigg1
+n−1
+(55)
+M∗≡n−1
+n/tildewiderM (56)
+HereM∗is the “proﬁt margin” at capacity. Note that for n= 1.5, which is often
+assumed, we have M∗=/tildewiderM/3,I∗=/tildewiderM2/TQ2andP∗=/tildewiderM3/3Q2. Note that/tildewiderM
+depends on the turnover T.
+When we combine a large number Nof alphas, we can use the spectral model of
+[102] to model turnover reduction due to the crossing of trades, according to which
+in the leading order in the 1 /Nexpansion the portfolio turnover is given by
+T≈ρ∗N/summationdisplay
+i=1Ti|wi| ≡ρ∗τ (57)
+whereTiare individual alpha turnovers, and 0 < ρ∗≤1 is the turnover reduction
+coeﬃcient, which can be computed using Eq. (34) of [102]. With the s ame caveats
+as in the case of the turnover, one can repeat the arguments of [1 02] for the impact
+coeﬃcient Qand argue that in the large Nlimit we also have Q≈ρ∗κ, where
+κ≡/summationtextN
+i=1Qi|wi|, andQiare the impact coeﬃcients for individual alphas. Then the
+ρ∗dependence of the capacity bound is given by
+I∗≈1
+τ ρn
+n−1∗/parenleftBigg/tildewiderM
+κ/parenrightBigg1
+n−1
+(58)
+Forn= 1.5 we have I∗∼1/ρ3
+∗. Recalling from [102] that ρ∗isroughlyan average
+correlationbetween thealphas, (58)gives thepower-law forthec apacity dependence
+on the average correlation of alphas in a portfolio.
+In general nneeds to be measured empirically. Measuring it directly for a port-
+folio is diﬃcult. Below we give a simple method for measuring nforindividual
+stocks. We can then approximate nfor a portfolio as a weighted (these weights can
+be uniform) average of the impact powers nAfor individual stocks.
+A.1 Measuring Impact
+Thefollowingdiscussion, unlessotherwisestated, appliestoanindivid ual stock. The
+notations in this subsection are self-contained and should not be co nfused with the
+notations in the rest of the paper. M, with an appropriate index, denotes midquote.
+P, with an appropriate index, denotes last print. Let us partition a tr ading day into
+15Nequal intervals Iispanning time between Ti−1andTi,i= 1,...,N, whereT0=
+9:30 AM, and TN= 4:00 PM.33
+For each interval Ii, letPia(a= 1,...,K i) be all prints at times Tia, where
+Ti−1≤Tia< Ti. LetViabe the corresponding volumes traded. Let AiaandBiabe
+the ask and bid prices at the times Tia. For the sake of simplicity, we will exclude
+all times TiawithAia≤Bia. That is, in the following, unless otherwise stated,
+summation over a= 1,...,K iis understood to exclude datapoints with crossed and
+locked markets ( Aia≤Bia).
+Next, let
+Wia≡F/parenleftbigg
+2Pia−Bia
+Aia−Bia/parenrightbigg
+(59)
+whereF(x)≡sign(x) min(|x|,1).Wiaact as weights. For Pia=Aiawe have
+Wia= 1, forPia=Biawe haveWia=−1, and the weight is 0 if the print is at the
+midquote. The following method can also be implemented with simpliﬁed we ights
+where one uses sign( Wia) instead of Wia.34
+Now we deﬁne
+Vi≡Ki/summationdisplay
+a=1WiaVia (60)
+Ui≡Mi−Mi−1 (61)
+HereUiis the change in the stock price (or, more precisely, in its midquote) d uring
+the interval Ii. We use midquotes at the endpoints of the interval as opposed to t he
+prints because the prints have extra noise in them, e.g., due to the fact that prints
+can occur at diﬀerent pricepoints within the same bid-ask spread.
+The impact model discussed earlier in this appendix assumes that the nonlin-
+ear cost of trading scales with the traded volume Vas|V|n. HereV >0 for
+shares bought and V <0 for shares sold. The impact on the price then scales as
+nsign(V)|V|n−1, which is the ﬁrst derivative of |V|nw.r.t.V. Our goal is to
+measure the power n.
+This can be achieved by modeling impact using the datapoints ( Vi,Ui) deﬁned
+above. First, we exclude all such datapoints with sign( Ui)/ne}ationslash= sign(Vi). Then in R
+notations n−1 can be determined as the coeﬃcient of ln |V|in the linear model
+(with an intercept)
+ln|Ui| ∼ln|Vi| (62)
+The datapoints used in the linear model can span diﬀerent trading da ys.
+33One can choose these intervals to mimic real-life executions, e.g., how VWAP is executed. In
+particular, they need not be uniform.
+34In general, one can utilize variations of the method described here. One can also look at bid
+and ask sizes and the (properly weighted) order book depth and ad d other bells and whistles,
+including Aia≤Biacases,etc.
+16A.1.1 Executions
+The above method is based on intraday pricing and volume data and allo ws to
+estimate the expected value of non average, without taking into account the actual
+executions in a given strategy. Better or worse executions could le ad to a diﬀerent
+realized value of n, which we will denote as ν. The challenge with determining νis
+that it is diﬃcult to determine the price change analogous to Uiabove attributable
+solely to executions in a given strategy because this strategy is only one of many
+market participants aﬀecting the price. Instead, what can be det ermined is the cost
+Cof trading Ddollars. Again, as above, one can break up the trading day into
+intervals Iiand calculate the actual cost of trading Didollars by comparing the ﬁll
+pricesFia(a= 1,...,K i) for the corresponding numbers of shares Viaduring the
+intervalIiwith the midquote Mi−1at the beginning of such interval. Then we have
+Ci=Ki/summationdisplay
+a=1Via(Fia−Mi−1) (63)
+Di=Mi−1/vextendsingle/vextendsingle/vextendsingle/vextendsingle/vextendsingleKi/summationdisplay
+a=1Via/vextendsingle/vextendsingle/vextendsingle/vextendsingle/vextendsingle(64)
+Here one can use a benchmark other than Mi−1, as applicable. Also, summation
+overa= 1,...,K iis not restricted here.
+The cost Cis modeled as
+C=L D+1
+νQ Dν(65)
+However, here we have three unknowns, linear slippage35L, the impact coeﬃcient
+Qand the power ν. To circumvent this, one can scan values of ν(around the value
+ofn, if the latter has been measured as outlined above) and ﬁt the coeﬃ cientsL
+andQvia a linear model. Thus, let /tildewideQ≡Q/ν. Then in R notations Land/tildewideQare
+the coeﬃcients of the linear model (without an intercept)
+C∼ −1+D+I(Dν) (66)
+Onecanthenpickthevalueof νcorresponding tothebestﬁt. Finally, letusmention
+that the values of nandνmeasured as outlined above will vary from stock to stock.
+For portfolios one can use a median or weighted average value.
+B Factor Covariance Matrix and Speciﬁc Risk
+In this appendix we discuss a simple method for obtaining the factor c ovariance
+matrix for a set of risk factors based on the sample covariance mat rix computed
+35For our purposes here, Lincludes only linear slippage and excludes ﬁxed trading costs (such
+as SEC fees, exchange fees, broker-dealer fees, etc.).
+17based on alpha time series. This approach is useful when the factor covariance
+matrix for a set of risk factors is not readily available or computable. An example
+of this kind of a situation is the case of style risk factors (or their qu antiled versions
+discussed in Subsection 4.2. Another example is the case of alpha clus ters based on
+alpha taxonomy – if one can be built, that is.
+In the factor model approach we have (41)-(45) and (40). Let
+QAB≡N/summationdisplay
+i=1ΩiAΩiB (67)
+/tildewideQAB≡Q−1
+AB (68)
+We have
+ΦAB=F/summationdisplay
+C,D=1/tildewideQAC/tildewideQBD/parenleftBiggN/summationdisplay
+i,j=1ΩiCΩjDΓij−N/summationdisplay
+i=1ξ2
+iΩiCΩiD/parenrightBigg
+(69)
+On the other hand, we have
+ξ2
+i= Γii−F/summationdisplay
+A,B=1ΦABΩiAΩiB (70)
+Plugging (70) into (69) we get a matrix equations for Φ AB:
+ΦAB−F/summationdisplay
+C,D,C′,D′=1/tildewideQAC/tildewideQBDTCDC′D′ΦC′D′=F/summationdisplay
+C,D=1/tildewideQAC/tildewideQBDN/summationdisplay
+i,j=1, i/negationslash=jΩiCΩjDΓij
+(71)
+where
+TABCD≡N/summationdisplay
+i=1ΩiAΩiBΩiCΩiD (72)
+is a totally symmetric 4-tensor. So, the idea is that, in cases where Φ ABis not
+independently computable, one can ﬁx it via (71) by replacing Γ ijvia the sample
+covariance matrix Cij.
+B.1 Binary Factor Loadings
+The above discussion simpliﬁes substantially if the factor loadings Ω iAare binary,
+i.e., they take only two values, 0 or 1, and indicate if the alpha labeled by ibelongs
+to the alpha cluster labeled by F:
+ΩiA=δG(i),A (73)
+G:{1,...,N} /ma√sto→ {1,...,F} (74)
+18whereGis the map between alphas and the alpha clusters. Also,
+NA≡N/summationdisplay
+i=1δG(i),A (75)
+is the number of alphas that belong to the cluster labeled by A. Note that
+F/summationdisplay
+A=1NA=N (76)
+We have:
+QAB=NAδAB (77)
+/tildewideQAB=1
+NAδAB (78)
+TAAAA=NA(other components vanish) (79)
+ΦAB=1
+NANB/summationdisplay
+i:G(i)=A/summationdisplay
+j:G(j)=BCij, A/ne}ationslash=B (80)
+ΦAA=1
+NA(NA−1)/summationdisplay
+i,j:G(i)=A, G(j)=A, i/negationslash=jCij (81)
+ξ2
+i=Cii−ΦG(i),G(i) (82)
+Here one can immediately see the issue we mentioned in Section 4: ξ2
+iare not
+guaranteed to be positive.36
+References
+[1] T. Schneeweis, R. Spurgin, and D. McCarthy, “Survivor Bias in Co mmodity
+Trading Advisor Performance”, J. Futures Markets, 1996, 16(7 ), 757-772.
+[2] C. Ackerman, R. McEnally and D. Revenscraft, “The Performan ce of Hedge
+Funds: Risk, Return and Incentives”, Journal of Finance, 1999, 54(3), 833-874.
+[3] S.J. Brown, W. Goetzmann and R.G. Ibbotson, “Oﬀshore Hedge F unds: Sur-
+vival and Performance, 1989-1995”, Journal of Business, 1999 , 72(1), 91-117.
+[4] F.R. Edwards and J. Liew, “Managed Commodity Funds”, Journal of Futures
+Markets, 1999, 19(4), 377-411.
+[5] F.R. Edwards and J. Liew, “Hedge Funds versus Managed Future s as Asset
+Classes”, Journal of Derivatives, 1999, 6(4), 45-64.
+36As we mentioned in Section 4, the resolution of this issue is a proprieta ry topic, which is
+outside of the scope of this paper.
+19[6] W. Fung and D. Hsieh, “A Primer on Hedge Funds”, Journal of Emp irical
+Finance, 1999, 6(3), 309-331.
+[7] B. Liang, “On the Performance of Hedge Funds”, Financial Analy sts Journal,
+1999, 55(4), 72-85.
+[8] V. Agarwal and N.Y. Naik, “On Taking the “Alternative” Route: Th e Risks,
+Rewards, and Performance Persistence of Hedge Funds”, Journ al of Alternative
+Investments, 2000, 2(4), 6-23.
+[9] V. Agarwal and N.Y. Naik, “Multi-Period Performance Persistenc e Analysis of
+Hedge Funds Source”, Journal of Financial and Quantitative Analy sis, 2000,
+35(3), 327-342.
+[10] W. Fungand D.Hsieh, “Performance Characteristics of Hedge FundsandCom-
+modity Funds: Natural vs. Spurious Biases”, Journal of Financial and Quanti-
+tative Analysis, 2000, 35(3), 291-307.
+[11] B. Liang, “Hedge Funds: The Living and the Dead”, Journal of F inancial and
+Quantitative Analysis, 2000, 35(3), 309-326.
+[12] C.S. Asness, R.J. Krail, and J.M. Liew, “Do Hedge Funds Hedge?”, Journal of
+Portfolio Management, 2001, 28(1), 6-19.
+[13] F.R. Edwards and M.O. Caglayan, “Hedge Fund and Commodity Fun d In-
+vestments in Bull and Bear Markets”, Journal of Portfolio Manage ment, 2001,
+27(4), 97-108.
+[14] W. Fung and D. Hsieh, “The Risk in Hedge Fund Strategies: Theor y and
+Evidence from Trend Followers”, Review of Financial Studies, 2001, 14(2), 313-
+341.
+[15] B. Liang, “Hedge Fund Performance: 1990-1999”, Financial A nalysts Journal,
+2001, 57(1), 11-18.
+[16] A.W. Lo, “Risk Management For Hedge Funds: Introduction and Overview”,
+Financial Analysis Journal, 2001, 57(6), 16-33.
+[17] C. Brooks and H.M. Kat, “The Statistical Properties of Hedge F und Index Re-
+turnsandTheir Implications forInvestors”, JournalofAlternat iveInvestments,
+2002, 5(2), 26-44.
+[18] D.-L. Kao, “Battle for Alphas: Hedge Funds versus Long-Only P ortfolios”,
+Financial Analysts Journal, 2002, 58(2), 16-36.
+[19] G. Amin and H. Kat, “Stocks, Bonds and Hedge Funds: Not a Fre e Lunch!”,
+Journal of Portfolio Management, 2003, 29(4), 113-120.
+20[20] N. Chan, M. Getmansky, S.M. Haas and A.W. Lo, “Systemic Risk an d Hedge
+Funds”, published in: Carey, M. and Stulz, R.M., eds., “The Risks of Fin ancial
+Institutions” (University of Chicago Press, 2006), Chapter 6, 23 5-338.
+[21] W. Sharpe, “Capital asset prices: A theory of market equilibriu m under condi-
+tions of risk”, Journal of Finance, 1964, 19(3), 425-442.
+[22] J. Lintner, “The valuation of risky assets and the selection of r isky investments
+in stock portfolios and capital budgets”, Review of Economics and S tatistics,
+1965, 47(1), 13-37.
+[23] S. Black, “Capital market equilibrium with restricted borrowing” , Journal of
+Business, 1972, 45(3), 444-455.
+[24] O. Blume and L. Friend, “A new look at the capital asset pricing mo del”,
+Journal of Finance, 1973, 28(1), 19-33.
+[25] E. Fama and J. MacBeth, “Risk, return, and equilibrium: Empirica l tests”,
+Journal of Political Economy, 1973, 81(3), 607-636.
+[26] R. Merton, “An intertemporal capital asset pricing model”, Ec onometrica,
+1973, 41(5), 867-887.
+[27] S. Ross, “The arbitrage theory of capital asset pricing”, Jou rnal of Economic
+Theory, 1976, 13(3), 341-360.
+[28] S. Basu, “The investment performance of common stocks in re lation to their
+price to earnings ratios: A test of the eﬃcient market hypothesis” , Journal of
+Finance, 1977, 32(3), 663-682.
+[29] R. Banz, “The relationship between return and market value of common
+stocks”, Journal of Financial Economics, 1981, 9(1), 3-18.
+[30] W. DeBondt and R. Thaler, “Does the stock market overreact ?”, Journal of
+Finance, 1985, 40(3), 739-805.
+[31] N. Chen, R. Roll and S. Ross, “Economic forces and the stock m arket”, Journal
+of Business, 1986, 59(3), 383-403.
+[32] J. Campbell, “Stock returns and the term structure”, Journ al of Financial
+Economics, 1987, 18(2), 373-399.
+[33] J.CampbellandR.Shiller, “Thedividend-price ratioandexpecta tionsoffuture
+dividends and discount factors”, Review of Financial Studies, 1988 , 1(3), 195-
+227.
+21[34] G. Connor and R. Korajczyk, “Risk and return in an equilibrium AP T: Ap-
+plication of a new test methodology”, Journal of Financial Economic s, 1988,
+21(2), 255-289.
+[35] B.LehmannandD.Modest, “Theempiricalfoundationsofthea rbitragepricing
+theory”, Journal of Financial Economics, 1988, 21(2), 213-254 .
+[36] A. Lo and A.C. MacKinlay, “Data-snooping biases in tests of ﬁnan cial asset
+pricing models”, Review of Financial Studies, 1990, 3(3), 431-468.
+[37] G. Schwert, “Stock returns and real activity: A century of e vidence”, Journal
+of Finance, 1990, 45(4), 1237-1257.
+[38] W. Ferson and C. Harvey, “The variation in economic risk premium s”, Journal
+of Political Economy, 1991, 99(2), 385-415.
+[39] E. Fama and K. French, “The cross-section of expected stoc k returns”, Journal
+of Finance, 1992, 47(2), 427-465.
+[40] E. Fama and K. French, “Common risk factors in the returns of stock and
+bonds”, Journal of Financial Economics, 1993, 33(1), 3-56.
+[41] N. Jegadeesh and S. Titman, “Returns to buying winners and se lling losers:
+Implications for stock market eﬃciency”, Journal of Finance, 199 3, 48(1), 65-
+91.
+[42] R. Whitelaw, “Time variations and covariations in the expectation and volatil-
+ity of stock market returns”, Journal of Finance, 1994, 49(2), 515-541.
+[43] A.C. MacKinlay, “Multifactor models do not explain deviations from the
+CAPM”, Journal of Financial Economics, 1995, 38(1), 3-28.
+[44] R. Jagannathan and Z. Wang, “The conditional CAPM and the cr oss-section
+of expected returns”, Journal of Finance, 1996, 51(1), 3-53.
+[45] E. Fama and K. French, “Multifactor explanations for asset pr icing anomalies”,
+Journal of Finance, 1996, 51(1), 55-94.
+[46] S. Kothari and J. Shanken, “Book-to-market, dividend yield a nd expected mar-
+ket returns: A time series analysis”, Journal of Financial Economic s, 1997,
+44(2), 169-203.
+[47] W.FersonandC. Harvey, “Conditioning variablesandthecross sectionofstock
+returns”, Journal of Finance, 1999, 54(4), 1325-1360.
+[48] C. Fern´ andez, E. Ley and M. Steel, “Benchmark priors for ba yesian model
+averaging”, Journal of Econometrics, 2001, 100(2), 381-427.
+22[49] A.D.Hall, S. Hwang andE.S. Satchell, “Using bayesian variableselec tion meth-
+ods to choose style factors in global stock return models”, Journ al of Banking
+and Finance, 2002, 26(12), 2301-2325.
+[50] B.G. Malkiel, “The eﬃcient market hypothesis and its critics”, The Journal of
+Economic Perspectives, 2003, 17(1), 59-82.
+[51] L.K.C. Chan and L. Lakonishok, “Value and growth investing: Rev iew and
+update”, Financial Analysts Journal, 2004, 60(1), 71-86.
+[52] O. Ledoit and M. Wolf, “Honey, I shrunk the sample covariance m atrix”, Jour-
+nal of Portfolio Management, 2004, 30(4), 110-119.
+[53] D.J. Disatnik andS. Benninga, “Shrinking the covariance matrix” , The Journal
+of Portfolio Management, 2007, 33(4), 55-63.
+[54] M.J. Cooper, H. Gulen and M.J. Schill, “Asset growth and the Cros s-Section
+of stock returns”, The Journal of Finance, 2008, 63(4), 1609- 1651.
+[55] S. Hwang and A. Rubesam, “Fishing with a licence: An empirical sea rch for as-
+set pricing factors”, http://ssrn.com/abstract=1297376 (SSR NWorking Paper,
+2008).
+[56] T. Adriana and F. Franzoni, “Learning about beta: Time-varyin g factor load-
+ings, expected returns, and the conditional CAPM”, Journal of E mpirical Fi-
+nance, 2009, 16(4), 537-556.
+[57] W. He, Y.S. Lee and P. Wei, “Do option traders on value and growt h stocks
+react diﬀerently to new information?”, Review of Quantitative Finan ce and
+Accounting, 2010, 34(3), 371-381.
+[58] P.MaioandP.Santa-Clara, “Value, momentum, andshort-ter minterest rates”,
+http://ssrn.com/abstract=1986787 (SSRN Working Paper, 2011 ).
+[59] J.G. Rangel and R.F. Engle, “The Factor-Spline-GARCH Model fo r High and
+Low Frequency Correlations”, Journal of Business and Economic S tatistics,
+2012, 30(1), 109-124.
+[60] M. Fliess and C. Join, “Systematic and multifactor risk models rev isited”,
+arXiv:1312.5271.
+[61] H. Markowitz, “Portfolio selection”, Journal of Finance, 1952 , 7(1), 77-91.
+[62] A. Charnes and W.W. Cooper, “Programming with linear fractiona l function-
+als”, Naval Research Logistics Quarterly, 1962, 9(3-4), 181-18 6.
+[63] W.F. Sharpe, “Mutual fund performance”, Journal of Busine ss, 1966, 39(1),
+119-138.
+23[64] R.C. Merton, “Lifetime portfolio selection under uncertainty: t he continuous
+time case”, The Review of Economics and Statistics, 1969, 51(3), 2 47-257.
+[65] S. Schaible, “Parameter-free convex equivalent and dual pro grams of fractional
+programming problems”, Zeitschrift f¨ ur Operations Research, 1 974, 18(5), 187-
+196.
+[66] M. Magill and G. Constantinides, “Portfolio selection with transa ctions costs”,
+J. Econom. Theory, 1976, 13(2), 245-263.
+[67] A.F. Perold, “Large-scale portfolio optimization”, Management Science, 1984,
+30(10), 1143-1160.
+[68] M. Davis and A. Norman, “Portfolio selection with transaction co sts”, Math.
+Oper. Res., 1990, 15(4), 676-713.
+[69] B. Dumas and E. Luciano, “An exact solution to a dynamic portfo lio choice
+problemundertransactioncosts”, TheJournalofFinance, 1991 ,46(2),577-595.
+[70] C. J. Adcock and N. Meade “A simple algorithm to incorporate tra nsactions
+costs in quadratic optimization”, European Journal of Operationa l Research,
+1994, 79(1), 85-94.
+[71] S. Shreve and H.M. Soner, “Optimal investment and consumptio n with trans-
+action costs”, Ann. Appl. Probab., 1994, 4(3), 609-692.
+[72] D. Bienstock, “Computational study of a family of mixed-intege r quadratic
+programming problems”, Mathematical Programming, 1996, 74(2) , 121-140.
+[73] J. Cvitani´ c and I. Karatzas, “Hedging and portfolio optimizat ion under trans-
+action costs: a martingale approach”, Math. Finance, 1996, 6(2) , 133-165.
+[74] A. Yoshimoto, “The mean-variance approach to portfolio optim ization subject
+totransactioncosts”, J.OperationsResearchSoc.ofJapan, 1 996,39(1),99-117.
+[75] C. Atkinson, S.R. Pliska and P. Wilmott, “Portfolio management wit h trans-
+action costs”, Proc. Roy. Soc. London Ser. A, 1997, 453(1958) , 551-562.
+[76] D. Bertsimas, C. Darnell and R. Soucy, “Portfolio constructio n through mixed-
+integer programming at Grantham, Mayo, Van Otterloo and Compan y”, Inter-
+faces, 1999, 29(1), 49-66.
+[77] A. Cadenillas and S. R. Pliska, “Optimal trading of a security when there are
+taxes and transaction costs”, Finance and Stochastics, 1999, 3 (2), 137-165.
+[78] R.C. Grinold and R.N. Kahn, “Active Portfolio Management: Quant itative
+Theory and Applications”, 2nd ed., McGraw-Hill, 2000.
+24[79] T.-J. Chang, N. Meade, J.E. Beasley and Y.M. Sharaiha, “Heurist ics for car-
+dinality constrained portfolio optimisation”, Computers and Operat ions Re-
+search, 2000, 27(13), 1271-1302.
+[80] H. Kellerer, R. Mansini and M.G. Speranza, “Selecting portfolios with ﬁxed
+costs and minimum transaction lots”, Annals of Operations Researc h, 2000,
+99(1-4), 287-304.
+[81] R.T. Rockafellar and S. Uryasev, “Optimization of conditional va lue-at-risk”,
+Journal of Risk, 2000, 2(3), 21-41.
+[82] J. Gondzio and R. Kouwenberg, “High-performance computing for asset-
+liability management”, Operations Research, 2001, 49(6), 879-89 1.
+[83] H. Konno and A. Wijayanayake, “Portfolio optimization problem u nder con-
+cavetransactioncosts andminimaltransactionunitconstraints” , Mathematical
+Programming, 2001, 89(2), 233-250.
+[84] S. Mokkhavesa and C. Atkinson, “Perturbation solution of opt imal portfolio
+theory with transaction costs for any utility function”, IMA J. Man ag. Math.,
+2002, 13(2), 131-151.
+[85] O.L.V. Costa and A.C. Paiva, “Robust portfolio selection using linea r-matrix
+inequalities”, Journal ofEconomic DynamicsandControl, 2002, 26( 6), 889-909.
+[86] F.AlizadehandD.Goldfarb, “Second-orderconeprogramming ”, Mathematical
+Programming, 2003, 95(1), 3-51.
+[87] M.J. Best and J. Hlouskova, “Portfolio selection and transactio ns costs”, Com-
+putational Optimization and Applications, 2003, 24(1), 95-116.
+[88] K. Janeˇ cek and S. Shreve, “Asymptotic analysis for optimal in vestment and
+consumption with transaction costs”, Finance Stoch., 2004, 8(2) , 181-206.
+[89] R. Grinold, “A Dynamic Model of Portfolio Management”, Journa l of Invest-
+ment Management, 2006, 4(2), 5-22.
+[90] R. Grinold, “Dynamic Portfolio Analysis”, Journal of Portfolio Ma nagement,
+2007, 34(1), 12-26.
+[91] E. Qian, R. Hua and E. Sorensen, “Quantitative Equity Portfolio Management:
+Modern Techniques and Applications”, New York, NY: Chapman & Hall, 2007.
+[92] M.S. Lobo, M. Fazel and S. Boyd, “Portfolio optimization with linea r and ﬁxed
+transaction costs”, Annals of Operations Research, 2007, 152( 1), 341-365.
+[93] R. Zagst and D. Kalin, “Portfolio optimization under liquidity costs ”, Interna-
+tional Journal of Pure and Applied Mathematics, 2007, 39(2), 217 -233.
+25[94] M.Potaptchik, L.Tun¸ cel andH.Wolkowicz, “Largescaleport foliooptimization
+with piecewise linear transaction costs”, Optimization Methods and S oftware,
+2008, 23(6), 929-952.
+[95] E. Moro, J. Vicente, L.G. Moyano, A. Gerig, J.D. Farmer, G. Vag lica, F. Lillo
+and R.N. Mantegna, “Market impact and trading proﬁle of hidden ord ers in
+stock markets”, Physical Review E, 2009, 80, 066102.
+[96] R. Grinold, ‘ ‘Signal Weighting”, The Journal of Portfolio Manage ment, 2010,
+36(4), 24-34.
+[97] J. Goodman and D.N. Ostrov, “Balancing small transaction cost s with loss of
+optimal allocation in dynamic stock trading strategies”, SIAM J. App l. Math.,
+2010, 70(6), 1977-1998.
+[98] M. Bichuch, “Asymptotic analysis for optimal investment in ﬁnite time with
+transaction costs”, SIAM J. Financial Math., 2012, 3(1), 433-45 8.
+[99] J.E. Mitchell and S. Braun, “Rebalancing an investment portfolio in the pres-
+ence of convex transaction costs, including market impact costs” , Optimization
+Methods and Software, 2013, 28(3), 523-542.
+[100] H.SonerandN.Touzi, “Homogenizationandasymptoticsfors malltransaction
+costs”, SIAM Journal on Control and Optimization, 2013, 51(4), 2893-2921.
+[101] Z. Kakushadze and J.K.-S. Liew, “Is It Possible to OD on Alpha?” ,
+SSRN Working Paper, http://ssrn.com/abstract=2419415 (April 2, 2014);
+arXiv:1404.0746.
+[102] Z. Kakushadze, “Spectral Model of Turnover Reduction”, SSRN Working Pa-
+per, http://ssrn.com/abstract=2427049 (April 20, 2014); arX iv:1404.5050.
+[103] Z. Kakushadze, “Can Turnover Go To Zero?”, Journal of De rivatives & Hedge
+Funds (in press), SSRN Accepted Paper, http://ssrn.com/abstr act=2444031
+(May 30, 2014); arXiv:1406.0044.
+[104] R. Rebonato and P. J¨ ackel, “The most general methodology to create a valid
+correlation matrix for risk management and option pricing purposes ” (1999),
+SSRN Working Paper, http://ssrn.com/abstract=1969689 (Dece mber 7, 2011).
+[105] Z. Kakushadze, “Combining Alpha Streams with Costs”, The Jo urnal of Risk
+(in press), SSRN Accepted Paper, http://ssrn.com/abstract=2 438687 (May 19,
+2014); arXiv:1405.4716.
+[106] Z. Kakushadze, “Notes on Alpha Stream Optimization”, SSRN W orking Pa-
+per, http://ssrn.com/abstract=2446328 (June 4, 2014), arXiv :1406.1249.
+26

@@ -1,0 +1,2121 @@
+arXiv:1408.7010v1  [q-fin.MF]  29 Aug 2014LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR
+MODELS
+SCOTT ROBERTSON AND HAO XING
+Abstract. Long term optimal investment problems are studied in a facto r model with matrix
+valued state variables. Explicit parameter restrictions a re obtained under which, for an isoelastic
+investor, the ﬁnite horizon value function and optimal stra tegy converge to their long-run counter-
+parts as the investment horizon approaches inﬁnity. This co nvergence also yields portfolio turnpikes
+for general utilities. By using results on large time behavi or of semi-linear partial diﬀerential equa-
+tions, our analysis extendsaﬃnemodels, where theWishart p rocess drivesinvestmentopportunities,
+to a non-aﬃne setting. Furthermore, in the aﬃne setting, an e xample is constructed where the value
+function is not exponentially aﬃne, in contrast to models wi th vector-valued state variables.
+1.Introduction
+When investment opportunities are stochastic and the marke t is incomplete, optimal strategies
+in portfolio choice problems rarely admit explicit forms. T he main source of diﬃculty is that
+the hedging demand depends implicitly upon the investment h orizon. This diﬃculty motivates
+approximating optimal policies, and one useful approximat ion occurs by considering the long run
+limit. Thisapproximation enablestractability foroptima lstrategies andilluminatestherelationship
+between investor preferences, underlying economic factor s and dynamic asset demand. Long run
+approximations typically take two forms: ﬁrst, the long run optimal investment orrisk sensitive
+controlproblem seeks to identify growth optimal policies for isoel astic utilities; second, the portfolio
+turnpike problemseekstoconnectoptimalpoliciesforgeneralutili tieswiththoseforacorresponding
+isoelastic utility.
+In this article, long run optimal investment and portfolio t urnpike problems are studied in a
+multi-asset factor model where the state variable takes val ues in the space of positive deﬁnite
+matrices. Such models generalize the Wishart model of [8, 27 ] (amongst many others), which has
+been successfully employed in a wide-range of problems in Ma thematical Finance. In addition to
+identifying optimal long run policies and proving turnpike theorems, we are particularly concerned
+with connecting the ﬁnite horizon and long run problems. Her e, the goal is to provide conditions
+when optimal policies for ﬁnite horizons converge to their l ong-run counterparts. Positive results in
+this direction are necessary to validate long-run analysis . Though heuristics indicate convergence,
+from a technical standpoint it is not a priori clear that the l ong-run policy arises as the limit of
+ﬁnite horizon policies.
+For isoelastic utilities, the risk sensitive control, or lo ng run optimal investment, problem aims
+to maximize the expected utility growth rate. This problem h as been addressed by many authors :
+Date: January 21, 2018.
+Key words and phrases. Portfolio choice, Long-run, Risk sensitive control, Portf olio turnpike, Wishart process.
+12 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODEL S
+see, for example, [5, 6, 4, 17, 18, 35, 16, 39, 13, 23, 26]. In th ese studies, an ergodic Hamilton Jacobi
+Bellman (HJB) equation is analyzed. This ergodic equation i s typically obtained via a heuristic
+argument, where one ﬁrst derives the ﬁnite horizon HJB equat ion, and then conjectures that for
+long horizons the (reduced) value function decomposes into the sum of a spatial component and a
+temporal growth component. Thus, if v(T,·) denotes the ﬁnite horizon value function, the long-run
+value function takes the form ˆλT+ ˆv(·). Then ergodic HJB equation follows by substituting the
+latter function into the ﬁnite horizon HJB equation.
+The above heuristic derivation indicates that ﬁnite and inﬁ nite horizon optimal investment prob-
+lems are parallel in many aspects. Of primary importance is t o connect these two class of problems.
+As the investment horizon Tapproaches inﬁnity, does the ﬁnite horizon value function v(T,·) con-
+verge to its long-run analogue ˆλT+ ˆv(·)? If so, in what sense? Does the optimal strategy for the
+ﬁnite horizon problem converge to a long-run limit? As previ ously mentioned, aﬃrmative answers
+to these questions verify the intuition underpinning the st udy of the risk sensitive controls, and
+provide consistency between the ﬁnite horizon and long-run problems.
+Moving away from the isoelastic case, portfolio turnpikes p rovide another approximation for
+optimal policies of generic utility functions. Qualitativ ely, turnpiketheorems state that in agrowing
+market (i.e. one where the riskless asset tends to inﬁnity), as the investment horizon becomes large,
+the optimal trading strategy of a generic utility converges , over any ﬁnite time window, to the
+optimal trading strategy of its isoelastic counterpart (se e Assumption 2.8 for a precise formulation
+of “counterpart”). Turnpike theorems were ﬁrst investigat ed in [38] for utilities with aﬃne risk
+tolerance, and have since been extensively studied: in part icular we mention [36, 44, 25, 30, 10, 32,
+29, 15, 14] where turnpike theorems are proved in diﬀering lev els of generality.
+For the risk-sensitive control and turnpike approximation s, we summarize the relationship be-
+tween the ﬁnite and long horizon problems in Statements 2.7 a nd 2.10 respectively. Veriﬁcation
+of these statements allows investors with a long horizon to r eplace their optimal, but implicit,
+strategies with explicit long-run approximations, which l ead to minimal loss of their wealth and
+utility, while providing considerable tractability. Each of Statements 2.7 and 2.10 have been proved
+in [22] in a factor model with univariate state variable and c onstant correlation of hedgeable and
+unhedgeable shocks. The present paper extends these result s to a multivariate setting, which allows
+for stochastic interest rates, volatility, and correlatio n. Here, in our main results, Proposition 3.2
+and Theorems 3.10, 3.12, we provide explicit parameter assu mptions upon the model coeﬃcients
+under which both Statements 2.7 and 2.10 hold.
+As previously stated, we focus on afactor model wherethesta te variable is matrix valued. Thisis
+motivated by consideration of the Wishart process (cf. [7] a nd Example 2.4 below), which has been
+appliedtooptionpricing(cf. [20,21,11,12]). Itsapplica tiontoportfoliooptimization waspioneered
+by [8], which highlighted the impact of the multivariate sta te variable on the hedging demand. In
+particular, usingpractical relevant parameters, thenume rical exampleinSection B.3thereinshowed
+that the hedging demand converges to a steady-state level wh en the investment horizon is longer
+than 5 years. Our results conﬁrm this observation. In [27], t he portfolio optimization problem is
+solved in the Wishart case via a matrix Riccati diﬀerential eq uation. In [2], logarithmic utility is
+studied, and in [42] the indiﬀerence pricing is discussed.LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 3
+In contrast to the aforementioned results, which exploit th e aﬃne structure of the Wishart pro-
+cess, our results rely upon large time asymptotic analysis o f partial diﬀerential equations with
+quadratic nonlinearities in the gradient. Using technique s developed in [43], we are able to con-
+sider non-aﬃne models, and hence discuss general matrix-va lued state variables as in Section 2.1.
+Moreover, stochastic correlation between the state variab le and risky assets can be treated, whereas
+a special (constant) correlation structure is needed to ens ure the aﬃne structure. Furthermore,
+our analysis, when applied to aﬃne models, yields new insigh t: we construct a counter-example
+(Example 3.4) to the long-held belief that optimal policies are aﬃne in aﬃne models. Indeed, the
+model in this example is aﬃne, but the associated value funct ion is not exponentially aﬃne, hence
+the optimal policy is not aﬃne. This happens when the dimensi on of state variable is larger than
+the number of risky assets, and is due to the noncommuntative property of the matrix product.
+The paper is organized as follows: after the model and Statem ents 2.7 and 2.10 are introduced in
+Section 2, the main results are presented in Section 3. For ea se of exposition, the general results are
+ﬁrst speciﬁed to when the state variable follows a Wishart pr ocess in Section 3.1. Here, the invest-
+ment model may or may not be aﬃne depending upon the asset drif ts and covariances. Proposition
+3.2 provides simple, mild (especially in the case where the i nvestor risk aversion exceeds that of a
+logarithmic investor) parameter restrictions under which the main results follow. Proposition 3.3
+explicitly identiﬁes the long-run limit policy when the mod el is further speciﬁed to the “classical”
+aﬃne Wishart model considered in [8, 27] and Example 3.4 cons tructs the non exponentially aﬃne
+counter example. After considering the Wishart case, the ma in results for general matrix valued
+state variables are given in Section 3.2 : see Theorem 3.10 fo r the long run limit results and The-
+orem 3.12 for the turnpike results. All proofs are deferred t o Appendices A, B and C. Finally, we
+summarize several notations used throughout the paper:
+•Md×kdenotes the space of d×kmatrices with Md:=Md×d. Forx∈Md×k, denote by x′
+the transpose of x. Forx∈Md, denote by Tr( x) the trace of xand/ba∇dblx/ba∇dbl=/radicalbig
+Tr(x′x). For
+x,y∈Md, the Kronecker product of xandyis denoted by x⊗y∈Md2. Denote by 1dthe
+identity matrix in Mdand 1dthed-dimensional vector with each component 1.
+•Sddenotes the space of d×dsymmetric matrices, and Sd
+++the cone of positive deﬁnite
+matrices. For x∈Sd
+++, denote by√xthe unique element y∈Sd
+++such thaty2=x. For
+x,y∈Sd
+++,x≥ywhenx−yis positive semi-deﬁnite.
+•ForE⊂Md×k,F⊂Mm×n, andγ∈(0,1], denote by Cℓ,γ(E;F) the space of ℓtimes
+continuously diﬀerentiable functions from EtoFwhose derivatives of order up to ℓis
+locally H¨ older continuous with exponent γ.
+2.Set up
+Let (Ω,(Ft)t≥0,F,P) be a ﬁltered probability space with ( Ft)t≥0a right-continuous ﬁltration.
+Following the treatment in [22], all N-negligible sets (cf. [3, Deﬁnition 1.3.23] and [40]) are in cluded
+intoF0. Such a completion of F0ensures, for all T≥0, that (Ω,(Ft)0≤t≤T,FT,P) satisﬁes the
+usual conditions.
+Consider a ﬁnancial model with one risk-free asset S0andnrisky assets ( S1,...,Sn). Investment
+opportunities are driven by a Sd
+++valued state variable X. Before writing down the dynamics for4 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODEL S
+the assets, it is necessary to introduce the state variable X, as the dynamics for Xinvolve matrix
+notation.
+2.1.ASd
+++-valued state variable. LetB= (Bij)i,j=1,...dbe aMd-valued Brownian motion on
+(Ω,(Ft)t≥0,F,P). The state variable Xhas dynamics
+(2.1) dXt=b(Xt)dt+F(Xt)dBtG(Xt)+G(Xt)′dB′
+tF(Xt)′, X 0∈Sd
+++.
+Here,b∈C1,γ(Sd
+++;Sd) andF,G∈C2,γ(Sd
+++;Md) are given functions. We require b,F,Gto be
+such thatXpossesses a unique strong solution which is non-explosive, i.e.,
+Px/bracketleftBig
+Xt∈Sd
+++,∀t≥0/bracketrightBig
+= 1,for allx∈Sd
+++,
+wherePxis the probability such that X0=xa.s.. To enforce this requirement through restrictions
+uponb,FandG, the results as well as notation of [37] are used. Namely, deﬁ ne
+(2.2) f(x) :=FF′(x) andg(x) :=G′G(x), x∈Sd
+++.
+Next, given b,f,g:Sd
+++→Sdandδ∈R, deﬁneHδ:Sd
+++→Rvia
+(2.3)Hδ(x;b) := Tr/parenleftbig
+bx−1/parenrightbig
+−(1+δ)Tr/parenleftbig
+fx−1gx−1/parenrightbig
+−Tr/parenleftbig
+fx−1/parenrightbig
+Tr/parenleftbig
+gx−1/parenrightbig
+, x∈Sd
+++.
+Here, we have omitted the function arguments from b,f,gbut have explicitly identiﬁed the drift
+functionbinHδ, since in the sequel Hδwill be used with various b.
+To understand Hδ, note that if Xfrom (2.1) has a strong solution satisfying (2.1) then Itˆ o’ s
+formula implies the drift in the dynamics for log(det( Xt))) isH0(Xt;b). Thus, the following as-
+sumption ensures that Xfrom (2.1) neither explodes in norm nor has degenerate deter minate and
+hence possesses a unique global strong solution ( Xt)t∈R+onSd
+++, cf. [37, Theorem 3.4].
+Assumption 2.1.
+i)G′⊗Fandbare locally Lipschitz and of linear growth.
+ii) infx∈Sd
+++H0(x;b)>−∞.
+Remark 2.2.A direct calculation, using [28, Section 4.2], shows that
+/ba∇dblG′⊗F(x)−G′⊗F(y)/ba∇dbl2≤2/parenleftbig
+/ba∇dblG(x)/ba∇dbl2/ba∇dblF(x)−F(y)/ba∇dbl2+/ba∇dblF(y)/ba∇dbl2/ba∇dblG(x)−G(y)/ba∇dbl2/parenrightbig
+,
+/ba∇dblG′⊗F(x)/ba∇dbl2=/ba∇dblF(x)/ba∇dbl2/ba∇dblG(x)/ba∇dbl2= Tr(f)Tr(g),forx,y∈Sd
+++.
+Thus,G′⊗Fwill be locally Lipschitz and of linear growth once FandGare locally Lipschitz and
+/ba∇dblF(x)/ba∇dbl/ba∇dblG(x)/ba∇dbl ≤C(1+/ba∇dblx/ba∇dbl) or equivalently if Tr( f)Tr(g)≤C(1+/ba∇dblx/ba∇dbl2).
+Assumption 2.1 establishes well-posedness of (2.1). The ne xt assumption implies that the volatil-
+ity ofXis non-degenerate in the interior of Sd
+++.
+Assumption 2.3. For eachx∈Sd
+++,f(x)>0 andg(x)>0.
+Indeed, note that (2.1) is short-hand for the following syst em:
+dXij
+t=bij(Xt)dt+d/summationdisplay
+k,l=1F(Xt)ikdBkl
+tG(Xt)lj+d/summationdisplay
+k,l=1F(Xt)jkdBkl
+tG(Xt)li, i,j = 1,...,d.LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 5
+Fori,j= 1,...,ddeﬁne the matrix aij:Sd
+++→Mdby
+aij
+kl(x) := (FikGlj+FjkGli)(x), k,l = 1,...,d, x∈Sd
+++.
+Then the above system takes the form
+dXij
+t=bij(Xt)dt+Tr/parenleftbig
+aij(Xt)dB′
+t/parenrightbig
+.
+Then [43, Lemma 5.1] shows that under Assumption 2.3, for any x∈Sd
+++andθ∈Sd,
+(2.4)d/summationdisplay
+i,j,k,l=1θijTr/parenleftBig
+aij(akl)′/parenrightBig
+(x)θkl= 4Tr(f(x)θg(x)θ)≥c(x)/ba∇dblθ/ba∇dbl2,
+for some constant c(x)>0.
+Example 2.4.The primary example to keep in mind is when Xis the Wishart process, cf. [7]:
+(2.5) dXt=/parenleftbig
+LL′+KXt+XtK′/parenrightbig
+dt+/radicalbig
+XtdBtΛ′+ΛdB′
+t/radicalbig
+Xt,
+whereK,L,Λ∈Md. Then both Assumptions 2.1 and 2.3 are satisﬁed when
+(2.6) LL′≥(d+1)ΛΛ′>0.
+Indeed, here b(x) =LL′+Kx+xK′,f(x) =x, andg(x) = ΛΛ′. Using Remark 2.2 it follows that
+b,G′⊗Fare locally Lipschitz and of linear growth. Furthermore, ca lculation shows that H0(x;b) =
+Tr/parenleftbig
+(LL′−(d+1)ΛΛ′)x−1/parenrightbig
++2Tr(K). Thus, the ﬁrst inequality in (2.6) implies H0(x;b)≥2Tr(K)
+onSd
+++and Assumption 2.1 holds. Assumption 2.3 readily follows fr om the second inequality in
+(2.6).
+2.2.The ﬁnancial model. Having ﬁxed notation and established well-posedness for th e state
+variable, we may now deﬁne the ﬁnancial model. As mentioned a bove, there is one risk-free asset
+S0andnrisky assets ( S1,...,Sn) whose dynamics are given by
+dS0
+t
+S0
+t=r(Xt)dt, S0
+0= 1, (2.7)
+dSi
+t
+Si
+t= (r(Xt)+µi(Xt))dt+m/summationdisplay
+j=1σij(Xt)dZj
+t, Si
+0>0, i= 1,...,n. (2.8)
+Here,r∈Cγ(Sd
+++;R),µ∈C1,γ(Sd
+++;Rn),σ∈C2,γ(Sd
+++;Mn×m) andZ= (Z1,...,Zm) is aRm
+valued Brownian motion. That σis of full rank, as well as the existence of market price of risk ,
+i.e.,ν:Sd
+++→Rnsuch thatµ=σσ′νonSd
+++, are ensured by the following assumption:
+Assumption 2.5.
+i) Whenm>n, Σ(x) :=σσ′(x)>0 forx∈Sd
+++. Thenν:= Σ−1µ.
+ii) Whenm<n,σ′σ(x)>0 forx∈Sd
+++and there exists ν∈C1,γ(Sd
+++;Rn) such that µ= Σν.
+iii) Whenm=n, Σ(x)>0 forx∈Sd
+++andσ=√
+Σ. Here again, ν= Σ−1µ.
+To allow for potentially stochastic instantaneous correla tions between asset returns and the state
+variable, we deﬁne Zin terms of the Brownian motion Bwhich drives Xand an independent Rm
+valued Brownian motion W. Speciﬁcally, let C∈C2,γ(Sd
+++;Mm×d) andρ∈C2,γ(Sd
+++;Rd) be such
+that6 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODEL S
+Assumption 2.6. ρ′ρ(x)CC′(x)≤1mfor eachx∈Sd
+++.
+SetD:=√1m−ρ′ρCC′∈C2,γ(Sd
+++;Sd). We then may deﬁne Zby
+(2.9) Zj
+t:=d/summationdisplay
+k,l=1/integraldisplayt
+0Cjk(Xu)dBkl
+uρl(Xu)+m/summationdisplay
+k=1/integraldisplayt
+0Djk(Xu)dWk
+u, t≥0,j= 1,...,m.
+By construction, Zis amdimensional Brownian motion. Furthermore, the instantane ous correla-
+tion between ZandBisd/a\}b∇acketle{tZj,Bkl/a\}b∇acket∇i}htt=Cjk(Xt)ρl(Xt)dt, for 1≤j≤m,1≤k,l≤d. In particular,
+whenm=d,C=1dandρ∈Rdis constant, d/a\}b∇acketle{tZi,Bjl/a\}b∇acket∇i}htt=δijρldt, whereδij= 1 fori=jand
+0 otherwise. This particular correlation structure is assu med in [8, 27, 2, 42]. Here, the matrix C
+introduces general correlation structure and allow its dep endence upon the state variable X.
+2.3.The optimal investment problem. Consider an investor whose preference is described by a
+utility function U:R+→Rwhich is strictly increasing, strictly concave, continuou sly diﬀerentiable
+andsatisﬁes theInadaconditions U′(0) =∞andU′(∞) = 0. Inparticular, we pay special attention
+to utilities with constant relative risk aversion (hencefo rth CRRA) U(x) =xp/pfor 0/\e}atio\slash=p<1.
+Starting from an initial capital, this investor trades in th e market until a time horizon T∈R+.
+She puts a proportion of her wealth ( πt)t≤Tinto the risky assets and the remaining into the risk
+free asset. Given her strategy π, the price dynamics in (2.7) and (2.8) imply that the wealth p rocess
+Wπhas dynamics
+(2.10)dWπ
+t
+Wπ
+t= (r(Xt)+π′
+tΣ(Xt)ν(Xt))dt+π′
+tσ(Xt)dZt.
+Thesetof admissible strategiesarethose πwhichare F-adaptedandsuchthat Px[Wπ
+t>0,∀t≤T] =
+1 for allx∈Sd
+++. In (A.1) below, positive super-martingale Mare constructed such that MWπis a
+super-martingale for any admissible strategy π. In the presence of such super-martingale deﬂators ,
+arbitrage is excluded from the model (cf. [33]). The investo r seeks to maximize the expected utility
+of her terminal wealth at Tby choosing admissible strategies, i.e.,
+(2.11) E[U(Wπ
+T)]→Max.
+In the remainder of this section, we will focus on the optimal investment problem for CRRA
+utilities and derive the associated HJB equation via a heuri stic argument. To this end, deﬁne the
+(reduced) value function vvia
+(2.12) sup
+πadmissibleE/bracketleftbigg1
+p(Wπ
+T)p/vextendsingle/vextendsingle/vextendsingle/vextendsingleWt=w,Xt=x/bracketrightbigg
+=1
+pwpev(T−t,x),0≤t≤T,w>0,x∈Sd
+++.
+SetLas the inﬁnitesimal generator of (2.1):
+(2.13) L:=1
+2d/summationdisplay
+i,j,k,l=1Tr/parenleftBig
+aij(akl)′/parenrightBig
+D2
+(ij),(kl)+d/summationdisplay
+i,j=1bijD(ij),LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 7
+whereD(ij)=∂xijandD2
+(ij),(kl)=∂2
+xijxkl. The standard dynamic programming argument yields
+the following HJB equation for v:
+∂tv=Lv+1
+2d/summationdisplay
+i,j,k,l=1D(ij)vTr/parenleftBig
+aij(akl)′/parenrightBig
+D(kl)v+pr
++sup
+π
+
+pπ′
+Σν+d/summationdisplay
+i,j=1σCaijρD(ij)v
++1
+2p(p−1)π′Σπ
+
+, t> 0,x∈Sd
+++,
+0 =v(0,x), x∈Sd
+++.(2.14)
+The optimizer πin the previous equation can be obtained pointwise and is giv en by
+(2.15)
+π(t,x;v) :=
+
+1
+1−pΣ−1/parenleftBig
+Σν+/summationtextd
+i,j=1σCaijρD(ij)v/parenrightBig
+(t,x), m>n
+1
+1−pσ(σ′σ)−1/parenleftBig
+σ′ν+/summationtextd
+i,j=1CaijρD(ij)v/parenrightBig
+(t,x), m≤n, t> 0,x∈Sd
+++.
+Deﬁneq:=p/(p−1) as the conjugate of pand the function Θ : Sd
+++→Sd
+++via
+(2.16) Θ( x) :=
+
+σ′Σ−1σ(x)m>n
+1m m≤n, x∈Sd
+++.
+Plugging in the formula for πin (2.15) into (2.14), a lengthy calculation yields the foll owing semi-
+linear Cauchy problem for v:
+vt(t,x) =F[v](t,x),0<t,x∈Sd
+++,
+v(0,x) = 0, x∈Sd
+++.(2.17)
+Here, the diﬀerential operator Fis deﬁned as
+(2.18) F:=1
+2d/summationdisplay
+i,j,k,l=1A(ij),(kl)D2
+(ij),(kl)+d/summationdisplay
+i,j=1¯bijD(ij)+1
+2d/summationdisplay
+i,j,k,l=1D(ij)¯A(ij),(kl)D(kl)+V,
+with
+A(ij),(kl)(x) := Tr/parenleftBig
+aij(akl)′/parenrightBig
+(x),
+¯A(ij),(kl)(x) := Tr/parenleftBig
+aij(akl)′/parenrightBig
+(x)−qρ′(aij)′C′ΘCaklρ(x),
+¯bij(x) :=bij(x)−qν′σCaijρ(x),
+V(x) :=pr(x)−1
+2qν′Σν(x), i,j,k,l = 1,...,d,x∈Sd
+++.(2.19)
+Note thatπin (2.15) and Fin (2.18) take diﬀerent forms depending on m>norm≤n(with the
+two forms coinciding at m=n), and that using the deﬁnition of Lfrom (2.13) we have
+(2.20) F=L−qd/summationdisplay
+i,j=1ν′σCaijρD(ij)+1
+2d/summationdisplay
+i,j,k,l=1D(ij)¯A(ij),(kl)D(kl)+V.
+In Section 3 well-posedness of (2.17) is proved under approp riate parameter assumptions, and
+it is shown that the solution v, with appropriate growth constraint, to (2.17) is the reduc ed value8 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODEL S
+function in (2.12). Moreover the optimal strategy for (2.12 ) is given by
+(2.21) πT
+t:=π(T−t,Xt;v),0≤t≤T,
+forπ(·,·;v) from (2.15).
+2.4.Long Horizon Convergence. As mentioned in the introduction, this article is concerned
+with the large time behavior of the optimal investment probl em. Such behavior for a CRRA
+investor is closely related to the ergodic analog of (2.17), given by
+λ=F[v](x), x∈Sd
+++. (2.22)
+A solution to (2.22) is deﬁned as a pair ( λ,v) whereλ∈Randv∈C2(Sd
+++;R) which satisfy (2.22).
+SinceF[v] only depends on derivatives of v,vin a solution is only determined up to an additive
+constant. In particular we are interested in the smallestλsuch that (2.22) admits a solution.
+In the study of long horizon optimal investment and risk sens itive control problems, when the
+state variable is in E⊆Rd, underappropriate restrictions [31, 23], theredoes exist a smallest ˆλsuch
+that (2.22) has a solution ˆ v, such that the candidate reduced long run value function, ac counting
+for the growth rate, is ˆλT+ ˆv(x). The candidate long run optimal strategy is
+(2.23) ˆ πt:=π(Xt;ˆv), t≥0,
+whereπ(·;ˆv) from (2.15) with vreplaced by ˆ vwhich does not have a time argument. Now when
+the state variable is matrix valued, Proposition 3.9 below e stablishes the existence of such ( ˆλ,ˆv).
+Comparing the ﬁnite and long horizon problems, we are intere sted in proving the following claim:
+Statement 2.7 (Long Horizon Convergence) .
+i) Deﬁneh(T,x) :=v(T,x)−ˆλT−ˆv(x), forT≥0 andx∈Sd
+++. Then
+h(T,·)→Cand∇h(T,·)→0 inC(Sd
+++),asT→ ∞.
+HereCis a constant, ∇= (D(ij))1≤i,j≤dis the gradient operator, and convergence in C(Sd
+++)
+stands for locally uniformly convergence in Sd
+++.
+ii) As functions of x∈Sd
+++the ﬁnite horizon strategies converge to the long-run count erpart, i.e.
+lim
+T→∞π(T,·;v) =π(·;ˆv) inC(Sd
+++).
+iii) LetπTand ˆπbe as in (2.21) and (2.23). Let WTandˆWbe the wealth processes employing
+πTand ˆπrespectively starting with initial capital w. Then for all x∈Sd
+++and allt≥0:
+Px−lim
+T→∞sup
+0≤u≤t/vextendsingle/vextendsingle/vextendsingle/vextendsingleWT
+u
+ˆWu−1/vextendsingle/vextendsingle/vextendsingle/vextendsingle= 0, (2.24)
+Px−lim
+T→∞/integraldisplayt
+0(πT
+u−ˆπu)′Σ(Xu)(πT
+u−ˆπu)du= 0. (2.25)
+HerePx−lim stands for convergence in probability Px.
+InStatement2.7, i)claimsthatthereducedvaluefunctionf ortheﬁnitehorizonproblemconverges
+to its inﬁnite horizon counterpart; moreover ii) indicates that the ﬁnite horizon optimal strategy
+also converges, in feedback form, to a myopic long run limit. In addition to these analytic results,
+iii) states convergence in probabilistic terms: that is, th e ratio between optimal wealth processesLONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 9
+and distance between optimal strategies, when measured in a ﬁnite time window [0 ,t], converge to
+zero in probability. Therefore when Statement 2.7 holds, a C RRA investor with long horizon can
+slightly modify her optimal strategy πTto ˆπ, at the beginning of investment period, and incur a
+minimal loss of wealth and utility. Indeed, under appropria te parameter assumptions, Statement
+2.7 is proved in [22] when the state variable is Rvalued and has constant correlation with risky
+assets. In Section 3 below, we will verify Statement 2.7 in th e matrix setting.
+2.5.Turnpike Theorems. To state turnpike results, we consider two investors: the ﬁr st one has
+a general utility function Uwhich satisﬁes conditions at the beginning of Section 2.3; t he second
+investor has a CRRA utility U(x) =xp/pfor 0/\e}atio\slash=p<11. The two investors are connected through
+the ratio of their marginal utilities U′(x)/xp−1as in the following assumption:
+Assumption 2.8. WithR(x) :=U′(x)/xp−1it follows that
+(2.26) lim
+x↑∞R(x) = 1.
+Assumption 2.8 ensures that preferences of the two investor s are similar for large wealths. The
+next assumption ensures that the market described in Sectio n 2.2 is growing over time.
+Assumption 2.9. Forr(x) as in (2.7) there exits constants 0 <r<¯rsuch that r ≤r(x)≤¯rfor
+allx∈Sd
+++.
+In order to present the turnpike results, for the investor wi th general utility U, setπ1,Tas the
+optimal strategy of (2.11) and W1,Tas the associated optimal wealth process starting from init ial
+wealthw. We are interested in proving the turnpike theorem:
+Statement 2.10 (Turnpike Theorem) .For allx∈Sd
+++and allt≥0,
+Px−lim
+T→∞sup
+u≤t/vextendsingle/vextendsingle/vextendsingle/vextendsingle/vextendsingleW1,T
+u
+ˆWu−1/vextendsingle/vextendsingle/vextendsingle/vextendsingle/vextendsingle= 0, (2.27)
+Px−lim
+T→∞/integraldisplayt
+0/parenleftbig
+π1,T
+u−ˆπu/parenrightbig′Σ(Xu)/parenleftbig
+π1,T
+u−ˆπu/parenrightbig
+du= 0, (2.28)
+where ˆπfrom (2.23) and ˆWis the wealth process starting from wfollowing ˆπ.
+The ﬁrst convergence above states that the ratio, when measu red in an ﬁnite time window, of
+the optimal wealth process for the generic investor and the l ong run wealth process for the CRRA
+investor is uniformly close to one in probability as the hori zon becomes large. The message behind
+the second convergence is that, as the horizon becomes long, the optimal investment strategy for
+the generic utility investor approaches the long-run limit strategy of the CRRA investor. Such a
+result is called an “explicit” turnpike using the terminolo gy of [22], where Statement 2.10 is proved
+in a factor model with Rvalued state variable and constant correlation. In Section 3 below, we will
+extend this result to when the state variable is matrix value d.
+1The logarithmic utility case is excluded here, since [22, Pr oposition 2.5] already shows that turnpike theorems
+hold in a general semimartingale setting including the curr ent case.10 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODE LS
+Remark 2.11.Statements 2.7 and 2.10 are not speciﬁc to models with matrix valued state variables.
+As mentioned in introduction, the main technique to conﬁrm t hese statements is the large time
+asymptotic analysis of (2.14) in [43]. In particular, a gene ral framework is introduced in [43,
+Section 2], where convergence results (cf. Theorems 2.9 and 2.11 therein) are obtained for a general
+state space E. The main message therein is, when two “Lyapunov” functions φandψexist and
+satisfy appropriate assumptions, then the desired converg ence results hold. When the state space
+is speciﬁed, assumptions on φandψare translated to explicit parameter restrictions. In part icular,
+when the state space is Rd, these parameter restrictions are given in [43, Section 3.1 ]. Therefore,
+proof of Statements 2.7 and 2.10 in this case follows from ess entially the same line of reasoning as
+in the matrix case and is, in fact, much more straightforward .
+3.Main results
+3.1.The (generalized) Wishart factor model. Before presenting results for the general matrix
+setting in Section 2.1, let us highlight the case when Xis a Wishart process as in Example 2.4. We
+specify the ﬁnancial model in Section 2.2 to the following:
+m=d, C(x) =1d, D(x) =/radicalbig
+1−ρ′ρ(x)1d,
+r(x) =r0+Tr(r1x), σ(x) =ζ(x)√x, µ(x) =ζ(x)xζ′(x)ν(x); forx∈Sd
+++,
+wherer0∈Randr1∈Md. We assume that ν∈C1,γ(Sd
+++;Rn),ζ∈C2,γ(Sd
+++;Mn×d), and
+ρ∈C2,γ(Sd
+++;Rd) are all bounded functions and supx∈Sd
+++ρ′ρ(x)<1. When these functions
+are not constant, the previous model is not aﬃne, in contrast to [8, 27, 2, 42]. For the given σ,
+Assumption 2.5 takes the form
+Assumption 3.1.
+i) Whend>n,ζζ′(x)>0 forx∈Sd
+++.
+ii) Whend<n,ζ′ζ(x)>0 forx∈Sd
+++.
+iii) Whend=n,ζ(x) =ζ′(x)>0 forx∈Sd
+++.
+The following proposition veriﬁes Statements 2.7 and 2.10 i n the current model under explicit
+parameter restrictions. The proof of Proposition 3.2 is in A ppendix C.
+Proposition 3.2. Let Assumption 3.1 hold. Assume the following parameter res trictions:
+i)LL′>(d+1)ΛΛ′>0.
+ii) Whenp<0,r1satisﬁesr1+r1≥0and there exists ǫ>0such that either
+−p(r1+r′
+1)+qζ′νν′ζ(x)≥ǫ1d, x∈Sd
+++;
+or
+(K−qΛρν′ζ)(x)+(K−qΛρν′ζ)′(x)≤ −ǫ1d, x∈Sd
+++.
+iii) When 0<p<1, there exists ǫ>0such that
+(K−qΛρν′ζ)(x)+(K−qΛρν′ζ)′(x)≤ −ǫ1d, x∈Sd
+++;
+and
+(3.1) ǫ2>8(1−q)√
+dTr/parenleftbig
+ΛΛ′/parenrightbig
+sup
+x∈Sd
+++/vextenddouble/vextenddoublep(r1+r′
+1)−qζ′νν′ζ(x)/vextenddouble/vextenddouble.LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 11
+Then, the long-horizon convergence results in Statement 2.7 hold. Additionally when r1= 0, the
+turnpike theorems in Statement 2.10 hold for all utility fun ctionsUsatisfying Assumption 2.8.
+In the previous parameter restrictions, part i) is slightly stronger than the well-posedness con-
+dition (2.6). The restriction in the p <0 case is mild. Whenr1+r′
+1>0, it follows that
+−p(r1+r′
+1)+qσ′νν′σ(x)≥ǫ1dfor someǫ>0 sinceqζ′νν′ζ≥0. Thus, part ii) holds. When r1+r′
+1
+is non-negative but may degenerate, consider a (generalize d) Wishart process Xwith dynamics
+dXt=/parenleftbig
+LL′+K(Xt)Xt+XtK(Xt)/parenrightbig′dt+/radicalBig
+XtdBtΛ′+ΛdB′
+t/radicalBig
+Xt,
+whereK(x) :=K−qΛρν′ζ(x).2Then we require Xis mean-reverting to verify part ii). When
+0< p <1, we require the force of mean-reversion to be suﬃciently st rong. In this case, (3.1) is
+necessary because the potential
+V(x) =pr0+pTr(r1x)−1
+2qν′ζ(x)xζ(x)′ν=pr0+1
+2Tr/parenleftbig
+x(p(r1+r′
+1)−qζ′νν′ζ(x))/parenrightbig
+,
+may not be uniformly bounded from above on Sd
+++.
+3.1.1.An Explicit Long Run Optimal Strategy and a Counter-Example. We now focus on the “clas-
+sical” Wishart model where ρ,νandζin the previous section are constants taking values in Rd,
+RnandMn×drespectively. Here, it is shown that if the dimension dof the Wishart process is less
+than or equal to n, the number of risky assets, then the solution ˆ vto (2.22) with minimal ˆλis an
+aﬃne function of x: i.e. up to an additive constant, ˆ v(x) = Tr( ˆMx) for a symmetric matrix ˆM
+satisfying the Riccati equation given in (3.3) below. Howev er, surprisingly, if d > nthen ˆvmay
+notbe aﬃne, hence ˆ πin (2.23) is not aﬃne either. This is due to the non-commutati ve property
+of matrix product.
+To streamline the presentation, we assume that p <0 andr1+r′
+1>0. Hence Proposition 3.2
+follows ifLL′>(d+1)ΛΛ′>0 and the constant matrix ζsatisﬁes Assumption 3.1. We consider
+candidate solutions to (2.22) given by
+(3.2) v(x) = Tr(Mx), M =M′.3
+First we present the result when d≤n:
+Proposition 3.3. Assumed≤nandρ,ν,ζare constant. Let ζsatisfy Assumption 3.1 and assume
+p<0,r1+r′
+1>0,LL′>(d+1)ΛΛ′>0. Consider the following matrix Riccati equation in M:
+(3.3) 0 = 2 MΛ(1−qρρ′)Λ′M+(K−qΛρν′ζ)′M+M(K−qΛρν′ζ)+1
+2/parenleftbig
+p(r1+r′
+1)−qζ′νν′ζ/parenrightbig
+.
+There exists a unique ˆM∈Sdsolving(3.3)such that (ˆλ,ˆv), withˆλ=Tr(LL′ˆM)+pr0andˆv(x) =
+Tr(ˆMx), solves(2.22)andˆλis the smallest λwith accompanying v.
+2This SDE admits a unique global strong solution X. This is because H0(x;b)≥2Tr/parenleftbig
+K(x)/parenrightbig
+which is uniformly
+bounded from below due to the boundedness assumption of ρ,ν, andζonSd
+++. Hence the existence follows from [37,
+Theorem 3.4].
+3We can assume M=M′without loss of generality since x∈Sd
+++implies Tr( Mx) = Tr( M′x) =
+(1/2)Tr((M+M′)x).12 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODE LS
+We next present a counter-example in the d > ncase showing that solutions ( ˆλ,ˆv) to (2.22)
+cannotbe of the aﬃne form in (3.2). However the existence of solutio ns to (2.22) is still ensured
+by Proposition 3.2.
+Example 3.4.Taken= 1,d= 2 and
+Λ =12, L=ℓ12forℓ>√
+3, K=12, C=12,
+ζ=/parenleftBig
+1 0/parenrightBig
+, ν=ν∈R, ρ=ρ/parenleftBig
+1 1/parenrightBig′
+for 0<2ρ2<1,
+r0>0, r1=r112forr1>0.(3.4)
+Consider functions vas in (3.2). Writing the generic element X∈Sd
+++and the matrix Mas
+(3.5) X=/parenleftBigg
+x y
+y z/parenrightBigg
+, x,z > 0,y2<xz, M =/parenleftBigg
+M1M2
+M2M3/parenrightBigg
+,
+we have that Σ( X) =ζXζ′=x >0 so that Assumption 3.1 holds. Furthermore, LL′−3ΛΛ′=
+(ℓ2−3)12>0 and forp<0,−p(r1+r′
+1)+qζ′νν′ζ(x)≥ −2pr112>0. Thus, the assumptions of
+Proposition 3.2 hold for p<0. A lengthy calculation shows that (cf. Lemma B.2 in Appendi x B)
+F[v] =x/parenleftbigg
+2(M2
+1+M2
+2)−2qρ2(M1+M2)2+2M1−2qρν(M1+M2)+pr1−1
+2qν2/parenrightbigg
++y/parenleftbig
+4M2(M2+M3)−4qρ2(M1+M2)(M2+M3)+4M2−2qρν(M2+M3)/parenrightbig
++z/parenleftbig
+2(M2
+2+M2
+3)+2M3+pr1/parenrightbig
++y2
+x/parenleftbig
+−2qρ2(M2+M3)2/parenrightbig
++pr0+ℓ2(M1+M3).(3.6)
+As can be seen from (B.4) in Lemma B.1 below, the problem term y2/xarises when evaluating ¯A
+from (2.19), since for d>n:
+(3.7)√
+XΘ(X)√
+X=Xζ′(ζXζ′)−1ζX=1
+xX/parenleftBigg
+1
+0/parenrightBigg/parenleftBig
+1 0/parenrightBig
+X=/parenleftBigg
+x y
+yy2
+x/parenrightBigg
+;
+whereas, for arbitrary model coeﬃcients, if d≤nthen√
+XΘ(X)√
+X=X.
+Thus, if F[v] =λfor some constant λit must be that each coeﬃcient of x,y,z,y2/xin (3.6) is
+equal to zero. By considering y2/xit follows that M2+M3= 0. Plugging this into the coeﬃcient of
+ygivesM2= 0and hence M3= 0. Thenthecoeﬃcient of zbeingzero yields0 = pr1acontradiction
+sincer1>0. Thus, the function ˆ vcannot be aﬃne.
+3.2.General State Variables. We now consider the general case when Xhas dynamics as in
+(2.1) where, in addition to the aforementioned regularity r estrictions, the model coeﬃcients satisfy
+Assumptions2.1 and 2.3. As in the previoussection, the goal is toprovide conditions, based entirely
+upon the model coeﬃcients, under which Statements 2.7 and 2. 10 hold.
+To list the coeﬃcient assumptions, let f,gbe as in (2.2), ¯b,Vas in (2.18), and recall Hδ(x;b)
+from (2.3). Assumption 3.5 below gives a number of restricti ons under which the main convergence
+results hold. Though the list below is lengthy, it can be read ily checked for particular models of
+interest.LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 13
+Assumption 3.5. There exists n0>0 such that the following hold for /ba∇dblx/ba∇dbl ≥n0:
+1)¯bhas at most linear growth.
+2) There exists α1>0 so that Tr( f(x))Tr(g(x))≤α1/ba∇dblx/ba∇dbl.
+3) There exits β1∈R,C1>0 so that Tr/parenleftbig¯b(x)′x/parenrightbig
+≤ −β1/ba∇dblx/ba∇dbl2+C1.
+4) There exists γ1,γ2∈RandC2>0 so that −γ2/ba∇dblx/ba∇dbl −C2≤V(x)≤ −γ1/ba∇dblx/ba∇dbl+C2.V(x) is
+uniformly bounded from above for /ba∇dblx/ba∇dbl ≤n0.
+5) max{γ1,β1}>0. Furthermore
+i) Ifγ1>0,β1≤0, then there exist α2>0,C3∈Rso that Tr( f(x)xg(x)x)≥α2/ba∇dblx/ba∇dbl3−C3.
+ii) Ifγ1<0,β1>0, thenβ2
+1+16κα1γ1>0, whereα1is from part 2), κ= 1 whenp<0, and
+κ= 1−qwhen 0<p<1.
+iii) Ifγ1≥0,β1>0 then no additional restrictions are necessary.
+There exists ε,c0,c1>0 such that
+A) infx∈Sd
+++Hε(x;¯b)>−∞(note : here we are using ¯binstead ofbin (2.3)).
+B) liminf detx↓0/parenleftbig
+Hε(x;¯b)+c0log(detx)/parenrightbig
+>−∞.
+C) lim detx↓0/parenleftbig
+H0(x;¯b)+c1V(x)/parenrightbig
+=∞.
+Remark 3.6.Whenp<0 and the interest rate function r(x) is bounded from below on Sd
+++(e.g.
+r(x)≥0), thenγ1≥0, hence the complicated part 5 −ii) in Assumption 3.5 is never required.
+TheparameterrestrictionsinAssumption3.5haveasimilar interpretation tothoseinProposition
+3.2. Indeed, consider a Sd
+++-valued diﬀusion Xwith dynamics:
+(3.8) d¯Xij
+t=¯bij(¯Xt)dt+Tr/parenleftbig
+aij(¯Xt)dW′
+t/parenrightbig
+, i,j = 1,···,d.
+Comparing to (2.1), the drift is adjusted to ¯b. The given regularity assumptions and parts 1) and 2)
+imply that the coeﬃcients of ¯Xare locally Lipschitz and have at most linear growth. On the o ther
+hand, due to the second inequality in (2.4), Hδis decreasing in δ. Hence part A) implies H0(x;¯b)
+is bounded from below on Sd
+++. As a result, Assumption 2.1 speciﬁed to Xfrom (3.8) holds and
+[37, Theorem 3.4] ensures that (3.8) has a unique global stro ng solution.
+In Assumption 3.5 parts 3) and 4), if β1>0 then¯Xis mean-reverting and if γ1>0, the potential
+Vdecays to −∞uniformly as /ba∇dblx/ba∇dbl → ∞. Thus, part 5) requires either mean reversion or a decaying
+potential. If both happen, then no additional parameter res trictions is necessary. However, if mean
+reversion fails we require uniform ellipticity for A(x) in the direction of x. Ifγ1<0, then a delicate
+relationship in 5 −ii) between the growth and degeneracy of A, mean reversion of ¯band the growth
+ofVis needed.
+Finally, Assumption 3.5 parts B) and C) are restrictions whe n the determinant of ¯Xis small.
+These two assumptions help to bound the value function vfrom above and below, ensuring vis
+ﬁnite close to the boundary {x∈Sd
+++: det(x) = 0}of the state space.
+From a technical point of view, Assumption 3.5 helps to const ruct an upper bound for solutions
+to (2.17). It is shown in [43, Section 3] that well-posedness of (2.17) is established among solutions
+which are bounded from above (up to an additive constant) by
+φ0(x) :=−clog(det(x))+c/ba∇dblx/ba∇dblη(/ba∇dblx/ba∇dbl)+C,14 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODE LS
+wherec,c >0 andC >0 is chosen so that φ0is non-negative on Sd
+++. Here,η∈C∞(0,∞) is a
+cutoﬀ function satisfying 0 ≤η≤1,η(x) = 1 when x>n0+2 andη(x) = 0 forx<n0+1, for the
+givenn0. Assumption 3.5 helps to verify the heuristic argument in Se ction 2.3: [43, Propositions
+2.5, 2.7, and Theorem 3.9] prove that
+Proposition 3.7. Let Assumptions 2.3, 2.5, 2.6 and 3.5 hold. Then there exists a unique solution
+v∈C1,2((0,∞)×Sd
+++)∩C([0,∞)×Sd
+++)to(2.17)such that
+sup
+(t,x)∈[0,T]×Sd
+++(v(t,x)−φ0(x))<∞,for eachT≥0.
+Combiningwiththefollowing veriﬁcation resultwhoseproo fis deferredto AppendixA,weobtain
+that the optimization problem in (2.12) is well-posed for an y horizonT >0.
+Proposition 3.8. Let Assumptions 2.3, 2.5, 2.6 and 3.5 hold. Then for vin Proposition 3.7 and
+anyT >0,(2.12)holds andπTfrom(2.21)is the optimal strategy for (2.12).
+The aforementioned parameter assumptions also ensure the w ell-posedness of (2.22): [43, Propo-
+sition 2.3 and Lemma 5.3] prove that
+Proposition 3.9. Let Assumptions 2.3, 2.5, 2.6 and 3.5 hold. There exists (ˆλ,ˆv)solving(2.22)
+such that ˆvis unique (up to an additive constant) and ˆλis the smallest λsuch that there exists a
+corresponding vsolving(2.22).
+We are now ready to state our ﬁrst main result, whose proof is p resented in Appendix C.
+Theorem 3.10. Let Assumptions 2.3, 2.5, 2.6 and 3.5 hold. Then the long horiz on results in
+Statement 2.7 hold.
+To state the portfolio turnpike result, we need to make an add itional assumption which is a mild
+strengthening of Assumption 2.6:
+Assumption 3.11. ForρandCin Assumption 2.6, ρ′ρCC′(x)<1mfor allx∈Sd
+++.
+Under theprevious assumption, it is possibleto construct n ot only super-martingale deﬂators (cf.
+(A.1) below), but also equivalent local martingale measure sQT, for allT >0; i.e.QTis equivalent
+toPonFTande−/integraltext·
+0r(Xu)duSis aQTlocal martingale on [0 ,T]. This is needed to utilize duality
+results in [34] to establish the existence of an optimal stra tegy to (2.11) for the generic utility U.
+We are now ready to state the following turnpike result:
+Theorem 3.12. Let Assumptions 2.1, 2.3, 2.5, 3.5 and 3.11 hold. Then the turn pike theorems in
+Statement 2.10 hold.
+Appendix A.Proof of Proposition 3.8
+We ﬁrst deﬁne a class of supermartingale deﬂators on [0 ,T] for anyT >0. Given a Md-valued
+processηwith/integraltextT
+0/ba∇dblηu/ba∇dbl2du<∞a.s., deﬁne Mηvia (note: for a function gofSd
+++we will write guLONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 15
+forg(Xu)):
+Mη
+t:=e−/integraltextt
+0ruduE/parenleftbigg/integraldisplay/parenleftbig
+−ν′
+uσuCudBuρu+Tr/parenleftbig
+ηudB′
+u/parenrightbig
+−ρ′
+uη′
+uC′
+uΘuCudBuρu/parenrightbig/parenrightbigg
+t
+×E/parenleftbigg
+−/integraldisplay/parenleftbig
+ν′
+uσuDu+ρ′
+uη′
+uC′
+uΘuDu/parenrightbig
+dWu/parenrightbigg
+t,
+=e−/integraltextt
+0ruduE
+/integraldisplayd/summationdisplay
+k,l=1dBkl
+u/parenleftbig
+−(C′σ′ν)kρl+ηkl−(C′ΘCηρ)kρl/parenrightbig
+u
+
+t
+×E/parenleftBigg
+−/integraldisplayd/summationdisplay
+k=1dWk
+u/parenleftbig
+(D′σ′ν)k+(D′ΘCηρ)k/parenrightbig
+u/parenrightBigg
+t, t≤T.(A.1)
+Whenη= 0,e/integraltext·
+0ruduMηdeﬁnes the minimal martingale measure , provided the stochastic exponen-
+tials are indeed martingales, see [19]. Hence we call ηarisk premia . For any admissible strategy
+π,MηWπis a positive super-martingale. Indeed, using (2.9), (2.10 ), and (A.1), the stochastic
+integration by parts formula shows that the drift of MηWπhas the following integrand (omitting
+function arguments and time subscripts):
+MηWππ′/bracketleftbig
+Σν+σC/parenleftbig
+−C′σ′νρ′+η−C′ΘCηρρ′/parenrightbig
+ρ−σD/parenleftbig
+D′σ′ν+D′ΘCηρ/parenrightbig/bracketrightbig
+=MηWππ′/bracketleftbig
+Σν−σ/parenleftbig
+CC′ρ′ρ+DD′/parenrightbig
+σ′ν+σCηρ−σ/parenleftbig
+CC′ρ′ρ+DD′/parenrightbig
+ΘCηρ/bracketrightbig
+,
+=MηWππ′[σCηρ−σΘCηρ],
+=0,
+where the second identity follows from ( CC′ρ′ρ+DD′)(x) = 1mand the third identity holds due
+toσΘ =σ. Therefore MηWπis a positive local martingale hence a super-martingale.
+BeforeprovingProposition3.8,wemustintroducesomenota tion. Foraﬁxed φ∈C(1,2),γ((0,∞)×
+Sd
+++,R), the regularity assumptions on the coeﬃcients and ellipti city assumption in (2.4) ensure
+that the generalized martingale problem on Sd
+++for
+(A.2)
+Lφ,T−t:=1
+2d/summationdisplay
+i,j,k,l=1A(ij),(kl)D(ij),(kl)+d/summationdisplay
+i,j=1
+¯bij+d/summationdisplay
+k,l=1¯A(ij),(kl)D(kl)φ(T−t,·)
+D(ij), t≤T,
+has a unique solution/parenleftbig
+Pφ,T,x/parenrightbig
+x∈Sd
+++cf. [41]. When φdoes not depend upon twe will write Lφand
+denotethesolutionas/parenleftbig
+Pφ,x/parenrightbig
+x∈Sd
+++. Themartingaleproblemfor Lφ,T−·iswell-posed ifthecoordinate
+processXdoes not hit the boundary Sd
+++,Pφ,T,x-a.s., before Tfor anyx∈Sd
+++. Similarly, if φ
+does not depend upon time, then well-posedness follows if th e coordinate process does not hit the
+boundary in ﬁnite time Pφ,x-a.s. for any x∈Sd
+++.16 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODE LS
+For the given φ, deﬁne the stochastic exponential
+Zφ,T
+t:=E
+/integraldisplay·
+0d/summationdisplay
+k,l=1dBkl
+u
+−q(C′σ′ν)kρl+d/summationdisplay
+i,j=1/parenleftBig
+aij
+kl−q(C′ΘCaijρ)kρl/parenrightBig
+D(ij)φ
+(T−u,Xu)
+
+t
+×E
+/integraldisplay·
+0m/summationdisplay
+k=1dWk
+u
+−q(D′σ′ν)k−qd/summationdisplay
+i,j=1(D′ΘCaijρ)kD(ij)φ
+(T−u,Xu)
+
+t, t≤T.(A.3)
+Forφnot depending upon time, write ZφforZφ,Tand note that Zφis deﬁned for all t≥0. Recall
+from Section 2.1 that Assumption 2.1 ensures the well-posed ness of (2.1). Hence the martingale
+problem for Lin (2.13) is well-posed. Now if the martingale problem for Lφ,T−·is also well-posed, it
+follows from ([9, Remark 2.6]) that the ﬁrst stochastic expo nential on the right hand side of (A.3)
+is aPx-martingale on [0 ,T]. On the other hand, since XandWarePx-independent, it follows
+from [33, Lemma 4.8] that Zφ,Tis also a Px-martingale on [0 ,T]. Therefore, we may deﬁne a new
+measure Pφ,T,xonFTviadPφ,T,x/dPx|FT=Zφ,T
+T. Moreover, Girsanov’s theorem yields that Xhas
+generator Lφ,T−·underPφ,T,x. Whenφdoes not have time argument and the martingale problem
+forLφis well-posed, the same argument as above yields that Zφis aPx-martingale on [0 ,∞).
+Hence a new measure Pφ,xis deﬁned via dPφ,x/dPx|FT=Zφ
+T,T≥0. Note that Pφ,xis consistently
+deﬁned on ∨T≥0FT. Lastly we recall that PφisergodicifXis recurrent under Pφand there exists
+an invariant probability measure.
+Remark A.1.Setφ= ˆvfrom Proposition 3.9, if Pˆv,xis well deﬁned, then Girsanov’s theorem
+together with (2.8) and (A.3) yield the following dynamics o fSunderPˆv,x:
+dSi
+t
+Si
+t=
+r(Xt)+1
+1−p
+Σν+d/summationdisplay
+k,l=1σCaklρD(kl)ˆv
+(T−t,Xt)
+dt+m/summationdisplay
+j=1σij(Xt)dˆZj
+t, i= 1,...,n,
+whereˆZis aPˆv,xBrownian motion. Comparing the previous dynamics with ˆ πin (2.23), it follows
+that ˆπis the optimal strategy for a logarithmic investor under Pˆv,x. Hence its associated wealth
+process ˆWhas thenum´ eraire property, i.e., W/ˆWis aPˆv,x-supermartingale for any admissible
+wealth process W.
+For the proof of Proposition 3.8, we prepare following two le mmas, whose proofs are postponed
+until after the proof of Proposition 3.8.
+Lemma A.2. Let Assumptions 2.3, 2.5 and 2.6 hold. Let Aand¯Abe as in (2.19). Set
+(A.4) κ=/braceleftBigg
+1,0<p<1
+1−q, p<0andκ=/braceleftBigg
+1−q,0<p<1
+1, p< 0.
+Then, for all x∈Sd
+++andθ∈Sd:
+(A.5) κd/summationdisplay
+i,j,k,l=1θijA(ij),(kl)(x)θkl≤d/summationdisplay
+i,j,k,l=1θijA(ij),(kl)(x)θkl≤κd/summationdisplay
+i,j,k,l=1θijA(ij),(kl)(x)θkl.LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 17
+Forη∈C(1,2),γ((0,∞)×Sd
+++,R), deﬁne function η:Sd
+++→Mdvia
+(A.6) ηkl(t,x;φ) :=
+d/summationdisplay
+i,j=1aij
+klD(ij)φ
+(t,x), k,l = 1,...,d, t≥0,x∈Sd
+++.
+DeﬁneηT
+t:=η(T−t,Xt;φ),t∈[0,T]. Whenφisvfrom Proposition 3.7 (resp. ˆ vfrom Proposition
+3.9), thenη(T−·,X·;v) (resp.η(X·;ˆv)) is expected to be the optimal risk premium for the dual
+problem of (2.12) (resp. its long run analogue). The followi ng result is the key to prove Proposition
+3.8.
+Lemma A.3. Letφ∈C(1,2),γ((0,∞)×Sd
+++,R)satisfyφt=F[φ]on(0,∞)×Sd
+++whereFis deﬁned
+in(2.18). For anyT≥0, letπt=π(T−t,Xt;φ),ηt=η(T−t,Xt;φ), fort∈[0,T], and let Wπand
+Mηbe the associated wealth process and super-martingale deﬂa tor respectively. Then, the following
+identities hold:
+plog(Wπ
+T)−plog(Wπ
+t)+φ(0,XT)−φ(T−t,Xt) = log/parenleftBig
+Zφ,T
+T/parenrightBig
+−log/parenleftBig
+Zφ,T
+t/parenrightBig
+,
+qlog/parenleftbig
+Mη
+T/parenrightbig
+−qlog(Mη
+t)+(1−q)(φ(0,XT)−φ(T−t,Xt)) = log/parenleftBig
+Zφ,T
+T/parenrightBig
+−log/parenleftBig
+Zφ,T
+t/parenrightBig
+,(A.7)
+whereZφ,Tis given in (A.3).
+Using Lemmas A.2 and A.3, the proof of Proposition 3.8 is now g iven.
+Proof of Proposition 3.8. Note that in (A.4), 0 <κ<κholds for both 0 <p<1 andp<0. Thus,
+[43, Assumption 3.4] is ensured by Assumption 2.3 and Lemma A .2. Additionally, [43, Assumptions
+3.5 and 3.6] are exactly Assumption 3.5 here. As the assumpti ons of [43, Lemma 4.1] are veriﬁed,
+the well-posedness of the martingale problem for Lv,T−·follows from [43, Lemma 4.1]. Since the
+martingale problem for Lis also well-posed, it then follows from the discussion afte r (A.3) that
+Zv,Tis aPx-martingale. Applying Lemma A.3 to v, it then follows from (A.7) and v(0,x) = 0 that
+(A.8) E/bracketleftbigg/parenleftbiggWπ
+T
+Wπ
+t/parenrightbiggp/vextendsingle/vextendsingle/vextendsingle/vextendsingleFt/bracketrightbigg
+=ev(T−t,Xt)=/parenleftbigg
+E/bracketleftbigg/parenleftbiggMη
+T
+Mη
+t/parenrightbiggq/vextendsingle/vextendsingle/vextendsingle/vextendsingleFt/bracketrightbigg/parenrightbigg1/(1−q)
+,for allt≤T.
+Therefore the optimality of πfollows from [23, Lemma 5] and (2.12) is veriﬁed in the previo us
+identity. /square
+Proof of Lemma A.2. From (2.18):
+d/summationdisplay
+i,j,k,l=1θijA(ij),(kl)(x)θkl=d/summationdisplay
+i,j,k,l=1θijTr/parenleftBig
+aij(akl)′/parenrightBig
+(x)θkl−qd/summationdisplay
+i,j,k,l=1θijρ′(aij)′C′ΘCaklρθkl.
+Deﬁne the matrix YviaYkl:=/summationtextd
+i,j=1aij
+klθij, fork,l= 1,...,d. It then follows that
+d/summationdisplay
+i,j,k,l=1θijρ′(aij)′C′ΘCaklρθkl=ρ′Y′C′ΘCYρ.
+We claim that
+(A.9) 0 ≤ρ′Y′C′ΘCYρ≤Tr/parenleftbig
+YY′/parenrightbig
+.18 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODE LS
+Admitting this fact, and plugging back in for Yyields
+(A.10) 0 ≤d/summationdisplay
+i,j,k,l=1θijρ′(aij)′C′ΘCaklρθkl≤d/summationdisplay
+i,j,k,l=1θijTr/parenleftBig
+aij(akl)′/parenrightBig
+(x)θkl.
+Ifp<0 thenq >0 and (A.5) holds for κ= 1−qandκ= 1. If 0< p <1 thenq <0 and hence
+(A.5) holds for κ= 1 andκ= 1−q.
+It remains to show (A.9). When ρ(x) = 0d, thed-dimensional vector with all components 0,
+it is clear that ρ′Y′C′ΘCYρ= 0 and (A.9) holds. When ρ(x)/\e}atio\slash= 0d, it follows from Θ ≥0 that
+ρ′Y′C′ΘCYρ≥0. On the other hand, since by construction Θ ≤1 (see (2.16)), we have
+ρ′Y′C′ΘCYρ≤ρ′Y′C′CYρ≤1
+ρ′ρρ′Y′Yρ=1
+ρ′ρTr/parenleftbig
+Yρρ′Y′/parenrightbig
+,
+where the second inequality holds by Assumption 2.6 and the f act thatC′CandCC′have the
+same eigenvalues. Note that the eigenvalues of (1 /ρ′ρ)ρρ′are 1 and 0, and that Tr( NMN′)≤
+λ+,MTr(NN′) for anyn∈MdandM∈Sd, whereλ+,Mis the maximal eigenvalue of M. Therefore,
+(1/ρ′ρ)Tr(Yρρ′Y)≤Tr(YY′) and (A.9) is conﬁrmed, ﬁnishing the proof.
+/square
+Proof of Lemma A.3. The proof is similar that of [24, Lemma B.3]. However, since h erein we work
+with a semi-linear equation and a matrix valued state variab le, the notational diﬀerences in the
+calculations are such that, for clarity, we will present a de tailed proof.
+First of all, set
+A:=plog(Wπ
+T)−plog(Wπ
+t)+φ(0,XT)−φ(T−t,Xt),
+B:=qlog/parenleftbig
+Mη
+T/parenrightbig
+−qlog(Mη
+t)+(1−q)(φ(0,XT)−φ(T−t,Xt)).(A.11)
+The identities in (A.7) are veriﬁed in the following four ste ps.
+1) Use the dynamics for Wπin (2.10), the deﬁnition of Mηin (A.1), and the deﬁnitions of π,ηin
+(2.15) and (A.6) to write
+A=/integraldisplayT
+tA1udu+d/summationdisplay
+k,l=1/integraldisplayT
+tA2kl
+udBkl
+u+m/summationdisplay
+k=1/integraldisplayT
+tA3k
+udWk
+u,
+B=/integraldisplayT
+tB1udu+d/summationdisplay
+k,l=1/integraldisplayT
+tB2kl
+udBkl
+u+m/summationdisplay
+k=1/integraldisplayT
+tB3k
+udWk
+u,(A.12)
+whereA1,B1: [0,T]×Sd
+++→R,A2,B2: [0,T]×Sd
+++→Md, andA3,B3: [0,T]×Sd
+++→Rm.
+These functions with time subscripts represent, for exampl e,A1u=A1(T−u,Xu).
+2) Add and subtract
+1
+2d/summationdisplay
+k,l=1/integraldisplayT
+t/parenleftBig
+A2kl
+u/parenrightBig2
+du+1
+2m/summationdisplay
+k=1/integraldisplayT
+t/parenleftBig
+A3k
+u/parenrightBig2
+du,
+1
+2d/summationdisplay
+k,l=1/integraldisplayT
+t/parenleftBig
+B2kl
+u/parenrightBig2
+du+1
+2m/summationdisplay
+k=1/integraldisplayT
+t/parenleftBig
+B3k
+u/parenrightBig2
+du,(A.13)LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 19
+to the right-hand-side of AandB, respectively, to obtain
+A=/integraldisplayT
+t
+A1u+1
+2d/summationdisplay
+k,l=1/parenleftBig
+A2kl
+u/parenrightBig2
++1
+2m/summationdisplay
+k=1/parenleftBig
+A3k
+u/parenrightBig2
+du+log(ZT)−log(Zt),
+B=/integraldisplayT
+t
+B1u+1
+2d/summationdisplay
+k,l=1/parenleftBig
+B2kl
+u/parenrightBig2
++1
+2m/summationdisplay
+k=1/parenleftBig
+B3k
+u/parenrightBig2
+du+log(˜ZT)−log(˜Zt),
+where
+Z=E
+/integraldisplayd/summationdisplay
+k,l=1A2kl
+udBkl
+u+/integraldisplaym/summationdisplay
+k=1A3k
+udWl
+u
+,˜Z=E
+/integraldisplayd/summationdisplay
+k,l=1B2kl
+udBkl
+u+/integraldisplaym/summationdisplay
+k=1B3k
+udWk
+u
+.(A.14)
+3) Show that for u≤Tandx∈Sd
+++:
+
+A1+1
+2d/summationdisplay
+k,l=1/parenleftBig
+A2kl/parenrightBig2
++1
+2m/summationdisplay
+k=1/parenleftBig
+A3k/parenrightBig2
+(T−u,x) = (−φt+F[φ])(T−u,x) = 0,
+
+B1+1
+2d/summationdisplay
+k,l=1/parenleftBig
+B2kl/parenrightBig2
++1
+2m/summationdisplay
+k=1/parenleftBig
+B3k/parenrightBig2
+(T−u,x) = (−φt+F[φ])(T−u,x) = 0.
+4) Show that Z=˜Z=Zφ,T.
+Combining the above four steps, (A.7) is then veriﬁed.
+Remark A.4.For notational ease the following conventions are used: 1) w e will omit/integraltextT
+tand the
+integratordufrom all integrals; 2) we will suppress the argument ( T−u,Xu) from all functions; 3)
+we will also drop all time subscripts. Thus, for example, we w ill write
+f+g′dBρ+h′dW=/integraldisplayT
+tf(T−u,Xu)du+/integraldisplayT
+tg(T−u,Xu)′dBuρ(Xu)+/integraldisplayT
+th(T−u,Xu)′dWu.
+The ﬁrst identity in (A.7) is now shown. Using ρ′ρCC′+DD′=1mand the dynamics of Wπin
+(2.10), Itˆ o’s formula gives (A.12) where
+A1=pr+pπ′Σν−1
+2pπ′Σπ−φt+Lφ,
+A2kl=p(C′σ′π)kρl+d/summationdisplay
+i,j=1aij
+klD(ij)φ,
+A3k=p(D′σ′π)k.(A.15)20 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODE LS
+While the second step follows from deﬁnitions of Zand˜Z, we move onto the third step. For
+u≤Tandx∈Sd
+++, it follows that
+A1+1
+2d/summationdisplay
+k,l=1(A2kl)2+m/summationdisplay
+k=1(A3k)2
+=pr+pπ′Σν−1
+2pπ′Σπ−φt+Lφ+1
+2p2π′σCC′σ′πρ′ρ+pπ′
+d/summationdisplay
+i,j1σCaijρD(ij)φ
+
++1
+2d/summationdisplay
+i,j,k,l=1D(ij)φTr/parenleftBig
+aij(akl)′/parenrightBig
+D(kl)φ+1
+2p2π′σDD′σ′π,
+=1
+2p(p−1)π′Σπ+pπ′Σν+pπ′
+d/summationdisplay
+ij=1σCaijρD(ij)φ
+
++pr−φt+Lφ+1
+2d/summationdisplay
+i,j,k,l=1D(ij)φTr/parenleftBig
+aij(akl)′/parenrightBig
+D(kl)φ.(A.16)
+The terms above containing πare
+1
+2p(p−1)π′Σπ+pπ′
+Σν+d/summationdisplay
+i,j=1σCaijρD(ij)φ
+.
+Using (2.15), we obtain the following expression for the qua dratic function in the previous line:
+−1
+2qν′Σν−qd/summationdisplay
+i,j=1ν′σCaijρD(ij)φ−1
+2qd/summationdisplay
+i,j,k,l=1D(ij)φ ρ′(aij)′C′ΘCaklρD(kl)φ,
+for both cases m≥norm<n. Thus, substituting the previous expression into (A.16), u sing the
+expressions for ¯A,Vin (2.19) and Fin (2.20) gives
+A1+1
+2d/summationdisplay
+k,l=1(A2kl)2+m/summationdisplay
+k=1(A3k)2
+=pr−1
+2qν′Σν−qd/summationdisplay
+i,j=1ν′σCaijρD(ij)φ−1
+2d/summationdisplay
+i,j,k,l=1D(ij)φρ′(aij)′C′ΘCaklρD(kl)φ
+−φt+Lφ+1
+2d/summationdisplay
+i,j,k,l=1D(ij)φTr/parenleftBig
+aij(akl)′/parenrightBig
+D(kl)φ
+=−φt+Lφ−qd/summationdisplay
+i,j=1ν′σCaijρD(ij)φ+1
+2d/summationdisplay
+i,j,k,l=1D(ij)φ¯A(ij),(kl)D(kl)φ+V
+=−φt+F[φ]
+=0,(A.17)LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 21
+ﬁnishing the third step. For the last step, recall the deﬁnit ion ofZφ,Tfrom (A.3). Comparing with
+the deﬁnition of Zin (A.14), it suﬃces to show that
+A2kl=−q(C′σ′ν)kρl+d/summationdisplay
+i,j=1/parenleftBig
+aij
+kl−q(C′ΘCaijρ)kρl/parenrightBig
+D(ij)φ,
+A3k=−q(D′σ′ν)k−qd/summationdisplay
+i,j=1/parenleftbig
+D′ΘCaijρ/parenrightbig
+kD(ij)φ.(A.18)
+Using (2.15) for m≥nit follows that (recall Θ = σ′Σ−1σwhenm≥n)
+p(σ′π) =−qσ′Σ−1
+Σν+d/summationdisplay
+i,j=1σCaijρD(ij)φ
+=−qσ′ν−qd/summationdisplay
+i,j=1ΘCaijρD(ij)φ.
+Similarly, using (2.15) for m<ngives (recall Θ = 1 mform<n):
+p(σ′π) =−qσ′σ(σ′σ)−1
+σ′ν+d/summationdisplay
+i,j=1CaijρD(ij)φ
+=−qσ′ν−qd/summationdisplay
+i,j=1ΘCaijρD(ij)φ.
+Therefore, in both cases m≥n,m<nwe have, using the deﬁnition of A2,A3in (A.15) that
+A2kl=p(C′σ′π)kρl+d/summationdisplay
+i,j=1aij
+klD(ij)φ=−q(C′σ′ν)kρl+d/summationdisplay
+i,j=1/parenleftBig
+aij
+kl−q(C′ΘCaijρ)kρl/parenrightBig
+D(ij)φ,
+A3k=p(D′σ′π)k=−q(D′σ′ν)k−qd/summationdisplay
+i,j=1(D′ΘCaijρ)kD(ij)φ,
+which veriﬁes (A.18).
+The proof for the second identity in (A.7) is similar. First, using the deﬁnition of Mηin (A.1),
+Itˆ o’s formula yields the second identity in (A.12), where
+B1=−qr+(1−q)(−φt+Lφ)
+−1
+2q
+d/summationdisplay
+k,l=1/parenleftbig
+−(C′σ′ν)kρl+ηkl−(C′ΘCηρ)kρl/parenrightbig2+m/summationdisplay
+k=1/parenleftbig
+(D′σ′ν)k+(D′ΘCηρ)k/parenrightbig2
+,
+B2kl=q/parenleftbig
+−(C′σ′ν)kρl+ηkl−(C′ΘCηρ)kρl/parenrightbig
++(1−q)d/summationdisplay
+i,j=1aij
+klD(ij)φ,
+B3k=−q/parenleftbig
+(D′σ′ν)k+(D′ΘCηρ)k/parenrightbig
+.(A.19)22 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODE LS
+Using (1 −q)p=−qwe obtain
+B1+1
+2d/summationdisplay
+k,l=1(B2kl)2+1
+2m/summationdisplay
+k=1(B3k)2
+=(1−q)pr+(1−q)(−φt+Lφ)
+−1
+2q(1−q)
+d/summationdisplay
+k,l=1/parenleftbig
+−(C′σ′ν)kρl+ηkl−(C′ΘCηρ)kρl/parenrightbig2+m/summationdisplay
+k=1/parenleftbig
+(D′σ′ν)k+(D′ΘCηρ)k/parenrightbig2
+
++q(1−q)d/summationdisplay
+i,j,k,l=1/parenleftbig
+−(C′σ′ν)kρl+ηkl−(C′ΘCηρ)kρl/parenrightbig
+aij
+klD(ij)φ
++1
+2(1−q)2d/summationdisplay
+k,l=1
+d/summationdisplay
+i,j=1aij
+klD(ij)φ
+2
+.(A.20)
+Now, using ρ′ρCC′+DD′=1mgives
+d/summationdisplay
+k,l=1/parenleftbig
+−(C′σ′ν)kρl+ηkl−(C′ΘCηρ)kρl/parenrightbig2+m/summationdisplay
+k=1/parenleftbig
+(D′σ′ν)k+(D′ΘCηρ)k/parenrightbig2
+=ν′σCC′σ′νρ′ρ+Tr/parenleftbig
+η′η/parenrightbig
++ρ′η′C′ΘCC′ΘCηρρ′ρ−2ν′σCηρ+2ν′σCC′ΘCηρρ′ρ−2ρ′η′C′ΘCηρ
++ν′σDD′σ′ν+ρ′η′C′ΘDD′ΘCηρ+2ν′σDD′ΘCηρ
+=ν′σ(CC′ρ′ρ+DD′)σ′ν+ρ′η′C′Θ(CC′ρ′ρ+DD′)ΘCηρ+2ν′σ(CC′ρ′ρ+DD′)ΘCηρ
++Tr/parenleftbig
+η′η/parenrightbig
+−2ν′σCηρ−2ρ′η′C′ΘCηρ
+=ν′Σν+ρ′η′C′ΘΘCηρ+2ν′σΘCηρ+Tr/parenleftbig
+η′η/parenrightbig
+−2ν′σCηρ−2ρ′η′C′ΘCηρ
+=ν′Σν+Tr/parenleftbig
+η′η/parenrightbig
+−ρ′η′C′ΘCηρ,
+where the last equality follows since the deﬁnition of Θ in (2 .16) implies both ΘΘ = Θ and σΘ =σ.
+We also have
+d/summationdisplay
+i,j,k,l=1/parenleftbig
+−(C′σ′ν)kρl+ηkl−(C′ΘCηρ)kρl/parenrightbig
+aij
+klD(ij)φ
+=d/summationdisplay
+i,j=1/parenleftbig
+−ν′σCaijρ+Tr/parenleftbig
+η′aij/parenrightbig
+−ρ′η′C′ΘCaijρ/parenrightbig
+D(ij)φ,
+d/summationdisplay
+k,l=1
+d/summationdisplay
+i,j=1aij
+klD(ij)φ
+2
+=d/summationdisplay
+i,j,k,l=1D(ij)φTr/parenleftBig
+aij(akl)′/parenrightBig
+D(kl)φ.LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 23
+Plugging all of this into (A.20) yields
+1
+1−q
+B1+1
+2d/summationdisplay
+k,l=1(B2kl)2+1
+2m/summationdisplay
+k=1(B3k)2
+
+=pr−φt+Lφ−1
+2q/parenleftbig
+ν′Σν+Tr/parenleftbig
+η′η/parenrightbig
+−ρ′η′C′ΘCηρ/parenrightbig
++qd/summationdisplay
+i,j=1/parenleftbig
+−ν′σCaijρ+Tr/parenleftbig
+η′aij/parenrightbig
+−ρ′η′CΘCaijρ/parenrightbig
+D(ij)φ
++1
+2(1−q)d/summationdisplay
+i,j,k,l=1D(ij)φTr/parenleftBig
+aij(akl)′/parenrightBig
+D(kl)φ.(A.21)
+On the right-hand-side, terms involving ηare
+−1
+2qTr/parenleftbig
+η′η/parenrightbig
++1
+2qρ′η′C′ΘCηρ+qd/summationdisplay
+i,j=1Tr/parenleftbig
+η′aij/parenrightbig
+D(ij)φ−qd/summationdisplay
+i,j=1ρ′η′C′ΘCaijρD(ij)φ. (A.22)
+Forηin (A.6), the following identities hold
+Tr/parenleftbig
+η′η/parenrightbig
+=d/summationdisplay
+i,j,k,l=1D(ij)φTr/parenleftBig
+aij(akl)′/parenrightBig
+D(kl)φ,
+ρ′η′C′ΘCηρ=d/summationdisplay
+i,j,k,l=1D(ij)φ ρ′(aij)′C′ΘCaklρD(kl)φ,
+d/summationdisplay
+i,j=1Tr/parenleftbig
+η′aij/parenrightbig
+D(ij)φ=d/summationdisplay
+i,j,k,l=1D(ij)φTr/parenleftBig
+aij(akl)′/parenrightBig
+D(kl)φ,
+d/summationdisplay
+i,j=1ρ′η′C′ΘCaijρD(ij)φ=d/summationdisplay
+i,j,k,l=1D(ij)φ ρ′(aij)′C′ΘCaklρD(kl)φ.
+Using above identities in (A.22), we obtain the following ex pression for (A.22):
+1
+2qd/summationdisplay
+i,j,k,l=1D(ij)φ/parenleftBig
+Tr/parenleftBig
+aij(akl)′/parenrightBig
+−ρ′(aij)′C′ΘCaklρ/parenrightBig
+D(kl)φ.24 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODE LS
+Inserting this into (A.21) gives
+1
+1−q
+B1+1
+2d/summationdisplay
+i,j=1(B2ij)2+1
+2m/summationdisplay
+l=1(B3l)2
+
+=pr−φt+Lφ−1
+2qν′Σν−qd/summationdisplay
+i,j=1ν′σCaijρD(ij)φ+1
+2(1−q)d/summationdisplay
+i,j,k,l=1D(ij)φTr/parenleftBig
+aij(akl)′/parenrightBig
+D(kl)φ
++1
+2qd/summationdisplay
+i,j,k,l=1D(ij)φ/parenleftBig
+Tr/parenleftBig
+aij(akl)′/parenrightBig
+−ρ′(aij)′C′ΘCaklρ/parenrightBig
+D(kl)φ
+=−φt+Lφ−qd/summationdisplay
+i,j=1ν′σCaijρD(ij)φ+1
+2d/summationdisplay
+i,j,k,l=1D(ij)φ/parenleftBig
+Tr/parenleftBig
+aij(akl)′/parenrightBig
+−qρ′(aij)′C′ΘCaklρ/parenrightBig
+D(kl)φ
++pr−1
+2qν′Σν
+=−φt+F[φ]
+=0,
+where the second to last equality uses (2.19) and (2.20). Thu s, the third step is complete.
+Turning to the last step, comparing Zφ,Tin (A.3) with ˜Zin (A.14), it suﬃces to show
+B2kl=−q(C′σ′ν)kρl+d/summationdisplay
+i,j=1/parenleftBig
+aij
+kl−q(C′ΘCaijρ)kρl/parenrightBig
+D(ij)φ,
+B3k=−q(D′σ′ν)k−qd/summationdisplay
+i,j=1/parenleftbig
+D′ΘCaijρ/parenrightbig
+kD(ij)φ.
+Using the deﬁnitions of B2andB3in (A.19) it suﬃces to show that
+qηkl−q(C′ΘCηρ)kρl+(1−q)d/summationdisplay
+i,j=1aij
+klD(ij)φ=d/summationdisplay
+i,j=1/parenleftBig
+aij
+kl−q(C′ΘCaijρ)kρl/parenrightBig
+D(ij)φ,
+(D′ΘCηρ)k=d/summationdisplay
+i,j=1(D′ΘCaijρ)kD(ij)φ.
+Sinceηkl=/summationtextd
+i,j=1aij
+klD(ij)φfrom (A.6) the last two identities readily follow, ﬁnishing the proof.
+/square
+Appendix B.Proofs for Subsection 3.1.1
+Throughout this section, the model is from Section 3.1 with ρ,νandζconstant. Furthermore,
+ζis assumed to satisfy Assumption 3.1. We begin with the follo wing lemma, which identiﬁes F[v]
+forvas in (3.2).LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 25
+Lemma B.1. Forv=Tr(Mx)as in(3.2)it follows for d≤nthat
+F[v](x) =Tr/parenleftbigg
+x/parenleftbigg
+2MΛ(1−qρρ′)Λ′M+K′M+MK−qζ′νρ′Λ′M−qMΛρν′ζ+1
+2/parenleftbig
+p(r1+r′
+1)−qζ′νν′ζ/parenrightbig/parenrightbigg/parenrightbigg
++Tr/parenleftbig
+LL′M/parenrightbig
++pr0.(B.1)
+Ford>n
+F[v](x) =Tr/parenleftbigg
+x/parenleftbigg
+2MΛΛ′M+K′M+MK−qζ′νρ′Λ′M−qMΛρν′ζ+1
+2/parenleftbig
+p(r1+r′
+1)−qζ′νν′ζ/parenrightbig/parenrightbigg/parenrightbigg
+−2qTr/parenleftBig
+xζ′/parenleftbig
+ζxζ′/parenrightbig−1ζxMΛρρ′Λ′M/parenrightBig
++Tr/parenleftbig
+LL′M/parenrightbig
++pr0.(B.2)
+Proof.Plugging in the model coeﬃcients gives
+b(x) =LL′+Kx+xK′, aij
+kl(x) =√xikΛjl+√xjkΛil,
+r(x) =r0+Tr(r1x), σ(x) =ζ√x, ν(x) =ν,
+C(x) =1d, ρ(x) =ρ.
+Therefore, using the deﬁnitions in (2.19), calculation sho ws that
+¯bij(x) =(LL′+Kx+xK′)ij−q(xζ′νρ′Λ′)ij−q(xζ′νρ′Λ′)ji,
+A(ij),(kl)(x) =xik(ΛΛ′)jl+xil(ΛΛ′)jk+xjk(ΛΛ′)il+xjl(ΛΛ′)ik,
+V(x) =pr0+1
+2pTr/parenleftbig
+x(r1+r′
+1)/parenrightbig
+−1
+2qTr/parenleftbig
+xζ′νν′ζ/parenrightbig
+,(B.3)
+and
+¯A(ij),(kl)(x) =xik(ΛΛ′)jl−q(√xΘ(x)√x)ik(Λρρ′Λ′)jl+xil(ΛΛ′)jk−q(√xΘ(x)√x)il(Λρρ′Λ′)jk
++xjk(ΛΛ′)il−q(√xΘ(x)√x)jk(Λρρ′Λ′)il+xjl(ΛΛ′)ik−q(√xΘ(x)√x)jl(Λρρ′Λ′)ik.(B.4)
+For the given v,D(ij)v=D(ji)v=MijandD(ij),(kl)v= 0. Therefore
+d/summationdisplay
+i,j,k,l=1A(ij),(kl)D(ij),(kl)v= 0,
+d/summationdisplay
+i,j=1¯bijD(ij)v= Tr/parenleftbig
+x/parenleftbig
+K′M+MK−qζ′νρ′Λ′M−qMΛρν′ζ/parenrightbig/parenrightbig
++Tr/parenleftbig
+LL′M/parenrightbig
+,(B.5)
+where we have used repeatedly that M,Xare symmetric and that Tr( ABC) = Tr(BCA) =
+Tr(CAB) for matrices A,B,C. Whend≤n, it follows that Θ( x) =1dand¯Afrom (B.4) simpliﬁes
+to
+¯A(ij),(kl)(x) =xik/parenleftbig
+ΛΛ′−qΛρρ′Λ′/parenrightbig
+jl+xil/parenleftbig
+ΛΛ′−qΛρρ′Λ′/parenrightbig
+jk
++xjk/parenleftbig
+ΛΛ′−qΛρρ′Λ′/parenrightbig
+il+xjl/parenleftbig
+ΛΛ′−qΛρρ′Λ′/parenrightbig
+ik,
+and hence using the symmetry for ΛΛ′−qΛρρ′Λ′:
+(B.6)1
+2d/summationdisplay
+i,j,k,l=1¯A(ij),(kl)D(ij)vD(kl)v= 2Tr/parenleftbig
+x/parenleftbig
+MΛ(1−qρρ′Λ′M)/parenrightbig/parenrightbig
+.26 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODE LS
+Therefore, (B.1) follows using (B.3), (B.5), (B.6) and the d eﬁnition of Fin (2.18). When d>n:
+√xΘ(x)√x=√x/parenleftbig
+σ′Σ−1σ/parenrightbig
+(x)√x=xζ′/parenleftbig
+ζxζ′/parenrightbig−1ζx,
+thus, using (B.4) it follows that
+1
+2d/summationdisplay
+i,j,k,l=1¯A(ij),(kl)D(ij)vD(kl)v= 2Tr/parenleftbig
+xMΛΛ′M/parenrightbig
+−2qTr/parenleftBig
+xζ′/parenleftbig
+ζxζ′/parenrightbig−1ζxMΛρρ′Λ′M/parenrightBig
+. (B.7)
+(B.2) now follows from (B.3), (B.5) and (B.7). /square
+Proof of Proposition 3.3. Using Lemma B.1 it follows for d≤nthat ifMsolves (3.3) then F[v] =λ
+withλ= Tr(LL′M)+pr0. Now, with D=−M, (3.3) takes the form
+D/parenleftbig
+2Λ(1−qρρ′)Λ′/parenrightbig
+D−D(K−qΛρν′ζ)−(K−qΛρν′ζ)′D−1
+2/parenleftbig
+−p(r1+r′
+1)+qζ′νν′ζ/parenrightbig
+= 0.
+Since the eigenvalues of ρρ′areρ′ρand 0, then
+2Λ(1−qρρ′)Λ′≥2(1−qρ′ρ)ΛΛ′>0.
+Furthermore, by assumption −p(r1+r′
+1)+qζ′νν′ζ >0. Thus, the Riccati equation takes the form
+(B.8) DBB′D−DA−A′D−CC′= 0,
+whereB=/radicalbig
+2Λ(1−qρρ′)Λ′,A=K−qΛρν′ζandC= (1/√
+2)/radicalbig
+−p(r1+r′
+1)+qζ′νν′ζ. By [1,
+Lemma 2.4.1], if there exists matrices F1andF2such that A−BF1<04andA′−CF2<0 then
+there is a unique solution ˆM=−ˆDto the above such that
+A−BB′ˆD=A+BB′ˆM= (K−qΛρν′ζ)+2Λ(1 −qρρ′)Λ′ˆM <0. (B.9)
+Note thatF1=B−1(1d−A) andF2=C−1(1d−A′) are two such matrices. Hence (B.8) admits
+a unique solution ˆMsuch that (B.9) holds.
+Forφ= ˆv= Tr(ˆMx), consider the generator Lˆvfrom (A.2), which takes the form
+Lˆv=1
+2d/summationdisplay
+i,j,k,l=1A(ij),(kl)D(ij),(kl)+d/summationdisplay
+i,j=1
+¯bij+d/summationdisplay
+k,l=1¯A(ij),(kl)ˆMkl
+D(ij).
+The drift (i.e. the ﬁrst order term) above takes the form
+¯bij+d/summationdisplay
+k,l=1¯A(ij),(kl)ˆMkl
+=/parenleftbigg
+LL′+/parenleftBig
+K−qΛρν′ζ+2Λ(1−qρρ′)Λ′ˆM/parenrightBig
+x+x/parenleftBig
+K−qΛρν′ζ+2Λ(1−qρρ′)Λ′ˆM/parenrightBig′/parenrightbigg
+ij
+=/parenleftBig
+LL′+(A+BB′ˆM)x+x(A+BBˆM)′/parenrightBig
+ij.
+Thus, weseethat theprocess Xwithgenerator given by Lˆvis aWishart process of theformin (2.5).
+Moreover, (B.9)impliesthat K:=A+BB′ˆM <0, henceXisergodic. Indeed, LL′>(d+1)ΛΛ′>0
+ensuresXdoes not explode to the boundary of Sd
+++. Furthermore, consider
+u(x) =−clog(detx)+c/ba∇dblx/ba∇dblη(/ba∇dblx/ba∇dbl),
+4Here and in what follows, we write M <0 for a given matrix M∈MdwithM+M′<0.LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 27
+wherec,care two constants to be determined later, and η(y) is a smooth function satisfying
+0≤η(y)≤1,η(y) = 1 fory >1 and 0 for y <1/2. Observe that lim /bardblx/bardbl→∞u(x) =∞and
+limdet(x)→0u(x) =∞, where both limits are uniform as xapproaches the boundaries. On the other
+hand, a calculation similar to that in [43, Lemmas 5.2 and 5.3 ] (with ¯κtherein equal to 0) shows
+the existence of c,c,ǫ >0 and a suﬃciently large sub-domain E⊂Sd
+++such that Lˆvu(x)≤ −ǫ
+for allx∈Sd
+++\E. Therefore [41, Theorem 6.1.3] shows that Pˆvis ergodic. Hence ˆ vis equal to
+Tr(ˆMx) andˆλ= Tr(LL′ˆM)+pr0. This fact follows from [43, Proposition 2.3] and [31, Theor ems
+2.1,2.2] which shows the equivalency between Lˆvbeing ergodic and ˆλbeing the smallest λwith
+accompanying solution vtoF[v] =λ. /square
+Lemma B.2. In the setting of Example 3.4, for vas in(3.2),F[v]takes the form in (3.6).
+Proof.F[v] is given in (B.2) of Lemma B.1. Specifying to the example coe ﬃcients and using the
+representation for X,Mfrom (3.5):
+2MΛΛ′M+K′M+MK−qζ′νρ′Λ′M−qMΛρν′ζ+1
+2/parenleftbig
+p(r1+r′
+1)−qζ′νν′ζ/parenrightbig
+= 2M2+2M−qρν/parenleftBigg
+1 1
+0 0/parenrightBigg
+M−qρνM/parenleftBigg
+1 0
+1 0/parenrightBigg
++pr1/parenleftBigg
+1 0
+0 1/parenrightBigg
+−1
+2qν2/parenleftBigg
+1 0
+0 0/parenrightBigg
+,
+= 2/parenleftBigg
+M2
+1+M2
+2M2(M1+M3)
+M2(M1+M3)M2
+2+M2
+3/parenrightBigg
++2/parenleftBigg
+M1M2
+M2M3/parenrightBigg
+−qρν/parenleftBigg
+M1+M2M2+M3
+0 0/parenrightBigg
+,
+−qρν/parenleftBigg
+M1+M20
+M2+M30/parenrightBigg
++pr1/parenleftBigg
+1 0
+0 1/parenrightBigg
+−1
+2qν2/parenleftBigg
+1 0
+0 0/parenrightBigg
+,
+=/parenleftBigg
+2(M2
+1+M2
+2)+2M1−2qρν(M1+M2)+pr1−1
+2qν22M2(M1+M3)+2M2−qρν(M2+M3)
+2M2(M1+M3)+2M2−qρν(M2+M3) 2( M2
+2+M2
+3)+2M3+pr1/parenrightBigg
+.
+Thus,
+Tr/parenleftbigg
+X/parenleftbigg
+2MΛ′Λ′M+K′M+MK−qζ′νρ′Λ′M−qMΛρν′ζ+1
+2/parenleftbig
+p(r1+r′
+1)−qζ′νν′ζ/parenrightbig/parenrightbigg/parenrightbigg
+=x/parenleftbig
+2(M2
+1+M2
+2)+2M1−2qρν(M1+M2)+pr1−(1/2)qν2/parenrightbig
++y(4M2(M1+M3)+4M2−2qρν(M2+M3))
++z/parenleftbig
+2(M2
+2+M2
+3)+2M3+pr1/parenrightbig
+.(B.10)
+Now, as for the non-constant term on the second line of (B.2), from (3.7) we have
+−2qTr/parenleftbig
+Xζ′(ζXζ′)−1ζXMΛρρ′Λ′M/parenrightbig
+=−2qρ2Tr/parenleftBigg/parenleftBigg
+x y
+y y2/x/parenrightBigg
+M/parenleftBigg
+1 1
+1 1/parenrightBigg
+M/parenrightBigg
+,
+=−2qρ2Tr/parenleftBigg/parenleftBigg
+x y
+y y2/x/parenrightBigg/parenleftBigg
+(M1+M2)2(M1+M2)(M2+M3)
+(M1+M2)(M2+M3) (M2+M3)2/parenrightBigg/parenrightBigg
+,
+=x/parenleftbig
+−2qρ2(M1+M2)2/parenrightbig
++y/parenleftbig
+−4qρ2(M1+M2)(M2+M3)/parenrightbig
++y2
+x/parenleftbig
+−2qρ2(M2+M3)2/parenrightbig
+.(B.11)28 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODE LS
+Since Tr(LL′M)+pr0=ℓ2(M1+M3)+pr0, (3.6) follows from (B.10) and (B.11). /square
+Appendix C.Remaining Proofs from Section 3
+Proof of Theorem 3.10. Under Assumptions of Theorem 3.10, Statement 2.7 part i) is p roved in
+[43, Theorems 2.11 and 3.9]. Note that ∇h=∇v−∇ˆv, part ii) follows from ∇h(T,·)→0 in part
+i) and the form of πin (2.15).
+To prove part iii), let us collect two facts from [43]. First [ 43, Proposition 2.3 i)] implies that Pˆv,x,
+as the solution to the martingale problem for Lˆv, is a well deﬁned probability measure. Therefore
+discussion after (A.3) proves that Pˆv,xis equivalent to PxonFtfor anyt≥0. Second,
+(C.1) lim
+T→∞EPˆv,x
+/integraldisplayt
+0d/summationdisplay
+i,j,k,l=1D(ij)h¯A(ij),(kl)D(kl)h(T−u,Xu)du
+= 0.
+Indeed, since the integrand in (C.1) is independent of the Br ownian motion W, (C.1) is proved in
+[43, Theorems 2.9 and 3.9].
+Let us use the previous two facts to prove (2.25) ﬁrst. To this end, using (2.15), we obtain in
+either cases m≥norm<n,
+(π(T−t,x;v)−π(x;ˆv))′Σ(x)(π(T−t,x;v)−π(x;ˆv)),
+=1
+(1−p)2
+d/summationdisplay
+i,j,k,l=1D(ij)hρ′(aij)′C′ΘCaklρD(kl)h
+(T−t,x),
+≤1
+(1−p)2
+d/summationdisplay
+i,j,k,l=1D(ij)hTr/parenleftBig
+aij(akl)′/parenrightBig
+D(kl)h
+(T−t,x),
+≤1
+κ(1−p)2
+d/summationdisplay
+i,j,k,l=1D(ij)h¯A(ij),(kl)D(kl)h
+(T−t,x),
+where the ﬁrst inequality follows from (A.10) and the second inequality follows from the ﬁrst
+inequality in (A.5). Then (C.1) yields
+lim
+T→∞EPˆv,x/bracketleftbigg/integraldisplayt
+0/parenleftbig
+πT
+u−ˆπu/parenrightbig′Σ(Xu)/parenleftbig
+πT
+u−ˆπu/parenrightbig
+du/bracketrightbigg
+= 0.
+This implies the convergence in probability Pˆv,x, hence in Px, sincePˆv,xis equivalent to PxonFt.
+To prove (2.24), apply the ﬁrst identity of (A.7), where we ch ooseφ=vfrom Proposition 3.7
+andπ=πTfrom (2.21). Taking diﬀerence of this identity when t=tandt= 0 respectively yields
+/parenleftbiggWT
+t
+w/parenrightbiggp
+=Zv,T
+tev(T,x)−v(T−t,Xt).
+On the other hand, apply the ﬁrst identity of (A.7) again, but chooseπ= ˆπfrom (2.23) and
+φ(t,x) =ˆλt+ ˆv(x), where ( ˆλ,ˆv) comes from Proposition 3.9 and the current choice of φsatisﬁes
+φt=F[φ] due to (2.22). Taking diﬀerence of this identity when t=tandt= 0 respectively, we
+obtain /parenleftBiggˆWt
+w/parenrightBiggp
+=Zˆv
+teˆλT+ˆv(x)−ˆλ(T−t)−ˆv(Xt).LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 29
+Therefore, the ratio between the previous two identities re ads
+(C.2)WT
+t
+ˆWt=/parenleftBigg
+Zv,T
+t
+Zˆv
+teh(T,x)−h(T−t,Xt)/parenrightBigg1
+p
+,
+wherehis deﬁned in Statement 2.7 part i). It has been proved in part i ) thath(T,·)→Cfor some
+constantC. Therefore eh(T,x)−h(T−t,Xt)→1 a.s. asT→ ∞. In the next paragraph, we will show
+(C.3) Pˆv,x−lim
+T→∞Zv,T
+t
+Zˆv
+t= 1.
+Plugging the previous two convergence back into (C.2), it fo llows
+Pˆv,x−lim
+T→∞WT
+t
+ˆWt= 1.
+Recall from Remark A.1 that WT/ˆWis aPˆv,x-supermartingale. Combining the previous conver-
+gence with Scheﬀ´ e’s lemma, we obtain
+lim
+T→∞EPˆv,x/bracketleftbigg/vextendsingle/vextendsingle/vextendsingle/vextendsingleWT
+t
+ˆWt−1/vextendsingle/vextendsingle/vextendsingle/vextendsingle/bracketrightbigg
+= 0,
+Applying [22, Lemma 3.9] under Pˆv,x, the previous convergence then yields
+Pˆv,x−lim
+T→∞sup
+0≤u≤t/vextendsingle/vextendsingle/vextendsingle/vextendsingleWT
+u
+ˆWu−1/vextendsingle/vextendsingle/vextendsingle/vextendsingle= 0.
+Hence (2.24) is conﬁrmed after utilizing the equivalence be tweenPˆv,xandPx.
+It remains to prove (C.3). To this end, using (A.3) for vand ˆv, and the deﬁnition of h, it follows
+thatZv,T
+t/Zˆv
+t=E(LT)t, where the Pˆv,x-local martingale LTtakes the form
+LT
+t=/integraldisplayt
+0d/summationdisplay
+k,l=1dˆBkl
+u
+d/summationdisplay
+i,j=1/parenleftBig
+aij
+kl−q(C′ΘCaijρ)kρl/parenrightBig
+D(ij)h
+(T−u,Xu)
++/integraldisplayt
+0m/summationdisplay
+k=1dˆWk
+u
+−qd/summationdisplay
+i,j=1(D′ΘCaijρ)kD(ij)h
+(T−u,Xu), t≤T,
+whereˆBandˆWarePˆv,xindependent MdandRmdimensional Brownian motions. Calculation
+usingρ′ρCC′+DD′= 1mand ΘΘ = Θ shows that
+[LT,LT]t=/integraldisplayt
+0
+d/summationdisplay
+i,j,k,l=1D(ij)h/parenleftBig
+¯A(ij),(kl)−q(1−q)ρ′(aij)′C′ΘCaklρ/parenrightBig
+D(kl)h
+(T−u,Xu)du.
+Using (A.10) at θ=Dh∈Sdit follows for p<0 (0<q<1) that
+[LT,LT]t≤/integraldisplayt
+0
+d/summationdisplay
+i,j,k,l=1D(ij)h¯A(ij),(kl)D(kl)h
+(T−u,Xu)du,30 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODE LS
+and for 0<p<1 (q<0) that
+[LT,LT]t≤/integraldisplayt
+0
+d/summationdisplay
+i,j,k,l=1D(ij)h/parenleftBig
+¯A(ij),(kl)−q(1−q)Tr/parenleftBig
+aij(akl)′/parenrightBig/parenrightBig
+D(kl)h
+(T−u,Xu)du
+≤/parenleftbigg
+1−q(1−q)
+κ/parenrightbigg/integraldisplayt
+0
+d/summationdisplay
+i,j,k,l=1D(ij)h¯A(ij),(kl)D(kl)h
+(T−u,Xu)du
+where the last inequality uses Lemma A.2. From (C.1) it thus f ollows that
+lim
+T↑∞EPˆv,x/bracketleftbig
+[LT,LT]t/bracketrightbig
+= 0,
+which implies Pˆv,x−limT→∞[LT,LT]t= 0. Combining the previous convergence and the fact that
+LTis continuous local martingales, it follows Pˆv,x−limT→∞E(LT)t= 1, hence (C.3) holds. /square
+Proof of Theorem 3.12. Given results in [43, Theorems 2.9 and 3.9], the statement fo llows from the
+same argument in [22, Theorem 2.9]. We now check that the assu mptions in [22] are satisﬁed in
+the current setting. First, for each T >0, there exists a probability measure QT,xsuch that QT,x
+is equivalent to PxonFTand such that e−/integraltext·
+0r(Xu)duSis aQT,x-local martingale on [0 ,T]. Indeed,
+letθ:Sd
+++/ma√sto→Rkbe a continuous function and set
+Zt=E/parenleftBigg
+−/integraldisplay·
+0d/summationdisplay
+k=1θk(Xu)dWk
+u/parenrightBigg
+t,
+The continuity of θand the Pindependence of XandWensure that Zis also a Px-martingale,
+cf. [33, Lemma 4.8]. Under Assumption 3.11 we may choose θ=D′(DD′)−1σ′ν, and it follows
+thatθis continuous. Since Zis aPx-martingale, for each Twe may deﬁne a probability QT,x,
+which is equivalent to PxonFT, viadQT,x/dPx|FT=ZT. Using Girsanov’s theorem, a direct
+calculation shows that e−/integraltext·
+0r(Xu)duSisQT,x-local martingale. Therefore [22, Assumption 2.3] is
+satisﬁed. On the other hand, Propositions 3.7 and 3.8 combin ed implies that the value of the
+optimization problem in (2.12) is ﬁnite for all T≥0. Therefore [22, Assumption 2.4] is satisﬁed
+as well. On the other hand, Assumptions 2.8 and 2.9 are exactl y [22, Assumptions 2.1 and 2.2]
+respectively.
+Therefore [22, Proposition 2.5] proves that, for all ε>0,
+lim
+T↑∞Pv,T,x/bracketleftBigg
+sup
+u≤t/vextendsingle/vextendsingle/vextendsingle/vextendsingle/vextendsingleW1,T
+u
+WTu−1/vextendsingle/vextendsingle/vextendsingle/vextendsingle/vextendsingle≥ε/bracketrightBigg
+= 0,
+lim
+T↑∞Pv,T,x/bracketleftbigg/integraldisplayt
+0/parenleftbig
+π1,T
+u−πT
+u/parenrightbig′Σ(Xu)/parenleftbig
+π1,T
+u−πT
+u/parenrightbig
+du≥ε/bracketrightbigg
+= 0.(C.4)
+Here since the martingale problem for Lv,T−·is well-posed, cf. [43, Lemma 4.1], PT,v,xis deﬁned
+via (A.3) with φ=v. From the deﬁnitions of Pv,T,xandPˆv,x, it follows
+dPv,T,x
+dPˆv,x/vextendsingle/vextendsingle/vextendsingle/vextendsingle
+Ft=Zv,T
+t
+Zˆv
+t.LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 31
+Note that both events on the left-hand-side of (C.4) are Ft-measurable. Therefore, (C.3) implies
+(C.4) holds when Pv,T,xis replaced by Pˆv,x, hence also by Px, sincePˆv,xandPxare equivalent on
+Ft. Lastly, the extension to Statement 2.10 is immediate after utilizing Statement 2.7 part iii). /square
+Proof of Proposition 3.2. Let us verify Assumption 3.5 is satisﬁed under the parameter restrictions
+of this proposition. Then the statements readily follow fro m Theorems 3.10 and 3.12. First, for the
+Wishart factor model described in Section 3.1:
+V(x) =pr0+1
+2Tr/parenleftbig/parenleftbig
+x(p(r1+r′
+1)−qζ′νν′ζ(x))/parenrightbig/parenrightbig
+,
+b(x) =LL′+K(x)x+xK(x)′,
+whereK=K−qΛρν′ζ(x). Sinceρ,ν,ζare bounded, it is clear that bhas at most linear growth.
+We have seen from Example 2.4 that f(x) =xandg(x) = ΛΛ′. Then Tr( f(x))Tr(g(x)) =
+Tr(x)Tr(ΛΛ′)≤√
+dTr(ΛΛ′)/ba∇dblx/ba∇dbl. In particular, α1in Assumption 3.5 part 2) can be chosen as√
+dTr(ΛΛ′). To see the previous inequality, let ( λi)i=1,...,dbe eigenvalues of x, then Cauchy-Schwarz
+inequality yields Tr( x) =/summationtextd
+i=1λi≤√
+d(/summationtextd
+i=1λ2
+i)1
+2=√
+d/ba∇dblx/ba∇dbl. To verify Assumption 3.5 part 3),
+we choose −β1to be larger than any largest eigenvalue of ( K+K′)(x) forx∈Sd
+++. SinceK(x) is
+bounded on Sd
+++, its largest eigenvalue is uniformly bounded on Sd
+++. Move on to Assumption 3.5
+part 4). When 0 <p<1,q<0, then
+−|pr0|−1
+2/vextenddouble/vextenddoublep(r1+r′
+1)−qζ′νν′ζ(x)/vextenddouble/vextenddouble/ba∇dblx/ba∇dbl ≤V(x)≤ |pr0|+1
+2/vextenddouble/vextenddoublep(r1+r′
+1)−qζ′νν′ζ(x)/vextenddouble/vextenddouble/ba∇dblx/ba∇dbl, x∈Sd
+++.
+Hence we can choose −γ1=γ2= (1/2)supx∈Sd
+++/ba∇dblp(r1+r′
+1)−qζ′νν′ζ(x)/ba∇dbl. Whenp <0,q >0,
+then
+−|pr0|−1
+2/vextenddouble/vextenddoublep(r1+r′
+1)−qζ′νν′ζ(x)/vextenddouble/vextenddouble/ba∇dblx/ba∇dbl ≤V(x)≤ |pr0|−λmin(x)/ba∇dblx/ba∇dbl,
+whereλmin(x) is the smallest eigenvalue of (1 /2)(−p(r1+r′
+1)+qζ′νν′ζ(x)). Hence we can choose
+the sameγ2as above, but infx∈Sd
+++λmin(x) asγ1. Therefore Assumption 3.5 part 4) is veriﬁed.
+Let us now check part 5). When p<0, becauser1+r′
+1≥0 andζ′νν′ζ≥0,λmin(x)≥0 for any
+x∈Sd
+++, thenγ1≥0. When (K+K′)(x)≤ −ǫ1dfor anyx∈Sd
+++,β1>0, hence part 5)-iii) is
+satisﬁed. When −p(r1+r′
+1) +q(ζ′νν′ζ(x))≥ǫ1dfor anyx∈Sd
+++,γ1>0, hence we are in part
+5)-i). In such a case, Tr( f(x)xg(x)x) = Tr/parenleftbig
+x3ΛΛ′/parenrightbig
+≥α2/ba∇dblx/ba∇dbl3for someα2>0, wherethe inequality
+holds due to ΛΛ′>0. When 0 <p<1, thenγ1=−(1/2)supx∈Sd
+++/ba∇dblp(r1+r′
+1)−qζ′νν′ζ(x)/ba∇dbl<0.
+Recallκ= 1−qfrom Lemma A.2 and α1=√
+dTr(ΛΛ′) from part 2), then (3.1) is equivalent to
+β2
+1+16κα1γ1>0 from part 5)-ii). Therefore, Assumption 3.5 part 5) is sati sﬁed as well.
+Finally, let us verify part A)-C). For A), calculation shows that
+Hǫ(x;b) = Tr/parenleftbig
+(LL′−(1+d+ǫ)ΛΛ′)x−1/parenrightbig
++2Tr/parenleftbig
+K(x)/parenrightbig
+.
+ThenLL′>(d+1)ΛΛ′ensures the existence of ǫ>0 such that LL′−(1+d+ǫ)ΛΛ′>0. Hence the
+previous inequality and the assumption that Kis bounded on Sd
+++implies that infx∈Sd
+++Hǫ(x;b)>
+−∞. As for B), part A) implies the existence of δ>0 such that Hǫ(x;b)≥δTr/parenleftbig
+x−1/parenrightbig
++2Tr/parenleftbig
+K(x)/parenrightbig
+.
+Observe that, for any c0>0,δTr/parenleftbig
+x−1/parenrightbig
++c0log(detx)→ ∞as detx↓0. Then part B) is conﬁrmed.
+Lastly, for part C), there exist δ,C >0 such that H0(x,b)+c1V(x)≥δTr/parenleftbig
+x−1/parenrightbig
+−γ2/ba∇dblx/ba∇dbl+C, which
+goes to∞as detx↓0. This concludes veriﬁcation of all parameter restriction s in Assumption
+3.5. /square32 LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODE LS
+References
+[1]H. Abou-Kandil, G. Freiling, V. Ionescu, and G. Jank ,Matrix Riccati equations , Systems & Control:
+Foundations & Applications, Birkh¨ auser Verlag, Basel, 20 03. In control and systems theory.
+[2]N. B¨auerle and Z. Li ,Optimal portfolios for ﬁnancial markets with Wishart volat ility, J. Appl. Probab., 50
+(2013), pp. 1025–1043.
+[3]K. Bichteler ,Stochastic integration with jumps , vol. 89 of Encyclopedia of Mathematics and its Application s,
+Cambridge University Press, Cambridge, 2002.
+[4]T. Bielecki, D. Hernandez-Hernandez, and S. Pliska ,Risk sensitive asset management with constrained
+trading strategies , in Recent developments in mathematical ﬁnance (Shanghai, 2001), World Sci. Publishing,
+River Edge, NJ, 2002, pp. 127–138.
+[5]T. Bielecki and S. Pliska ,Risk-sensitive dynamic asset management , Appl. Math. Optim., 39 (1999), pp. 337–
+360.
+[6] ,Risk sensitive asset management with transaction costs , Finance Stoch., 4 (2000), pp. 1–33.
+[7]M.-F. Bru ,Wishart processes , J. Theoret. Probab., 4 (1991), pp. 725–751.
+[8]A. Buraschi, P. Porchia, and F. Trojani ,Correlation risk and optimal portfolio choice , Journal of Finance,
+65 (2010), pp. 393–420.
+[9]P. Cheridito, D. Filipovi ´c, and M. Yor ,Equivalent and absolutely continuous measure changes for j ump-
+diﬀusion processes , Ann. Appl. Probab., 15 (2005), pp. 1713–1732.
+[10]J. Cox and C.-F. Huang ,A continuous-time portfolio turnpike theorem , J. Econom. Dynam. Control, 16 (1992),
+pp. 491–507.
+[11]J. Da Fonseca, M. Grasselli, and C. Tebaldi ,A multifactor volatility Heston model , Quant. Finance, 8
+(2008), pp. 591–604.
+[12] ,Option pricing when correlations are stochastic: an analyt ic framework , Rev. Deriv. Res., 10 (2010),
+pp. 151–180.
+[13]M. Davis and S. Lleo ,Risk-sensitive benchmarked asset management , Quant. Finance, 8 (2008), pp. 415–426.
+[14]J. Detemple and M. Rindisbacher ,Dynamic asset allocation: Portfolio decomposition formul a and applica-
+tions, Review of Financial Studies, 23 (2010), pp. 25–100.
+[15]P. Dybvig, L. Rogers, and K. Back ,Portfolio turnpikes , Review of Financial Studies, 12 (1999), pp. 165–195.
+[16]N. El-Karoui and S. Hamad `ene,BSDEs and risk-sensitive control, zero-sum and nonzero-su m game problems
+of stochastic functional diﬀerential equations , Stochastic Process. Appl., 107 (2003), pp. 145–169.
+[17]W. Fleming and S. Sheu ,Risk-sensitive control and an optimal investment model , Math. Finance, 10 (2000),
+pp. 197–213.
+[18] ,Risk-sensitive control and an optimal investment model. II , Ann. Appl. Probab., 12 (2002), pp. 730–767.
+[19]H. F¨ollmer and M. Schweizer ,Hedging of contingent claims under incomplete information , in Applied sto-
+chastic analysis (London, 1989), vol. 5 of Stochastics Mono gr., Gordon and Breach, New York, 1991, pp. 389–414.
+[20]C. Gourieroux ,Continuous time Wishart process for stochastic risk , Econometric Rev., 25 (2006), pp. 177–217.
+[21]C. Gourieroux, J. Jasiak, and R. Sufana ,The Wishart autoregressive process of multivariate stocha stic
+volatility , J. Econometrics, 150 (2009), pp. 167–181.
+[22]P. Guasoni, C. Kardaras, S. Robertson, and H. Xing ,Abstract, classic, and explicit turnpikes , Finance
+Stoch., 14 (2014), pp. 75–114.
+[23]P. Guasoni and S. Robertson ,Portfolios and risk premia for the long run , Ann. Appl. Probab., 22 (2012),
+pp. 239–284.
+[24]P. Guasoni and S. Robertson ,Static fund separation of long-term investments , Math. Finance, (2014).
+[25]N. Hakansson ,Convergence to isoelastic utility and policy in multiperio d portfolio choice , Journal of Financial
+Economics, 1 (1974), pp. 201–224.
+[26]L. P. Hansen and J. A. Scheinkman ,Long-term risk: an operator approach , Econometrica, 77 (2009), pp. 177–
+234.
+[27]H. Hata and J. Sekine ,Risk-sensitive asset management with Wishart-autoregres sive-type factor model , Journal
+of Mathematical Finance, 3 (2013), pp. 222–229.LONG TERM OPTIMAL INVESTMENT IN MATRIX VALUED FACTOR MODELS 33
+[28]R. A. Horn and C. R. Johnson ,Topics in matrix analysis , Cambridge University Press, Cambridge, 1991.
+[29]C.-F. Huang and T. Zariphopoulou ,Turnpike behavior of long-term investments , Finance Stoch., 3 (1999),
+pp. 15–34.
+[30]G. Huberman and S. Ross ,Portfolio turnpike theorems, risk aversion, and regularly varying utility functions ,
+Econometrica, 51 (1983), pp. 1345–1361.
+[31]N. Ichihara ,Recurrence and transience of optimal feedback processes as sociated with Bellman equations of
+ergodic type , SIAM J. Control Optim., 49 (2011), pp. 1938–1960.
+[32]X. Jin,Consumption and portfolio turnpike theorems in a continuou s-time ﬁnance model , J. Econom. Dynam.
+Control, 22 (1998), pp. 1001–1026.
+[33]I. Karatzas and C. Kardaras ,The num´ eaire portfolio in semimartingale ﬁnancial models , Finance Stoch.,
+11 (2007), pp. 447–493.
+[34]I. Karatzas and G. ˇZitkovi´c,Optimal consumption from investment and random endowment i n incomplete
+semimartingale markets , Ann. Probab., 31 (2003), pp. 1821–1858.
+[35]K. Kuroda and H. Nagai ,Risk-sensitive portfolio optimization on inﬁnite time hor izon, Stoch. Stoch. Rep.,
+73 (2002), pp. 309–331.
+[36]H. Leland ,On turnpike portfolios , in Mathematical methods in investment and ﬁnance, K. S. G. S zego, ed.,
+North-Holland, Amsterdam, 1972.
+[37]E. Mayerhofer, O. Pfaffel, and R. Stelzer ,On strong solutions of positive deﬁnite jump-diﬀusions , Sto-
+chastic Process. Appl., 121 (2011), pp. 2072–2086.
+[38]J. Mossin ,Optimal multiperiod portfolio policies , Journal of Business, 41 (1968), pp. 215–229.
+[39]H. Nagai ,Optimal strategies for risk-sensitive portfolio optimiza tion problems for general factor models , SIAM
+J. Control Optim., 41 (2003), pp. 1779–1800 (electronic).
+[40]J. Najnudel and A. Nikeghbali ,A new kind of augmentation of ﬁltrations , ESAIM Probab. Stat., 15 (2011),
+pp. 39–57.
+[41]R. Pinsky ,Positive harmonic functions and diﬀusion , vol. 45 of Cambridge Studies in Advanced Mathematics,
+Cambridge University Press, Cambridge, 1995.
+[42]A. Richter ,Explicit solutions to quadratic BSDEs and applications to u tility maximization in multivariate aﬃne
+stochastic volatility models , Stochastic Process. Appl., 124 (2014), pp. 3578–3611.
+[43]S. Robertson and H. Xing ,Large time behavior of solutions to semi-linear equations w ith quadratic growth in
+the gradient . in revision, 2014.
+[44]S. Ross,Portfolio turnpike theorems for constant policies , Journal of Financial Economics, 1 (1974), pp. 171–198.
+(Scott Robertson) Department of Mathematical Sciences, Wean Hall 6113, Carne gie Mellon Univer-
+sity, Pittsburgh, PA 15213, USA
+E-mail address :scottrob@andrew.cmu.edu
+(HaoXing) Departmentof Statistics, London School of Economics and Po litical Science, 10 Houghton
+st, London, WC2A 2AE, UK
+E-mail address :h.xing@lse.ac.uk

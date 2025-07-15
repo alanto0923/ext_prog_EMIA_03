@@ -1,0 +1,14 @@
+domain,name,code
+Momentum,Price Momentum (14 days),"((CLOSE - DELAY(CLOSE, 14)) / DELAY(CLOSE, 14))"
+Mean Reversion,Mean Reversion (20 days),"(MEAN(CLOSE, 20) - CLOSE)"
+Volatility,20-Day Volatility,"STD(CLOSE, 20)"
+Fundamental,Price-to-Earnings Ratio (P/E),(CLOSE / EPS)
+Liquidity,Trading Volume,VOLUME
+Quality,Gross Profit Margin,(GROSS_PROFIT / REVENUE)
+GROWTH,Earnings Growth Rate,"(EPS / DELAY(EPS,1) - 1)"
+Technical,Moving Average (MA),"SMA(CLOSE, 20)"
+Macro Economics,GDP Growth Rate,"GDP - DELAY(GDP, n)"
+Momentum,Relative Strength Index (RSI),(100 - (100 / (1 + RSI)))
+Volatility,Bollinger Bands,"(CLOSE - L - 2 * STD(CLOSE, 20)) OR (CLOSE - H + 2 * STD(CLOSE, 20))"
+Fundamental,Price-to-Book Ratio (P/B),(CLOSE / BOOK_VALUE)
+Liquidity,Trading Range Index,"(MAX(HIGH, CLOSE) - MIN(LOW, CLOSE)) / ((MAX(HIGH, CLOSE) + MIN(LOW, CLOSE)) / 2)"

@@ -1,0 +1,605 @@
+Hedge Fund Portfolio Construction Using PolyModel Theory
+and iTransformer
+Siqiao Zhao∗
+alysia.zhao@gmail.comZhikang Dong
+Stony Brook University
+zhikang.dong.1@stonybrook.eduZeyu Cao
+josephcao891011@gmail.com
+Raphael Douady
+University of Paris I: Pantheon-Sorbonne
+rdouady@gmail.com
+1 Introduction
+Portfolio construction remains a central topic in quantitative finance research. Beginning with the
+Capital Asset Pricing Model (CAPM) [FF04], the theory of portfolio construction has continuously
+evolved, incorporating a range of new techniques and theories over time. Data-driven methods,
+particularly in fields like computer vision [LLSH23, DKP24, RKH+21, KDP23, DYT+24, DLL24,
+ZZJF23, ZZ23, DBSE24, FPKK24, DHW+25], natural language [LZP+, YWJ+22], time series analy-
+sis [SY23, LHSY24], biomedical research [TGD+23, KDD+22, DCK+21, WGX+23] audio processing
+[GCG21, DLC+24, LDZ24], content moderation [XWFZ24], statistics [CXHT+, XZS24] and science
+[AAD+24, DP23, DP24, LGC+24, LCG+23], have shown significant advancements. In recent years,
+those techniques have notably impacted quantitative finance [PFK+23, PFKK23], from predicting
+asset prices [KSV22] to hedging risks in derivatives [BGTW19].
+However, when constructing portfolios, a key problem is that a lot of financial time series data are
+sparse, making it challenging to apply machine learning methods. Polymodel theory can solve this issue
+and demonstrate superiority in portfolio construction from various aspects. To implement the Poly-
+Model theory for constructing a hedge fund portfolio, we begin by identifying an asset pool, utilizing
+over 10,000 hedge funds for the past 29 years’ data. PolyModel theory also involves choosing a wide-
+ranging set of risk factors, which includes various financial indices, currencies and commodity prices.
+This comprehensive selection mirrors the complexities of the real-world environment. Leveraging on
+the PolyModel theory, we create quantitative measures such as Longterm Alpha, Long-term Ratio,
+and SVaR. We also use more classical measures like the Sharpe ratio or Morningstar’s MRAR. To en-
+hance the performance of the constructed portfolio, we also employ the latest deep learning techniques
+(iTransformer) to capture the upward trend, while efficiently controlling the downside, using all the
+features. The iTransformer model is specifically designed to address the challenges in high-dimensional
+time series forecasting and could largely improves our strategies. More precisely, our strategies achieve
+better Sharpe ratio and annualized return. The above process enables us to create multiple portfolio
+strategies aiming for high returns and low risks when compared to various benchmarks. The integration
+of PolyModel theory with machine learning methods facilitates a nuanced and precise understanding of
+hedge fund returns. This amalgamation enables us to overcome challenges related to hedge fund data,
+offering a more robust methodology for analyzing hedge fund performance and guiding investment
+decisions. This is a very meaningful attempt to combine fundamental statistical analysis with latest
+machine learning techniques.
+∗Corresponding author.
+1arXiv:2408.03320v3  [q-fin.PM]  13 Feb 20252 PolyModel Theory
+The origin of the idea of PolyModel theory and its mathematical foundations can be dated back to
+[CDM10] and [CDZ10]. Since PolyModel theory is more a framework rather than a single statistical
+analysis tool, after its first introduction, quite a few extensions and applications have been proposed
+and studied. For a nice overview of more applications and the history of this theory, one can check
+[Dou19] while for more concise mathematical description and its implementation, one can consult
+[BD22] and [Zha23].
+Before we step into the mathematical descriptions, let’s first discuss the core idea and intuition
+behind PolyModel theory to get a better understand of it.
+The core idea of PolyModel theory is to combine a large enough collection of valid description of
+one aspect of the same target or reality in order to get a as close as possible fully understanding of
+the target’s nature. In financial industry, the target is usually the return of some asset in which one
+wants to invest.
+If we image that the target is alive, like an animal, then PolyModel theory can be regarded as a
+methodology to observe how this animal reacts to the outside environment, especially, to each single
+environment factor. If we can capture and understand all its reactions, then we can fully characterize
+this animal. This idea is, surprisingly, similar to a Python terminology called ”Duck Typing”: ”when
+an object quacks like a duck, swims like a duck, eats like a duck or simply acts like a duck, that object is
+a duck.” Though coming from very different fields, the two ideas introduced above can both be viewed
+as an variant of Phenomenology [BD22]: ”Literally, phenomenology is the study of ’phenomena’:
+appearances of things, or things as they appear in our experience, or the ways we experience things,
+thus the meanings things have in our experience.”
+After the high-level description of PolyModel theory, we now turn back to its mathematical de-
+scriptions and how to construct features with strong description or prediction power.
+2.1 Mathematical formulation and model estimation
+2.1.1 Model description and estimation
+There are two fundamental components in PolyModel theory:
+•A pool of target assets {Yi}i∈Iwhich are the components of the portfolios one want to construct.
+•A very large pool of risk factors {Xj}j∈Jwhich form a proxy of the real-world financial environ-
+ment.
+The mathematical description of the PolyModel theory can be formulated as follows:
+For every target Yi,i∈I, there is a collection of (relatively simple) regression models:
+
+
+Yi= Φ i1(X1) +ϵ1
+Yi= Φ i2(X2) +ϵ2
+......
+Yi= Φ in(Xn) +ϵn(1)
+where
+•nis the number of the risk factors.
+•Φijis assumed to capture the major relationship between independent variable Xjand dependent
+variable Yi; in practice, it is usually a polynomial of some low degree.
+•ϵjis the noise term in the regression model with zero mean; usually it is assumed to be normal
+distribution but does not have to be.
+In practice, we usually assume that
+Φij(x) = Σ4
+k=0βk
+ijHk(x), (2)
+2where Hk(x) is the Hermitian polynomial of degree k. Based on authors’ practical experience, a
+polynomial of degree of 4 is flexible enough to capture nonlinear but essential relation between target
+and risk factor while usually suffer bearable overfitting.
+For each target and risk factor pair ( Yi, Xj), assume that we have their observations: YiandXj
+for time t= 1,2, ..., T , then we can write each regression model from (1) into matrix format
+− →Yi=HT
+j− →βij+− →ϵij, (3)
+where
+•− →Yidenotes the vector of the target time series such of return of hedge fund
+
+Yi(t1)
+Yi(t2)
+...
+Yi(tT)
+.
+•Hjdenotes the following matrix of the risk factor Xi
+
+H0(Xj(t1)), H0(Xj(t2)), H0(Xj(t3)), ..., H 0(Xj(tT))
+H1(Xj(t1)), H1(Xj(t2)), H1(Xj(t3)), ..., H 1(Xj(tT))
+. . .
+H4(Xj(t1)), H4(Xj(t2)), H4(Xj(t3)), ..., H 4(Xj(tT))
+.
+which is a 5 ×Tmatrix, where Hk(x) is the Hermitian polynomial of degree k.
+•− →ϵijdenotes the regression error vector
+
+ϵij(t1)
+ϵij(t2)
+...
+ϵij(tT)
+.
+•− →βijis the coefficient vector of length 5
+
+β0
+ij
+β1
+ij
+...
+β4
+ij
+.
+.
+Now let’s briefly discuss how to estimate the coefficients. From the model description above, we
+can see that PolyModel theory technically belongs to the realm of statistical regression models, thus,
+all the common well-established parameter estimation methods can be applied to it. From a practical
+point of view, we choose to use the Ridge regression [HTF09]
+c− →βij,λ:=arg min{− →βij∈R5}[(− →Yi−HT
+j− →βij)T(− →Yi−HT
+j− →βij) +λ||− →βij||2, (4)
+We can see that the fitted coefficients are functions of the hyper-parameter λ; to determine the
+optimal value for each simple regression, one can apply any state-of-art hyper-parameter tuning trick
+such as grid search plus cross-validation. However, we would like to point out that in PolyModel
+theory, we need to deal with a huge amount of risk factors, and our polynomial in the regression
+equation is only of degree 5, thus, our major concern for using ridge regression is to make the matrix
+HjHT
+j+λI5×5invertible, thus, we usually choose a relatively small number as the value of λfor all
+the target time series and risk factor pairs.
+32.2 Feature Importance and Construction
+One of the major goals of PolyModel theory is to find a set of risk factors which are most important to
+the target time series after fitting hundreds of simple regressions. In this section, we will first discuss
+the fundamental statistical quantities based on fitting the numerous simple regressions, then we will
+use them as building blocks to construct the features which will be used by the machine learning
+algorithms.
+2.2.1 Fundamental statistical quantities
+1.R2and adjusted R2
+As PolyModel is a collection of simple regression models, then it is quite natural to talk about
+R2for every simple regression model.
+R2, also known as coefficient of determination, is one of the most common criteria to check the
+fitting goodness of a regression model. It is defined as follows:
+R2:=ESS
+TSS= 1−RSS
+TSS, (5)
+where, if we denote HT
+jc− →βijbyc− →Yi, and denote the vector of average of entries of− →Yiwith the
+same length by Yi, then
+•ESS is the explained sum of squares which is (c− →Yi−Yi)T(c− →Yi−Yi).
+•RSS is the residual sum of squares which is (− →Yi−c− →Yi)T(− →Yi−c− →Yi).
+•TSS is the total sum of squares which is (− →Yi−Yi)T(− →Yi−Yi).
+Moreover, it is a well-known fact in regression theory that TSS = RSS + ESS.
+R2measures how much total uncertainty is explained by the fitted model based on the observed
+data, thus, the higher R2is, the better the model should be. However, this statistic does not take
+the number of model complexity into consideration, thus, a high R2may also indicates overfitting
+and usually this is the case (for instance, in a one dimension problem given general ndata points,
+there is usually a degree n+ 1 polynomial which can pass through every one of them). Various
+modifications have been introduced, one very direct generalization is the adjusted- R2: 1−RSS
+(n−p)
+TSS
+(n−1)
+where nis the number of observations and pis the number of coefficients in the regression model.
+2. Target Shuffling and P-Value Score
+To avoid fake strong relationship between target and risk factors, we apply target shuffling which
+is particular useful to identify ”cause-and-effect” relationship. By shuffling the the targets, we
+have the chance to determine if the relationship fitted by the regression model is significant
+enough by checking the probability of the R2we have seen based on the observations.
+The procedure can be summarized as follows:
+•Do random shuffles on the target time series observations many times, say N times. For
+each Xj, let we assume that there are T data points {(Yi(tk), Xj(tk)}T
+k=1. We fix the order
+ofXj(tk), and we do N times of random shuffle of Yi(tk). In this way, we try to break any
+relation from the original data set and create any possible relations between the target and
+risk factor.
+•For each newly ordered target observations {(Y′
+i(tk), Xj(tk)}T
+k=1, we can fit a simple regres-
+sion model and calculate the R2. Then we get
+R2
+shuffle ={R2
+(1), R2
+(2),···, R2
+(N)}.
+Thus, we have a population of R2based on above procedures.
+4•Evaluate the significance of the R2calculated from the original data, for instance, we can
+calculate the p-value of it based on the R2population from last step. Here we assume that
+our original R2for target asset Yiand risk factor Xjis denoted as R2
+ij. Then, we could
+define
+pij=P(R2> R2
+ij).
+•We compute −log(pij) and call it P-Value Score of target asset Yiand risk factor Xjwhich
+indicates the importance of the risk factor Xjto the target asset time series Yi.
+The higher the P-Value Score is, the more important the risk factor is. As we also need to take
+different regimes over the time into the picture, at each time stamp, we only look at the past 3
+years’ return data, and thus, we can have a dynamic P-Value Score series for each target asset
+Yiand risk factor Xjpair.
+2.2.2 Feature construction
+Now we are ready to construct the features based on the statistical quantities introduced above and
+the data themselves. We will briefly discuss how to construct them and their meanings. More detials
+can be found in [Zha23].
+1. Sharpe Ratio
+It is one of the most common statistical metric to estimate the performance of a portfolio.
+Roughly speaking, it is the ration between the portfolio return and its volatility, thus, usually is
+regarded as a measure of the ratio between reward and risk.
+Assume Rrepresents the return of the target portfolio, Rfrepresents the return of the benchmark
+financial time series, for instance, RFR. Then Sharpe Ratio is defined as
+Sharpe Ratio :=E(R−Rf)√
+var(R−Rf).
+In practice, one may also ignore the benchmark if it is very small or static. Notice that Sharpe
+Ratio is a feature that is only dependent on target portfolio itself.
+2. Morningstar Risk-adjusted Return (MRaR)
+This is another feature mostly dependent on the target portfolio itself. Given the target portfolio
+(e.g. hedge fund return Yi), denote its return at time tasrt; denote the return of benchmark at
+time tasrf, the MRaR over nmonths is defined as follows [MRac]
+MRaR = (1
+nΣn
+i=1(1 +rGt)−γ)−n
+γ−1,
+rGt= (1+rt
+1+rf)−1,
+where nis the total number of months in calculation period; rGtis the geometric excess return
+at month t; γis the risk aversion parameter, and MorningstarTMuses 2. Investors can adjust
+the value of γaccording to their own risk flavors.
+As mentioned in [MRab], the main assumption is that investors are rational and willing to give
+up a small portion of their expected return to achieve a better certainty. This is metric is similar
+to Sharpe ratio but has more advantages. More discussions on its advantages can be found in
+[MRaa].
+3. StressVaR (SVaR)
+SVaR can be regarded as a good alternative risk measure instead of VaR, in fact, it can be
+regarded as a factor model-based VaR. However, its strength resides in the modeling of nonlin-
+earities and the capability to analyze a very large number of potential risk factors[CDZ09].
+There are three major steps in the estimation of StressVaR of a hedge fund Yi.
+5(a) Most relevant risk factors selection: for each risk factor Xj, we can calculate the P-Value
+Score of it with respect to Yi. Recall Section 2.5.2, this score can indicate the explanation
+power of risk factor Xj, and the application of target shuffling improves the ability of our
+model in preventing discovering non-casual relations. Once a threshold of P-Value Score is
+set, we can claim that all the risk factors Xjwhose P-Value Score is above the threshold
+are the most relevant risk factors, and denote the whole set of them as Γ i.
+(b) Estimation of the Maximum Loss of Yi: For every risk factor Xj∈Γi, using the fitted
+polynomial for the pair ( Yi, Xj), we can predict the return of Yifor all risk factor returns
+from 1 stto 99 thquantiles of the risk factor distributions. In particular, we are interested
+in the potential loss of Yicorresponding to α% = 98% of the factor returns. Once this is
+estimated for one factor Xj, we can define SV aR i,jfor the pair ( Yi, Xj) as follows:
+SV aR i,j:=q
+ˆY2
+i,j,max +σ(Yi)2·(1−R2)·ξ2
+where
+•ˆYi,j,max is the maximum potential loss corresponding to αquantile of risk factor Xj.
+•σ(Yi)2·(1−R2) is unexplained variance under the ordinary least square setting which
+can be estimated by the following unbiased estimator if penalty terms are added to the
+regression models
+Σ(Yi−ˆYi)2
+n−p,
+where pis the degree of freedom of the regression model.
+•ξ=φ−1(α)≈2.33 where φis the cumulative distribution function (cdf) of standard
+normal distribution.
+(c) Calculation of StressVaR: The definition of StressVaR of Yiis
+SV aR i:=max j∈ΓiSV aR ij.
+4. Long-term alpha (LTA)
+For the given hedge fund and risk factor pair ( Yi, Xj), assume we already fitted the regression
+polynomial Φ ij(x). Assume that θj,qrepresents the q-quantile of the empirical distribution of
+Xjwhere q= 1% ,16%,50%,84%,99%. They are calculated using the very long history of the
+factor. The extremes 1% and 99% are computed by fitting a Pareto distribution on the tails.
+Then we define
+LTA (Yi, Xj) := Σ99%
+q=1%wqΦij(θj,q),
+subject to E(Xj) = Σ99%
+q=1%wqθj,q, where wqcorrespond to Lagrange method of interpolating an
+integral and are hyper-parameters.
+The global LTA (long-term average) is the median of the factor expectations for selected factors.
+LTA iforYiis defined as the 50 thquantile among all the LTA( Yi,Xj) values, where Xj∈Γi
+represents the selected ones.
+5. Long-term ratio (LTR)
+Once we get the LTA iandSV aR iforYi,LTR iis simply defined as
+LTR i:=LTA i
+SV aR i.
+6. Long-term stability (LTS)
+For fund Yi,LTS i:=LTA i−κ·SV aR iwhere κis a hyper-parameter whose value is set to 5%.
+Besides the features constructed above, we also include some more standard features for our financial
+time series research: asset under management (AUM) of each hedge fund, volume of each hedge fund,
+and historical returns for each hedge fund and risk factor. All of them will be used as input features
+when applying machine learning techniques below.
+63 Methodology
+Given the carefully chosen risk factor pool and the set of hedge funds to invest, we first apply PolyModel
+theory to construct the features introduced in the previous section. Notice that these features can be
+regarded as a dynamical encoding of the hedge funds’ returns and their interactions with the whole
+financial environment.
+We then will apply modern machine learning algorithms to predict the performance of each hedge
+fund. We particularly choose to apply transformer techniques in our prediction due to its string
+performance in time series related forecasting researches during recent years [WZZ+22]. Moreover, we
+will apply one of its latest variants called inverted transformer in our study.
+In the rest of this section, we first introduce inverted transformer, then discuss how to apply it to
+our hedge fund performance prediction task in details.
+3.1 Inverted Transformers (iTransformer)
+Inverted Transformers (iTransformer) [LHZ+23] is designed for multivariate time series forecasting. We
+combine this method with PolyModel theory to generate effective portfolio construction. Suppose we
+extract Nfeatures with Ttimesteps, denoted as X={x1, . . . ,xT} ∈RT×N. Based on those historical
+observations, we can forecast the future Stime steps target Y={xT+1, . . . ,xT+S} ∈RS×N. Instead
+of regarding multivariate features of the same time step as a temporal token, the iTransformer tokenize
+the whole time series input of each feature as the token, which focus on representation learning and
+correlation measurement of multivariate time series.
+h= Embedding ( X), (6)
+where h={h1, . . . ,hN} ∈RN×D. We use multi-layer perceptron (MLP) to project raw time se-
+ries data into D-dimensional latent space. [LHZ+23] shows that the temporal information has been
+processed by MLP, the position embedding in original Transformer [VSP+17] is not necessary anymore.
+We apply Layer normalization (LN) [BKH16] to token hacross time steps. Unlike the common
+Transformer frameworks, which apply LN across different features, iTransformer [LHZ+23] normalizes
+each feature token to a standard Gaussian distribution, which helps keep patterns in each feature.
+[KKT+21, LWWL22] also prove that this technique are helpful in solving non-stationary time series
+problem.
+H=hn−Mean ( hn)p
+Var (hn), n= 1, . . . , N. (7)
+The original Transformer [VSP+17] uses the attention mechanism to process temporal information
+for encoded features. The iTransformer [LHZ+23] uses this attention mechanism to model feature
+correlations since each token represents the whole time series data of a feature. Suppose there are
+linear projections WQ∈RD×dk,WK∈RD×dkandWV∈RD×dk. We can obtain query, key and
+value matrices as Q=HW Q,K=HW KandV=HW V. Then, the self-attention mechanism is
+computed as
+Attention( Q,K,V) = softmaxQKT
+√dk
+V. (8)
+Traditional transformer models typically utilize temporal tokens, analyzing all features at a single
+timestamp, which can limit their ability to effectively learn dependencies. One approach to address this
+limitation involves patching, where data points along the time axis are grouped prior to tokenization
+and embedding. However, this method may suffer from insufficiently large grouping ranges, failing to
+capture all necessary dependencies. In contrast, the iTransformer adopts an innovative approach by
+viewing the time series from an inverted perspective. This allows it to consider the same feature across
+multiple timestamps, significantly enhancing its capacity to discern dependencies and multivariate
+correlations. This distinct capability positions the iTransformer as a superior alternative in scenarios
+demanding nuanced temporal analysis.
+73.2 Hedge fund performance prediction
+We apply iTransformer algorithm directly in our research. The input features are those described in
+section 2.2.2. Regarding the output, for each target hedge fund, we predict the probability of the trend
+rather than the value of its return, in particular, we assume that there are three status of the return
+trend: up, down and unchanged (we set a prior threshold for the hedge fund return. If the absolute
+value of the return is smaller than the threshold, we define its status as unchanged. Otherwise, the
+status is up if the return is positive and the status is down if the return is negative).
+We apply the implementation of iTransformer from [LHZ+23] in a straight forward manner where
+interested readers can find all the technical details. Thus, rather than more discussions on iTransformer,
+we will discuss why we choose the trend rather than the value of hedge fund returns as our prediction
+output.
+As already pointed out in some recent research such as [SDR23], [VPC24], it is more useful to
+correctly classify the trend of returns rather than to provide a predicted result which is close to the
+real return. For instance, one has a portfolio and can predict its return as close as the realized one but
+with an opposite sign, this may cause a significant negative impact on one’s pnl and is not favored.
+Moreover, our target assets are hedge funds whose returns usually have very large magnitude, thus,
+once we can predict the return status correctly and select those hedge funds whose next returns are
+positive, we will have a good chance to achieve a reasonably high total return. On the other side,
+PolyModel theory is quite good at identifying risk factors which may cause large drops of the target
+assets. Thus, the combination of these two theories can give us a better chance to create a portfolio
+with large positive return and small drawdown.
+4 Portfolio Construction
+Based on the theories and methodologies introduced in previous sections, we are ready to construct our
+portfolio. We rebalance our portfolio monthly. Before the end of each month, we apply iTransformer
+to predict the probability on whether the return of hedge fund Yifor the next month is positive which
+is denoted as pi. We select the top 50% hedge funds with the largest probabilities of having a positive
+return for the next month. We keep those hedge funds which are currently held in our portfolio if they
+are selected, and sell the in-selected ones in our hands. The collected cash are reinvested evenly to buy
+the rest selected hedge funds which are not in current portfolio. We call this strategy simple average
+portfolio (SA). A second proposed strategy, which is denoted as weighted average portfolio (WA), is
+almost identical to SA except that the weights of the selected fund in the portfolio are based on the
+their AUM.
+5 Experiments and Results
+In this section, we will give an overview of the data used for our study, the benchmarks to compare
+with and the performance of our portfolio. The same set of data and benchmarks are also used in
+[SDR23].
+5.1 Data description
+As mentioned in the introduction of PolyModel theory, there are two datasets: risk factors and target
+hedge funds. The data sets cover a long period from April 1994 to May 2023. These data will be
+used to construct the features introduced in section 2.2.2, and the set of hedge fund will be used to
+construct the portfolio. Below let’s look at the snapshots of some of the representatives of these two
+data sets.
+Regarding risk factors, our study incorporates an extensive universe comprising hundreds of risk
+factors from different domains, including equities, coupons, bonds, industrial indexes, and more. We
+list some of the risk factors:
+8Label Code
+T-Bil INGOVS USAB
+SWAP 1Y Zone USA In
+USD DIRECT VAR-LOGINMIDR USAB
+American Century Zero Coupon
+2020 Inv (BTTTX) 1989BTTTX
+COMMODITY GOLD Zone USA
+In USD DIRECT VAR-LOGCOGOLD USAD
+EQUITY MAIN Zone NORTH AMERICA
+In USD MEAN VAR-LOGEQMAIN NAMM
+... ...
+Table 1: List of the Risk Factors for Hedge Funds Portfolio Construction
+we collect more than 10,000 hedge funds’ data, including their monthly returns and AUMs. The
+selected hedge funds encompass a diverse range of strategies and characteristics. In terms of invest-
+ment strategy, we have included fixed income, event driven, multi-strategy, long-short equities, macro,
+and various others. Geographically, the hedge funds under consideration span global, Europe, north
+America, Asia, and other regions. Here are some of the representatives:
+Fund Name
+400 Capital Credit Opportunities Fund LP
+Advent Global Partners Fund
+Attunga Power & Enviro Fund
+Barington Companies Equity Partners LP
+BlackRock Aletsch Fund Ltd
+Campbell Managed Futures Program
+...
+Table 2: List of Hedge Funds
+5.2 Benchmark description
+We select two fund of fund portfolios as the benchmarks, they are listed in Hedge Fund Research
+(HFR) [hfr], and let’s quote their descriptions here directly:
+•HFRI Fund of Funds Composite Index (HFRIFOF )
+“Fund of Funds invest with multiple managers through funds or managed accounts. The strategy
+designs a diversified portfolio of managers with the objective of significantly lowering the risk
+(volatility) of investing with an individual manager. The Fund of Funds manager has discretion
+in choosing which strategies to invest in for the portfolio. A manager may allocate funds to
+numerous managers within a single strategy, or with numerous managers in multiple strategies.
+The minimum investment in a Fund of Funds may be lower than an investment in an individual
+hedge fund or managed account. The investor has the advantage of diversification among man-
+agers and styles with significantly less capital than investing with separate managers. PLEASE
+NOTE: The HFRI Fund of Funds Index is not included in the HFRI Fund Weighted Composite
+Index.”
+•HFRI Fund Weighted Composite Index (HFRIFWI )
+“The HFRI Fund Weighted Composite Index is a global, equal-weighted index of single-manager
+funds that report to HFR Database. Constituent funds report monthly net of all fees performance
+in US Dollar and have a minimum of $50 Million under management or $10 Million under
+management and a twelve (12) month track record of active performance. The HFRI Fund
+Weighted Composite Index does not include Funds of Hedge Funds.”
+95.3 Performance of the constructed portfolio
+We follow the strategy discussed in section 4 to construct our portfolios. To calculate the features
+based on PolyModel theory, we use the past 36 months data to compute features such as SVaR and
+LTS for the next month’s prediction purpose. We compare the performance of our strategies against
+the two benchmarks from section 5.2, assuming that we start with 1 dollar at 4/30/1994; the four
+portfolios are SA and WA, which are based on the selection method discussed in Section 4, and the
+two benchmarks HFRIFOF and HFRIFWI:
+Figure 1: This figure plots the cumulative returns of the 4 strategies.
+We can see that SA has the best performance regarding the cumulative return; WA is more stable
+and suffers much less drawdown than SA. Both strategies outperform the benchmarks significantly. It
+supports the power of the combination of PolyModel feature construction and deep learning techniques.
+6 Conclusion
+In this work, we considered the problem of portfolio construction when the available data is sparse.
+Especially, we considered to construct a portfolio of hedge funds.
+To resolve this issue, we proposed the combination of PolyModel theory and iTransformer for hedge
+funds selection; the proposed strategies achieved much higher returns than the standard fund of fund
+benchmarks. This research also shows the power of combining domain knowledge and modern deep
+learning techniques.
+References
+[AAD+24] Josh Abramson, Jonas Adler, Jack Dunger, Richard Evans, Tim Green, Alexander Pritzel,
+Olaf Ronneberger, Lindsay Willmore, Andrew J Ballard, Joshua Bambrick, et al. Accurate
+structure prediction of biomolecular interactions with alphafold 3. Nature , pages 1–3, 2024.
+[BD22] Thomas Barrau and Raphael Douady. Artificial Intelligence for Financial Markets: The
+Polymodel Approach . Springer Nature, 2022.
+[BGTW19] Hans Buehler, Lukas Gonon, Josef Teichmann, and Ben Wood. Deep hedging. Quantitative
+Finance , 19(8):1271–1291, 2019.
+10[BKH16] Jimmy Lei Ba, Jamie Ryan Kiros, and Geoffrey E Hinton. Layer normalization. arXiv
+preprint arXiv:1607.06450 , 2016.
+[CDM10] Alexander Cherny, Raphael Douady, and Stanislav Molchanov. On measuring nonlinear
+risk with scarce observations. Finance and Stochastics , 14:375–395, 2010.
+[CDZ09] Cyril Coste, Raphael Douady, and Ilija I. Zovko. The stressvar: A new risk concept for
+superior fund allocation. arXiv preprint arXiv:0911.4030 , 2009.
+[CDZ10] Cyril Coste, Raphael Douady, and Ilija I Zovko. The stressvar: A new risk concept for
+extreme risk and fund allocation. The Journal of Alternative Investments , 13(3):10–23,
+2010.
+[CXHT+] Yifan Chen, Tianning Xu, Dilek Hakkani-Tur, Di Jin, Yun Yang, and Ruoqing Zhu. Cal-
+ibrate and debias layer-wise sampling for graph convolutional networks. Transactions on
+Machine Learning Research .
+[DBSE24] Zhikang Dong, Apoorva Beedu, Jason Sheinkopf, and Irfan Essa. Mamba fusion: Learning
+actions through questioning. arXiv preprint arXiv:2409.11513 , 2024.
+[DCK+21] Guimin Dong, Lihua Cai, Shashwat Kumar, Debajyoti Datta, Laura E Barnes, and Mehdi
+Boukhechba. Detection and analysis of interrupted behaviors by public policy interventions
+during covid-19. In 2021 IEEE/ACM Conference on Connected Health: Applications,
+Systems and Engineering Technologies (CHASE) , pages 46–57. IEEE, 2021.
+[DHW+25] Zhikang Dong, Weituo Hao, Ju-Chiang Wang, Peng Zhang, and Pawel Polak. Ev-
+ery image listens, every image dances: Music-driven image animation. arXiv preprint
+arXiv:2501.18801 , 2025.
+[DKP24] Zhikang Dong, Juni Kim, and Pawe l Polak. Mapping the invisible: Face-gps for facial
+muscle dynamics in videos. In 2024 IEEE First International Conference on Artificial
+Intelligence for Medicine, Health and Care (AIMHC) , pages 209–213. IEEE, 2024.
+[DLC+24] Zhikang Dong, Xiulong Liu, Bin Chen, Pawel Polak, and Peng Zhang. Musechat: A
+conversational music recommendation system for videos. In Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition , pages 12775–12785, 2024.
+[DLL24] Han-Cheng Dan, Bingjie Lu, and Mengyu Li. Evaluation of asphalt pavement texture
+using multiview stereo reconstruction based on deep learning. Construction and Building
+Materials , 412:134837, 2024.
+[Dou19] Raphael Douady. Managing the downside of active and passive strategies: Convexity and
+fragilities. Journal of portfolio management , 46(1):25–37, 2019.
+[DP23] Zhikang Dong and Pawel Polak. Cp-pinns: Changepoints detection in pdes using physics
+informed neural networks with total-variation penalty. In Machine Learning and the Phys-
+ical Sciences Workshop, NeurIPS 2023 , 2023.
+[DP24] Zhikang Dong and Pawe l Polak. Cp-pinns: Data-driven changepoints detection in pdes
+using online optimized physics-informed neural networks. In 2024 Conference on AI,
+Science, Engineering, and Technology (AIxSET) , pages 90–97. IEEE, 2024.
+[DYT+24] Han-Cheng Dan, Peng Yan, Jiawei Tan, Yinchao Zhou, and Bingjie Lu. Multiple distresses
+detection for asphalt pavement using improved you only look once algorithm based on con-
+volutional neural network. International Journal of Pavement Engineering , 25(1):2308169,
+2024.
+[FF04] Eugene F Fama and Kenneth R French. The capital asset pricing model: Theory and
+evidence. Journal of economic perspectives , 18(3):25–46, 2004.
+[FPKK24] Hao Fu, Naman Patel, Prashanth Krishnamurthy, and Farshad Khorrami. Clipscope: En-
+hancing zero-shot ood detection with bayesian scoring. arXiv preprint arXiv:2405.14737 ,
+2024.
+11[GCG21] Yuan Gong, Yu-An Chung, and James Glass. Ast: Audio spectrogram transformer. arXiv
+preprint arXiv:2104.01778 , 2021.
+[hfr] Hedge fund research, https://www.hfr.com/hfri-indices-index-descriptions.
+[HTF09] T. Hastie, R. Tibshirani, and J.H. Friedman. The Elements of Statistical Learning: Data
+Mining, Inference, and Prediction . Springer series in statistics. Springer, 2009.
+[KDD+22] Shashwat Kumar, Debajyoti Datta, Guimin Dong, Lihua Cai, Mehdi Boukhechba, and
+Laura Barnes. Leveraging mobile sensing and bayesian change point analysis to monitor
+community-scale behavioral interventions: A case study on covid-19. ACM Transactions
+on Computing for Healthcare , 3(4):1–13, 2022.
+[KDP23] Juni Kim, Zhikang Dong, and Pawel Polak. Face-gps: A comprehensive technique for
+quantifying facial muscle dynamics in videos. In Medical Imaging Meets NeurIPS: An
+official NeurIPS Workshop , 2023.
+[KKT+21] Taesung Kim, Jinhee Kim, Yunwon Tae, Cheonbok Park, Jang-Ho Choi, and Jaegul Choo.
+Reversible instance normalization for accurate time-series forecasting against distribution
+shift. In International Conference on Learning Representations , 2021.
+[KSV22] Deepak Kumar, Pradeepta Kumar Sarangi, and Rajit Verma. A systematic review of stock
+market prediction using machine learning and statistical techniques. Materials Today:
+Proceedings , 49:3187–3191, 2022.
+[LCG+23] Fudong Lin, Summer Crawford, Kaleb Guillot, Yihe Zhang, Yan Chen, Xu Yuan, et al.
+Mmst-vit: Climate change-aware crop yield prediction via multi-modal spatial-temporal
+vision transformer. In IEEE/CVF International Conference on Computer Vision (ICCV) ,
+pages 5751–5761, 2023.
+[LDZ24] Xiulong Liu, Zhikang Dong, and Peng Zhang. Tackling data bias in music-avqa: Crafting
+a balanced dataset for unbiased question-answering. In Proceedings of the IEEE/CVF
+Winter Conference on Applications of Computer Vision , pages 4478–4487, 2024.
+[LGC+24] Fudong Lin, Kaleb Guillot, Summer Crawford, Yihe Zhang, Xu Yuan, and Nian-Feng
+Tzeng. An open and large-scale dataset for multi-modal climate change-aware crop yield
+predictions. In Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery
+and Data Mining (KDD) , pages 5375–5386, 2024.
+[LHSY24] Jiecheng Lu, Xu Han, Yan Sun, and Shihao Yang. Cats: Enhancing multivariate time series
+forecasting by constructing auxiliary time series as exogenous variables. arXiv preprint
+arXiv:2403.01673 , 2024.
+[LHZ+23] Yong Liu, Tengge Hu, Haoran Zhang, Haixu Wu, Shiyu Wang, Lintao Ma, and Mingsheng
+Long. itransformer: Inverted transformers are effective for time series forecasting. arXiv
+preprint arXiv:2310.06625 , 2023.
+[LLSH23] Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. Blip-2: Bootstrapping language-
+image pre-training with frozen image encoders and large language models. In International
+conference on machine learning , pages 19730–19742. PMLR, 2023.
+[LWWL22] Yong Liu, Haixu Wu, Jianmin Wang, and Mingsheng Long. Non-stationary transformers:
+Exploring the stationarity in time series forecasting. Advances in Neural Information
+Processing Systems , 35:9881–9893, 2022.
+[LZP+] Weimin Lyu, Songzhu Zheng, Lu Pang, Haibin Ling, and Chao Chen. Attention-enhancing
+backdoor attacks against bert-based models. In The 2023 Conference on Empirical Methods
+in Natural Language Processing .
+[MRaa] The morningstar rating for funds.
+[MRab] Morningstar risk-adjusted return.
+12[MRac] Mrar illustrated.
+[PFK+23] Andrew Papanicolaou, Hao Fu, Prasanth Krishnamurthy, Brian Healy, and Farshad Khor-
+rami. An optimal control strategy for execution of large stock orders using long short-term
+memory networks. Journal of Computational Finance , 26(4), 2023.
+[PFKK23] Andrew Papanicolaou, Hao Fu, Prashanth Krishnamurthy, and Farshad Khorrami. A
+deep neural network algorithm for linear-quadratic portfolio optimization with mgarch
+and small transaction costs. IEEE Access , 11:16774–16792, 2023.
+[RKH+21] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini
+Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, et al. Learning
+transferable visual models from natural language supervision. In International conference
+on machine learning , pages 8748–8763. PMLR, 2021.
+[SDR23] Zhao Siqiao, Wang Dan, and Douady Raphael. Using machine learning technique to
+enhance the portfolio construction based on polymodel theory. Research in Options 2023 ,
+2023.
+[SY23] Yan Sun and Shihao Yang. Manifold-constrained gaussian process inference for time-
+varying parameters in dynamic systems. Statistics and Computing , 33(6):142, 2023.
+[TGD+23] Mingyu Tang, Jiechao Gao, Guimin Dong, Carl Yang, Bradford Campbell, Brendan Bow-
+man, Jamie Marie Zoellner, Emaad Abdel-Rahman, and Mehdi Boukhechba. Srda: Mobile
+sensing based fluid overload detection for end stage kidney disease patients using sensor re-
+lation dual autoencoder. In Conference on Health, Inference, and Learning , pages 133–146.
+PMLR, 2023.
+[VPC24] Milena Vuleti´ c, Felix Prenzel, and Mihai Cucuringu. Fin-gan: Forecasting and classifying
+financial time series via generative adversarial networks. Quantitative Finance , pages 1–25,
+2024.
+[VSP+17] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N
+Gomez,  Lukasz Kaiser, and Illia Polosukhin. Attention is all you need. Advances in neural
+information processing systems , 30, 2017.
+[WGX+23] Yuanzhou Wei, Meiyan Gao, Jun Xiao, Chixu Liu, Yuanhao Tian, and Ya He. Research
+and implementation of cancer gene data classification based on deep learning. Journal of
+Software Engineering and Applications , 16(6):155–169, 2023.
+[WZZ+22] Qingsong Wen, Tian Zhou, Chaoli Zhang, Weiqi Chen, Ziqing Ma, Junchi Yan, and Liang
+Sun. Transformers in time series: A survey. arXiv preprint arXiv:2202.07125 , 2022.
+[XWFZ24] Wangjiaxuan Xin, Kanlun Wang, Zhe Fu, and Lina Zhou. Let community rules be reflected
+in online content moderation. arXiv preprint arXiv:2408.12035 , 2024.
+[XZS24] Tianning Xu, Ruoqing Zhu, and Xiaofeng Shao. On variance estimation of random forests
+with infinite-order u-statistics. Electronic Journal of Statistics , 18(1):2135–2207, 2024.
+[YWJ+22] Ruichao Yang, Xiting Wang, Yiqiao Jin, Chaozhuo Li, Jianxun Lian, and Xing Xie. Re-
+inforcement subgraph reasoning for fake news detection. In Proceedings of the 28th ACM
+SIGKDD Conference on Knowledge Discovery and Data Mining , pages 2253–2262, 2022.
+[Zha23] Siqiao Zhao. PolyModel: Portfolio Construction and Financial Network Analysis . PhD
+thesis, Stony brook University, 2023.
+[ZZ23] Dan Zhang and Fangfang Zhou. Self-supervised image denoising for real-world images with
+context-aware transformer. IEEE Access , 11:14340–14349, 2023.
+[ZZJF23] Dan Zhang, Fangfang Zhou, Yuwen Jiang, and Zhengming Fu. Mm-bsn: Self-supervised
+image denoising for real-world with multi-mask based on blind-spot network. In Proceedings
+of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 4189–
+4198, 2023.
+13

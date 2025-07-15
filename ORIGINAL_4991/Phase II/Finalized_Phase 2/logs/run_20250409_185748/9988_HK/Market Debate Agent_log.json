@@ -1,0 +1,2052 @@
+[
+    {
+        "timestamp": "2025-04-09T18:57:48.482840",
+        "action": "Starting market debate for 0001.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T18:58:37.279055",
+        "action": "Generating alpha factor analysis for 0001.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T18:58:37.279078",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0001.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nCK Hutchison Holdings Limited (0001.HK) is a conglomerate with a diverse portfolio of businesses, including ports and related services, retail, infrast..."
+    },
+    {
+        "timestamp": "2025-04-09T18:58:43.659595",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"This factor is relevant as it can help identify potential trend reversals, which is crucial for a diversified conglomerate like CK Hutchison Holdings.\"\n    },\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.5\",\n        \"reasoning\": \"The Stochastic Oscillator can help identify overbought and oversold conditions, ..."
+    },
+    {
+        "timestamp": "2025-04-09T18:58:43.660604",
+        "action": "Market debate finished for 0001.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T18:58:44.201265",
+        "action": "Starting market debate for 0002.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T18:59:33.374674",
+        "action": "Generating alpha factor analysis for 0002.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T18:59:33.374694",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0002.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** This appears to be a financial dataset for CLP Holdings (0002.HK), a Hong Kong-based utility company that generates, retails, transmits, and distributes electricity in vario..."
+    },
+    {
+        "timestamp": "2025-04-09T18:59:38.239446",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The company's trading price has been forming a consolidatory range, and the moving average crossover indicates potential buy/sell signals.\"\n    },\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The stochastic oscillator can provide insights into overbought/oversold conditions, which ma..."
+    },
+    {
+        "timestamp": "2025-04-09T18:59:38.240103",
+        "action": "Market debate finished for 0002.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T18:59:38.780877",
+        "action": "Starting market debate for 0003.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:00:27.293385",
+        "action": "Generating alpha factor analysis for 0003.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:00:27.293470",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0003.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** I can help you with a concise fundamental analysis of 0003.HK (The Hong Kong and China Gas Company Limited).\n\n**Company Overview**\n\n* Industry: Utilities - Regulated Gas\n* S..."
+    },
+    {
+        "timestamp": "2025-04-09T19:00:33.562348",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.8\",\n    \"reasoning\": \"The company's recent price action indicates a potential crossover from the 50-day moving average to the 10-day, which could signal a trend reversal.\"\n  },\n  {\n    \"alpha_name\": \"Average True Range (ATR, 14-day)\",\n    \"confidence_score\": \"0.7\",\n    \"reasoning\": \"The ATR is rising, indicating increasing volatility in the stock price, which could lead to increased trading acti..."
+    },
+    {
+        "timestamp": "2025-04-09T19:00:33.563465",
+        "action": "Market debate finished for 0003.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:00:34.105237",
+        "action": "Starting market debate for 0005.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:01:26.993472",
+        "action": "Generating alpha factor analysis for 0005.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:01:26.993487",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0005.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** To provide a concise fundamental analysis of HSBC Holdings plc (HSBC), I'll analyze the data provided. Please note that this is not a comprehensive analysis and should be su..."
+    },
+    {
+        "timestamp": "2025-04-09T19:01:33.884795",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"The recent price reversal on January 28th suggests that the short-term moving average (10-day) may have crossed over the long-term moving average (50-day), indicating a potential trend change.\"\n    },\n    {\n        \"alpha_name\": \"Average True Range (ATR, 14-day)\",\n        \"confidence_score\": \"0.5\",\n        \"reasoning\": \"The ATR is used to measure volatility, a..."
+    },
+    {
+        "timestamp": "2025-04-09T19:01:33.885887",
+        "action": "Market debate finished for 0005.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:01:34.423309",
+        "action": "Starting market debate for 0006.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:02:19.728900",
+        "action": "Generating alpha factor analysis for 0006.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:02:19.728947",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0006.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Here's a concise fundamental analysis of Power Assets Holdings Limited (0006.HK):\n\n**Business Overview**\n\nPower Assets Holdings Limited is a utility company that generates, ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:02:26.432012",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The recent price trend of Power Assets Holdings Limited (0006.HK) forms a potential ascending triangle formation, indicating the possibility of a moving average crossover event.\"\n    },\n    {\n        \"alpha_name\": \"Exponential Moving Average (MA)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Power Assets Holdings Limited's stock price has shown si..."
+    },
+    {
+        "timestamp": "2025-04-09T19:02:26.433301",
+        "action": "Market debate finished for 0006.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:02:26.993540",
+        "action": "Starting market debate for 0011.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:03:14.949471",
+        "action": "Generating alpha factor analysis for 0011.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:03:14.949493",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0011.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nHang Seng Bank Limited (0011.HK) is a regional bank with operations in Hong Kong, the Mainland of China, and internationally. The company provides vari..."
+    },
+    {
+        "timestamp": "2025-04-09T19:03:24.059789",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.8\",\n    \"reasoning\": \"The trend line is sloping upwards, indicating a general uptrend. A moving average crossover could be a potential indicator for future price movements.\"\n  },\n  {\n    \"alpha_name\": \"Relative Strength Index (RSI) (14-day)\",\n    \"confidence_score\": \"0.7\",\n    \"reasoning\": \"The sentiment towards 0011.HK appears to be mixed, with both positive and negative mentions. An RSI value ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:03:24.061061",
+        "action": "Market debate finished for 0011.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:03:24.608654",
+        "action": "Starting market debate for 0012.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:04:14.498449",
+        "action": "Generating alpha factor analysis for 0012.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:04:14.498478",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0012.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of 0012.HK (Henderson Land Development Company Limited):\n\n**Key Metrics:**\n\n1. **Revenue Growth:** 15.6% Y..."
+    },
+    {
+        "timestamp": "2025-04-09T19:04:23.871084",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"This factor has a high potential to trigger buying/selling signals based on the crossover of short-term and long-term moving averages, which can impact Henderson Land Development Company Limited's stock price.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"An increasing volume momentum could indi..."
+    },
+    {
+        "timestamp": "2025-04-09T19:04:23.871823",
+        "action": "Market debate finished for 0012.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:04:24.424987",
+        "action": "Starting market debate for 0016.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:05:13.227034",
+        "action": "Generating alpha factor analysis for 0016.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:05:13.227056",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0016.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nSun Hung Kai Properties Limited (0016.HK) is a leading real estate developer and investor in Hong Kong, Mainland China, and internationally. The compan..."
+    },
+    {
+        "timestamp": "2025-04-09T19:05:19.464257",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.8\",\n    \"reasoning\": \"The recent price action suggests a potential crossover of the short-term and long-term moving averages, which could be a bullish sign for 0016.HK.\"\n  },\n  {\n    \"alpha_name\": \"Volume Momentum\",\n    \"confidence_score\": \"0.7\",\n    \"reasoning\": \"Increasing volume momentum indicates growing investor interest in the stock, which could contribute to upward pressure on the price.\"..."
+    },
+    {
+        "timestamp": "2025-04-09T19:05:19.465744",
+        "action": "Market debate finished for 0016.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:05:20.283989",
+        "action": "Starting market debate for 0027.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:06:17.422000",
+        "action": "Generating alpha factor analysis for 0027.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:06:17.422022",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0027.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of 0027.HK (Galaxy Entertainment Group Limited):\n\n**Key Strengths:**\n\n1. **Diversified Business Model**: Ga..."
+    },
+    {
+        "timestamp": "2025-04-09T19:06:24.967739",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The price has been trending downward over the past few weeks, and a moving average crossover could indicate a potential reversal point.\"\n    },\n    {\n        \"alpha_name\": \"Mean Reversion (20 days)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Given Galaxy Entertainment's diversified business model, a mean reversion in price could suggest an oppor..."
+    },
+    {
+        "timestamp": "2025-04-09T19:06:24.968614",
+        "action": "Market debate finished for 0027.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:06:25.515937",
+        "action": "Starting market debate for 0066.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:07:16.548445",
+        "action": "Generating alpha factor analysis for 0066.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:07:16.548472",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0066.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nMTR Corporation Limited (0066.HK) is a leading rail transport conglomerate operating in Hong Kong, Australia, Mainland China, Macao, Sweden, and the Un..."
+    },
+    {
+        "timestamp": "2025-04-09T19:07:23.264603",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The long-term trend suggests a bullish bias, and the crossover of the short-term MA with the long-term MA indicates a potential change in direction.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Increasing volume over the past few months suggests growing interest in the stock, which could be a b..."
+    },
+    {
+        "timestamp": "2025-04-09T19:07:23.265525",
+        "action": "Market debate finished for 0066.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:07:23.804103",
+        "action": "Starting market debate for 0101.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:08:10.708796",
+        "action": "Generating alpha factor analysis for 0101.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:08:10.708810",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0101.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nHang Lung Properties Limited (0101.HK) is a Hong Kong-based real estate investment trust (REIT) that invests in and develops properties in Hong Kong an..."
+    },
+    {
+        "timestamp": "2025-04-09T19:08:17.344554",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Mean Reversion (20 days)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"Given 0101.HK's recent price fluctuations and consolidation phases, a mean reversion strategy could provide an attractive opportunity for profit.\"\n    },\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The bearish trend in the stock's recent price action suggests a potential crossover of the 10-d..."
+    },
+    {
+        "timestamp": "2025-04-09T19:08:17.345703",
+        "action": "Market debate finished for 0101.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:08:17.890983",
+        "action": "Starting market debate for 0175.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:09:12.175578",
+        "action": "Generating alpha factor analysis for 0175.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:09:12.175591",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0175.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided financial data, here's a concise fundamental analysis of Geely Automobile Holdings Limited (0175.HK):\n\n**Key Financial Metrics:**\n\n1. **Revenue:** $15...."
+    },
+    {
+        "timestamp": "2025-04-09T19:09:20.455445",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"Given Geely Automobile Holdings Limited's significant market capitalization and recent decline in revenue, a moving average crossover could indicate a potential trend reversal.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Increasing volume momentum may signal a growing interest in Geely Automob..."
+    },
+    {
+        "timestamp": "2025-04-09T19:09:20.456720",
+        "action": "Market debate finished for 0175.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:09:21.018730",
+        "action": "Starting market debate for 0241.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:10:12.924050",
+        "action": "Generating alpha factor analysis for 0241.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:10:12.924065",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0241.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Concise Fundamental Analysis of Alibaba Health Information Technology Limited (0241.HK)**\n\n**Company Overview**\n\nAlibaba Health Information Technology Limited (0241.HK) is..."
+    },
+    {
+        "timestamp": "2025-04-09T19:10:22.000249",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": 0.7,\n        \"reasoning\": \"The long-term uptrend and recent price momentum suggest that the 10-day MA is likely to be surpassed by the 50-day MA, indicating a potential buy signal.\"\n    },\n    {\n        \"alpha_name\": \"Average True Range (ATR, 14-day)\",\n        \"confidence_score\": 0.6,\n        \"reasoning\": \"The ATR indicates market volatility, and a lower ATR value suggests that recent pri..."
+    },
+    {
+        "timestamp": "2025-04-09T19:10:22.001515",
+        "action": "Market debate finished for 0241.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:10:22.548670",
+        "action": "Starting market debate for 0267.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:11:11.281618",
+        "action": "Generating alpha factor analysis for 0267.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:11:11.281634",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0267.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided information, here is a concise fundamental analysis of CITIC Limited (0267.HK):\n\n**Business Overview**\n\nCITIC Limited is a conglomerate with operations..."
+    },
+    {
+        "timestamp": "2025-04-09T19:11:17.405966",
+        "action": "Received response",
+        "details": "```json\n[\n    {\"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\", \"confidence_score\": \"0.8\", \"reasoning\": \"Reversal at [date] indicates a bullish sentiment shift, and MA crossover could signal further upward momentum.\"},\n    {\"alpha_name\": \"Mean Reversion (20 days)\", \"confidence_score\": \"0.7\", \"reasoning\": \"Consolidatory phase suggests potential mean reversion towards previous support levels, providing a buying opportunity.\"},\n    {\"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\", \"confi..."
+    },
+    {
+        "timestamp": "2025-04-09T19:11:17.406943",
+        "action": "Market debate finished for 0267.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:11:17.958149",
+        "action": "Starting market debate for 0285.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:12:10.037494",
+        "action": "Generating alpha factor analysis for 0285.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:12:10.037506",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0285.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided financial data and company profile, here is a concise fundamental analysis of BYD ELECTRONIC (0285.HK):\n\n**Strengths:**\n\n1. **Diversified Business Mode..."
+    },
+    {
+        "timestamp": "2025-04-09T19:12:16.276435",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Mean Reversion (20 days)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"BYD ELECTRONIC's historical price movements show a tendency to revert to mean, indicating potential for price appreciation.\"\n    },\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The comparison of the short-term and long-term moving averages may provide insight into the stock's future trend dire..."
+    },
+    {
+        "timestamp": "2025-04-09T19:12:16.277204",
+        "action": "Market debate finished for 0285.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:12:16.821745",
+        "action": "Starting market debate for 0288.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:13:11.316947",
+        "action": "Generating alpha factor analysis for 0288.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:13:11.316968",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0288.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of 0288.HK (WH Group):\n\n**Key Metrics:**\n\n1. **Revenue Growth:** Revenue has been consistently increasing o..."
+    },
+    {
+        "timestamp": "2025-04-09T19:13:18.123470",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The long-term downtrend observed in the chart suggests a potential MA crossover, which could be a bullish signal.\"\n    },\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"The Stochastic Oscillator can help identify overbought or oversold conditions, and given the stock's downtrend, a pot..."
+    },
+    {
+        "timestamp": "2025-04-09T19:13:18.124153",
+        "action": "Market debate finished for 0288.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:13:18.673213",
+        "action": "Starting market debate for 0291.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:14:06.697211",
+        "action": "Generating alpha factor analysis for 0291.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:14:06.697222",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0291.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nChina Resources Beer (Holdings) Company Limited (0291.HK) is a leading beverage manufacturer and distributor in Mainland China, operating under the Non..."
+    },
+    {
+        "timestamp": "2025-04-09T19:14:13.711025",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The stock's price action has been relatively stable, and the recent resistance around $40-$42 suggests a potential buy signal based on MA crossover.\"\n    },\n    {\n        \"alpha_name\": \"Average True Range (ATR, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The ATR indicator can help identify the stock's volatility and potential breakouts, ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:14:13.712269",
+        "action": "Market debate finished for 0291.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:14:14.263624",
+        "action": "Starting market debate for 0316.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:15:01.032074",
+        "action": "Generating alpha factor analysis for 0316.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:15:01.032092",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0316.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** I can provide a concise fundamental analysis of the company 0316.HK (OOIL).\n\n**Industry and Business Model**\n\nThe company operates in the marine shipping industry, providing..."
+    },
+    {
+        "timestamp": "2025-04-09T19:15:09.905176",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The recent price movement above $10 indicates a strong uptrend, and the 10-day moving average crossovers with the 50-day moving average could signal further momentum continuation.\"\n    },\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The stochastic oscillator's %K value above 80 sugge..."
+    },
+    {
+        "timestamp": "2025-04-09T19:15:09.906558",
+        "action": "Market debate finished for 0316.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:15:10.459643",
+        "action": "Starting market debate for 0322.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:15:55.674145",
+        "action": "Generating alpha factor analysis for 0322.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:15:55.674156",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0322.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of 0322.HK (TINGYI):\n\n**Key Statistics:**\n\n* Market Capitalization: Not available\n* Total Revenue: HKD 18.4..."
+    },
+    {
+        "timestamp": "2025-04-09T19:16:01.427196",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"The recent price movements suggest a potential crossover, indicating a change in trend.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Increasing volume indicates buying pressure, suggesting a strong bullish case for the stock.\"\n    },\n    {\n        \"alpha_name\": \"Exponential Moving Average (MA)\"..."
+    },
+    {
+        "timestamp": "2025-04-09T19:16:01.427936",
+        "action": "Market debate finished for 0322.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:16:01.965277",
+        "action": "Starting market debate for 0386.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:16:53.446909",
+        "action": "Generating alpha factor analysis for 0386.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:16:53.446921",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0386.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of Sinopec Corp (0386.HK):\n\n**Company Overview**\n\n* Sector: Energy\n* Industry: Oil & Gas Integrated\n* Headq..."
+    },
+    {
+        "timestamp": "2025-04-09T19:17:00.273424",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.7\",\n    \"reasoning\": \"The stock's recent price trend shows a crossover from the 50-day MA to the 10-day MA, indicating potential bullish momentum.\"\n  },\n  {\n    \"alpha_name\": \"Volume Momentum\",\n    \"confidence_score\": \"0.6\",\n    \"reasoning\": \"Increasing trading volume has been observed over the past few weeks, suggesting growing interest in the stock and increasing momentum.\"\n  },\n  {\n    \"alpha..."
+    },
+    {
+        "timestamp": "2025-04-09T19:17:00.274269",
+        "action": "Market debate finished for 0386.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:17:00.820762",
+        "action": "Starting market debate for 0388.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:17:53.607573",
+        "action": "Generating alpha factor analysis for 0388.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:17:53.607588",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0388.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the fundamental analysis provided, here are my observations:\n\n**Company Overview**\n\nThe company is Hong Kong Exchanges and Clearing Limited (0388.HK), a financial s..."
+    },
+    {
+        "timestamp": "2025-04-09T19:18:00.994976",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The Stochastic Oscillator is useful for identifying overbought and oversold conditions in the market, which can impact stock prices like 0388.HK.\"\n    },\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"A moving average crossover can indicate a potential trend change for stocks like 0388..."
+    },
+    {
+        "timestamp": "2025-04-09T19:18:00.995728",
+        "action": "Market debate finished for 0388.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:18:01.541855",
+        "action": "Starting market debate for 0669.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:18:49.077086",
+        "action": "Generating alpha factor analysis for 0669.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:18:49.077093",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0669.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** This data provides an overview of the company's executive ownership structure and recent transactions. Here are some key observations:\n\n1. **Executive Ownership Structure**:..."
+    },
+    {
+        "timestamp": "2025-04-09T19:18:55.215393",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.8\",\n    \"reasoning\": \"The long-term trend shown in the visual analysis suggests a potential crossovers, which could be a strong signal for buying or selling.\"\n  },\n  {\n    \"alpha_name\": \"Volume Momentum\",\n    \"confidence_score\": \"0.7\",\n    \"reasoning\": \"The positive sentiment and recent transactions suggest that the stock might be gaining momentum, but volume is an important factor to consider.\"..."
+    },
+    {
+        "timestamp": "2025-04-09T19:18:55.216430",
+        "action": "Market debate finished for 0669.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:18:55.759675",
+        "action": "Starting market debate for 0688.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:19:46.941427",
+        "action": "Generating alpha factor analysis for 0688.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:19:46.941457",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0688.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of 0688.HK:\n\n**Company Overview**\n\n* Name: China Overseas Land & Investment Limited\n* Sector: Real Estate\n*..."
+    },
+    {
+        "timestamp": "2025-04-09T19:19:53.358696",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"The stock's price is likely to react to the crossovers of the short-term and long-term moving averages, which can indicate a change in trend.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"Increased trading volume could indicate growing investor interest or selling pressure, affecting stock price..."
+    },
+    {
+        "timestamp": "2025-04-09T19:19:53.360813",
+        "action": "Market debate finished for 0688.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:19:53.915521",
+        "action": "Starting market debate for 0700.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:20:50.423794",
+        "action": "Generating alpha factor analysis for 0700.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:20:50.424341",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0700.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of Tencent Holdings Ltd. (TENET):\n\n**Key Metrics:**\n\n* Market Capitalization: $544 billion USD\n* Price-to-..."
+    },
+    {
+        "timestamp": "2025-04-09T19:20:58.472146",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The stock's price has been in a downtrend for most of the period, with occasional consolidations. The moving average crossover indicator could be useful to identify potential buying or selling opportunities.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The recent increase in volatility and the ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:20:58.473940",
+        "action": "Market debate finished for 0700.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:20:59.029615",
+        "action": "Starting market debate for 0762.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:21:52.003803",
+        "action": "Generating alpha factor analysis for 0762.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:21:52.003831",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0762.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** This data appears to be a fundamental analysis report for the Hong Kong Stock Exchange listing 0762.HK, which represents China Unicom (Hong Kong). Here's a concise summary o..."
+    },
+    {
+        "timestamp": "2025-04-09T19:21:59.039674",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.7\",\n    \"reasoning\": \"The steady uptrend over the past few years indicates a potential mean reversion opportunity with the moving average crossover.\"\n  },\n  {\n    \"alpha_name\": \"Volume Momentum\",\n    \"confidence_score\": \"0.8\",\n    \"reasoning\": \"Increasing volume on higher highs and lower lows suggests strength in the stock, supporting its long-term uptrend.\"\n  },\n  {\n    \"alpha_name\": \"Stochasti..."
+    },
+    {
+        "timestamp": "2025-04-09T19:21:59.040955",
+        "action": "Market debate finished for 0762.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:21:59.590738",
+        "action": "Starting market debate for 0823.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:22:52.353964",
+        "action": "Generating alpha factor analysis for 0823.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:22:52.354109",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0823.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Concise Fundamental Analysis of Link Real Estate Investment Trust (REIT)**\n\n**Company Overview**\n\nLink REIT is a real estate investment trust listed on the Singapore Excha..."
+    },
+    {
+        "timestamp": "2025-04-09T19:22:59.170672",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The complex pattern in the chart indicates a potential crossovers between short-term and long-term moving averages, which could indicate a trend reversal or continuation.\"\n    },\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The Stochastic Oscillator can help identify overbought or ov..."
+    },
+    {
+        "timestamp": "2025-04-09T19:22:59.171583",
+        "action": "Market debate finished for 0823.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:22:59.717121",
+        "action": "Starting market debate for 0836.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:23:52.843659",
+        "action": "Generating alpha factor analysis for 0836.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:23:52.843678",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0836.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of 0836.HK (China Resources Power Holdings Company Limited):\n\n**Key Highlights**\n\n1. **Industry**: Utilitie..."
+    },
+    {
+        "timestamp": "2025-04-09T19:23:59.671390",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"A moving average crossover from a shorter to longer-term MA can indicate a potential trend reversal, which could be relevant for 0836.HK given its long-term uptrend.\"\n    },\n    {\n        \"alpha_name\": \"Mean Reversion (20 days)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Given the recent strong performance of 0836.HK, a mean reversion signal cou..."
+    },
+    {
+        "timestamp": "2025-04-09T19:23:59.672097",
+        "action": "Market debate finished for 0836.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:24:00.219805",
+        "action": "Starting market debate for 0857.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:24:47.717798",
+        "action": "Generating alpha factor analysis for 0857.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:24:47.717815",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0857.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of PETROCHINA (0857.HK):\n\n**Key Financial Metrics:**\n\n1. **Revenue:** Increasing trend, with revenue growi..."
+    },
+    {
+        "timestamp": "2025-04-09T19:24:56.078083",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The recent price reversal around mid-January indicates a potential mean reversion opportunity, making the moving average crossover a relevant factor for this stock.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Increasing trading volume and momentum in the stock's recent price movements suggest ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:24:56.079503",
+        "action": "Market debate finished for 0857.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:24:56.640554",
+        "action": "Starting market debate for 0868.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:25:44.378407",
+        "action": "Generating alpha factor analysis for 0868.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:25:44.378424",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0868.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nThe provided text appears to be a financial analysis report for Xinyuan Solar Holdings Limited, a Hong Kong-based company listed on the Hong Kong Stock..."
+    },
+    {
+        "timestamp": "2025-04-09T19:25:50.571574",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The chart analysis suggests a potential reversal pattern, and the moving average crossover could be an important trigger point.\"\n    },\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The stochastic oscillator is showing signs of oversoldness, which could indicate a potential buying opp..."
+    },
+    {
+        "timestamp": "2025-04-09T19:25:50.572415",
+        "action": "Market debate finished for 0868.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:25:51.114265",
+        "action": "Starting market debate for 0881.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:26:39.099903",
+        "action": "Generating alpha factor analysis for 0881.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:26:39.099917",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0881.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nZhongsheng Holdings Limited (0881.HK) is a Chinese company that operates in the auto and truck dealerships sector. The company was founded in 1998 and ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:26:46.974545",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.8\",\n    \"reasoning\": \"The long-term chart shows a clear support level around $20-$25, indicating a potential mean reversion event.\"\n  },\n  {\n    \"alpha_name\": \"Average True Range (ATR, 14-day)\",\n    \"confidence_score\": \"0.7\",\n    \"reasoning\": \"The recent insider transactions and range-bound price action suggest that the market is waiting for a catalyst to break out above this range, which ATR ca..."
+    },
+    {
+        "timestamp": "2025-04-09T19:26:46.975503",
+        "action": "Market debate finished for 0881.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:26:47.536407",
+        "action": "Starting market debate for 0883.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:27:38.583259",
+        "action": "Generating alpha factor analysis for 0883.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:27:38.583280",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0883.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Concise Fundamental Analysis for 0883.HK**\n\n**Company Overview**\n\nCNOOC Limited (0883.HK) is an energy company primarily engaged in the exploration, development, productio..."
+    },
+    {
+        "timestamp": "2025-04-09T19:27:47.039769",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The presence of a bullish reversal pattern above the lower consolidation level at $12 suggests potential upside momentum, which aligns with the MA Crossover indicator's ability to identify trend reversals.\"\n    },\n    {\n        \"alpha_name\": \"Normalized Bollinger Band Width (20-day, 2 StdDev)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The conso..."
+    },
+    {
+        "timestamp": "2025-04-09T19:27:47.041058",
+        "action": "Market debate finished for 0883.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:27:47.588759",
+        "action": "Starting market debate for 0939.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:28:36.778186",
+        "action": "Generating alpha factor analysis for 0939.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:28:36.778334",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0939.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** This appears to be a large dataset of financial information for a company with the ticker symbol 0939.HK, which is China Construction Bank Corporation. I'll provide a concis..."
+    },
+    {
+        "timestamp": "2025-04-09T19:28:44.105236",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The long-term price action chart suggests a bullish trend, and the crossover of the 10-day and 50-day moving averages can be seen as a potential buy signal.\"\n    },\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"The Stochastic Oscillator can help identify overbought and oversold condit..."
+    },
+    {
+        "timestamp": "2025-04-09T19:28:44.105944",
+        "action": "Market debate finished for 0939.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:28:44.657271",
+        "action": "Starting market debate for 0941.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:29:38.461858",
+        "action": "Generating alpha factor analysis for 0941.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:29:38.461879",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0941.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nChina Mobile Limited (0941.HK) is a leading telecommunications service provider in Mainland China and Hong Kong. The company offers a wide range of ser..."
+    },
+    {
+        "timestamp": "2025-04-09T19:29:45.071463",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The stochastic oscillator can help identify overbought and oversold conditions in the stock's price action.\"\n    },\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"A moving average crossover could provide an indication of a potential trend reversal in the stock's price.\"\n    },\n    {\n  ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:29:45.072283",
+        "action": "Market debate finished for 0941.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:29:45.621285",
+        "action": "Starting market debate for 0960.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:30:34.175059",
+        "action": "Generating alpha factor analysis for 0960.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:30:34.175073",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0960.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of Longfor Properties Co., Ltd. (LFW):\n\n**Financials**\n\n* Revenue: The company's revenue has been increasi..."
+    },
+    {
+        "timestamp": "2025-04-09T19:30:42.493472",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.8\",\n    \"reasoning\": \"The complex price pattern and multiple consolidation phases suggest that the moving average crossover could be a significant indicator for this stock.\"\n  },\n  {\n    \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n    \"confidence_score\": \"0.7\",\n    \"reasoning\": \"Given the neutral to positive sentiment towards 0960.HK and its increasing revenue, the stochastic oscillator ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:30:42.494162",
+        "action": "Market debate finished for 0960.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:30:43.042936",
+        "action": "Starting market debate for 0968.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:31:32.114879",
+        "action": "Generating alpha factor analysis for 0968.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:31:32.114903",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0968.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of Xinyi Solar Holdings Limited (0968.HK):\n\n**Company Overview**\n\nXinyi Solar Holdings Limited is an inves..."
+    },
+    {
+        "timestamp": "2025-04-09T19:31:40.069828",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Given the consolidatory phase and lack of strong momentum in the stock price, a stochastic oscillator can help identify potential overbought or oversold conditions.\"\n    },\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"A moving average crossover could provide insight into the directio..."
+    },
+    {
+        "timestamp": "2025-04-09T19:31:40.070486",
+        "action": "Market debate finished for 0968.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:31:40.624238",
+        "action": "Starting market debate for 0981.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:32:33.650109",
+        "action": "Generating alpha factor analysis for 0981.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:32:33.650142",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0981.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nThe company is SMIC (Semiconductor Manufacturing International Corporation), a leading independent semiconductor foundry in mainland China. The company..."
+    },
+    {
+        "timestamp": "2025-04-09T19:32:40.855048",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The stock has shown a significant move in recent days, which can be validated by the crossover of the 10-day and 50-day moving averages.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Increasing volume indicates growing interest in the stock, which can be a bullish signal for 0981.HK.\"\n    },\n   ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:32:40.856657",
+        "action": "Market debate finished for 0981.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:32:41.408417",
+        "action": "Starting market debate for 0992.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:33:31.013088",
+        "action": "Generating alpha factor analysis for 0992.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:33:31.013106",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 0992.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of Lenovo Group Ltd. (HKSE: 999):\n\n**Key Financial Metrics**\n\n* Revenue Growth Rate: 5% (2020-2021)\n* Net ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:33:40.426089",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.8\",\n    \"reasoning\": \"The analysis suggests a potential buy signal as the stock has been trending upwards, and a crossover of the short-term MA with the long-term MA could indicate a turning point.\"\n  },\n  {\n    \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n    \"confidence_score\": \"0.7\",\n    \"reasoning\": \"The Stochastic Oscillator can help identify overbought and oversold conditions, which..."
+    },
+    {
+        "timestamp": "2025-04-09T19:33:40.427476",
+        "action": "Market debate finished for 0992.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:33:40.974373",
+        "action": "Starting market debate for 1024.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:34:28.492389",
+        "action": "Generating alpha factor analysis for 1024.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:34:28.492404",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1024.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of 1024.HK:\n\n**Company Overview**\n\n* Founded in 2011 and headquartered in Beijing, China.\n* Engages in var..."
+    },
+    {
+        "timestamp": "2025-04-09T19:34:35.167898",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Given the company's diverse business interests and rapid growth, volume momentum could indicate a potential turning point in the stock's price.\"\n    },\n    {\n        \"alpha_name\": \"Moving Average Reversion\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The recent sideways to downward trend suggests that the stock may be due for a rebound, and moving average reversion coul..."
+    },
+    {
+        "timestamp": "2025-04-09T19:34:35.168747",
+        "action": "Market debate finished for 1024.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:34:35.725228",
+        "action": "Starting market debate for 1038.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:35:25.662997",
+        "action": "Generating alpha factor analysis for 1038.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:35:25.663027",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1038.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of 1038.HK (CKI Holdings):\n\n**Key Metrics**\n\n* Market Capitalization: Not available\n* Enterprise Value: Not..."
+    },
+    {
+        "timestamp": "2025-04-09T19:35:34.060955",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"The Stochastic Oscillator can help identify overbought and oversold conditions, which is relevant for 1038.HK as the stock price oscillates between $40 and $50.\"\n    },\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.5\",\n        \"reasoning\": \"A moving average crossover can indicate a change in trend, which could..."
+    },
+    {
+        "timestamp": "2025-04-09T19:35:34.061790",
+        "action": "Market debate finished for 1038.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:35:34.613553",
+        "action": "Starting market debate for 1044.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:36:22.998333",
+        "action": "Generating alpha factor analysis for 1044.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:36:22.998377",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1044.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of 1044.HK:\n\n**Company Overview**\n\n* **Industry:** Household & Personal Products\n* **Headquarters:** Jinji..."
+    },
+    {
+        "timestamp": "2025-04-09T19:36:29.326919",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The mixed trend in the chart suggests a potential crossover point, which could indicate a significant price movement.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Increasing trading volume indicates growing interest and momentum in the stock, but further analysis is needed to confirm its releva..."
+    },
+    {
+        "timestamp": "2025-04-09T19:36:29.327927",
+        "action": "Market debate finished for 1044.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:36:29.879076",
+        "action": "Starting market debate for 1088.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:37:20.813860",
+        "action": "Generating alpha factor analysis for 1088.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:37:20.813891",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1088.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of 1088.HK (China Shenhua Energy Company Limited):\n\n**Key Statistics**\n\n* Market Capitalization: Not avail..."
+    },
+    {
+        "timestamp": "2025-04-09T19:37:28.629566",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"The Stochastic Oscillator's ability to identify overbought and oversold conditions could help identify potential price movements for 1088.HK.\"\n    },\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.4\",\n        \"reasoning\": \"The moving average crossover strategy may be useful for 1088.HK as it indicates a potenti..."
+    },
+    {
+        "timestamp": "2025-04-09T19:37:28.630871",
+        "action": "Market debate finished for 1088.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:37:29.186482",
+        "action": "Starting market debate for 1093.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:38:17.239998",
+        "action": "Generating alpha factor analysis for 1093.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:38:17.240010",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1093.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** I'll provide a concise fundamental analysis of the company based on the information provided:\n\n**Company Overview**\n\nThe company is a publicly traded firm, listed on [stock ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:38:24.331238",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Mean Reversion (20 days)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"Given the lack of financial data, a mean reversion factor could help identify potential deviations from expected price movements.\"\n    },\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"This oscillator can provide insights into recent price trends and potential overbought or oversold conditions.\"\n    ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:38:24.331931",
+        "action": "Market debate finished for 1093.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:38:24.899258",
+        "action": "Starting market debate for 1099.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:39:18.230319",
+        "action": "Generating alpha factor analysis for 1099.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:39:18.230335",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1099.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nSinopharm Group Co. Ltd. (1099.HK) is a Chinese pharmaceutical and medical device distributor with operations in the People's Republic of China. The co..."
+    },
+    {
+        "timestamp": "2025-04-09T19:39:25.907028",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"Given the bearish trend observed in the price chart, a moving average crossover could indicate a potential buy signal if the shorter-term MA crosses above the longer-term MA.\"\n    },\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The stochastic oscillator can help identify overbought o..."
+    },
+    {
+        "timestamp": "2025-04-09T19:39:25.907790",
+        "action": "Market debate finished for 1099.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:39:26.463360",
+        "action": "Starting market debate for 1109.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:40:15.693561",
+        "action": "Generating alpha factor analysis for 1109.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:40:15.693572",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1109.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** The provided data appears to be an excerpt from a financial database or platform, specifically detailing the fundamental analysis of a Chinese real estate company, 1109.HK, ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:40:22.617217",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Increasing volume supports the bullish trend, suggesting growing investor interest in 1109.HK.\"\n    },\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"The price has broken through several resistance levels, indicating potential for further growth.\"\n    },\n    {\n        \"alpha_name\": \"Mean Reversion (20 da..."
+    },
+    {
+        "timestamp": "2025-04-09T19:40:22.618362",
+        "action": "Market debate finished for 1109.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:40:23.166819",
+        "action": "Starting market debate for 1113.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:41:20.635501",
+        "action": "Generating alpha factor analysis for 1113.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:41:20.635535",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1113.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of 1113.HK:\n\n**Company Overview**\n\nCK Asset Holdings Limited is a property developer and investor with a si..."
+    },
+    {
+        "timestamp": "2025-04-09T19:41:27.797307",
+        "action": "Received response",
+        "details": "```json\n[\n    {\"alpha_name\": \"Mean Reversion (20 days)\", \"confidence_score\": \"0.8\", \"reasoning\": \"Given CK Asset Holdings Limited's diversified business model and stable revenue stream, a mean reversion factor can provide insight into potential price movements.\"},\n    {\"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\", \"confidence_score\": \"0.6\", \"reasoning\": \"The company's history of consolidation phases suggests that a moving average crossover could be an indicator of future price trends...."
+    },
+    {
+        "timestamp": "2025-04-09T19:41:27.798641",
+        "action": "Market debate finished for 1113.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:41:28.350826",
+        "action": "Starting market debate for 1177.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:42:22.399890",
+        "action": "Generating alpha factor analysis for 1177.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:42:22.399919",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1177.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\n* Company Name: SinoPharm (HK) Co., Ltd.\n* Industry: Pharmaceuticals\n* Headquarters: Wan Chai, Hong Kong\n\n**Financial Performance**\n\n* Revenue Growth: ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:42:29.499043",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"The bearish trend indicates a potential short-term crossover, warranting close monitoring of the stock's price movement.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.5\",\n        \"reasoning\": \"Declining volume may suggest dwindling investor interest in the company's shares.\"\n    },\n    {\n        \"alpha_name\": \"Stochastic..."
+    },
+    {
+        "timestamp": "2025-04-09T19:42:29.499908",
+        "action": "Market debate finished for 1177.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:42:30.055515",
+        "action": "Starting market debate for 1209.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:43:20.898805",
+        "action": "Generating alpha factor analysis for 1209.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:43:20.898830",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1209.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nChina Resources Mixc Lifestyle Services Limited (1209.HK) is a real estate company that provides property management and commercial operational service..."
+    },
+    {
+        "timestamp": "2025-04-09T19:43:30.184551",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"Increasing revenue and steady growth in volume might indicate a strengthening momentum, making this factor relevant for 1209.HK.\"\n    },\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"A recent crossover could signify the turning point in the trend line, indicating potential bullish or bearish momentum, m..."
+    },
+    {
+        "timestamp": "2025-04-09T19:43:30.185339",
+        "action": "Market debate finished for 1209.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:43:30.727272",
+        "action": "Starting market debate for 1211.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:44:19.335374",
+        "action": "Generating alpha factor analysis for 1211.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:44:19.335397",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1211.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\n* **Ticker:** 1211.HK\n* **Name:** BYD Company Limited\n* **Sector:** Consumer Cyclical\n* **Industry:** Auto Manufacturers\n* **Headquarters:** Shenzhen, ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:44:25.746256",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The stock is showing a crossover of its 10-day and 50-day moving averages, indicating a potential shift in trend direction.\"\n    },\n    {\n        \"alpha_name\": \"Average True Range (ATR, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The ATR suggests that the stock's price is likely to experience increased volatility in the short term.\"\n    ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:44:25.748364",
+        "action": "Market debate finished for 1211.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:44:26.311794",
+        "action": "Starting market debate for 1299.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:45:23.054452",
+        "action": "Generating alpha factor analysis for 1299.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:45:23.054490",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1299.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of AIA Group Limited:\n\n**Key Findings:**\n\n1. **Insider Transactions:** The majority of transactions are fr..."
+    },
+    {
+        "timestamp": "2025-04-09T19:45:29.950829",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The recent news about HKEX's consideration to lower minimum trading units may impact stock 1299.HK, as a decrease in market activity could lead to increased volume momentum.\"\n    },\n    {\n        \"alpha_name\": \"Mean Reversion (20 days)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The share price volatility and fluctuations suggest that the stock may be due for a mean re..."
+    },
+    {
+        "timestamp": "2025-04-09T19:45:29.951805",
+        "action": "Market debate finished for 1299.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:45:30.507431",
+        "action": "Starting market debate for 1378.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:46:24.678523",
+        "action": "Generating alpha factor analysis for 1378.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:46:24.678552",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1378.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the financial data provided, here is a concise fundamental analysis of 1378.HK:\n\n**Industry and Company Overview**\n\n* Industry: Aluminum\n* Headquarters: Zouping, Ch..."
+    },
+    {
+        "timestamp": "2025-04-09T19:46:31.630829",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.6\",\n    \"reasoning\": \"This factor is relevant as the recent reversal in price from February 2020 indicates a potential mean reversion, which could lead to further upside.\"\n  },\n  {\n    \"alpha_name\": \"Volume Momentum\",\n    \"confidence_score\": \"0.4\",\n    \"reasoning\": \"Although not highly correlated with price movements, volume momentum might still provide insights into buying/selling pressure and ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:46:31.631602",
+        "action": "Market debate finished for 1378.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:46:32.176253",
+        "action": "Starting market debate for 1398.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:47:23.922615",
+        "action": "Generating alpha factor analysis for 1398.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:47:23.922646",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1398.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of ICBC (1398.HK):\n\n**Financials:**\n\n* Revenue growth has been steady over the years, with a 10% YoY increa..."
+    },
+    {
+        "timestamp": "2025-04-09T19:47:30.701878",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.8\",\n    \"reasoning\": \"Crossover of moving averages can indicate a potential trend reversal for ICBC, as it suggests a shift in market sentiment.\"\n  },\n  {\n    \"alpha_name\": \"Volume Momentum\",\n    \"confidence_score\": \"0.7\",\n    \"reasoning\": \"Increasing volume could be an indication that investors are becoming more confident in the stock's price, making this factor relevant to monitor.\"\n  },\n  {\n ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:47:30.702577",
+        "action": "Market debate finished for 1398.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:47:31.256720",
+        "action": "Starting market debate for 1810.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:48:27.126842",
+        "action": "Generating alpha factor analysis for 1810.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:48:27.126873",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1810.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of Xiaomi Corporation (1810.HK):\n\n**Company Overview**\n\nXiaomi Corporation is a Chinese technology company ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:48:33.505435",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"Relevant for identifying trends in stock price movements and potential crossovers with key support/resistance levels.\"\n    },\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"Provides insight into the current trend of the stock's momentum relative to its price change over time.\"\n    },\n ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:48:33.506613",
+        "action": "Market debate finished for 1810.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:48:34.057947",
+        "action": "Starting market debate for 1876.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:49:25.774011",
+        "action": "Generating alpha factor analysis for 1876.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:49:25.774031",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1876.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, I'll provide a concise fundamental analysis of 1876.HK.\n\n**Key Metrics**\n\n1. **Market Cap**: Not available in the provided data.\n2. **Enterprise ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:49:32.576673",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": 0.7,\n        \"reasoning\": \"The stock has been showing a lack of clear direction, with multiple trading ranges in place. A moving average crossover could indicate a potential trend change.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": 0.6,\n        \"reasoning\": \"Increased volume momentum could suggest growing interest or enthusiasm for the stock, contrib..."
+    },
+    {
+        "timestamp": "2025-04-09T19:49:32.577431",
+        "action": "Market debate finished for 1876.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:49:33.132755",
+        "action": "Starting market debate for 1928.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:50:30.370712",
+        "action": "Generating alpha factor analysis for 1928.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:50:30.370731",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1928.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of Sands China Ltd. (1928.HK):\n\n**Business Model:**\nSands China Ltd. operates in the consumer cyclical sect..."
+    },
+    {
+        "timestamp": "2025-04-09T19:50:37.542549",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The stock's recent price movement suggests a potential crossover of the moving averages, which could indicate a trend change.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Increasing volume indicates growing interest in the stock, which could be a bullish sign.\"\n    },\n    {\n        \"alpha_name\"..."
+    },
+    {
+        "timestamp": "2025-04-09T19:50:37.543316",
+        "action": "Market debate finished for 1928.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:50:38.096198",
+        "action": "Starting market debate for 1929.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:51:28.429973",
+        "action": "Generating alpha factor analysis for 1929.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:51:28.429987",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1929.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of Chow Tai Fook Jewellery Group Limited (CTFC):\n\n**Financial Performance**\n\n* Revenue growth: The company ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:51:36.878361",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The chart shows a clear crossover of the 10-day moving average above the 50-day moving average, which could be a bullish signal.\"\n    },\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The stochastic oscillator is overbought at 85%, indicating potential overvaluation and a possible corr..."
+    },
+    {
+        "timestamp": "2025-04-09T19:51:36.879326",
+        "action": "Market debate finished for 1929.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:51:37.442301",
+        "action": "Starting market debate for 1997.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:52:31.066329",
+        "action": "Generating alpha factor analysis for 1997.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:52:31.066352",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 1997.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of Wharf Real Estate Investment Company Limited (1997.HK):\n\n**Company Overview**\n\nWharf Real Estate Invest..."
+    },
+    {
+        "timestamp": "2025-04-09T19:52:38.611246",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The recent price consolidation and reversals indicate a need for an alpha factor that can identify potential trend changes, making Moving Average Crossover (10 vs 50 day) a relevant choice.\"\n    },\n    {\n        \"alpha_name\": \"Average True Range (ATR, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The stock's recent price movements have bee..."
+    },
+    {
+        "timestamp": "2025-04-09T19:52:38.612214",
+        "action": "Market debate finished for 1997.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:52:39.168546",
+        "action": "Starting market debate for 2015.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:53:33.474610",
+        "action": "Generating alpha factor analysis for 2015.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:53:33.474642",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 2015.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of the company:\n\n**Financial Health**\n\n* The company has a significant amount of cash and cash equivalents..."
+    },
+    {
+        "timestamp": "2025-04-09T19:53:41.419149",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.8\",\n    \"reasoning\": \"The recent uptrend and price increase suggest that the shorter-term MA might be crossing over the longer-term MA, indicating a bullish momentum.\"\n  },\n  {\n    \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n    \"confidence_score\": \"0.7\",\n    \"reasoning\": \"The Stochastic Oscillator is showing an oversold condition with the %K at 20, which indicates potential buying oppor..."
+    },
+    {
+        "timestamp": "2025-04-09T19:53:41.420263",
+        "action": "Market debate finished for 2015.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:53:41.973412",
+        "action": "Starting market debate for 2020.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:54:33.897995",
+        "action": "Generating alpha factor analysis for 2020.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:54:33.898027",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 2020.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nANTA Sports Products Limited (2020.HK) is a leading professional sports products manufacturer in China and internationally. The company offers a wide r..."
+    },
+    {
+        "timestamp": "2025-04-09T19:54:42.971661",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"Given ANTA Sports Products Limited's historical price movements, the moving average crossover factor can provide insights into potential trend reversals.\"\n    },\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The stochastic oscillator can help identify overbought and oversold condition..."
+    },
+    {
+        "timestamp": "2025-04-09T19:54:42.972499",
+        "action": "Market debate finished for 2020.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:54:43.532030",
+        "action": "Starting market debate for 2269.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:55:39.535660",
+        "action": "Generating alpha factor analysis for 2269.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:55:39.535678",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 2269.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nWanxiang Group, also known as Wanxiang Group Co., Ltd, is a Chinese conglomerate with diverse businesses in automotive, aerospace, and other industries..."
+    },
+    {
+        "timestamp": "2025-04-09T19:55:48.631930",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.8\",\n    \"reasoning\": \"The mixed consolidation and reversal patterns in the long-term trend depicted in the attached chart indicate potential instability, making the moving average crossover a suitable factor for monitoring.\"\n  },\n  {\n    \"alpha_name\": \"Volume Momentum\",\n    \"confidence_score\": \"0.7\",\n    \"reasoning\": \"Wanxiang Group's diverse businesses and large market capitalization suggest th..."
+    },
+    {
+        "timestamp": "2025-04-09T19:55:48.632736",
+        "action": "Market debate finished for 2269.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:55:49.192676",
+        "action": "Starting market debate for 2313.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:56:43.683478",
+        "action": "Generating alpha factor analysis for 2313.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:56:43.683500",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 2313.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of 2313.HK (Shenzhou International Group Holdings Limited):\n\n**Key Findings:**\n\n1. **High Net Income**: The..."
+    },
+    {
+        "timestamp": "2025-04-09T19:56:51.505309",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"Consistent high volume indicates a strong trading interest in 2313.HK, indicating potential buying pressure.\"\n    },\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"The recent crossover of the 50-day MA above the 10-day MA indicates a trend reversal and increased bullish sentiment around 2313.HK.\"\n    },\n..."
+    },
+    {
+        "timestamp": "2025-04-09T19:56:51.506376",
+        "action": "Market debate finished for 2313.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:56:52.077003",
+        "action": "Starting market debate for 2318.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:57:52.066008",
+        "action": "Generating alpha factor analysis for 2318.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:57:52.066024",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 2318.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of Ping An Insurance (Group) Company of China, Ltd. (2318.HK):\n\n**Business Overview**\n\nPing An is a leading..."
+    },
+    {
+        "timestamp": "2025-04-09T19:58:00.839200",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n    \"confidence_score\": \"0.7\",\n    \"reasoning\": \"This factor is relevant as Ping An Insurance's stock price has shown a strong uptrend in the recent period, and the Stochastic Oscillator can help identify overbought conditions.\"\n  },\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.8\",\n    \"reasoning\": \"The MACD crossover is likely to occur as Ping An Insurance's stock price has been ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:58:00.840661",
+        "action": "Market debate finished for 2318.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:58:01.406803",
+        "action": "Starting market debate for 2319.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:58:45.541136",
+        "action": "Generating alpha factor analysis for 2319.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:58:45.541154",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 2319.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Concise Fundamental Analysis**\n\n**Company Overview**\n-------------------\n\n* Company Name: [Company Name]\n* Industry: Food Manufacturing\n* Market Cap: [Market Cap]\n\n**Finan..."
+    },
+    {
+        "timestamp": "2025-04-09T19:58:52.868210",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The chart shows a crossover of the short-term and long-term moving averages, indicating a potential trend reversal.\"\n    },\n    {\n        \"alpha_name\": \"Average True Range (ATR, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The ATR indicates market volatility, which is crucial for identifying potential trend continuation or reversal.\"\n    ..."
+    },
+    {
+        "timestamp": "2025-04-09T19:58:52.869022",
+        "action": "Market debate finished for 2319.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:58:53.420004",
+        "action": "Starting market debate for 2331.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T19:59:50.046267",
+        "action": "Generating alpha factor analysis for 2331.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:59:50.046283",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 2331.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of Li Ning Company Limited (2331.HK):\n\n**Business Overview**\n\nLi Ning is a sports brand company that desig..."
+    },
+    {
+        "timestamp": "2025-04-09T19:59:58.497948",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The stock has been consolidating between $20 and $30, with a clear support level around $20. The moving average crossover could indicate a potential trend reversal.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Increased volume on breaks below the support level suggests that there is upward mome..."
+    },
+    {
+        "timestamp": "2025-04-09T19:59:58.498802",
+        "action": "Market debate finished for 2331.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T19:59:59.055240",
+        "action": "Starting market debate for 2359.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:00:48.619074",
+        "action": "Generating alpha factor analysis for 2359.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:00:48.619093",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 2359.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Here is a concise fundamental analysis of WIT (Wuhan Institute of Technology) based on the provided information:\n\n**Company Overview**\n\nWIT is a publicly traded company list..."
+    },
+    {
+        "timestamp": "2025-04-09T20:00:56.349034",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The formation of an upward trend line since the beginning of the year suggests a potential crossover, which could be a buy signal.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Increasing trading volume indicates growing interest in the stock, which could be a bullish sign.\"\n    },\n    {\n       ..."
+    },
+    {
+        "timestamp": "2025-04-09T20:00:56.350145",
+        "action": "Market debate finished for 2359.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:00:56.902974",
+        "action": "Starting market debate for 2382.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:01:55.286652",
+        "action": "Generating alpha factor analysis for 2382.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:01:55.286707",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 2382.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of Sunny Optical Technology (Group) Company Limited (2382.HK):\n\n**Company Overview**\n\n* Industry: Electroni..."
+    },
+    {
+        "timestamp": "2025-04-09T20:02:01.663683",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The chart exhibits a complex pattern with multiple trend reversals, making the Moving Average Crossover a suitable factor to analyze.\"\n    },\n    {\n        \"alpha_name\": \"Mean Reversion (20 days)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Given the industry's competitive nature and potential for price fluctuations, Mean Reversion could help ide..."
+    },
+    {
+        "timestamp": "2025-04-09T20:02:01.667162",
+        "action": "Market debate finished for 2382.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:02:02.238061",
+        "action": "Starting market debate for 2388.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:02:56.662658",
+        "action": "Generating alpha factor analysis for 2388.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:02:56.662672",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 2388.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** I can provide you with a concise fundamental analysis of 2388.HK (BOC Hong Kong Holdings Limited). Please note that this is a brief analysis and not a comprehensive one.\n\n**..."
+    },
+    {
+        "timestamp": "2025-04-09T20:03:04.703732",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Mean Reversion (20 days)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"The company's historical price movements suggest a tendency to revert towards its mean, indicating potential opportunities for buyers.\"\n    },\n    {\n        \"alpha_name\": \"Average True Range (ATR, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"A stable ATR suggests that the stock's price movement is less volatile, which could be an attractive feature for ..."
+    },
+    {
+        "timestamp": "2025-04-09T20:03:04.704995",
+        "action": "Market debate finished for 2388.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:03:05.264772",
+        "action": "Starting market debate for 2628.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:03:52.267330",
+        "action": "Generating alpha factor analysis for 2628.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:03:52.267347",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 2628.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of 2628.HK (China Life Insurance Company Limited):\n\n**Key Metrics:**\n\n* Revenue Growth: 7.5% (2020-2021)\n*..."
+    },
+    {
+        "timestamp": "2025-04-09T20:03:58.916001",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The bearish case highlights a significant security threat, and the moving average crossover could be a potential trigger for a price drop.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Despite the revenue growth and improving profitability, decreasing volume momentum indicates weak market intere..."
+    },
+    {
+        "timestamp": "2025-04-09T20:03:58.916769",
+        "action": "Market debate finished for 2628.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:03:59.472185",
+        "action": "Starting market debate for 2688.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:04:54.659400",
+        "action": "Generating alpha factor analysis for 2688.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:04:54.659432",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 2688.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of ENN Energy Holdings Limited (2688.HK):\n\n**Company Overview**\n\nENN Energy Holdings Limited is an investme..."
+    },
+    {
+        "timestamp": "2025-04-09T20:05:01.864269",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.8\",\n    \"reasoning\": \"The chart exhibits a complex pattern, and the moving average crossover could indicate a potential trend reversal.\"\n  },\n  {\n    \"alpha_name\": \"Average True Range (ATR, 14-day)\",\n    \"confidence_score\": \"0.7\",\n    \"reasoning\": \"The ATR could help determine whether the recent price action is part of a larger trend or a consolidation phase.\"\n  },\n  {\n    \"alpha_name\": \"Volume ..."
+    },
+    {
+        "timestamp": "2025-04-09T20:05:01.865680",
+        "action": "Market debate finished for 2688.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:05:02.418237",
+        "action": "Starting market debate for 2899.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:05:53.600535",
+        "action": "Generating alpha factor analysis for 2899.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:05:53.600595",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 2899.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nZijin Mining Group Company Limited (2899.HK) is a leading mining company that engages in the exploration, mining, processing, refining, and sale of gol..."
+    },
+    {
+        "timestamp": "2025-04-09T20:06:01.689346",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The bearish trend in stock 2899.HK suggests that the shorter-term moving average may be crossing below the longer-term moving average, indicating a potential buy signal.\"\n    },\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The stochastic oscillator is oversold, which may indicate an ..."
+    },
+    {
+        "timestamp": "2025-04-09T20:06:01.690023",
+        "action": "Market debate finished for 2899.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:06:02.250059",
+        "action": "Starting market debate for 3690.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:06:51.232912",
+        "action": "Generating alpha factor analysis for 3690.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:06:51.232928",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 3690.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nThe company is a publicly traded entity, listed on a major stock exchange. It operates in the technology sector, specifically in the field of artificia..."
+    },
+    {
+        "timestamp": "2025-04-09T20:06:57.097562",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The stock's recent price action forms a Descending Triangle, which could be a sign of weakening momentum. The moving average crossover suggests that the trend may be reversing, indicating a potential buying opportunity.\"\n    },\n    {\n        \"alpha_name\": \"Relative Strength Index (RSI)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The RSI indicate..."
+    },
+    {
+        "timestamp": "2025-04-09T20:06:57.098252",
+        "action": "Market debate finished for 3690.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:06:57.656938",
+        "action": "Starting market debate for 3692.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:07:49.919175",
+        "action": "Generating alpha factor analysis for 3692.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:07:49.919188",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 3692.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of Hansoh Pharmaceutical Group Company Limited (3692.HK):\n\n**Company Overview**\n\n* Sector: Healthcare\n* In..."
+    },
+    {
+        "timestamp": "2025-04-09T20:07:56.401528",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"Given the recent price surge and consolidating phase, a moving average crossover may indicate an impending breakout or reversal.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The increase in trading volume suggests that investors are becoming more active, which could be a bullish sign for the st..."
+    },
+    {
+        "timestamp": "2025-04-09T20:07:56.402605",
+        "action": "Market debate finished for 3692.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:07:56.955027",
+        "action": "Starting market debate for 3968.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:08:52.611720",
+        "action": "Generating alpha factor analysis for 3968.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:08:52.611734",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 3968.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of 3968.HK (China Merchants Bank Co., Ltd.):\n\n**Company Overview**\n\n* Sector: Financial Services\n* Industry..."
+    },
+    {
+        "timestamp": "2025-04-09T20:08:59.098440",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The chart suggests a strong uptrend, and the crossover of the 10-day MA with the 50-day MA indicates a potential buy signal.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Increasing volume with the price movement suggests that buyers are confident in the stock's trajectory, supporting the bull c..."
+    },
+    {
+        "timestamp": "2025-04-09T20:08:59.099294",
+        "action": "Market debate finished for 3968.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:08:59.651835",
+        "action": "Starting market debate for 3988.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:09:53.772469",
+        "action": "Generating alpha factor analysis for 3988.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:09:53.772483",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 3988.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here's a concise fundamental analysis of 3988.HK (Bank of China Limited):\n\n**Financials:**\n\n* **Revenue:** The company has consistently reported ..."
+    },
+    {
+        "timestamp": "2025-04-09T20:10:01.736773",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Mean Reversion (20 days)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"Given the current price trend of consolidating within a range-bound pattern, mean reversion seems like a plausible factor for 3988.HK. With 20-day historical data available, this factor can help gauge whether the stock is overbought or oversold.\"\n    },\n    {\n        \"alpha_name\": \"Moving Average Reversion\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The stabil..."
+    },
+    {
+        "timestamp": "2025-04-09T20:10:01.737754",
+        "action": "Market debate finished for 3988.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:10:02.295922",
+        "action": "Starting market debate for 6618.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:10:59.751494",
+        "action": "Generating alpha factor analysis for 6618.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:10:59.751638",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 6618.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nThe company is a Chinese-based healthcare technology company that provides e-commerce platforms for pharmaceuticals and medical devices. The company's ..."
+    },
+    {
+        "timestamp": "2025-04-09T20:11:06.545630",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"The uptrend and resistance break suggest a potential short-term buy signal, which may be reinforced by an MA crossover.\"\n    },\n    {\n        \"alpha_name\": \"Average True Range (ATR, 14-day)\",\n        \"confidence_score\": \"0.5\",\n        \"reasoning\": \"The ATR measure can help identify the stock's volatility, but its value as a factor depends on how it reacts to c..."
+    },
+    {
+        "timestamp": "2025-04-09T20:11:06.546236",
+        "action": "Market debate finished for 6618.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:11:07.106032",
+        "action": "Starting market debate for 6690.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:11:59.843320",
+        "action": "Generating alpha factor analysis for 6690.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:11:59.843351",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 6690.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of Haier Smart Home Co., Ltd. (6690.HK):\n\n**Company Overview**\n\nHaier Smart Home Co., Ltd. is a Chinese co..."
+    },
+    {
+        "timestamp": "2025-04-09T20:12:06.361269",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"This factor is relevant as it could indicate a potential trend reversal, given the consolidation phase in the stock's price action.\"\n    },\n    {\n        \"alpha_name\": \"Average True Range (ATR, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The ATR can help identify volatility and potential breakout points in the stock's price movement.\"\n  ..."
+    },
+    {
+        "timestamp": "2025-04-09T20:12:06.362016",
+        "action": "Market debate finished for 6690.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:12:06.915030",
+        "action": "Starting market debate for 6862.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:13:02.020228",
+        "action": "Generating alpha factor analysis for 6862.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:13:02.020245",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 6862.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nHaidilao International Holding Ltd. (6862.HK) is a consumer cyclical company operating in the restaurant and delivery businesses. The company operates ..."
+    },
+    {
+        "timestamp": "2025-04-09T20:13:08.109472",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"The recent price action suggests a potential MA crossover, which could indicate a trend reversal.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"Increasing volume in the past few days indicates growing interest and momentum for the stock.\"\n    },\n    {\n        \"alpha_name\": \"Normalized Bollinger ..."
+    },
+    {
+        "timestamp": "2025-04-09T20:13:08.110454",
+        "action": "Market debate finished for 6862.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:13:08.669013",
+        "action": "Starting market debate for 9618.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:14:04.719521",
+        "action": "Generating alpha factor analysis for 9618.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:14:04.719540",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 9618.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, here is a concise fundamental analysis of JD.com, Inc. (9618.HK):\n\n**Company Profile**\n\n* Industry: Consumer Cyclical\n* Sector: Internet Retail\n*..."
+    },
+    {
+        "timestamp": "2025-04-09T20:14:12.625450",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The recent consolidation in the stock price suggests a potential break-out, which could be triggered by a crossover of the 10-day and 50-day moving averages.\"\n    },\n    {\n        \"alpha_name\": \"Average True Range (ATR, 14-day)\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"The ATR indicates the volatility of the stock price, which can be useful in..."
+    },
+    {
+        "timestamp": "2025-04-09T20:14:12.626483",
+        "action": "Market debate finished for 9618.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:14:13.184072",
+        "action": "Starting market debate for 9633.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:15:03.042667",
+        "action": "Generating alpha factor analysis for 9633.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:15:03.042679",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 9633.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** **Company Overview**\n\nNongfu Spring Co., Ltd. (9633.HK) is a consumer defensive company that researches, develops, produces, and markets packaged drinking water and beverage..."
+    },
+    {
+        "timestamp": "2025-04-09T20:15:10.323718",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"The stock has been experiencing a prolonged consolidation phase, and the recent attempts to break out above resistance at around $35-$36 may indicate an upcoming crossover event that could lead to price movement.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.6\",\n        \"reasoning\": \"The decreasing volume on the chart su..."
+    },
+    {
+        "timestamp": "2025-04-09T20:15:10.324605",
+        "action": "Market debate finished for 9633.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:15:10.882154",
+        "action": "Starting market debate for 9888.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:15:59.921546",
+        "action": "Generating alpha factor analysis for 9888.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:15:59.921561",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 9888.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the provided data, I'll perform a concise fundamental analysis of Baidu, Inc. (9888.HK). Please note that this analysis is limited to the data available.\n\n**Key Met..."
+    },
+    {
+        "timestamp": "2025-04-09T20:16:08.652872",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"Given Baidu's relatively stable revenue growth and increasing EPS, a MA crossover at the 10-day and 50-day mark suggests a potential buy signal.\"\n    },\n    {\n        \"alpha_name\": \"Stochastic Oscillator (%K, 14-day)\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"As Baidu's stock price exhibits signs of oscillation between the upper and lower bound..."
+    },
+    {
+        "timestamp": "2025-04-09T20:16:08.654544",
+        "action": "Market debate finished for 9888.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:16:09.209531",
+        "action": "Starting market debate for 9901.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:17:01.102543",
+        "action": "Generating alpha factor analysis for 9901.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:17:01.102563",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 9901.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** Based on the data provided, here is a concise fundamental analysis of New Oriental Education & Technology Group Inc. (9901.HK):\n\n**Business Overview**\n\nNew Oriental Educatio..."
+    },
+    {
+        "timestamp": "2025-04-09T20:17:08.489356",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The bullish case highlights steady price growth, and a moving average crossover could indicate a potential buy signal.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Increased trading volume may suggest growing investor interest in 9901.HK, supporting the overall bullish sentiment.\"\n    },\n    {\n..."
+    },
+    {
+        "timestamp": "2025-04-09T20:17:08.490104",
+        "action": "Market debate finished for 9901.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:17:09.046563",
+        "action": "Starting market debate for 9961.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:17:58.776529",
+        "action": "Generating alpha factor analysis for 9961.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:17:58.776550",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 9961.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** I can provide a concise fundamental analysis of Trip.com Group Limited (9961.HK). Please note that this is based on the provided data and may not be comprehensive or up-to-d..."
+    },
+    {
+        "timestamp": "2025-04-09T20:18:05.604279",
+        "action": "Received response",
+        "details": "```json\n[\n  {\n    \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n    \"confidence_score\": \"0.8\",\n    \"reasoning\": \"The stock has been consolidating in a sideways pattern over the past few months, indicating a potential MA crossover event.\"\n  },\n  {\n    \"alpha_name\": \"Average True Range (ATR, 14-day)\",\n    \"confidence_score\": \"0.7\",\n    \"reasoning\": \"A significant ATR move could indicate a price break or change in market sentiment.\"\n  },\n  {\n    \"alpha_name\": \"Stochastic Oscillator (%K, ..."
+    },
+    {
+        "timestamp": "2025-04-09T20:18:05.605299",
+        "action": "Market debate finished for 9961.HK.",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:18:06.162113",
+        "action": "Starting market debate for 9988.HK",
+        "details": "Input Factors: 15"
+    },
+    {
+        "timestamp": "2025-04-09T20:18:59.118982",
+        "action": "Generating alpha factor analysis for 9988.HK",
+        "details": "None"
+    },
+    {
+        "timestamp": "2025-04-09T20:18:59.118994",
+        "action": "Generating response",
+        "details": "\n                    Given the analysis for stock 9988.HK, select the *most relevant* alpha factors FOR THIS STOCK.\n                    **CRITICAL: Select factors *strictly* and *only* from the 'Available Alpha Factor Names' list below.**\n                    **Synthesized Analysis & Debate Summary:**\n        **Fundamental:** I'll provide a concise fundamental analysis of Alibaba Group Holding Limited (9988.HK).\n\n**Company Overview**\n\nAlibaba Group Holding Limited is a multinational conglomerate ..."
+    },
+    {
+        "timestamp": "2025-04-09T20:19:07.867126",
+        "action": "Received response",
+        "details": "```json\n[\n    {\n        \"alpha_name\": \"Moving Average Crossover (10 vs 50 day)\",\n        \"confidence_score\": \"0.8\",\n        \"reasoning\": \"The stock's recent price movement and historical trend patterns suggest a potential MA crossover event, which could signal a significant change in the market sentiment.\"\n    },\n    {\n        \"alpha_name\": \"Volume Momentum\",\n        \"confidence_score\": \"0.7\",\n        \"reasoning\": \"Increasing volume on the stock's recent upswings may indicate strong investor int..."
+    },
+    {
+        "timestamp": "2025-04-09T20:19:07.867834",
+        "action": "Market debate finished for 9988.HK.",
+        "details": "None"
+    }
+]

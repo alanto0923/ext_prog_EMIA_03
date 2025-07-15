@@ -1,0 +1,763 @@
+arXiv:1501.05381v2  [q-fin.PM]  22 Oct 2015Combining Alphas via Bounded Regression
+Zura Kakushadze§†1
+§Quantigic/circleRSolutions LLC
+1127 High Ridge Road #135, Stamford, CT 069052
+†Free University of Tbilisi, Business School & School of Phys ics
+240, David Agmashenebeli Alley, Tbilisi, 0159, Georgia
+(January 7, 2015; revised October 22, 2015)
+Abstract
+We give an explicit algorithm and source codefor combining a lphastreams
+via bounded regression. In practical applications typical ly there is insuﬃcient
+history to compute a sample covariance matrix (SCM) for a lar ge number of
+alphas. To compute alpha allocation weights, one then resor ts to (weighted)
+regression over SCM principal components. Regression ofte n produces alpha
+weights with insuﬃcient diversiﬁcation and/or skewed dist ribution against,
+e.g., turnover. This can be rectiﬁed by imposing bounds on alpha w eights
+within the regression procedure. Bounded regression can al so be applied to
+stock and other asset portfolio construction. We discuss il lustrative examples.
+Keywords: hedgefund, alphastream, alphaweights, portfolioturnover, inve stment
+allocation, weighted regression, diversiﬁcation, bounds, optimizat ion, factor models
+1Zura Kakushadze, Ph.D., is the President of Quantigic/circleRSolutions LLC, and a Full Professor
+at Free University of Tbilisi. Email: zura@quantigic.com
+2DISCLAIMER: This address is used by the corresponding author fo r no purpose other than
+to indicate his professional aﬃliation as is customary in publications. I n particular, the contents
+of this paper are not intended as an investment, legal, tax or any ot her such advice, and in no way
+represent views of Quantigic Solutions LLC, the website www.quantig ic.comor any of their other
+aﬃliates.1 Introduction
+With technological advances there is an ever increasing number of a lpha streams.3
+Many of these alphas are ephemeral, with relatively short lifespans. As a result,
+in practical applications typically there is insuﬃcient history to compu te a sample
+covariance matrix (SCM) for a large number of alpha streams – SCM is singular.
+Therefore, directly using SCM in, say, alpha portfolio optimization is n ot a option.4
+One approach to circumvent this diﬃculty is to build a factor model fo r alpha
+streams[56]. Because oftheutmostsecrecy inthealphabusiness, suchfactormodels
+must be build in-house – there are no commercial providers of “stan dardized” factor
+models for alpha streams. As with factor models for equities, such m odel building
+for alphas requires certain nontrivial expertise and time expenditu re.
+Therefore, in practice, one often takes a simpler path. As was disc ussed in
+more detail in [56], one can deform SCM such that it is nonsingular, and then use
+the so-deformed SCM in, say, Sharpe ratio optimization for a portf olio of alphas.
+For small deformations this then reduces to a cross-sectional we ighted regression
+of the alpha stream expected returns [56]. The regression weights are the inverse
+sample variances of the alphas. The columns of the loadings matrix, o ver which the
+expected returns are regressed, are nothing but the ﬁrst Kprincipal components of
+SCM corresponding to its positive ( i.e., non-vanishing) eigenvalues [56].
+Regression often produces alpha weights with insuﬃcient diversiﬁca tion and/or
+skewed distribution against, e.g., turnover. Thus, if some expected returns are
+skewed, then, despite nonunit regression weights (which suppres s more volatile al-
+phas), the corresponding alpha weights can be larger than desired by diversiﬁcation
+considerations. Also, the principal components know nothing abou t quantities such
+as turnover.5A simple way of obtaining a more “well-rounded” portfolio composi-
+tion is to set bounds on alpha weights. This is the approach we discuss here.
+When individual alpha streams are traded on separate execution pla tforms, the
+alpha weights are non-negative. By combining and trading multiple alph a streams
+on the same execution platform – the framework we adapt here – on e saves on
+transaction costs by internally crossing trades between diﬀerent alpha streams (as
+opposed to going to the market).6Then the alpha weights can be negative.
+When alpha weights can take both positive and negative values, the b ounded
+regression problem simpliﬁes. It boils down to an iterative algorithm we discuss in
+Section 2. This algorithm can actually be derived from an optimization a lgorithm
+3Here“alpha”–followingthe commontraderlingo–generallymeansany reasonable“expected
+return” that one may wish to trade on and is not necessarily the sam e as the “academic” alpha.
+In practice, often the detailed information about how alphas are co nstructed may not be available,
+e.g., the only data available could be the position data, so “alpha” then is a set of instructions to
+achieve certain stock holdings by some times t1,t2,...
+4For apartiallist ofhedgefund literature, see, e.g., [1]-[20] and referencestherein. For apartial
+list of portfolio optimization and related literature, see, e.g., [21]-[55] and references therein.
+5One approach to rectify this is to add a turnover-based factor to the loadings matrix [56].
+6For a recent discussion, see [57].
+1with bounds (in a factor model context) discussed in [58] by taking t he regression
+limit of optimization. We also give R source code for the bounded regre ssion algo-
+rithm in Appendix A. Appendix B contains some legalese. We conclude in S ection
+3, where we also discuss bounded regression with transaction cost s following [59].
+2 Bounded Regression
+2.1 Notations
+We have Nalphasαi,i= 1,...,N. Each alpha is actually a time series αi(ts),
+s= 0,1,...,M, wheret0is the most recent time. Below αirefers to αi(t0).
+LetCijbe the sample covariance matrix (SCM) of the Ntime series αi(ts). If
+M < N, then only Meigenvalues of Cijare non-zero, while the remainder have
+“small” values, which are zeros distorted by computational roundin g.7
+Alphasαiare combined with weights wi. Any leverage is included in the deﬁni-
+tion ofαi,i.e., if a given alpha labeled by j∈ {1,...,N}before leverage is α′
+j(this
+is a raw, unlevered alpha) and the corresponding leverage is Lj: 1, then we deﬁne
+αj≡Ljα′
+j. With this deﬁnition, the weights satisfy the condition
+N/summationdisplay
+i=1|wi|= 1 (1)
+Here we allow the weights to be negative as we are interested in the ca se where the
+alphas are traded on the same execution platform and trades betw een alphas are
+crossed, so one is actually trading the combined alpha α≡/summationtextN
+i=1αiwi.
+2.2 Weighted Regression
+When SCM Cijis singular and no other matrix ( e.g., a factor model) to replace it
+is available, one can deform SCM such that it is nonsingular, and then u se the so-
+deformed SCM in, say, Sharpe ratio optimization for a portfolio of alp has [56]. For
+small deformations this reduces to a cross-sectional weighted re gression of the alpha
+stream expected returns [56]. The regression weights zi(not to be confused with
+the alpha weights wi) are the inverse sample variances of the alphas: zi≡1/Cii.
+The columns of the loadings matrix Λ iA,A= 1,...,K, over which the expected
+returns are regressed, are nothing but the ﬁrst Kprincipal components of SCM
+corresponding to its positive ( i.e., non-vanishing) eigenvalues. However, for now we
+will keep Λ iAgeneral ( e.g., one may wish to include other risk factors in Λ iA[56]).
+7Actually, this assumes that there are no N/As in any of the alpha time series. If some or all
+alpha time series contain N/As in non-uniform manner and the correla tion matrix is computed by
+omitting such pair-wise N/As, then the resulting correlation matrix m ay have negative eigenvalues
+that are not zeros distorted by computational rounding.
+2The weights wiare given by:
+wi=γ ziεi (2)
+whereεiare the residuals of the cross-sectional regression of αiover Λ iA(without
+the intercept, unless the intercept is subsumed in Λ iA, that is – see below) with the
+regression weights zi:
+εi=αi−N/summationdisplay
+j=1zjαjK/summationdisplay
+A,B=1ΛiAΛjBQ−1
+AB (3)
+whereQ−1
+ABis the inverse of
+QAB≡N/summationdisplay
+i=1ziΛiAΛiB (4)
+and the overall factor γin (2) is ﬁxed via (1). Note that we have
+∀A∈ {1,...,K}:N/summationdisplay
+i=1wiΛiA= 0 (5)
+So, the weights wiare neutral w.r.t. the risk factors deﬁned by the columns of the
+loadings matrix Λ iA.
+2.3 Bounds
+Since the weights wican have either sign, we will assume that the lower and upper
+bounds on the weights
+w−
+i≤wi≤w+
+i (6)
+satisfy the conditions
+w−
+i≤0 (7)
+w+
+i≥0 (8)
+w−
+i< w+
+i (9)
+The last condition is not restrictive: if for some alpha labeled by iwe have w−
+i=
+w+
+i, then we can simply set wi=w−
+iand altogether exclude this alpha from the
+bounded regression procedure below. Also, if, for whatever reas on, we wish to have
+no upper/lower bound for a given wi, we can simply set w±
+i=±1.
+The bounds can be imposed for diversiﬁcation purposes: e.g., one may wish to
+require that no alpha has a weight greater than some ﬁxed (small) pe rcentileξ,i.e.,
+|wi| ≤ξ, sow±
+i=±ξ. One may also wish to suppress the contributions of high
+3turnover alphas, e.g., by requiring that |wi| ≤/tildewideξifτi≥τ∗, whereτiis the turnover,8
+τ∗is some cut-oﬀ turnover, and /tildewideξis some (small) percentile. Bounds can also be
+used to limit the weights of low capacity9alphas.Etc.10
+2.4 Running a Bounded Regression
+So, how do we impose the bounds in the context of a regression? The re are two
+subtleties here. First, we wish to preserve the factor neutrality p roperty (5), which
+is invariant under the simultaneous rescalings wi→ζwi(whereζis a constant). If
+we simply set some wito their upper or lower bounds, this generally will ruin the
+rescaling invariance, so the property (5) will be lost. Second, we mu st preserve the
+normalization condition (1). In fact, it is precisely this normalization c ondition that
+allows to meaningfully set the bounds w±
+i, as the regression itself does not ﬁx the
+overall normalizationcoeﬃcient γin(2), owing to therescaling invariance wi→ζwi.
+Here we discuss the bounded regression algorithm. To save space, we skip the
+detailed derivation as it follows straightforwardly by taking the regr ession limit
+of optimization with bounds in the context of a factor model, both of which are
+discussed in detail in [58].11
+Let us deﬁne the following subsets of the index i∈J≡ {1,...,N}:
+wi=w+
+i, i∈J+(10)
+wi=w−
+i, i∈J−(11)
+J≡J+∪J−(12)
+/tildewideJ≡J\J (13)
+Further, let
+/tildewideαi≡γ αi (14)
+yA≡/summationdisplay
+i∈/tildewideJzi/tildewideαiΛiA+/summationdisplay
+i∈J+w+
+iΛiA+/summationdisplay
+i∈J−w−
+iΛiA (15)
+8Here the turnover (over a given period, e.g., daily turnover) is deﬁned as the ratio τi≡Di/Ii
+of total dollars Di(long plus short) traded by the alpha labeled by iover the corresponding total
+dollar holdings Ii(long plus short).
+9By capacity I∗
+ifor a given alpha we mean the value of the investment level Iifor which the
+P&LPi(Ii) is maximized (considering nonlinear eﬀects of impact).
+10Since the regression we consider here is weighted with the regressio n weights zi= 1/Cii, this
+already controls exposure to alpha volatility, so imposing bounds bas ed on volatility would make
+a diﬀerence only if one wishes to further suppress volatile alphas.
+11The regression limit of optimization essentially amounts to the limit ξ2
+i≡η/tildewideξ2
+i,η→0,
+/tildewideξ2
+i= ﬁxed, where ξiis the speciﬁc (idiosyncratic) risk in the factor model with the facto r loadings
+matrix identiﬁed with the regression loadings matrix Λ iA(and the K×Kfactor covariance matrix
+becomes immaterial in the regression limit) – see [58] for details.
+4whereγis to be determined (see below). Then we have
+wi=zi/parenleftBigg
+/tildewideαi−K/summationdisplay
+A,B=1ΛiA/tildewideQ−1
+AByB/parenrightBigg
+, i∈/tildewideJ (16)
+∀i∈J+:zi/parenleftBigg
+/tildewideαi−K/summationdisplay
+A,B=1ΛiA/tildewideQ−1
+AByB/parenrightBigg
+≥w+
+i (17)
+∀i∈J−:zi/parenleftBigg
+/tildewideαi−K/summationdisplay
+A,B=1ΛiA/tildewideQ−1
+AByB/parenrightBigg
+≤w−
+i (18)
+where/tildewideQ−1is the inverse of the K×Kmatrix/tildewideQ:
+/tildewideQAB≡/summationdisplay
+i∈/tildewideJziΛiAΛiB (19)
+Here the loadings matrix Λ iAmust be such that /tildewideQis invertible.12Also, note that
+wi,i∈/tildewideJgiven by (16) together with wi=w+
+i,i∈J+andwi=w−
+i,i∈J−satisfy
+(5), as they should.
+Note that, for a given value of γ, (15) solves for yAgivenJ+andJ−. On the
+other hand, (17) and (18) determine J+andJ−in terms of yA. The entire system is
+then solved iteratively, where at the initial iteration one takes /tildewideJ(0)=J, so thatJ+(0)
+andJ−(0)are empty. However, we still need to ﬁx γ. This is done via a separate
+iterative procedure, which we describe below.
+Because we have two iterations, to guarantee (rapid) convergen ce, theJ±it-
+eration (that is, for a given value of γ) can be done as follows. Let /hatwidew(s)
+ibe such
+that
+∀i∈J:w−
+i≤/hatwidew(s)
+i≤w+
+i (20)
+∀A∈ {1,...,K}:N/summationdisplay
+i=1/hatwidew(s)
+iΛiA= 0 (21)
+At the (s+1)-th iteration, let w(s+1)
+ibe given by (16) for i∈/tildewideJ(s), withw(s+1)
+i=w±
+i
+fori∈J±(s). This solution satisﬁes (5), but may not satisfy the bounds. Let
+qi≡w(s+1)
+i−/hatwidew(s)
+i (22)
+hi(t)≡/hatwidew(s)
+i+t qi, t∈[0,1] (23)
+Then
+/hatwidew(s+1)
+i≡hi(t∗) =/hatwidew(s)
+i+t∗qi (24)
+12This is the case if the columns of Λ iAare comprised of the ﬁrst Kprincipal components of
+SCMCijcorresponding to its positive eigenvalues. However, as mentioned a bove, here we keep
+the loadings matrix general.
+5wheret∗is the maximal value of tsuch that hi(t) satisﬁes the bounds. We have:
+qi>0 :pi≡min/parenleftBig
+w(s+1)
+i, w+
+i/parenrightBig
+(25)
+qi<0 :pi≡max/parenleftBig
+w(s+1)
+i, w−
+i/parenrightBig
+(26)
+t∗= min/parenleftBigg
+pi−/hatwidew(s)
+i
+qi/vextendsingle/vextendsingle/vextendsingleqi/\e}atio\slash= 0, i∈J/parenrightBigg
+(27)
+Now, at each step, instead of (17) and (18), we can deﬁne J±(s+1)via
+∀i∈J+(s+1):/hatwidew(s+1)
+i=w+
+i (28)
+∀i∈J−(s+1):/hatwidew(s+1)
+i=w−
+i (29)
+where/hatwidew(s+1)
+iis computed iteratively as above and we can take /hatwidew(0)
+i≡0 at the initial
+iteration. Unlike (17) and (18), (28) and (29) add new elements to J±one (or a
+few) element(s) at each iteration.
+The convergence criteria are given by
+J+(s+1)=J+(s)(30)
+J−(s+1)=J−(s)(31)
+These criteria are based on discrete quantities and are unaﬀected by computational
+(machine) precision eﬀects. However, in practice the equalities in (2 8) and (29)
+are understood within some tolerance (or machine precision) – see t he R code in
+Appendix A. We will denote the value of /hatwidew(s+1)
+iat the ﬁnal iteration (for a given
+value ofγ, that is) via/tildewidewi.
+Finally,γis determined via another iterative procedure as follows (we use su-
+perscript afor theγiterations to distinguish it from the superscript sfor theJ±
+iterations):
+γ(a+1)=γ(a)
+/summationtextN
+i=1/vextendsingle/vextendsingle/vextendsingle/tildewidew(a)
+i/vextendsingle/vextendsingle/vextendsingle(32)
+where/tildewidew(a)
+iis computed as above for γ=γ(a). To achieve rapid convergence, the
+initial value γ(0)can be set as follows:
+γ(0)=1/summationtextN
+i=1zi|εi|(33)
+whereεiare the residuals of the weighted regression (without bounds) give n by (3).
+The convergence criterion for the γiteration is given by
+γ(a+1)=γ(a)(34)
+understood within some preset computational tolerance (or mach ine precision).
+6The R code for the above algorithm with some additional explanatory documen-
+tation is given in Appendix A. Note that this code is not written to be “f ancy” or
+optimized for speed or in any other way. Instead, its sole purpose is toillustrate
+the bounded regression algorithm as it is described above in a simple-t o-understand
+fashion. Some legalese relating to this code is given in Appendix B.
+2.5 Application to Stock Portfolios
+Above we discussed the bounded regression algorithm in the contex t of computing
+weights for portfolios of alpha streams. However, the algorithm is q uite general and
+– with appropriate notational identiﬁcations – can be applied to port folios of stocks
+or other suitable instruments. In fact, it can also be applied outside of ﬁnance.
+Here, for the sake of deﬁniteness, we will focus on stock portfolio s, in fact, we will
+assume that they are dollar neutral, so both long and short position s are allowed.13
+2.5.1 Establishing Trades
+Let us ﬁrst discuss establishing trades, i.e., we start from nil positions and establish
+a portfolio of Nstocks. Instead of alpha streams, our index i∈ {1,...,N} ≡Jnow
+labels the stocks. We will denote the desired dollar(not share) holdings via Hi, and
+the total dollar investment (long plus short) via I:
+I≡N/summationdisplay
+i=1|Hi| (35)
+Letwi≡Hi/I. These are now our stock weights (analogous to the alpha weights) .
+Then we have the familiar normalization condition
+N/summationdisplay
+i=1|wi|= 1 (36)
+However, normally, one imposes bounds on Hi, not onwi. For example, in the case
+of establishing trades one may wish to cap the positions such that: i) not more
+than a small percentile ξof the total dollar investment Iis allocated to any given
+stock – this is a diversiﬁcation constraint; and ii) only a small percent ile/tildewideξof ADDV
+(average daily dollar volume) Viis traded – this is a liquidity constraint (see below).
+In this case we have the following bounds on the dollar holdings Hi:
+H−
+i≤Hi≤H+
+i (37)
+H±
+i=±min/parenleftBig
+ξ I,/tildewideξ Vi/parenrightBig
+(38)
+In this case the upper and lower bounds are symmetrical. In some ca ses, such as
+for hard-to-borrow-stocks, we may have some H−
+i= 0. In other cases one may not
+13Various generalizations are possible, some more straightforward t han others.
+7wish to have a long position in some stocks. Etc.We will only assume that H−
+i≤0
+andH+
+i≥0, in line with our discussion above for the bounds on the weights, whic h
+are then given by
+w±
+i≡H±
+i/I (39)
+The ﬁnal touch then is that instead of αione uses some expected returns Eiin the
+case of stocks. The rest goes through exactly as above for a suit ably chosen Λ iA.
+2.5.2 Rebalancing Trades
+With rebalancing trades, we have the current dollar holdings H∗
+iand the desired
+dollar holdings Hi. In this case, one may wish to cap the positions such that: i) not
+more than a small percentile ξof the total dollar investment Iis allocated to any
+given stock – this is the same diversiﬁcation constraint as above; ii) o nly a small
+percentile/tildewideξof ADDV Viis traded – this the same liquidity constraint as above; and
+iii) not more than a small percentile ξ′of ADDV Viis allocated to any given stock
+– this is another liquidity constraint stemming from the consideration that, if the
+portfolio must be liquidated swiftly ( e.g., due to an unforeseen event), to mitigate
+liquidation costs, the positions are capped based on liquidity. Here ξ′typically can
+be several times larger than /tildewideξ– the portfolio can be built up in stages as long at
+each stage the bounds are satisﬁed. The bounds on Hinow read:
+|Hi| ≤min(ξ I, ξ′Vi) (40)
+|Hi−H∗
+i| ≤/tildewideξ Vi (41)
+It is more convenient to rewrite these bounds in terms of the trade d dollar amounts
+Di≡Hi−H∗
+i:
+D−
+i≤Di≤D+
+i (42)
+D+
+i= min/parenleftBig
+min(ξ I, ξ′Vi)−H∗
+i,/tildewideξ Vi/parenrightBig
+≥0 (43)
+D−
+i= max/parenleftBig
+−min(ξ I, ξ′Vi)−H∗
+i,−/tildewideξ Vi/parenrightBig
+≤0 (44)
+and we are assuming that |H∗
+i| ≤min(ξ I, ξ′Vi). Furthermore, we will assume that
+H∗
+iitself satisﬁes (5):
+∀A∈ {1,...,K}:N/summationdisplay
+i=1H∗
+iΛiA= 0 (45)
+Then the bounded regression algorithm can be straightforwardly a pplied to the
+weightswiandxideﬁned as follows:
+wi≡Hi/I (46)
+xi≡Di/I (47)
+8IntheJ±iterationwenowuse xiinsteadof wi, whileinthe γiterationwestilluse wi.
+Then the rest of the algorithm goes through unchanged. Let us no te, however, that
+the source code given in Appendix A is written with alpha weights in mind, so while
+it can be adapted to the case of stock portfolios in the case of esta blishing trades,
+straightforward modiﬁcations are required to accommodate reba lancing trades.
+2.5.3 Examples: Intraday Mean-Reversion Alphas
+To illustrate the use of the algorithm, we have employed it to constru ct portfolios
+for intraday mean-reversion alphas with the loadings matrix Λ iAin the following 5
+incarnations: i) intercept only (so K= 1); ii) BICS (Bloomberg Industry Classiﬁ-
+cation System) sectors; iii) BICS industries; iv) BICS sub-industrie s; and v) the 4
+style factors prc, mom, hlv and vol of [60] plus BICS sub-industries . The regres-
+sion weights are the inverse sample variances: zi= 1/Cii(see below). In the cases
+ii)-v) above the intercept is subsumed in the loadings matrix Λ iA. Indeed, we have/summationtext
+A∈GΛiA≡1, where Gis the set of columns of Λ iAcorresponding to sectors in
+the case ii), industries in the case iii), and sub-industries in the cases iv) and v).
+Consequently, the resultant portfolios are automatically dollar neu tral.
+The portfolio construction and backtesting are identical to those in [61], where
+more detailed discussion can be found, so to save space, here we will only give a brief
+summary. The portfolios are assumed to be established at the open and liquidated
+atthecloseonthesameday, sotheyarepurelyintradayandthealg orithmofSection
+2.5.1 for the establishing trades applies. The expected returns Eifor each date are
+taken to be Ei=−Ri, whereRi≡ln/parenleftbig
+Popen
+i/Pclose
+i/parenrightbig
+, and for each date Popen
+iis
+today’s open, while Pclose
+iis yesterday’s close adjusted for splits and dividends if the
+ex-date is today. So, these are intraday mean-reversion alphas.
+The universe is top 2000 by ADDV Vi, where ADDV is computed based on 21-
+trading-day rolling periods. However, the universe is not rebalance d daily, but also
+every 21 trading days (see [61] for details). The sample variances Ciiare computed
+based on the same 21-trading-day rolling periods, and are not applie d daily, but
+also every 21 trading days, same as the universe rebalancing (see [ 61] for details).
+We run our simulations over a period of 5 years (more precisely, 252 ×5 trading
+days going back from 9/5/2014, inclusive). The annualized return- on-capital (ROC)
+is computed as average daily P&L divided by the total (long plus short ) intraday
+investment level I(with no leverage) and multiplied by 252. The annualized Sharpe
+Ratio (SR) is computed as the daily Sharpe ratio multiplied by√
+252. Cents-per-
+share (CPS) is computed as the total P&L divided by the total shar es traded. On
+each day the total (establishing plus liquidating) shares traded for each stock are
+given by Qi= 2|Hi|/Popen
+i(see [61] for details).
+For comparison purposes, the results for regressions without bo unds are given in
+Table 1. The results for the bounded regressions, with the bounds on the desired
+holdings set as
+|Hi| ≤0.01Vi (48)
+9so not more than 1% of each stock’s ADDV is bought or sold, are given in Table 2
+and the corresponding P&Ls are plotted in Figure 1. Thus, as expec ted, adding the
+liquidity bounds has the diversiﬁcation eﬀect on the portfolios, so th e Sharpe ratios
+are substantially improved – as usual, at the expense of (slightly) low ering paper
+ROC and CPS. Note that, even with tight liquidity bounds, the 4 style f actors prc,
+mom, hlv and vol of [60] add value, further validating the 4-factor m odel of [60].
+3 Concluding Remarks
+One – but not the only – way to think about bounded regression is as a n alternative
+to optimization with bounds when the latter is not attainable. In fact , as mentioned
+above, bounded regression is a zero speciﬁc risk limit of optimization w ith bounds in
+the context of a factor model. So, when a factor model is not availa ble,e.g., in the
+context of alpha streams, bounded regression can be used in lieu of optimization.
+In this regard, one can further augment the bounded regression algorithm we
+discussed above by including linear transaction costs, as in [59]. A sys tematic ap-
+proach is to start with optimization with bounds and linear transactio n costs in the
+context of a factor model as in [58] and take a zero speciﬁc risk limit. Non-linear
+transaction costs (impact) in the context of alpha weights can be t reated using the
+approximation discussed in [59] using the spectral model of turno ver reduction [62].
+A The R Code
+Below we give R (R Package for Statistical Computing, http://www.r- project.org)
+source code for the bounded regression algorithm we discuss in the main text.
+The entry function is calc.bounded.lm() , which runs the γiteration loop and
+calls the function bounded.lm() , which runs the J±iteration loop. The args()
+ofcalc.bounded.lm() are:ret, which is the N-vector of alphas αi(or, more gener-
+ally, some other returns); load, which is the N×Kloadings matrix Λ iA;weights,
+which is the N-vector of the regression weights zi;upper, which is the N-vector of
+the upper bounds w+
+i;lower, which is the N-vector of the lower bounds w−
+i; and
+prec, which is the desired precision with which the output weights wi, theN-vector
+of which calc.bounded.lm() returns, must satisfy the normalization condition (1).
+Internally, bounded.lm() calls the function calc.bounds() , which computes /hatwidew(s+1)
+i
+in (24) at each iteration. The code is straightforwardly self-explan atory.Jp, Jm
+inbounded.lm() correspond to J±. One subtlety is that, when restricting Λ iAto
+/tildewideJ⊂J, in the case of binary industry classiﬁcation ( e.g., when Λ iAcorresponds
+to BICS sub-industries, which can be small), the so-restricted Λ iAmay have null
+columns, which must be omitted and the code below does just that. F or non-binary
+cases, one may wish to augment the code to ensure that the matrix Q <- t(load[Jt,
+take]) %*% w.load[Jt, take] is nonsingular (and if it is, then remove the culprit
+columns in Λ iAor otherwise modify the latter); however, for non-binary Λ iAand
+generic regression weights this should not occur except forspecia l, non-generic cases.
+10calc.bounded.lm <- function(ret, load, weights, upper, lo wer, prec = 1e-5)
+{
+reg <- lm(ret ∼-1 + load, weights = weights)
+x <- weights * residuals(reg)
+ret <- ret / sum(abs(x))
+repeat{
+x <- bounded.lm(ret, load, weights, upper, lower)
+if(abs(sum(abs(x)) - 1) < prec)
+break
+ret <- ret / sum(abs(x))
+}
+return(x)
+}
+bounded.lm <- function(ret, load, weights, upper, lower, t ol = 1e-6)
+{
+calc.bounds <- function(z, x)
+{
+q <- x - z
+p <- rep(NA, length(x))
+pp <- pmin(x, upper)
+pm <- pmax(x, lower)
+p[q > 0] <- pp[q > 0]
+p[q < 0] <- pm[q < 0]
+t <- (p - z)/q
+t <- min(t, na.rm = T)
+z <- z + t * q
+return(z)
+}
+if(!is.matrix(load))
+load <- matrix(load, length(load), 1)
+n <- nrow(load)
+k <- ncol(load)
+ret <- matrix(ret, n, 1)
+upper <- matrix(upper, n, 1)
+lower <- matrix(lower, n, 1)
+z <- diag(weights)
+11w.load <- z %*% load
+w.ret <- z %*% ret
+J <- rep(T, n)
+Jp <- rep(F, n)
+Jm <- rep(F, n)
+z <- rep(0, n)
+repeat{
+Jt <- J & !Jp & !Jm
+y <- t(w.load[Jt, ]) %*% ret[Jt, ]
+if(sum(Jp) > 1)
+y <- y + t(load[Jp, ]) %*% upper[Jp, ]
+else if(sum(Jp) == 1)
+y <- y + upper[Jp, ] * matrix(load[Jp, ], k, 1)
+if(sum(Jm) > 1)
+y <- y + t(load[Jm, ]) %*% lower[Jm, ]
+else if(sum(Jm) == 1)
+y <- y + lower[Jm, ] * matrix(load[Jm, ], k, 1)
+if(k > 1)
+take <- colSums(abs(load[Jt, ])) > 0
+else
+take <- T
+Q <- t(load[Jt, take]) %*% w.load[Jt, take]
+Q <- solve(Q)
+v <- Q %*% y[take]
+xJp <- Jp
+xJm <- Jm
+x <- w.ret - w.load[, take] %*% v
+x[Jp, ] <- upper[Jp, ]
+x[Jm, ] <- lower[Jm, ]
+z <- calc.bounds(z, x)
+Jp <- abs(z - upper) < tol
+Jm <- abs(z - lower) < tol
+if(all(Jp == xJp) & all(Jm == xJm))
+break
+}
+return(z)
+12}
+B DISCLAIMERS
+Wherever thecontext so requires, themasculine gender includes t hefeminine and/or
+neuter, and the singular form includes the plural and vice versa . The author of this
+paper (“Author”) and his aﬃliates including without limitation Quantigic/circleRSolu-
+tions LLC (“Author’s Aﬃliates” or “his Aﬃliates”) make no implied or exp ress
+warranties or any other representations whatsoever, including w ithout limitation
+implied warranties of merchantability and ﬁtness for a particular pur pose, in con-
+nection with or with regard to the content of this paper including with out limitation
+any code or algorithms contained herein (“Content”).
+The reader may use the Content solely at his/her/its own risk and th e reader
+shall have no claims whatsoever against the Author or his Aﬃliates an d the Author
+and his Aﬃliates shall have no liability whatsoever to the reader or any third party
+whatsoever for any loss, expense, opportunity cost, damages o r any other adverse
+eﬀects whatsoever relating to or arising from the use of the Conte nt by the reader
+including without any limitation whatsoever: any direct, indirect, incid ental, spe-
+cial, consequential or any other damages incurred by the reader, however caused
+and under any theory of liability; any loss of proﬁt (whether incurre d directly or
+indirectly), any loss of goodwill or reputation, any loss of data suﬀe red, cost of pro-
+curement of substitute goods or services, or any other tangible o r intangible loss;
+any reliance placed by the reader on the completeness, accuracy o r existence of the
+Content or any other eﬀect of using the Content; and any and all o ther adversities
+or negative eﬀects the reader might encounter in using the Conten t irrespective of
+whether the Author or his Aﬃliates is or are or should have been awar e of such
+adversities or negative eﬀects.
+The R code included in Appendix A hereof is part of the copyrighted R c ode
+of Quantigic/circleRSolutions LLC and is provided herein with the express permission of
+Quantigic/circleRSolutions LLC. The copyright owner retains all rights, title and inter est
+in and to its copyrighted source code included in Appendix A hereof an d any and
+all copyrights therefor.
+References
+[1] T. Schneeweis, R. Spurgin, and D. McCarthy, “Survivor Bias in Co mmodity
+Trading Advisor Performance”, J. Futures Markets, 1996, 16(7 ), 757-772.
+[2] C. Ackerman, R. McEnally and D. Revenscraft, “The Performan ce of Hedge
+Funds: Risk, Return and Incentives”, Journal of Finance, 1999, 54(3), 833-874.
+[3] S.J.Brown, W.GoetzmannandR.G.Ibbotson, “OﬀshoreHedgeF unds: Survival
+and Performance, 1989-1995”, Journal of Business, 1999, 72( 1), 91-117.
+13[4] F.R. Edwards and J. Liew, “Managed Commodity Funds”, Journal of Futures
+Markets, 1999, 19(4), 377-411.
+[5] F.R. Edwards and J. Liew, “Hedge Funds versus Managed Future s as Asset
+Classes”, Journal of Derivatives, 1999, 6(4), 45-64.
+[6] W. Fung and D. Hsieh, “A Primer on Hedge Funds”, Journal of Emp irical Fi-
+nance, 1999, 6(3), 309-331.
+[7] B. Liang, “On the Performance of Hedge Funds”, Financial Analy sts Journal,
+1999, 55(4), 72-85.
+[8] V. Agarwal and N.Y. Naik, “On Taking the “Alternative” Route: Th e Risks,
+Rewards, and Performance Persistence of Hedge Funds”, Journ al of Alternative
+Investments, 2000, 2(4), 6-23.
+[9] V. Agarwal and N.Y. Naik, “Multi-Period Performance Persistenc e Analysis
+of Hedge Funds Source”, Journal of Financial and Quantitative An alysis, 2000,
+35(3), 327-342.
+[10] W. Fungand D.Hsieh, “Performance Characteristics of Hedge FundsandCom-
+modity Funds: Natural vs. Spurious Biases”, Journal of Financial and Quantita-
+tive Analysis, 2000, 35(3), 291-307.
+[11] B. Liang, “Hedge Funds: The Living and the Dead”, Journal of F inancial and
+Quantitative Analysis, 2000, 35(3), 309-326.
+[12] C.S. Asness, R.J. Krail, and J.M. Liew, “Do Hedge Funds Hedge?”, Journal of
+Portfolio Management, 2001, 28(1), 6-19.
+[13] F.R. Edwards and M.O. Caglayan, “Hedge Fund and Commodity Fun d Invest-
+ments in Bull and Bear Markets”, Journal of Portfolio Management , 2001, 27(4),
+97-108.
+[14] W. Fung and D. Hsieh, “The Risk in Hedge Fund Strategies: Theor y and
+Evidence from Trend Followers”, Review of Financial Studies, 2001, 14(2), 313-
+341.
+[15] B. Liang, “Hedge Fund Performance: 1990-1999”, Financial A nalysts Journal,
+2001, 57(1), 11-18.
+[16] A.W. Lo, “Risk Management For Hedge Funds: Introduction and Overview”,
+Financial Analysis Journal, 2001, 57(6), 16-33.
+[17] C. Brooks and H.M. Kat, “The Statistical Properties of Hedge F und Index
+ReturnsandTheirImplicationsforInvestors”, JournalofAltern ativeInvestments,
+2002, 5(2), 26-44.
+14[18] D.-L. Kao, “Battle for Alphas: Hedge Funds versus Long-Only P ortfolios”,
+Financial Analysts Journal, 2002, 58(2), 16-36.
+[19] G. Amin and H. Kat, “Stocks, Bonds and Hedge Funds: Not a Fre e Lunch!”,
+Journal of Portfolio Management, 2003, 29(4), 113-120.
+[20] N. Chan, M. Getmansky, S.M. Haas and A.W. Lo, “Systemic Risk an d Hedge
+Funds”, published in: Carey, M. and Stulz, R.M., eds., “The Risks of Fin ancial
+Institutions” (University of Chicago Press, 2006), Chapter 6, 23 5-338.
+[21] H. Markowitz, “Portfolio selection”, Journal of Finance, 1952 , 7(1), 77-91.
+[22] A. Charnes and W.W. Cooper, “Programming with linear fractiona l function-
+als”, Naval Research Logistics Quarterly, 1962, 9(3-4), 181-18 6.
+[23] W.F. Sharpe, “Mutual fund performance”, Journal of Busine ss, 1966, 39(1),
+119-138.
+[24] R.C. Merton, “Lifetime portfolio selection under uncertainty: t he continuous
+time case”, The Review of Economics and Statistics, 1969, 51(3), 2 47-257.
+[25] S. Schaible, “Parameter-free convex equivalent and dual pro grams of fractional
+programming problems”, Zeitschrift f¨ ur Operations Research, 1 974, 18(5), 187-
+196.
+[26] M. Magill and G. Constantinides, “Portfolio selection with transa ctions costs”,
+J. Econom. Theory, 1976, 13(2), 245-263.
+[27] A.F. Perold, “Large-scale portfolio optimization”, Management Science, 1984,
+30(10), 1143-1160.
+[28] M. Davis and A. Norman, “Portfolio selection with transaction co sts”, Math.
+Oper. Res., 1990, 15(4), 676-713.
+[29] B. Dumas and E. Luciano, “An exact solution to a dynamic portfo lio choice
+problem under transaction costs”, The Journal of Finance, 1991 , 46(2), 577-595.
+[30] C. J. Adcock and N. Meade “A simple algorithm to incorporate tra nsactions
+costs in quadratic optimization”, European Journal of Operationa l Research,
+1994, 79(1), 85-94.
+[31] S. Shreve and H.M. Soner, “Optimal investment and consumptio n with trans-
+action costs”, Ann. Appl. Probab., 1994, 4(3), 609-692.
+[32] D. Bienstock, “Computational study of a family of mixed-intege r quadratic
+programming problems”, Mathematical Programming, 1996, 74(2) , 121-140.
+15[33] J. Cvitani´ c and I. Karatzas, “Hedging and portfolio optimizat ion under trans-
+action costs: a martingale approach”, Math. Finance, 1996, 6(2) , 133-165.
+[34] A. Yoshimoto, “The mean-variance approach to portfolio optim ization subject
+to transaction costs”, J. Operations Research Soc. of Japan, 1 996, 39(1), 99-117.
+[35] C. Atkinson, S.R. Pliska and P. Wilmott, “Portfolio management wit h trans-
+action costs”, Proc. Roy. Soc. London Ser. A, 1997, 453(1958) , 551-562.
+[36] D. Bertsimas, C. Darnell and R. Soucy, “Portfolio constructio n through mixed-
+integer programming at Grantham, Mayo, Van Otterloo and Compan y”, Inter-
+faces, 1999, 29(1), 49-66.
+[37] A. Cadenillas and S. R. Pliska, “Optimal trading of a security when there are
+taxes and transaction costs”, Finance and Stochastics, 1999, 3 (2), 137-165.
+[38] T.-J. Chang, N. Meade, J.E. Beasley and Y.M. Sharaiha, “Heurist ics for cardi-
+nality constrained portfolio optimisation”, Computers and Operatio ns Research,
+2000, 27(13), 1271-1302.
+[39] H. Kellerer, R. Mansini and M.G. Speranza, “Selecting portfolios with ﬁxed
+costs and minimum transaction lots”, Annals of Operations Researc h, 2000, 99(1-
+4), 287-304.
+[40] R.T. Rockafellar and S. Uryasev, “Optimization of conditional va lue-at-risk”,
+Journal of Risk, 2000, 2(3), 21-41.
+[41] J. Gondzio and R. Kouwenberg, “High-performance computing for asset-
+liability management”, Operations Research, 2001, 49(6), 879-89 1.
+[42] H. Konno and A. Wijayanayake, “Portfolio optimization problem u nder con-
+cave transaction costs and minimal transaction unit constraints” , Mathematical
+Programming, 2001, 89(2), 233-250.
+[43] S. Mokkhavesa and C. Atkinson, “Perturbation solution of opt imal portfolio
+theory with transaction costs for any utility function”, IMA J. Man ag. Math.,
+2002, 13(2), 131-151.
+[44] O.L.V. Costa and A.C. Paiva, “Robust portfolio selection using linea r-matrix
+inequalities”, Journal of Economic Dynamics and Control, 2002, 26( 6), 889-909.
+[45] F.AlizadehandD.Goldfarb, “Second-orderconeprogramming ”, Mathematical
+Programming, 2003, 95(1), 3-51.
+[46] M.J. Best and J. Hlouskova, “Portfolio selection and transactio ns costs”, Com-
+putational Optimization and Applications, 2003, 24(1), 95-116.
+16[47] K. Janeˇ cek and S. Shreve, “Asymptotic analysis for optimal in vestment and
+consumption with transaction costs”, Finance Stoch., 2004, 8(2) , 181-206.
+[48] M.S. Lobo, M. Fazel and S. Boyd, “Portfolio optimization with linea r and ﬁxed
+transaction costs”, Annals of Operations Research, 2007, 152( 1), 341-365.
+[49] R. Zagst and D. Kalin, “Portfolio optimization under liquidity costs ”, Interna-
+tional Journal of Pure and Applied Mathematics, 2007, 39(2), 217 -233.
+[50] M.Potaptchik, L.Tun¸ cel andH.Wolkowicz, “Largescaleport foliooptimization
+with piecewise linear transaction costs”, Optimization Methods and S oftware,
+2008, 23(6), 929-952.
+[51] E. Moro, J. Vicente, L.G. Moyano, A. Gerig, J.D. Farmer, G. Vag lica, F. Lillo
+and R.N. Mantegna, “Market impact and trading proﬁle of hidden ord ers in stock
+markets”, Physical Review E, 2009, 80, 066102.
+[52] J. Goodman and D.N. Ostrov, “Balancing small transaction cost s with loss of
+optimal allocation in dynamic stock trading strategies”, SIAM J. App l. Math.,
+2010, 70(6), 1977-1998.
+[53] M. Bichuch, “Asymptotic analysis for optimal investment in ﬁnite time with
+transaction costs”, SIAM J. Financial Math., 2012, 3(1), 433-45 8.
+[54] J.E. Mitchell and S. Braun, “Rebalancing an investment portfolio in the pres-
+ence of convex transaction costs, including market impact costs” , Optimization
+Methods and Software, 2013, 28(3), 523-542.
+[55] H. Soner and N. Touzi, “Homogenization and asymptotics for sm all transaction
+costs”, SIAM Journal on Control and Optimization, 2013, 51(4), 2893-2921.
+[56] Z. Kakushadze, “Factor Models for Alpha Streams”, The Jour nal of Investment
+Strategies, 2014, 4(1), 83-109; http://ssrn.com/abstract=2 449927.
+[57] Z.Kakushadze andJ.K.-S.Liew, “IsIt Possible toODonAlpha?”, TheJournal
+of Alternative Investments, 2015, 18(2), 39-49;
+http://ssrn.com/abstract=2419415.
+[58] Z. Kakushadze, “Mean-Reversion and Optimization”, Journal of Asset Man-
+agement, 2015, 16(1), 14-40; http://ssrn.com/abstract=247 8345.
+[59] Z. Kakushadze, “Combining Alpha Streams with Costs”, The Jou rnal of Risk,
+2015, 17(3), 57-78; http://ssrn.com/abstract=2438687.
+[60] Z. Kakushadze, “4-Factor Model for Overnight Returns”, W ilmott Magazine,
+2015, 2015(79), 56-62; http://ssrn.com/abstract=2511874.
+17[61] Z. Kakushadze, “Russian-Doll Risk Models”, Journal of Asset Management,
+2015, 16(3), 170-185; http://ssrn.com/abstract=2538123.
+[62] Z. Kakushadze, “A Spectral Model of Turnover Reduction”, Econometrics,
+2015, 3(3), 577-589; http://ssrn.com/abstract=2427049.
+Table 1: Simulation results for the 5 alphas via regression without bou nds discussed
+in Section 2.5.3.
+Alpha ROC SR CPS
+Regression: Intercept only 33.59% 5.59 1.38
+Regression: BICS Sectors 39.28% 7.05 1.61
+Regression: BICS Industries 42.66% 8.19 1.75
+Regression: BICS Sub-industries 45.25% 9.22 1.84
+Regression: 4 Style Factors plus BICS Sub-industries 46.60% 9.85 1.9 0
+Table 2: Simulation results for the 5 alphas via bounded regression dis cussed in
+Section 2.5.3.
+Alpha ROC SR CPS
+Regression: Intercept only 29.66% 7.36 1.25
+Regression: BICS Sectors 35.32% 9.89 1.48
+Regression: BICS Industries 39.25% 12.00 1.65
+Regression: BICS Sub-industries 42.23% 14.13 1.75
+Regression: 4 Style Factors plus BICS Sub-industries 43.70% 15.54 1 .82
+180 200 400 600 800 1000 12000e+00 1e+07 2e+07 3e+07 4e+07
+Trading DaysP&L
+Figure 1. P&L graphs for the intraday alphas discussed in Sec tion 2.5.3, with a summary
+in Table 2. Bottom-to-top-performing: i) Regression over i ntercept only, ii) regression over
+BICS sectors, iii) regression over BICS industries, iv) reg ression over BICS sub-industries,
+andv)regressionover4stylefactorsprc, mom,hlvandvolof [60]plusBICSsub-industries.
+The investment level is $10M long plus $10M short.
+19

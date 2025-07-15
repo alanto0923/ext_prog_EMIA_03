@@ -1,0 +1,662 @@
+E2EAI: End-to-End Deep Learning Framework
+for Active Investing
+Zikai Wei1, Bo Dai2, and Dahua Lin1,2
+1The Chinese University of Hong Kong
+2Shanghai AI Laboratory
+Abstract. Active investing aims to construct a portfolio of assets that
+are believed to be relatively profitable in the markets, with one popular
+method being to construct a portfolio via factor-based strategies. In
+recent years, there have been increasing efforts to apply deep learning to
+pursue “deep factors” with more active returns or promising pipelines
+for asset trends prediction. However, the question of how to construct an
+active investment portfolio via an end-to-end deep learning framework
+(E2E) is still open and rarely addressed in existing works. In this paper,
+we are the first to propose an E2E that covers almost the entire process
+of factor investing through factor selection, factor combination, stock
+selection, and portfolio construction. Extensive experiments on real stock
+market data demonstrate the effectiveness of our end-to-end deep leaning
+framework in active investing.
+Keywords: Deep learning ·Quantitative investment ·Financial data.
+1 Introduction
+Active investing is one of the dominant investment styles in the financial market
+that aims to generate excess returns compared to a market benchmark. Factor
+investing is one of the most common methods for active investing in a quantitative
+way, the core of which is using the factor as a explanatory tool for the future return.
+In the initial phase, human experts manually create factor databases composed
+of data from markets and financial reports. Then, practitioners conduct factor
+tests to select useful factors from the database, which later serve as candidates
+for building a multifactor model for stock selection. Finally, an active portfolio
+can be constructed, which is a collection of financial investments, particularly
+selected stocks, that seek to provide a return greater than the return of a
+market benchmark, such as a major market index. However, these steps are often
+optimized in isolation, while the end-to-end active investment (E2E) is rarely
+addressed in existing works [9,21,22].
+In practice, this may lead to sub-optimal portfolios. First, in the factor
+selection phase, only the factors that meet a rule of thumb are selected, e.g.,
+the absolute value of the information coefficient (IC) should not be less than
+0.02 and the absolute value of its z-score (ICIR) should not be less than 0.20. In
+this way, only those factors that have a “sufficient” linear correlation with thearXiv:2305.16364v1  [q-fin.PM]  25 May 20232 Z. Wei et al.
+expected return are selected. However, this may result in ignoring some factors
+that, although useful for finding attractive stocks, are highly related to future
+returns and do not have a linear relationship. Second, the routine factor selection
+does not guarantee the diversity of factors. There is a risk of selecting a group of
+factors that have similar characteristics, leading to the problem of exposing the
+final portfolio to a single concentrated risk factor. Third, portfolio construction
+based on a multifactor model and the goal of maximizing weighted factor values
+is not a direct way to learn the optimal portfolio. A multifactor model is trained
+to improve the explanatory power of the inputs to the expected returns and can
+later be used as a tool to score stocks, and subsequent portfolio construction
+is based on these scores of stocks. However, the attractive stocks selected by
+the scores do not always result in the most profitable portfolio, as the stocks
+that are less attractive than the spotlights more often generate higher returns.
+Instead, the goal should be to achieve a higher portfolio return subject to certain
+constraints on stock weighting. Finally, isolated modules are later combined to
+construct a portfolio with a specific investment objective. However, each of these
+modules focuses on different learning objectives, which may distract them from
+achieving that objective together. In contrast, systematizing all modules in an
+E2E framework with a synthetic learning objective can make all modules achieve
+the same investment objective.
+To advance the progress of deep neural networks without being hindered
+by the existing drawbacks of sequentially using isolated modules, in this paper
+we propose a novel E2E Active Investing framework ( E2EAI ) that encourages
+all modules, i.e., factor selection, stock selection, and portfolio construction, to
+fulfill the same learning objective, e.g., optimizing portfolio returns subject to
+weighting or risk constraints. We develop a gated attention block for both factor
+selection and portfolio construction. Different from the rule of thumb for factor
+selection in practice that selects factors satisfied the threshold of IC or ICIR, we
+design a gated-attention mechanism to find the factor that contributes the most
+in portfolio construction. Later, a deep multifactor model learns a deep factor
+via attention modules based on a multi-relationship stock graph that considers
+the intra-sector and cross-sector influence of the other stocks with different close
+relationships. The portfolio construction is based on the exposure of the deep
+factors, the market and the fundamental context of the company learned from the
+original inputs. The whole learning framework is trained with the same objective.
+Even if an E2E framework shows promising results in active investing, portfolio
+managers are still interested in the financial logic and insights behind deep
+learning, especially how the original factors contribute to and influence the deep
+factor that is later used for portfolio construction. Therefore, an E2E framework
+should also provide an interpretation of the deep factor. To be interpretable in the
+deep multifactor module, we further develop a linear and directional estimator
+of the deep factor to identify the logic and insights behind the original factors
+from the perspective of linear representation. Unlike existing work [ 20,13,14], we
+provide a directional attention mechanism that can identify the contribution of
+the original factor through attention while indicating the direction of the factorE2EAI: End-to-End Deep Learning Framework for Active Investing 3
+as positive contribution and negative contribution. The similar directional buffer
+can also be applied to a deep factor, which directly indicates whether the sign of
+its correlation with future return is positive or negative.
+To validate the effectiveness of our approach, we conduct a comprehensive
+study with real data containing more than 2800 constituent stocks from three
+broad-based indices in Chinese stock markets, where our E2E framework out-
+performs existing investment pipelines whose modules are separately optimized.
+The deep factor learned by our E2E method can also deliver a better portfolio
+than existing multifactor models. In summary, the contribution of this work is
+to 1) develop the first E2E framework for active investing using original data
+for portfolio construction, 2) propose a novel loss design that incorporates a
+directional multiplier to determine the direction of the deep factor, recover the
+original factor contribution, and determine the historical cross-sectional factor
+returns of the deep factor, 3) develop a training algorithm with a global optimizer
+for training the E2E framework and a local optimizer to compute the historical
+factor returns of the deep factor with a directional recovery.
+2 Related works
+Deep Multifactor Model Incorporating Stock Relationship. The multifactor model
+has received considerable attention from researchers and academics for several
+decades to determine the exact nature of the common factors that influence
+risk and return in various assets and markets [ 11], with a large body of work
+showing that deep or nonlinear models perform better than linear models [ 7,14,13].
+Moreover, cross-sectional factors can provide a better explanation for average
+stock returns [ 4], which inspires us to develop a deep learning architecture to
+learn cross-sectional factors. With the rapid development and its advantages
+in learning nonlinear relationships from Big Data in finance [ 6], graph neural
+networks have been successful in solving a variety of finance problems [ 18], such
+as stock movement prediction [ 21,9,2], event-driven prediction [ 22], and risk
+management [ 8].[17]. In our work, we design a relational neutralization block
+based on a gated graph attention mechanism to learn the multi-relational stock
+relationship from different perspectives.
+Interpretation of deep factors. Although deep learning methods perform well in
+learning deep factors in terms of the multi-factor model, the lack of transparency
+and limited interpretability of the deep factor make it difficult for institutional
+investors to apply a model that operates in a black-box manner in actual invest-
+ment practice. One remedy is to use layer-wise relevance propagation (LRP) [ 1], a
+method that highlights which input features it uses to support its prediction [ 12],
+to capture the linear relationship between the input factors and the prediction
+[14,10]. Later, [ 20] provides a more direct way to learn the linear contribution of
+each input factor to the deep factor via an attention mechanism. However, these
+methods neglect the directional property of the original factor’s contribution to
+the deep factor, i.e., the contribution of an original factor can be positive or
+negative. Without considering the different directions of the contribution, the4 Z. Wei et al.
+Industry Neutralization 
+Neutralizing  Industry Interaction
+Universe Interaction Neutralizing Universe Influence 
+Multi-horizon deep factorOriginal Factors
+Factor SectionFactor maskMasked FactorsStock Context Learner
+Portfolio Construction
+Market dataFundamental data
+Fig. 1. The pipeline of E2E active investing framework (E2EAI).
+linear approximation of the original factors in [ 20] may ignore the factor that
+contributes negatively to the deep factor, resulting in a “biased” approximation.
+In this paper, we propose a directional linear approximation of the deep factor
+via an attention module and a directional buffer to account for both the positive
+and negative contribution of the original factor to the deep factor.
+Portfolio construction. In existing work, portfolio construction is usually per-
+formed by the ad hoc methods, e.g., dividing stocks into ten groups with equal
+numbers w.r.t their factor exposures and selecting the top or bottom group as the
+portfolio [ 20,3]. In our work, we use a soft allocation strategy to simultaneously
+select attractive stocks and assign them an appropriate weight in the portfolio.
+Some applications use deep learning methods to solve the portfolio allocation
+problem [ 15,19] in an “E2E” way. However, they solves the problem only in the
+context of portfolio construction, which is one and the last module in our E2E
+framework. To best of our knowledge, we are the first to solve the problem of
+active investing in a holistic but also E2E way.
+3 Preliminaries
+Definition 1. The problem of active investing is defined as follows: Given a set of
+original factors Ft={fit∈Rn, i= 1, . . . , m }withmbeing the number of factors.
+Each factor is a handcrafted characteristic of nstocks, with values changing
+over time. These factors can be engineered from market data or fundamental
+data (which come from financial reports). One should learn a stock allocation
+wt= [w1t, . . . , w nt]Tto maximize the future portfolio return from time ttot+k,
+rt+k
+p=wtˆrt+k, with a set of constraints C.ˆrt+k=E[rt+k|Ft]is the expected
+return of each stock in the stock pool and rt+k∈Rn. Some common constraints
+are: 1)Pn
+j=1wjt= 1; 2)0≤wjt≤u, where uis the upper bound of a stock
+allocation with 0< u≤1.
+Definition 2. The stock graph [ 22,20] is defined as a directed and dynamic graph
+as,Gt=⟨St,Rt,Mt⟩, where Stdenotes the set of constituents of a broad-based
+stock index and Rtis the set of relations between two stocks at time t.Mtis theE2EAI: End-to-End Deep Learning Framework for Active Investing 5
+set of adjacent matrices. For an adjacent matrix Mr
+t∈ M tof relation rt∈ R t,
+where Mr
+t∈R|Rt|×|R t|
+t ,Mr(i, j) = 1 means that there is a relation rfrom stock
+st
+jto stock st
+iandMr
+t(i, j) = 0 means that there is no such relation.
+4 Method
+In this work, we develop an E2E deep learning framework to find the cross-
+sectional factors that can consistently explain the average stock returns well,
+making good use of the relationships between stocks and the insights from finance.
+(see Fig. 1).
+4.1 Factor Selection
+The classical way in factor selection is to select factors that meet the IC or ICIR
+threshold using the rule of thumb. However, this can have two drawbacks: 1) It
+only considers the isolated and linear correlation between a single factor and
+the realized return. 2) It is a static selection procedure where the candidate
+list remains unchanged over a period of time. To mitigate the drawbacks of the
+existing selection practice, we develop a non-linear and dynamic factor selection
+module using an attention mechanism. The factor selection module is defined as
+the follows
+Mt
+f= 1≥γf 
+softmax 
+MLP( Ft
+o)
+, (1)
+Ft=Mt
+fFt
+o, (2)
+where 1≥γf(·) denotes an attention gate that forces the focus of the selection
+module to higher attention factors and γfis the attention lower bound for an
+original factor. Ft
+o∈Rn×mis a matrix representing mfactors w.r.t nstocks.
+4.2 Deep Multifactor Model
+Stock Context Encoder. We define nas the number of constituents inside a broad-
+based stock index, and mas the number of types of stock context that covers
+fundamental, trading information and analysts’ estimates.
+Ct= MLP (BatchNorm ( Ft)), (3)
+where Ft∈Rn×mis a matrix represents ms(ms≤m) factors selected from
+original factors w.r.t nstocks , and Ct∈Rn×m1is the stock context matrix with
+m1hidden features extracted from the original factors. Batch normalization [ 5] is
+a deep learning counterpart to z-score normalization , which is generally applied
+in data preprocessing for factor engineering [20].
+Relational Neutralization Block. As a rule of thumb in investment practice, factor
+processing usually applies industry neutralization and size neutralization to
+remove the effect of industry and capitalization. Therefore, we design a relational
+neutralization block to remove the effect of different types of relationships. To
+encode the stock relationships, we apply Graph Attention Network (GAT) [ 17] to6 Z. Wei et al.
+predefined stock graphs and its corresponding stock context, which is a common
+paradigm in existing works [ 20,21,18]. The relational neutralization block (RNB)
+is defined as
+¯Ct= RNB( Ct;Gt) =Ct−GAT( Ct,Mr
+t), (4)
+where Ct∈Rn×m1is the stock context, Gtis the given stock graph at time tand
+Mr
+tis its corresponding adjacent matrix representing the stock relationship r.
+Similar to [ 20], we have two neutralized stock context corresponding to inner-
+industry and cross-industry relationship, ¯Ct
+Iand ¯Ct
+U,i.e.
+¯Ct
+I= RNB( Ct;GI
+t),¯Ct
+U= RNB( ¯Ct
+I;GU
+t), (5)
+where Gt
+Iis the industry graph and Gt
+Uis the cross-industry graph.
+Learning Deep Factors for Multiple Horizons. We design Koutput heads for
+learning ultimate factors corresponding to multiple forward periods be aware
+of practitioners, i.e.k-forward trading days, where k= 3,5,10,15,20. Formally,
+we learn the deep factor ft
+k∈Rnthat explains the future information on the k-
+forward trading day from different granularity: stock original context Ct, industry
+neutralized context ¯Ct
+I, and universe-neutralized context ¯Ct
+U:
+ft
+k= LeakyReLU
+WT
+[k] 
+Ct||¯Ct
+I||¯Ct
+U
+, (6)
+where WT
+[k]is a single-layer feed-forward neural network for k-forward trading
+days and ||represents concatenation.
+4.3 Portfolio Construction on Automatic Stock Selection
+Directional Buffer. To determine the direction of the contribution of each original
+factor to the deep factor in the deep multifactor module, we develop a directional
+buffer to “memorize” the directions of each factor. This direction is defined
+by the sign of the accumulated linear correlations between the original factor
+and the deep factor in the training period: d[i]
+k=(d1, . . . , d m), with d[i]
+k=
+sgn P
+t∈TIC(ft
+i,ft
+k)
+, where sgndenotes a sign function, ft
+i∈ Rnis the i-th
+factor in Ft. The details of the direction buffer is shown in Algo. 1.
+Interpretation of Deep Factor via Directional Attention Module. We introduce
+directional factor attention module to investigate the positive or negative con-
+tribution of original input factors or features to the deep factor. We employ
+attention mechanism [ 16] to attend our deep factor to learn the token importance
+of the original features. The normalized attention weight through a softmax
+function illustrates “how much information influx in the deep factor from an
+original feature”.
+At
+k= softmax 
+LeakyReLU 
+WT
+a,kFt
+, ¯at
+k=1
+nX
+i∈nat
+ik, (7)E2EAI: End-to-End Deep Learning Framework for Active Investing 7
+Algorithm 1: Algorithm for Training E2EAI
+Input : training data Dtrain, model parameters Φ,Ψ
+Output: Φ∗,Ψ∗
+1Randomly initialize Φ,Ψ
+2while not meet the stopping criteria do
+3 Ltrain←0,lf←0,bf←10−6, and bi←10−6, i= 1, . . . , m
+4 forDbatch← Dtraindo
+5 Obtain the deep factors via E2EAI: fbatch,wbatch←Φ(Dbatch)
+6 lf←0
+7 df= sgn( bf), where bf←bf+ sum
+IC(rbatch,fbatch)
+8 di= sgn( bi), where bi←bi+ sum
+IC(rbatch,fbatch
+i )
+, i= 1, . . . , m
+9 fork←1toKdo
+10 l←0
+11 fori←1toNiterdo
+12 Calculate the regression loss liof cross-sectional model for deep factor fk,
+where ψkis its cross-sectional coefficient.
+13 l←l−li·df
+14 Update ψtvia the cross sectional optimizer γ1by minimizing l
+15 lf←lf−mean (ψt◦df)
+16 Calculate the loss for factor stability lsand the loss for attention estimate le,
+where leis calculated based on the directional buffer: di, i= 1, . . . , m . Then,
+update the train loss:
+17 Ltrain← L train +lp+λele+λsls+λflf
+18 Update Ψvia the global optimizer γ2.
+where WT
+a,k∈Rn×nis a single-layer feed-forward neural network corresponding
+to the k-forward trading day. At
+k∈Rn×mis the attention weight matrix for the
+deep factor ft
+kandat
+ikisi-th column of At
+k. Here, at
+kis its corresponding attention
+weight vector. We define the linear approximation of deep factor ,ˆft
+k∈Rm, as
+ˆft
+k=FT
+t ¯at
+k◦dk
+, (8)
+where ◦denotes Hadamard product, dk∈Rmis the directional buffer of original
+factors w.r.t horizon k. When ˆft
+kis very close to ft
+k, the attention weight ¯at
+kcan
+interpret the portion of quantity comes from the original input factors.
+Learn a Deep Portfolio with Automatic Stock Selection. We develop a gated
+additive attention mechanism for automatic stock selection based on the deep
+factors generated by the previous module and the market embedding learned
+from all stock contexts. The attention score for all stocks in the universe is defined
+by Eq. (10) and the allocation of the selected stocks is shown in Eq. (11):
+At
+p,k= softmax 
+LeakyReLU 
+WT
+a,k 
+Ct||(ft
+k◦df,k)
+, (9)
+Wt
+k= softmax 
+1≥γp(At
+p,k)
+, (10)
+where γp∈(0,1] is the attention lower bound, df,kis the directional buffer of
+deep factor. If the attention weight of a stock does not satisfy this requirement,
+then it would not be considered in the portfolio.8 Z. Wei et al.
+4.4 Loss Design
+Now we ponder the design of loss function to fulfill the learning objectives of our
+E2E active investing. Specifically, the general loss function is
+L=Lp+λsLs+λfLf+λeLe, (11)
+where Lp,Ls,Lf, andLeare the loss terms associated with the portfolio, stability,
+factor returns, and attention estimates, respectively. λ’s are balancing coefficients.
+In what follows, we denote Tas the set of trading days in the training period
+andKas the set of future horizons.
+Loss Related to Portfolio. A fundamental objective in portfolio construction is to
+maximize expected return without violating the weighting constraints on equity
+allocation. Based on this objective, we express the loss function of our portfolio
+in two terms, i.e., loss of portfolio Lpreturn Lretand the loss of weight Lup
+penalizing the allocation exceeding its upper bound θ,e.g.,θ= 0.10, where
+Lret=−1
+|T ||K|P
+k∈KP
+t∈TWt
+kRt
+kandLup=1
+|T ||K|P
+k∈KP
+t∈T(Wt
+k−θ). In
+short, Lp=Lret+Lup.
+Maximizing Factor Stability. The information ratio of information coefficient
+(ICIR) is a widely used metric for assessing the factor stability, and ICIR is
+defined as the mean of IC divided by its standard deviation [ 9,20]. We use ck
+to denote the ICIR of the deep factor ft
+k, where ckmeasures the stability of the
+predictive power of the deep factor ft
+kfor the future return over the next ktrading
+daysrt+k. Thus, since ICIR is positively correlated to stability, the stability loss
+is defined as Le=1
+|K||T |P
+k∈KP
+t∈Tdkct
+k, where dkis the directional indicator
+with value of 1 or -1.
+Maximizing Factor Return. Factor returns are the cross-sectional regression
+coefficients [ 8,20] that indicate the return attributable to a particular common
+factor: ˆrt+k=bt
+kft
+k, where bt∈Ris the factor return at time t. Since a deep
+factor is expected to have a higher cumulative factor return, the loss for factor
+return is defined as Lf=1
+|K||T |P
+k∈KP
+t∈Tψt
+kdk
+f.
+Improving “Attention Estimate”. We use L2-norm to evaluate the deviation
+between the deep factor ft
+kand its corresponding attention estimate ˆft
+k, which
+can be calculated as et
+k=||ft
+k−ˆft
+k||2. Therefore, the attention estimate loss is
+defined as Le=1
+|K||T |P
+k∈KP
+t∈Tet
+k.
+4.5 Optimization
+To improve the performance of the E2E framework, besides the global optimizer
+we further propose a specialized optimizer, named cross-sectional optimizer, for
+learning the directional cross-section coefficient.
+Cross-sectional optimizer. The cross-sectional optimizer γ1is a local optimizer for
+learning the factor return of the deep factor, which is defined as the cross-sectional
+regression coefficient (factor return) at each time t∈ T. A linear regression model
+is fitted by minimizing the mean squared errors of the predicted returns and theE2EAI: End-to-End Deep Learning Framework for Active Investing 9
+target returns. Since a deep factor has a positive or negative IC, the factor’s
+return has the same direction as its IC. Therefore, we first determine the direction
+of the deep factor and then estimate its factor using the cross-sectional optimizer.
+This cross-sectional optimizer is independent of the global optimizer we use to
+train our E2E framework.
+Global optimizer. The global optimizer γ2is designed to update the parameters
+of our deep E2E framework. It is set to simultaneously optimize the parameters
+of the factor selection, multifactor model, directed contribution estimator, and
+portfolio construction module.
+5 Experiment Results
+2016 2017 2018 2019 2020 2021 20220.00.20.40.60.81.0value
+growth
+mom
+revs
+qual
+size
+liqud
+2016 2017 2018 2019 2020 2021 20220.00.20.40.60.81.0value
+growth
+mom
+revs
+qual
+size
+liqud
+2016 2017 2018 2019 2020 2021 20220.00.20.40.60.81.0value
+growth
+mom
+revs
+qual
+size
+liqud
+2015S2
+2016S1
+2016S2
+2017S1
+2017S2
+2018S1
+2018S2
+2019S1
+2019S2
+2020S1
+2020S2
+2021S1
+2021S20 10 20 30 40 50 60 70 80
+−0.10−0.050.000.050.100.150.20
+2015S2
+2016S1
+2016S2
+2017S1
+2017S2
+2018S1
+2018S2
+2019S1
+2019S2
+2020S1
+2020S2
+2021S1
+2021S20 10 20 30 40 50 60 70 80
+−0.3−0.2−0.10.00.10.2
+2015S2
+2016S1
+2016S2
+2017S1
+2017S2
+2018S1
+2018S2
+2019S1
+2019S2
+2020S1
+2020S2
+2021S1
+2021S20 10 20 30 40 50 60 70 80
+−0.10−0.050.000.050.100.150.200.250.30
+CSI300 CSI500 CSI1000
+Fig. 2. The heat map shows the dynamic contribution of the original factors to the
+deep factors: 1) the first row shows the dynamic attention allocation to the original
+factor groups; 2) the second row shows the average attention weights for each style
+factor on a semi-annual basis.
+1 2 3 4 5 6 7 8 9 10
+Group−0.100−0.075−0.050−0.0250.0000.0250.0500.0750.100Active ReturnCSI300
+Deep Factor Attn Appro .
+1 2 3 4 5 6 7 8 9 10
+Group−0.10−0.050.000.050.10Active ReturnCSI500
+Deep Factor Attn Appro .
+1 2 3 4 5 6 7 8 9 10
+Group−0.10−0.050.000.050.100.15Active ReturnCSI1000
+Deep Factor Attn Appro .
+Fig. 3. The monotonicity analysis of the deep factor and its attention approximation
+(AA) on different stock universes. 1) The average returns increase monotonically in
+stratified groups based on factor exposure, showing good stability of their predictive
+power; 2) the AA of deep factor can linearly explain most cases in CSI300 and CSI500
+from the perspective of portfolio performance in different groups.
+Stock Pool. To have a fair comparison to the existing deep multifactor model, we
+use the same stock pool with the same period used in [ 20]. The stock pool consist10 Z. Wei et al.
+Table 1. The comparison of portfolio performances based on both ad-hoc and automatic
+construction over the period 2015 to mid-2022 ( best /2nd best ).
+CSI 1000 CSI 500 CSI 300
+Method α↑IR↑MD↓TT ¯ n α ↑IR↑MD↓TT ¯ n α ↑IR↑MD↓TT ¯ n
+Linear 7.79 1.35 0.08 0.76 100 5.62 0.77 0.04 0.89 50 1.73 0.32 0.08 0.89 30
+EW 14.65 1.92 0.06 0.71 100 8.91 1.86 0.06 0.97 50 7.57 1.20 0.06 0.71 30
+MLP 15.16 3.53 0.07 0.88 100 4.48 0.67 0.05 0.78 50 3.56 0.65 0.15 0.88 30
+MGAT 9.24 1.63 0.15 1.05 100 4.96 0.62 0.12 0.83 50 3.17 0.56 0.09 1.53 30
+DMFM 16.36 3.46 0.08 0.92 100 9.03 1.89 0.07 1.01 50 7.85 1.09 0.06 0.96 30
+E2E l 15.14 2.92 0.07 0.94 100 12.00 2.18 0.07 1.11 50 9.60 1.46 0.09 0.71 30
+E2E d18.10 4.35 0.08 0.92 100 13.37 2.45 0.08 1.01 50 13.40 2.02 0.07 0.97 30
+S-Best 7.10 0.42 0.11 0.81 319 0.74 0.90 0.01 0.24 433 -0.06 -0.58 0.01 0.16 272
+S-Avg 11.10 0.67 0.11 0.82 321 0.88 1.16 0.01 0.22 455 0.01 -0.19 0.01 0.13 289
+S-T20 -0.04 -0.08 0.32 1.75 32 -9.44 -0.81 0.22 1.03 25 11.22 0.69 0.11 0.40 50
+E2E auto20.12 1.37 0.09 0.96 95 8.88 2.47 0.04 0.76 129 7.40 1.56 0.04 0.60 103
+of the most representative stocks of China stock markets, i.e., the constituents of
+three major China Stock Indices (CSIs): CSI 300, CSI 500 and CSI 1000, which
+represent more than 80% of total market capitalization of the entire stock market
+in China [ 20]. These three indices covers 1800 stocks largest and most liquid
+stocks in the market at the same time, while they cover more than 2800 stocks
+in the period from 2010 to mid-2022.
+Dataset Construction. The factors consist of fundamental factors and technical
+factors based on various data sources. The fundamental and market data come
+from publicly available data from tushare.pro , which can also be obtained
+from Refinitiv or WIND institutional investor databases [ 20]. We create our
+dataset on a daily basis and divide the original factors into seven groups: Value,
+Growth, Momentum, Quality, Size, Liquidity [ 20,13,11]. The daily stock return
+is calculated by rt+k=pt+k−pt+1
+pt+1, where tis the forecast day and pt+kdenotes
+the volume-weighted average price of all stocks on the next kday after the
+forecast day. To avoid look-ahead bias, we create a point-in-time dataset [ 20] and
+delete the intersection of the validation and test sets from the validation set. For
+the stock graphs, the industry graph is created based on the CITIC Securities
+Industry Classification Standard [ 20] and the universal graph is created based on
+the list of constituent members issued by the China Securities Index Company.
+In creating the dataset, we use the time- series cross-validation technique, which
+divides the entire dataset into 14 groups in chronological order [20].
+Baselines and Model Implementation. We compare our proposed method with
+the following baselines: 1) Linear [4] is a linear multifactor model. 2) EW [11] is
+an equally weighted model that has nothing to do with data mining or in-sample
+optimization. In practice, any deviations from equal weighting are determined by
+economic rationality [ 11]. 3)MLP is a nonlinear model that learns factors from
+the stock context based on neural networks and consists of a context encoder and
+a feature decoder. 4) MGAT [20] is a model based on a context encoder, a GAT,E2EAI: End-to-End Deep Learning Framework for Active Investing 11
+which learns the interactions between stocks in a universe graph, and a decoder,
+which learns a deep factor from the stock context and the universal relationships
+of the stocks. 5) DMFM [20] is a deep multifactor model. For comparison of E2E
+and step-by-step methods, we provide three additional step-by-step baselines with
+different criteria for factor selection: 1) S-Best , which selects the factors with
+the best performance at different prediction horizons; 2) S-Avg , which selects
+the factors that can perform well on average at different prediction horizons. 3)
+S-T20 selects only the factors that perform well in predicting one-month returns.
+The Performance based on Ad-Hoc and Automatic Portfolio Construction. We use
+three widely used metrics for portfolio construction: excess return ( α), information
+ratio (IR), and maximum active drawdown (MD), as well as two additional
+descriptive metrics such as buy and sell turnover (TT) and average number of
+stocks held. ↑and↓denote the metrics ”the higher the better” and ”the lower
+the better” respectively. 1) The ad-hoc method is a popular method used to test
+the ability of a multifactor model to select stocks and to show the effectiveness of
+our multifactor model. It involves dividing stocks into Kgroups w.r.t of factor
+exposures and constructing an equally weighted portfolio based on the group with
+the largest factor exposure (when the factor is positively linearly correlated with
+expected return and vice versa). Table 1 shows the comparison of the different
+methods based on a stratification of 10 groups, where E2E dandE2E ldenote
+the portfolio constructed based on a deep factor and its linear approximation
+(AA) via attention estimate. 2) In Table 1, we compare the stepwise with the
+end-to-end portfolio construction, and our E2E method outperforms the other
+stepwise baselines. Overall, our E2EAI can outperform different baselines under
+different portfolio construction paradigms w.r.t metrics such as αand IR.
+Interpreting Deep Factor via Directional Contribution. 1) Learning the directional
+contribution can reveal the dynamic allocation of the original factors. Fig. 2
+shows the group contribution and the directional contribution of each factor
+over the test period. An interesting result is related to liquidity: liquidity hardly
+contributes in the universe of CSI300, while in CSI500 it contributes a throw in
+the second tier of the most liquid stocks with the largest market capitalization.
+However, liquidity contributes more in CSI1000 as it consists of 1000 small cap
+companies that are less liquid than CSI 800 (CSI300 and CSI500). This shows
+that liquidity is more important in small caps, which makes sense in practice.
+2) The portfolio E2E lconstructed by attention approximation over attention
+estimate is monotonically similar to E2E d, see Fig. 3.
+6 Conclusion
+In this paper, we are the first to propose an E2E framework for active investing
+that outperforms existing methods in three major stock universes in the Chinese
+stock markets. Using a directional buffer, we can identify both the positive and
+negative contribution of each factor and also determine the dynamic allocation
+of each orignal factor. In the future, we plan to apply our method to the entire
+market with diversified client-oriented investment objectives.12 Z. Wei et al.
+References
+1.Bach, S., Binder, A., Montavon, G., Klauschen, F., M¨ uller, K.R., Samek, W.: On
+pixel-wise explanations for non-linear classifier decisions by layer-wise relevance
+propagation. PloS one 10(7), e0130140 (2015)
+2.Chen, C., Zhao, L., Bian, J., Xing, C., Liu, T.Y.: Investment behaviors can tell
+what inside: Exploring stock intrinsic properties for stock trend prediction. pp.
+2376–2384 (2019)
+3.Duan, Y., Wang, L., Zhang, Q., Li, J.: Factorvae: A probabilistic dynamic factor
+model based on vae for predicting cross-sectional stock returns. AAAI (2022)
+4.Fama, E.F., French, K.R.: Comparing cross-section and time-series factor models.
+The Review of Financial Studies 33(5), 1891–1926 (2020)
+5.Ioffe, S., Szegedy, C.: Batch normalization: Accelerating deep network training by
+reducing internal covariate shift. In: ICML. pp. 448–456. PMLR (2015)
+6.Jiang, W.: Applications of deep learning in stock market prediction: recent progress.
+Expert Systems with Applications 184, 115537 (2021)
+7. Levin, A.: Stock selection via nonlinear multi-factor models. NeurIPS 8(1995)
+8.Lin, H., Zhou, D., Liu, W., Bian, J.: Deep risk model: a deep learning solution for
+mining latent risk factors to improve covariance matrix estimation. In: Proceedings
+of the Second ACM International Conference on AI in Finance. pp. 1–8 (2021)
+9.Lin, H., Zhou, D., Liu, W., Bian, J.: Learning multiple stock trading patterns
+with temporal routing adaptor and optimal transport. In: SIGKDD. pp. 1017–1026
+(2021)
+10.Matsunaga, D., Suzumura, T., Takahashi, T.: Exploring graph neural networks for
+stock market predictions with rolling window analysis. NeurIPS Workshops (2019)
+11.Melas, D.: Best practices in factor research and factor models. MSCI Research
+Insight (2018)
+12.Montavon, G., Binder, A., Lapuschkin, S., Samek, W., M¨ uller, K.R.: Layer-wise
+relevance propagation: an overview. Explainable AI: interpreting, explaining and
+visualizing deep learning pp. 193–209 (2019)
+13.Nakagawa, K., Ito, T., Abe, M., Izumi, K.: Deep recurrent factor model: interpretable
+non-linear and time-varying multi-factor model. arXiv:1901.11493 (2019)
+14.Nakagawa, K., Uchida, T., Aoshima, T.: Deep factor model. In: ECML PKDD 2018
+Workshops. pp. 37–50. Springer (2018)
+15.Uysal, A.S., Li, X., Mulvey, J.M.: End-to-end risk budgeting portfolio optimization
+with neural networks. arXiv preprint arXiv:2107.04636 (2021)
+16.Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A.N., Kaiser,
+ L., Polosukhin, I.: Attention is all you need. NeurIPS 30(2017)
+17.Veliˇ ckovi´ c, P., Cucurull, G., Casanova, A., Romero, A., Lio, P., Bengio, Y.: Graph
+attention networks. arXiv preprint arXiv:1710.10903 (2017)
+18.Wang, J., Zhang, S., Xiao, Y., Song, R.: A review on graph neural network methods
+in financial applications. arXiv preprint arXiv:2111.15367 (2021)
+19.Wang, L., Liu, W., Yang, X., Bian, J.: Conservative or aggressive? confidence-aware
+dynamic portfolio construction. In: GlobalSIP. pp. 1–5. IEEE (2019)
+20.Wei, Z., Dai, B., Lin, D.: Factor investing with a deep multi-factor model. arXiv
+preprint arXiv:2210.12462 (2022)
+21.Xu, W., Liu, W., Wang, L., Xia, Y., Bian, J., Yin, J., Liu, T.Y.: Hist: A graph-
+based framework for stock trend forecasting via mining concept-oriented shared
+information. arXiv preprint arXiv:2110.13716 (2021)
+22.Xu, W., Liu, W., Xu, C., Bian, J., Yin, J., Liu, T.Y.: Rest: Relational event-driven
+stock trend forecasting. In: Proceedings of the Web Conference. pp. 1–10 (2021)

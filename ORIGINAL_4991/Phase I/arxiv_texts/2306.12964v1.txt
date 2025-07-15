@@ -1,0 +1,1021 @@
+Generating Synergistic Formulaic Alpha Collections via
+Reinforcement Learning
+Shuo Yu∗†
+Hongyan Xue∗†
+Xiang Ao†‡
+Institute of Computing Technology,
+Chinese Academy of Sciences
+University of Chinese Academy of
+Sciences
+Beijing, China
+yushuo19b@ict.ac.cn
+xuehongyan21b@ict.ac.cn
+aoxiang@ict.ac.cnFeiyang Pan
+Jia He
+Dandan Tu
+Huawei EI Innovation Lab
+China
+pfy824@gmail.com
+hejia0149@gmail.com
+tudandan@huawei.comQing He†‡
+Institute of Computing Technology,
+Chinese Academy of Sciences
+University of Chinese Academy of
+Sciences
+Beijing, China
+heqing@ict.ac.cn
+ABSTRACT
+In the field of quantitative trading, it is common practice to trans-
+form raw historical stock data into indicative signals for the market
+trend. Such signals are called alpha factors. Alphas in formula forms
+are more interpretable and thus favored by practitioners concerned
+with risk. In practice, a set of formulaic alphas is often used together
+for better modeling precision, so we need to find synergistic formu-
+laic alpha sets that work well together. However, most traditional
+alpha generators mine alphas one by one separately, overlooking
+the fact that the alphas would be combined later. In this paper, we
+propose a new alpha-mining framework that prioritizes mining a
+synergistic set of alphas, i.e., it directly uses the performance of the
+downstream combination model to optimize the alpha generator.
+Our framework also leverages the strong exploratory capabilities of
+reinforcement learning (RL) to better explore the vast search space
+of formulaic alphas. The contribution to the combination models’
+performance is assigned to be the return used in the RL process,
+driving the alpha generator to find better alphas that improve upon
+the current set. Experimental evaluations on real-world stock mar-
+ket data demonstrate both the effectiveness and the efficiency of our
+framework for stock trend forecasting. The investment simulation
+results show that our framework is able to achieve higher returns
+compared to previous approaches.
+CCS CONCEPTS
+•Computing methodologies →Reinforcement learning ;Search
+methodologies ;•Applied computing →Economics .
+∗These authors contributed equally.
+†Key Lab of Intelligent Information Processing of Chinese Academy of Sciences (CAS).
+Xiang Ao is also at Institute of Intelligent Computing Technology, Suzhou, China.
+‡Corresponding authors.
+Permission to make digital or hard copies of part or all of this work for personal or
+classroom use is granted without fee provided that copies are not made or distributed
+for profit or commercial advantage and that copies bear this notice and the full citation
+on the first page. Copyrights for third-party components of this work must be honored.
+For all other uses, contact the owner/author(s).
+KDD ’23, August 6–10, 2023, Long Beach, CA, USA
+©2023 Copyright held by the owner/author(s).
+ACM ISBN 979-8-4007-0103-0/23/08.
+https://doi.org/10.1145/3580305.3599831KEYWORDS
+Computational Finance, Stock Trend Forecasting, Reinforcement
+Learning
+ACM Reference Format:
+Shuo Yu, Hongyan Xue, Xiang Ao, Feiyang Pan, Jia He, Dandan Tu, and Qing
+He. 2023. Generating Synergistic Formulaic Alpha Collections via Rein-
+forcement Learning. In Proceedings of the 29th ACM SIGKDD Conference on
+Knowledge Discovery and Data Mining (KDD ’23), August 6–10, 2023, Long
+Beach, CA, USA. ACM, New York, NY, USA, 11 pages. https://doi.org/10.
+1145/3580305.3599831
+1 INTRODUCTION
+Currently, it is almost a standard paradigm to transform raw histori-
+cal stock data into indicative signals for the market trend in the field
+of quantitative trading [ 14]. These signal patterns are called alpha
+factors , or alphas in short [ 19]. Discovering alphas with high returns
+has been a trendy topic among investors and researchers due to the
+close relatedness between alphas and investment revenues.
+The prevailing methods of discovering alphas can be in gen-
+eral divided into two groups, namely machine learning-based and
+formulaic alphas. Most recent research has focused on the former
+ones. These more sophisticated alphas are often obtained via deep
+learning models, e.g., using sequential models like LSTM [ 5], or
+more complex ones integrating non-standard data like HIST [ 23]
+and REST [ 24], etc. On the other end of the spectrum, we have
+the alphas that can be represented in simple formula forms. Such
+formulaic alphas are traditionally constructed by human experts
+using their domain knowledge and experience, often expressing
+clear economic principles. To name some, [ 7] demonstrates 101
+alpha factors tested on the US stock market. Recently, research has
+also been conducted on frameworks that generate such formulaic
+alphas automatically [ 3,9,10,27]. These approaches are able to
+find loads of new alphas rapidly without human supervision, while
+still maintaining relatively high interpretability compared to the
+more sophisticated machine learning-alphas.
+Despite the existing approaches achieving remarkable success,
+however, they still have disadvantages in different aspects. Machine
+learning-based alpha factors are inherently complex and sometimes
+require more complex data other than the price/volume features.arXiv:2306.12964v1  [q-fin.ST]  25 May 2023KDD ’23, August 6–10, 2023, Long Beach, CA, USA Shuo Yu, Hongyan Xue, Xiang Ao, Feiyang Pan, Jia He, Dandan Tu, and Qing He
+In addition, although they are often more expressive, they often
+suffer from relatively low explainability and interpretability. As
+a result, when the performance of these “black box” models un-
+expectedly deteriorates, it is hard for human experts to tune the
+models accordingly. These algorithms are thus not favored under
+some circumstances due to concerns about risks. On the other hand,
+while formulaic alphas are more interpretable, previous research
+on this matter often focused on finding a single alpha factor that
+predicts well on its own. Nonetheless, it is often impossible to
+describe a complex and chaotic system such as the stock market
+with simple rules that human researchers can comprehend. As a
+compromise, a set of these alphas are oftentimes used together in
+practice, instead of using them individually. However, when mul-
+tiple of these independently mined formula alphas are combined,
+the final prediction performance may not improve much because
+not much consideration is put into the synergistic effect between
+factors (see Section 4.2.2 for detail). In addition, these alphas are
+often simple in their forms, and their underlying mechanisms are
+often quite understandable. Once they are released to the public
+and become well-known among practitioners, their performance
+may deteriorate rapidly [7].
+Therefore, the question we are facing is: Are we able to find a
+way to automatically discover interpretable alpha factors, which work
+well with downstream predictive models, without suffering possible
+performance deterioration due to the alpha factors being widely known
+to the general public?
+To solve the above challenge, we formulate a new research prob-
+lem in this paper, which is to find synergistic formulaic alpha factor
+sets. Using raw stock price/volume data as the input, we aim to
+search for a set of formulaic alpha factors instead of individual
+ones. Recall that finding a single well-performing alpha on given
+data is already a hard problem to resolve since the search space of
+valid formulas is vast and hard to navigate. The search space for
+alpha mining is often even larger than that of a typical symbolic
+regression problem [13].
+The most intuitive approach to this problem would be using
+genetic programming (GP), performing mutations on expression
+trees to generate new alphas. In fact, most previous work on this
+matter is based on genetic programming (GP) [ 3,9,10,27], which
+is of course not a serendipitous choice since GP methods generally
+excel at such problems with large search spaces. However, GP algo-
+rithms often scale poorly due to the complexity of maintaining and
+mutating a huge population [ 13]. In addition, the main challenge
+remains that mining a set of synergistic alphas all at once is an
+even harder problem with a much larger search space, the scale of
+which makes most existing frameworks infeasible to solve.
+Hence, previous works mostly tried to find ways to simplify the
+problem of alpha set mining, by mining alphas one by one and
+filtering out a subset of them with respect to some similarity metric.
+The mutual information coefficient (IC) between the pairs of alpha
+in the set is often employed as the similarity “metric” [ 3,10,27].
+However, as we will demonstrate below, adding a new alpha that is
+of high IC to the ones in an existing pool of alpha may still bring a
+non-negligible boost of performance to the combined result, and
+vice versa. This phenomenon still exists even when the combination
+model is set to be a simple linear regressor. Therefore, the traditionalapproach to determining whether a set of alpha could be synergistic
+does not line up with the expected outcome.
+To tackle the challenge that GP methods could be inefficient at
+exploring the vast search space of formulaic alphas, our framework
+utilizes reinforcement learning (RL) for achieving better results
+in exploration. Combined with the strong expressiveness of deep
+neural networks, RL with its excellent exploratory ability plays
+a predominant role in numerous areas. To list a few examples,
+game playing [ 16], natural language processing [ 11], symbolic op-
+timization [ 13], and portfolio management [ 22]. We implement
+a sequence generator with constraints to ensure valid formulaic
+alpha generation and employ a policy gradient-based algorithm
+to train the generator in the absence of a direct gradient. Since
+traditional mutual-IC filtering methods do not align well with the
+target of optimizing the combination model’s performance, we pro-
+pose to use directly the performance as the optimization objective
+of our alpha generator. Under this new optimization scheme, our
+generator is able to produce a synergistic set of alpha which fits the
+mine-and-combine procedure in a more suitable way. To evaluate
+our alpha-mining framework, we conduct extensive experiments
+over real-world stock data. Our experiment results demonstrate
+that the formulaic alpha sets generated by our framework perform
+better than those generated with previous approaches, shown both
+on the prediction metrics and investment simulations.
+Our contributions can be summarized as follows.
+•We propose a new optimization scheme that produces a set
+of alpha that suits downstream tasks better, regardless of
+what actual form the combination model takes.
+•We introduce a new framework for searching formulaic alpha
+factors based on policy gradient algorithms, to utilize the
+strong exploratory power of reinforcement learning.
+•We present a series of experimental results demonstrating
+the effectiveness of our proposed framework. Additional
+experiments and case studies are also conducted to demon-
+strate why mutual IC-based filtering techniques that are
+previously commonly used may not work as expected when
+considering the combined performance of an alpha set.
+2 PROBLEM FORMULATION
+2.1 Alpha Factor
+We consider a stock market with 𝑛stocks in a period of 𝑇trading
+days in total. On each trading day 𝑡∈{1,2,···,𝑇}, each stock 𝑖
+corresponds to a feature vector 𝑥𝑡𝑖∈R𝑚𝜏, comprised of 𝑚raw
+features such as opening/closing price in the recent 𝜏days1. Finally,
+we define an alpha factor 𝑓as a function mapping feature vectors
+of all stocks on a trading day 𝑋∈R𝑛×𝑚𝜏into alpha values 𝑧=
+𝑓(𝑋)∈R𝑛. We will use the word “alpha” for both an alpha factor
+and its corresponding values in the following sections.
+2.2 Alpha Factor Mining
+To measure the effectiveness of an alpha, we calculate the informa-
+tion coefficient (IC) between the true stock trend it aims to predict
+1This “unrolling” of historical data introduces redundancy. Namely, feature vectors of
+a stock on consecutive trading days have overlapping sections. This notation is chosen
+for the convenience of demonstration.Generating Synergistic Formulaic Alpha Collections via Reinforcement Learning KDD ’23, August 6–10, 2023, Long Beach, CA, USA
+Figure 1: (A) An example of a formulaic alpha. (B) Its equiv-
+alent expression tree. (C) Its reverse Polish notation (RPN).
+Note that BEG andSEPare sequence indicators later men-
+tioned in our framework. (D). Step-by-step computation of
+this alpha on an example time series.
+𝑦𝑡∈R𝑛and the factor values 𝑓(𝑋𝑡). We denote the daily IC func-
+tion as𝜎:R𝑛×R𝑛→[− 1,1], which is defined as the Pearson’s
+correlation coefficient:
+𝜎(𝑢𝑡,𝑣𝑡)=Í𝑛
+𝑖=1(𝑢𝑡𝑖−¯𝑢𝑡)(𝑣𝑡𝑖−¯𝑣𝑡)
+√︃Í𝑛
+𝑖=1(𝑢𝑡𝑖−¯𝑢𝑡)2Í𝑛
+𝑖=1(𝑣𝑡𝑖−¯𝑣𝑡)2. (1)
+Such value can be calculated on every trading day between an
+alpha and the prediction target. For convenience, we denote the IC
+values between two sets of vectors averaged over all trading days
+as¯𝜎(𝑢,𝑣)=E𝑡[𝜎(𝑢𝑡,𝑣𝑡)].
+We use the average IC between an alpha and the return to mea-
+sure the effectiveness of an alpha factor on a stock trend series
+𝑦={𝑦1,𝑦2,···,𝑦𝑇}:
+¯𝜎𝑦(𝑓)=¯𝜎(𝑓(𝑋),𝑦). (2)
+As mentioned above, the output of a combination model can
+be seen as a “mega-alpha”, mapping raw inputs into alpha values.
+Therefore, we denote the combination model as 𝑐(𝑋;F,𝜃), where
+F={𝑓1,𝑓2,···,𝑓𝑘}is a set of alphas to combine, and 𝜃denotes the
+parameters of the combination model. We would like the combina-
+tion model to be optimal w.r.t. a given alpha set Fon the training
+dataset𝑦, that is:
+𝑐∗(𝑋;F)=𝑐(𝑋;F,𝜃∗),where
+𝜃∗=argmax
+𝜃¯𝜎𝑦(𝑐(·;F,𝜃)).(3)
+Conclusively, the task of mining a set of alphas can be defined
+as the optimization problem argmaxF𝑐∗(·;F).
+2.3 Formulaic Alpha
+Formulaic alphas are expressed as mathematical expressions, con-
+sisting of various operators and the raw input features mentioned
+before. Some examples of the operators are the elementary func-
+tions (like “+” and “ log”) operated on one-day data, called cross-
+section operators, and operators that require data from a series
+of days, called time-series operators (e.g. “Min(close, 5)” gives thelowest closing price of a stock in the recent 5 days). A list of all the
+operators used in our framework is given in Appendix A.
+Such formulas can be naturally represented by an expression tree,
+with each non-leaf node representing an operator, and children of
+a node representing the operands. To generate such an expression,
+our model represents the expression tree by its postorder traverse,
+with the children’s order also defined by the traversing order. In
+other words, the model represents a formula as its reverse Polish
+notation (RPN). It is easy to see that such notation is unambiguous
+since the arities of the operators are all known constants. See Figure
+1 for an example of a formulaic alpha expression together with its
+corresponding tree and RPN representations.
+3 METHODOLOGY
+As illustrated in Figure 2, our alpha-mining framework consists
+of two main components: 1) the Alpha Combination Model , which
+combines multiple formulaic alphas to achieve optimal performance
+in prediction, and 2) the RL-based Alpha Generator , which generates
+formulaic alphas in the form of a token sequence. The performance
+of the Alpha Combination Model is used as the reward signal to
+train the RL policy in the Alpha Generator using policy gradient-
+based algorithms, such as PPO [ 17]. Repeating this process, the
+generator is continuously trained to generate alphas that boost
+the combination model, thereby enhancing the overall predictive
+power.
+3.1 Alpha Combination Model
+Considering the interpretability of the combined “mega-alpha”, the
+combination model itself should also be interpretable. In this paper,
+we use a linear model to combine the alphas.
+The values evaluated from different alphas have drastically dif-
+ferent scales, which might cause problems in the following opti-
+mization steps. To counter this effect, we centralize and normalize
+the alpha values with their average and standard deviation. Since
+Pearson’s correlation coefficient is invariant up to linear transfor-
+mation, this transformation does not affect the performance of the
+alphas when they are considered separately. Formally, we introduce
+a normalization operator N, that transforms a vector such that its
+elements have a mean of 0, and the vector has a length of 1:
+[N(𝑢)]𝑖=𝑢𝑖−¯𝑢√︃Í𝑛
+𝑗=1 𝑢𝑗−¯𝑢2. (4)
+We will omit explicitly writing the Noperator for simplicity. For
+the rest of this paper, we will assume that all the 𝑓(𝑋)evaluations
+and the targets 𝑦are normalized to have a mean of 0 and a length of
+1 before subsequent computations. In other words, treat 𝑓asN◦𝑓
+and𝑦asN(𝑦).
+Given a set of 𝑘alpha factorsF={𝑓1,𝑓2,···,𝑓𝑘}and their
+weights𝑤=(𝑤1,𝑤2,···,𝑤𝑘)∈R𝑘, the combination model 𝑐is
+defined as follows:
+𝑐(𝑋;F,𝑤)=𝑘∑︁
+𝑗=1𝑤𝑗𝑓𝑗(𝑋)=𝑧. (5)KDD ’23, August 6–10, 2023, Long Beach, CA, USA Shuo Yu, Hongyan Xue, Xiang Ao, Feiyang Pan, Jia He, Dandan Tu, and Qing He
+Figure 2: An overview of our alpha-mining framework. (A) An alpha generator that generates expressions, optimized via a
+policy gradient algorithm. (B) A combination model that maintains a weighted combination of principal factors and, in the
+meantime, provides evaluative signals to guide the generator.
+We define the loss of the combination model as the mean squared
+error (MSE) between model outputs and true stock trend values:
+L(𝑤)=1
+𝑛𝑇𝑇∑︁
+𝑡=1∥𝑧𝑡−𝑦𝑡∥2. (6)
+To simplify the calculation of alpha combination, we have:
+Theorem 3.1. LetFbe a set of𝑘alphas and𝑤be their respective
+weights, the MSE loss L(𝑤)can be represented as:
+L(𝑤)=1
+𝑛©­
+«1−2𝑘∑︁
+𝑖=1𝑤𝑖¯𝜎𝑦(𝑓𝑖)+𝑘∑︁
+𝑖=1𝑘∑︁
+𝑗=1𝑤𝑖𝑤𝑗¯𝜎(𝑓𝑖(𝑋),𝑓𝑗(𝑋))ª®
+¬.
+(7)
+The proof of this theorem is provided in Appendix B. Notice
+that there is no 𝑧𝑡term on the RHS of Equation 7. Once we have
+obtained ¯𝜎𝑦(𝑓)for each alpha 𝑓and their pairwise mutual correla-
+tions ¯𝜎(𝑓𝑖(𝑋),𝑓𝑗(𝑋)), we can then calculate the loss L(𝑤)solely
+using these terms, saving time on calculating the relatively large 𝑧𝑡
+in each gradient descent step.
+Considering time and space complexity, it is impractical to com-
+bine all generated alphas together, because to calculate mutual
+correlation for each pair of factors we need O(𝑘2)evaluations of
+mutual IC. The quadratic growth of this makes it expensive to apply
+the current procedure to a large number of alphas. However, a few
+dozen of alphas will suffice for practical uses. To a certain point,
+more alphas would not bring much more increment in performance,
+following the law of diminishing returns. We will demonstrate this
+effect in Section 4.2.2.
+After the alpha generator outputs a new alpha, the alpha is first
+added to the candidate alpha set and assigned a random initial
+weight. Gradient descent is then performed to optimize the weights
+with respect to the extended alpha set. We also set a threshold toAlgorithm 1: Incremental Combination Model Optimiza-
+tion
+Input: Alpha setF={𝑓1,···,𝑓𝑘}, weights
+𝑤={𝑤1,···,𝑤𝑘}and a new alpha 𝑓new
+Output: Optimal alpha subset F∗=n
+𝑓′
+1,···,𝑓′
+𝑘o
+, optimal
+weights𝑤∗=
+𝑤′
+1,···,𝑤′
+𝑘
+1F←F∪{𝑓new},𝑤←𝑤∥rand();
+2foreach𝑓∈Fdo
+3 Obtain ¯𝜎𝑦(𝑓)from calculation or cache;
+4 foreach𝑓′∈Fdo
+5 Obtain ¯𝜎(𝑓(𝑋),𝑓′(𝑋))from calculation or cache;
+6for𝑖←1to𝑛𝑢𝑚_𝑔𝑟𝑎𝑑𝑖𝑒𝑛𝑡 _𝑠𝑡𝑒𝑝𝑠 do
+7 CalculateL(𝑤)according to Equation 7;
+𝑤←GradientDescent(L(𝑤));
+8𝑝←argmin𝑖|𝑤𝑖|;
+9F←F\
+𝑓𝑝	
+,𝑤← 𝑤1,···,𝑤𝑝−1,𝑤𝑝+1,···,𝑤𝑘;
+10returnF,𝑤;
+limit the size of the alpha set, leaving only the principal alphas
+with the largest absolute weight. If the amount of alphas in the
+extended set exceeds a certain threshold, the least principal alpha is
+removed from the set together with its corresponding weight. The
+pseudocode of the training procedure is shown in Algorithm 1.
+3.2 Alpha Generator
+The alpha generator models a distribution of mathematical expres-
+sions. As each expression can be represented as a symbolic expres-
+sion tree, we use the reverse Polish notation (RPN) to represent it as
+a linear sequence, since traditional auto-regressive generators canGenerating Synergistic Formulaic Alpha Collections via Reinforcement Learning KDD ’23, August 6–10, 2023, Long Beach, CA, USA
+Table 1: Tokens used in our framework.
+Category Examples
+Operators CS-Log ,CS-Add ,TS-Mean ,,...
+Features $open ,$volume ,...
+Constants−30,−10,−5,−2,−1,−0.5,−0.01,0.01,0.5,1,2,5,10,30
+Time Deltas 10𝑑,20𝑑,30𝑑,40𝑑,50𝑑
+Sequence Indicator BEG(begin), SEP(end of expression)
+only deal with sequences. To control and evaluate the generation
+process of valid expressions, we model the generation process as a
+non-stationary Markov Decision Process (MDP). We will describe
+the various components of the MDP below in the following para-
+graphs. An overview of the MDP-based Alpha generator is shown
+in Figure 3.
+3.2.1 Tokens. The token is an important abstraction in our frame-
+work. A token can be any of the operators, the features, or constant
+values. Table 1 shows some examples of such tokens. For the full
+list of operators, please refer to Section A; for the full list of features
+we have chosen, please refer to Section 4.1.1.
+Figure 3: An illustration of our alpha generation framework.
+3.2.2 State Space. Each state in the MDP corresponds to a sequence
+of tokens denoting the currently generated part of the expression.
+The initial state is always BEG, so a valid state always starts with
+BEG and is followed by previously chosen tokens. Since we aim for
+interpretability of the alphas, and too long of a formula will instead
+be less interpretable, we cap the length threshold of the formulas
+at 20 tokens.
+3.2.3 Action Space. An action is a token that follows the current
+state (generated partial sequence). It is obvious that an arbitrarilygenerated sequence is not guaranteed to be the RPN of an expres-
+sion, so we only allow a subset of actions to be taken at a specific
+state to guarantee the well-formedness of the RPN sequence. Please
+refer to Appendix C for more details.
+3.2.4 Dynamics. Given a state and an action, we can obtain the
+next state deterministically. The next state is generated by tak-
+ing the current state’s corresponding sequence and appending the
+action token at the end.
+3.2.5 Rewards and Returns. The MDP does not give immediate
+rewards for partially formed sequences. At the end of each episode,
+if the final state is valid, the state will be parsed to a formulaic func-
+tion and evaluated in the combination model shown in Algorithm 1.
+To encourage our generator to generate novel alphas, we will then
+evaluate the new combination model with the new alpha added,
+and use the model’s performance as the return of this episode. Since
+the reward varies together with the components of the alpha pool,
+the MDP is non-stationary.
+Contrary to common RL task settings, for alpha expression gen-
+eration we do not necessarily want to penalize longer episodes
+(longer expressions). In fact, longer alphas that perform well are
+harder to find than shorter ones, due to exponential explosion of
+the search space. Consequently, we set the discount factor as 𝛾=1
+(no discount).
+Algorithm 2: Alpha Mining Pipeline
+Input: Stock trend dataset 𝑌={𝑦𝑡}
+Output: Optimal alpha subset 𝐹∗=n
+𝑓′
+1,···,𝑓′
+𝑘o
+, optimal
+weights𝑤∗=n
+𝑤′
+1,···,𝑤′
+𝑘o
+1InitializeFand𝑤;
+2Initialize RL policy 𝜋𝜃with parameters 𝜃and replay buffer
+D;
+3foreach iteration do
+4 foreach environment step do
+5𝑎𝑡∼𝜋𝜃(𝑎𝑡|𝑠𝑡);
+6𝑠𝑡+1←[𝑠𝑡,𝑎𝑡];
+7 if𝑎𝑡=SEP𝑜𝑟𝑙𝑒𝑛(𝑠𝑡+1)≥𝑡ℎ𝑟𝑒𝑠ℎ𝑜𝑙𝑑 then
+8 𝑓←𝑝𝑎𝑟𝑠𝑒(𝑠𝑡+1);
+9 UpdateF,𝑤using𝑓and Algorithm 1;
+10 𝐼𝐶𝑛𝑒𝑤←¯𝜎𝑦(Í𝑘
+𝑖=1𝑤𝑖𝑓𝑖);
+11 𝑟𝑡←𝐼𝐶𝑛𝑒𝑤;
+12 else
+13 𝑟𝑡←0;
+14D←D∪{(𝑠𝑡,𝑎𝑡,𝑟𝑡,𝑠𝑡+1)};
+15 foreach gradient step do
+16 Use batchB⊂D to do gradient descent on PPO
+objectiveL𝐶𝐿𝐼𝑃(𝜃)to update𝜃;
+17returnF,𝑤;
+3.2.6 Reinforcement Algorithm. Based on the MDP defined above,
+we use Proximal Policy Optimization (PPO) [ 17] to optimize a pol-
+icy𝜋𝜃(𝑎𝑡|𝑠𝑡)that takes a state as input and outputs a distributionKDD ’23, August 6–10, 2023, Long Beach, CA, USA Shuo Yu, Hongyan Xue, Xiang Ao, Feiyang Pan, Jia He, Dandan Tu, and Qing He
+of action. An actual action will be sampled from the output distri-
+bution.
+PPO is an on-policy RL algorithm based on the trust region
+method. It proposed a clipped objective L𝐶𝐿𝐼𝑃as follows:
+L𝐶𝐿𝐼𝑃(𝜃)=ˆE𝑡
+min
+𝑟𝑡(𝜃)ˆ𝐴𝑡,clip(𝑟𝑡(𝜃),1−𝜖,1+𝜖)ˆ𝐴𝑡	
+,(8)
+where𝑟𝑡(𝜃)=𝜋𝜃(𝑎𝑡|𝑠𝑡)
+𝜋𝑜𝑙𝑑(𝑎𝑡|𝑠𝑡)and ˆ𝐴𝑡is an estimator of the advantage
+function at timestep 𝑡. Using the importance sampling mechanism,
+PPO can effectively take the biggest possible improvement while
+keeping the policy in a trust region that avoids accidental perfor-
+mance collapse.
+Since our MDP has complicated rules for the legality of actions,
+an action sampled from the full discrete action distribution pre-
+dicted by the learned policy is likely to be invalid as mentioned in
+Section 3.2.3. We adopt the Invalid Action Masking mechanism [ 6]
+to mask out invalid actions and just sample from the set of valid
+actions.
+3.3 Network Architecture
+The PPO algorithm requires the agent to have a value network and
+a policy network. Under our experiment settings, the two networks
+share a base LSTM feature extractor that converts token sequences
+into dense vector representations. Separate value and policy “heads”
+are attached after the LSTM. The values of hyperparameters are
+given in Appendix D.
+3.4 Training with policy gradient-based
+methods
+For the task of alpha mining, we do not require the agent to achieve
+relatively high average returns in each episode, but place more
+importance on the trajectories the agent takes in the whole train-
+ing process. For this reason, we maintain a pool of alphas without
+resetting between episodes. We run the alpha generation proce-
+dure mentioned in Section 3.2 and optimize the alpha combination
+model according to Section 3.1 repeatedly. In this way, we train
+the policy to continuously generate novel alpha factors that bring
+improvement to the overall prediction performance.
+The proposed alpha mining process is shown in Algorithm 2.
+Our implementation is publicly available2.
+4 EXPERIMENTS
+Our experiments are designed to investigate the following ques-
+tions:
+•Q1: How does our proposed framework compare to prior
+alpha mining methods?
+•Q2: How well does our model scale as the alpha set size
+increases?
+•Q3: Compared to the more commonly used mutual correla-
+tion, why is combination model IC a better metric?
+•Q4: How does our framework perform under more realistic
+trading settings?
+2https://github.com/RL-MLDM/alphagen/4.1 Experiment Settings
+4.1.1 Data. Our experiments are conducted on raw data from the
+Chinese A-shares market3. We select 6 raw features as the inputs to
+our alphas: {open, close, high, low, volume, vwap (volume-weighted
+average price)}. The target is set to be the 20-day return of the
+stocks, selling/buying at the closing price ( Ref(close,−20)/close−
+1). The dataset is split by date into a training set (2009/01/01 to
+2018/12/31), a validation set (2019/01/01 to 2019/12/31), and a test
+set (2020/01/01 to 2021/12/31). In the following experiments, we
+will use the constituent stocks of the CSI300 and the CSI500 indices
+of China A-shares as the stock set.
+4.1.2 Compared Methods. To evaluate how well our framework
+performs against traditional formulaic alpha generation approaches,
+we implemented two methods that are designed to generate one
+alpha at a time. GPis a genetic programming model using the
+alpha’s IC as the fitness measure to generate expression trees. This
+model is implemented upon the gplearn4framework. PPO is a rein-
+forcement learning method, based on the same PPO [ 17] algorithm
+and expression generator, and uses the single alpha’s IC as the
+episode return instead of the combined performance used in our
+full framework.
+Since only using the top-most alpha to evaluate the frameworks
+are extremely prone to overfitting on the training data, we also
+constructed alpha sets with the ones generated by the two single
+alpha generators. The same combination model is then applied
+to these alpha sets. Note that the generators still emit alphas in a
+one-by-one manner, and are agnostic to the combination model’s
+performance. The first method to construct the set ( top) is to simply
+select the top- 𝑘alphas emitted by the generator with the highest
+IC on the training set. The second method ( filter ) is to select the
+top-𝑘performing alphas with a constraint that any pair of alpha
+from the set must not have a mutual IC higher than 0.7.
+To better evaluate the model performance, we also compared
+our approach to several end-to-end machine learning models imple-
+mented in the open-source library Qlib [ 25]. The models receive 60
+days’ worth of raw features as the input, and are trained to predict
+the 20-day returns directly. Note that these models do not generate
+formulaic alphas. The hyperparameters of these models are set
+according to the benchmarks given by Qlib.
+•XGBoost [2] is an efficient implementation of gradient boost-
+ing algorithms, which ensembles decision trees to predict
+stock trends directly.
+•LightGBM [8] is another popular implementation of gradi-
+ent boosting.
+•MLP : A multilayer perceptron (MLP) is a type of fully-con-
+nected feedforward artificial neural network.
+To demonstrate the effect caused by stochasticity in the training
+process, each experimental combination with an indeterministic
+training process is evaluated with 10 different random seeds.
+4.1.3 Evaluation Metrics. We choose two metrics to measure the
+performance of our models as follows.
+3The stock price/volume data is retrieved from https://www.baostock.com. Regard-
+ing dividend adjustment, the price/volume data are all forward-dividend-adjusted
+respected to the adjustment factors on 2023/01/15.
+4https://github.com/trevorstephens/gplearnGenerating Synergistic Formulaic Alpha Collections via Reinforcement Learning KDD ’23, August 6–10, 2023, Long Beach, CA, USA
+Table 2: Main results on CSI 300 and CSI 500. Values outside
+parentheses are the means, and values inside parentheses
+are the standard deviations across 10 runs.
+MethodCSI 300 CSI 500
+IC(↑) Rank IC(↑) IC(↑) Rank IC(↑)
+MLP0.0250 0 .0401 0.0188 0 .0458
+(0.0068) ( 0.0081)(0.0018) ( 0.0045)
+XGBoost 0.0404 0 .0576 0.0353 0 .0639
+LightGBM 0.0259 0 .0324 0.0332 0 .0609
+PPO_top *−0.0166−0.0144 0.0025 0 .0295
+(0.0028) ( 0.0075)(0.0076) ( 0.0135)
+GP_top *0.0078 0 .0157 0.0200 0 .0504
+(0.0218) ( 0.0271)(0.0112) ( 0.0160)
+PPO_filter *−0.0044 0 .0101 0.0042 0 .0506
+(0.0107) ( 0.0107)(0.0042) ( 0.0052)
+GP_filter *0.0183 0 .0298 0.0117 0 .0562
+(0.0190) ( 0.0227)(0.0083) ( 0.0105)
+Ours*0.0725 0.0806 0.0438 0.0727
+(0.0105) ( 0.0106)(0.0064) ( 0.0112)
+*Optimal combination size in {10,20,50,100}
+•IC, the Pearson’s correlation coefficient shown in Eq. 1.
+•Rank IC , the rank information coefficient. The rank IC tells
+how much the ranks of our alpha values are correlated with
+the ranks of future returns. Rank IC is defined by replacing
+Pearson’s correlation coefficient with Spearman’s correlation
+coefficient. The rank IC is just the IC of ranked data, defined
+as follows:
+𝜎rank(𝑢,𝑣)=𝜎(𝑟(𝑢),𝑟(𝑣)), (9)
+where𝑟(·)is the ranking operator. The ranks of repeated
+values are assigned as the average ranks that they would
+have been assigned to5.
+Both of the metrics are the higher the better .
+4.2 Main Results
+4.2.1 Comparison across all alpha generators. To answer Q1, we
+first compare our framework against several other alpha-mining
+methods and direct stock trend forecasting baselines, including PPO,
+GP, MLP, LightGBM, and XGBoost. Experiments are conducted on
+CSI300 and CSI500 stocks respectively.
+The results are shown in Table 2. Our framework is able to
+achieve the highest IC and rank IC across all the methods we com-
+pare to. Note that the framework is only explicitly optimized against
+the IC metric. The non-formulaic alpha models come in the second
+tier. The baseline formulaic alpha generators perform poorly on the
+test set, especially the RL-based ones. The reinforcement learning
+agent, when optimized only against single-alpha IC, is prone to
+falling into local optima and thus overfitting on the training set,
+and basically stops searching for new alphas after a certain amount
+of steps. On the other hand, the GP-based methods maintaining
+a large population can avoid the same problem, but still cannot
+produce alphas that are synergistic when used together. The results
+5For example, 𝑟((3,−2,6,4))=(2,1,4,3), while𝑟((3,−2,4,4))=(2,1,3.5,3.5).
+Figure 4: The results of ablation study. A pool size of 1 refers
+to settings that only evaluate the top-most alpha without
+using a combination model.
+also show that the filtering techniques cannot solve the synergy
+problem consistently either.
+4.2.2 Comparison of formulaic generators with varying pool ca-
+pacity. To answer Q2, we study the four baseline formulaic al-
+pha generators more extensively, and compare them to our pro-
+posed framework. The models are evaluated under pool sizes of
+𝑘∈{1,10,20,50,100}. The results are shown in Figure 4.
+Compared to the baseline method PPO_filter, our method directly
+uses the combination model’s performance as the reward to newly
+generated alphas. This leads to a substantial improvement when
+the pool size increases, meaning that our method can produce
+alpha sets with great synergy. Our method shows scalability for
+pool size: even when the pool size is large enough, it can still
+continuously find synergistic alphas that boost the performance
+over the existing pool. Conversely, the combined performance of
+the alphas generated by other approaches barely improves upon
+the case with just the top alpha, meaning that these alpha factors
+have poor synergy. Furthermore, the ability to control the reward
+of individual expressions under a certain alpha pool configuration
+is granted by the flexibility of the RL scheme. The GP scheme of
+maintaining a large population at the same time does not work well
+with fine-grained fitness value control.
+Also, we can see that for the CSI500 dataset, GP_filter performs
+worse than GP_top on the IC metric when the pool size increases.
+This phenomenon demonstrates that the traditionally used mutual-
+IC filtering is not always effective, answering the question Q3.
+4.3 Case Study
+Table 3 shows an example combination of 10 alphas generated by
+our framework, evaluated on the CSI300 constituent stock set. Most
+of the alpha pairs in this specific set have mutual IC values over
+0.7. Previous work [ 10][27] considered this to be too high for the
+individual alphas to be regarded as “diverse”, yet these alphas areKDD ’23, August 6–10, 2023, Long Beach, CA, USA Shuo Yu, Hongyan Xue, Xiang Ao, Feiyang Pan, Jia He, Dandan Tu, and Qing He
+Table 3: An example combination of 10 alphas.
+# Alpha Weight IC (CSI300)
+1 Var(Greater(Greater(Var(low,50),high),open),30) −0.0295 0.0011
+2 Max((Min(Max(close,20)−30,20)+100)/30,20) 0.0515 0.0262
+3 (Mad(high,50)+0.5)vwap/close 0.0343 0.0447
+4 Ref(low,50) 0.0260 0.0241
+5 Min(high/close,50)−Greater(−0.05/close,−10) 0.0437−0.0211
+6 Delta(high,20)+high−12 −0.0997 0.0165
+7 Less(Min(2(vwap−volume),30)+30,30vwap/low)−5 0.0276 0.0025
+8 Corr(Greater(Greater(vwap,volume),Greater(close,
+Greater(Log(Var(volume,10)),10))/close),close,10)−0.0279−0.0338
+9 |low−30| 0.0319 0.0073
+10 Max(1−Max(Corr(low,volume·Log(10−4Max(volume,10)),10),10),30) 0.0312 0.0488
+Weighted Combination 0.0511
+able to work well in a synergistic manner. For example, the alphas
+#2 and #6 have a mutual IC of 0.9746, thus traditionally considered
+too similar to be useful cooperatively. However, the combination
+0.09317𝑓2−0.07163𝑓6achieves an IC of 0.0458 on the test set, even
+higher than the sum of the respective ICs, showing the synergy
+effect.
+Also, although alpha #1 only has an IC of 0.0011, it still plays
+a vital role in the final combination. Once we remove alpha #1
+from the combination and re-train the combination weights on the
+remaining set, the combination’s IC drops to merely 0.0447 . The
+two observations above show that neither the single alpha IC nor
+the mutual IC between alpha pairs is a good indicator of how well
+the combined alpha would perform, answering Q3.
+One possible explanation for these phenomena is that: Although
+traditionally these alphas are similar due to the high mutual IC,
+some linear combinations of the alphas could point to a completely
+different direction from the original ones. Consider two unit vectors
+in a linear space. The more similar these two vectors are, the less
+similar either of these vectors is to the difference between the two
+vectors, since the difference vector approaches to be perpendicular
+to either of the original vectors as the vectors get closer.
+4.4 Investment Simulation
+To demonstrate the effectiveness of our factors in more realistic in-
+vesting settings, we use a simple investment strategy and conducted
+backtests in the testing period (2020/01/01 to 2021/12/31) on the
+CSI300 dataset. We use a simple top-𝑘/drop-𝑛strategy to simulate
+the investment: On each trading day, we first sort the alpha values
+of the stocks, and then select the top 𝑘stocks in that sorted list. We
+evenly invest across the 𝑘stocks if possible, but restrict the strategy
+to only buy/sell at most 𝑛stocks on each day to reduce excessive
+trading costs. In our experiment, 𝑘is set to 50 and 𝑛to 5.
+We recorded the net worth of the respective strategies in the
+testing period, of which a line chart is shown in Figure 5. Although
+our framework does not explicitly optimize towards the absolute
+returns, the framework still performs well in the backtest. Our
+framework is able to gain the most profit compared to the other
+methods.5 RELATED WORK
+Formulaic alphas. The search space of formulaic alphas is enor-
+mous, due to the large amount of possible operators and features
+to choose from. To our best knowledge, all notable former work
+uses genetic programming to explore this huge search space. [ 10]
+augmented the gplearn library with formulaic-alpha-specific time-
+series operators, upon which an alpha-mining framework is built.
+[9] further improved the framework to also mine alphas with non-
+linear relations with the returns by using mutual information as the
+fitness measure. [ 27] used mutual IC to filter out alphas that are too
+similar to existing ones, improving the diversity of resulting alpha
+sets. PCA is carried out on the alpha values for reducing the algo-
+rithmic complexity of computing the mutual ICs, and various other
+tricks are also applied to aid the evolution process. AlphaEvolve [ 3]
+evolves new alphas upon existing ones. It allows combinations of
+much more complex operations (for example matrix-wise computa-
+tions), and uses computation graphs instead of trees to represent the
+alphas. This leads to more sophisticated alphas and better prediction
+accuracy, although at the risk of lowering the alphas’ interpretabil-
+ity. Mutual IC is also used as a measure of alpha synergy in this
+work.
+Machine learning-based alphas. The development of deep
+learning in recent years has brought about various new ideas on
+how to accurately model stock trends. Early work on stock trend
+forecasting treats the movement of each stock as a separate time
+series, and applies time series models like LSTM [ 5] or Transformer
+[21] to the data. Specific network structures catered to stock fore-
+casting like the SFM [ 26] which uses a DFT-like mechanism have
+also been developed. Recently, research has also been conducted on
+methods to integrate non-standard data with the time series. REST
+[24] fuses multi-granular time series data together with historical
+event data to model the market as a whole. HIST [ 23] utilizes con-
+cept graphs on top of the regular time series data to model shared
+commonness between future trends of various stock groups. One
+specific type of machine learning-based model is also worth men-
+tioning. Decision tree models, notably XGBoost [ 2], LightGBM [ 8],
+etc., are often considered interpretable, and they could also achieve
+relatively good performance on stock trend forecasting tasks. How-
+ever, whether a decision tree with extremely complex structure isGenerating Synergistic Formulaic Alpha Collections via Reinforcement Learning KDD ’23, August 6–10, 2023, Long Beach, CA, USA
+Figure 5: Backtest results on CSI 300. The lines track the net worth of simulated trading agents utilizing the various alpha-
+mining approaches.
+considered “interpretable” is at least questionable. When these tree
+models are applied to raw stock data, the high dimensionality of
+input only exacerbates the aforementioned problem. Our formulaic
+alphas use operators that apply to the input data in a more struc-
+tured manner, making them more easily interpretable by curious
+investors.
+Symbolic regression. Symbolic regression (SR) concerns the
+problem of discovering relations between variables represented
+in closed-form mathematical formulas. SR problems are different
+from our problem settings that there always exists a “groundtruth“
+formula that precisely describes the data points in an SR problem,
+while stock market trends are far too complex to be expressed in the
+space of formulaic alphas. Nevertheless, there remain similarities
+between the two fields since similar techniques can be used for
+the expression generator and the optimization procedure. [ 15] sug-
+gested using a custom neural network whose activation functions
+are symbolic operators to solve the SR problem. [ 13] proposed a
+novel symbolic regression framework based on an autoregressive
+expression generator. The generator is optimized using an aug-
+mented version of the policy gradient algorithm that values the top
+performance of the agent more than the average. [ 12] developed a
+method similar to [ 13], but also introduced GP into the optimization
+loop, seeding the GP population with RL outputs. [ 20] applied the
+language model pretraining scheme to symbolic regression, train-
+ing a generative autoregressive “language model” of expressions
+on a large dataset of synthetic expressions.
+Discussions. Although the term “formulaic alpha” is often tied
+down to investing, the concept of simple and interpretable formu-
+laic predictors that could be combined into more expressive models
+is not limited to quantitative trading scenarios. Our framework
+can be adapted to solve other time-series forecasting problems, for
+example, energy consumption prediction [ 4], anomaly detection
+[1], biomedical settings [ 18], etc. In addition, we chose the linear
+combination model in this paper for its simplicity. Meanwhile, intheory, other types of interpretable combination models, for exam-
+ple, decision trees can also be integrated into our framework. In
+that sense, providing these combination models with these features
+expressed in relatively straightforward formulas might help provide
+investigators with more insights into how the models come to the
+final results.
+6 CONCLUSION
+In this paper, we proposed a new framework for generating inter-
+pretable formulaic alphas to aid investors in quantitative trading.
+We proposed to directly use the performance boost brought about
+by the newly added alpha to the existing alpha combination as the
+metric for alpha synergy. As a result, our framework can produce
+sets of alphas that could cooperate satisfactorily with a combination
+model, notwithstanding the actual form of the combination model.
+For the model to explore the vast search space of formulaic alphas
+more effectively, we also formulated the alpha-searching procedure
+as an MDP and applied reinforcement learning techniques to op-
+timize the alpha generator. Extensive experiments are conducted
+to demonstrate that the performance of our framework surpasses
+those of all previous formulaic alpha-mining approaches, and that
+our method can also perform well under more realistic trading
+settings.
+ACKNOWLEDGMENTS
+The research work was supported by the National Key Research and
+Development Program of China under Grant No. 2022YFC3303302,
+the National Natural Science Foundation of China under Grant
+No.61976204. Xiang Ao is also supported by the Project of Youth
+Innovation Promotion Association CAS, Beijing Nova Program
+Z201100006820062.KDD ’23, August 6–10, 2023, Long Beach, CA, USA Shuo Yu, Hongyan Xue, Xiang Ao, Feiyang Pan, Jia He, Dandan Tu, and Qing He
+REFERENCES
+[1]Aditya Ashok, Manimaran Govindarasu, and Venkataramana Ajjarapu. 2018.
+Online Detection of Stealthy False Data Injection Attacks in Power System State
+Estimation. IEEE Trans. Smart Grid 9, 3 (2018), 1636–1646.
+[2]Tianqi Chen and Carlos Guestrin. 2016. XGBoost: A Scalable Tree Boosting
+System. In Proceedings of the 22nd ACM SIGKDD International Conference on
+Knowledge Discovery and Data Mining, San Francisco, CA, USA, August 13-17,
+2016, Balaji Krishnapuram, Mohak Shah, Alexander J. Smola, Charu C. Aggarwal,
+Dou Shen, and Rajeev Rastogi (Eds.). ACM, 785–794.
+[3]Can Cui, Wei Wang, Meihui Zhang, Gang Chen, Zhaojing Luo, and Beng Chin
+Ooi. 2021. AlphaEvolve: A Learning Framework to Discover Novel Alphas in
+Quantitative Investment. In SIGMOD ’21: International Conference on Management
+of Data, Virtual Event, China, June 20-25, 2021 , Guoliang Li, Zhanhuai Li, Stratos
+Idreos, and Divesh Srivastava (Eds.). ACM, 2208–2216.
+[4]Chirag Deb, Fan Zhang, Junjing Yang, Siew Eang Lee, and Kwok Wei Shah. 2017.
+A review on time series forecasting techniques for building energy consumption.
+Renewable and Sustainable Energy Reviews 74 (2017), 902–924.
+[5]Sepp Hochreiter and Jürgen Schmidhuber. 1997. Long Short-Term Memory.
+Neural Comput. 9, 8 (1997), 1735–1780.
+[6]Shengyi Huang and Santiago Ontañón. 2022. A Closer Look at Invalid Action
+Masking in Policy Gradient Algorithms. In Proceedings of the Thirty-Fifth Inter-
+national Florida Artificial Intelligence Research Society Conference, FLAIRS 2022,
+Hutchinson Island, Jensen Beach, Florida, USA, May 15-18, 2022 , Roman Barták,
+Fazel Keshtkar, and Michael Franklin (Eds.).
+[7] Zura Kakushadze. 2016. 101 Formulaic Alphas. arXiv:1601.00991
+[8]Guolin Ke, Qi Meng, Thomas Finley, Taifeng Wang, Wei Chen, Weidong Ma,
+Qiwei Ye, and Tie-Yan Liu. 2017. LightGBM: A Highly Efficient Gradient Boosting
+Decision Tree. In Advances in Neural Information Processing Systems 30: Annual
+Conference on Neural Information Processing Systems 2017, December 4-9, 2017,
+Long Beach, CA, USA , Isabelle Guyon, Ulrike von Luxburg, Samy Bengio, Hanna M.
+Wallach, Rob Fergus, S. V. N. Vishwanathan, and Roman Garnett (Eds.). 3146–
+3154.
+[9]Xiaoming Lin, Ye Chen, Ziyu Li, and Kang He. 2019. Revisiting Stock Alpha
+Mining Based On Genetic Algorithm . Technical Report. Huatai Securities Research
+Center. https://crm.htsc.com.cn/doc/2019/10750101/3f178e66-597a-4639-a34d-
+45f0558e2bce.pdf
+[10] Xiaoming Lin, Ye Chen, Ziyu Li, and Kang He. 2019. Stock Alpha Mining
+Based On Genetic Algorithm . Technical Report. Huatai Securities Research
+Center. https://crm.htsc.com.cn/doc/2019/10750101/f75b4b6a-2bdd-4694-b696-
+4c62528791ea.pdf
+[11] Qian Liu, Yihong Chen, Bei Chen, Jian-Guang Lou, Zixuan Chen, Bin Zhou,
+and Dongmei Zhang. 2020. You Impress Me: Dialogue Generation via Mutual
+Persona Perception. In Proceedings of the 58th Annual Meeting of the Association for
+Computational Linguistics, ACL 2020, Online, July 5-10, 2020 , Dan Jurafsky, Joyce
+Chai, Natalie Schluter, and Joel R. Tetreault (Eds.). Association for Computational
+Linguistics, 1417–1427.
+[12] T. Nathan Mundhenk, Mikel Landajuela, Ruben Glatt, Daniel M. Faissol, and
+Brenden K. Petersen. 2021. Symbolic Regression via Neural-Guided Genetic
+Programming Population Seeding. (2021). arXiv:2111.00053
+[13] Brenden K. Petersen, Mikel Landajuela, T. Nathan Mundhenk, Cláudio Prata
+Santiago, Sookyung Kim, and Joanne Taery Kim. 2021. Deep symbolic regression:
+Recovering mathematical expressions from data via risk-seeking policy gradients.
+In9th International Conference on Learning Representations, ICLR 2021, Virtual
+Event, Austria, May 3-7, 2021 .
+[14] Edward E Qian. 2007. Quantitative equity portfolio management: modern tech-
+niques and applications . Chapman and Hall/CRC.
+[15] Subham S. Sahoo, Christoph H. Lampert, and Georg Martius. 2018. Learning
+Equations for Extrapolation and Control. In Proceedings of the 35th International
+Conference on Machine Learning, ICML 2018, Stockholmsmässan, Stockholm, Swe-
+den, July 10-15, 2018 (Proceedings of Machine Learning Research, Vol. 80) , Jennifer G.
+Dy and Andreas Krause (Eds.). PMLR, 4439–4447.
+[16] Julian Schrittwieser, Ioannis Antonoglou, Thomas Hubert, Karen Simonyan,
+Laurent Sifre, Simon Schmitt, Arthur Guez, Edward Lockhart, Demis Hassabis,
+Thore Graepel, et al .2020. Mastering atari, go, chess and shogi by planning with
+a learned model. Nature 588, 7839 (2020), 604–609.
+[17] John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov.
+2017. Proximal Policy Optimization Algorithms. (2017). arXiv:1707.06347
+[18] Suppawong Tuarob, Conrad S. Tucker, Soundar R. T. Kumara, C. Lee Giles,
+Aaron L. Pincus, David E. Conroy, and Nilam Ram. 2017. How are you feel-
+ing?: A personalized methodology for predicting mental states from temporally
+observable physical and behavioral information. J. Biomed. Informatics 68 (2017),
+1–19.
+[19] I. Tulchinsky. 2015. Finding Alphas: A Quantitative Approach to Building Trading
+Strategies . 1–253 pages.
+[20] Mojtaba Valipour, Bowen You, Maysum Panju, and Ali Ghodsi. 2021. Sym-
+bolicGPT: A Generative Transformer Model for Symbolic Regression. (2021).arXiv:2106.14131
+[21] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+Aidan N. Gomez, Lukasz Kaiser, and Illia Polosukhin. 2017. Attention is All you
+Need. In Advances in Neural Information Processing Systems 30: Annual Conference
+on Neural Information Processing Systems 2017, December 4-9, 2017, Long Beach,
+CA, USA , Isabelle Guyon, Ulrike von Luxburg, Samy Bengio, Hanna M. Wallach,
+Rob Fergus, S. V. N. Vishwanathan, and Roman Garnett (Eds.). 5998–6008.
+[22] Zhicheng Wang, Biwei Huang, Shikui Tu, Kun Zhang, and Lei Xu. 2021. Deep-
+Trader: A Deep Reinforcement Learning Approach for Risk-Return Balanced
+Portfolio Management with Market Conditions Embedding. In Thirty-Fifth AAAI
+Conference on Artificial Intelligence, AAAI 2021, Thirty-Third Conference on Inno-
+vative Applications of Artificial Intelligence, IAAI 2021, The Eleventh Symposium on
+Educational Advances in Artificial Intelligence, EAAI 2021, Virtual Event, February
+2-9, 2021 . AAAI Press, 643–650.
+[23] Wentao Xu, Weiqing Liu, Lewen Wang, Yingce Xia, Jiang Bian, Jian Yin, and
+Tie-Yan Liu. 2021. HIST: A Graph-based Framework for Stock Trend Forecasting
+via Mining Concept-Oriented Shared Information. (2021). arXiv:2110.13716
+[24] Wentao Xu, Weiqing Liu, Chang Xu, Jiang Bian, Jian Yin, and Tie-Yan Liu.
+2021. REST: Relational Event-driven Stock Trend Forecasting. In WWW ’21:
+The Web Conference 2021, Virtual Event / Ljubljana, Slovenia, April 19-23, 2021 ,
+Jure Leskovec, Marko Grobelnik, Marc Najork, Jie Tang, and Leila Zia (Eds.).
+ACM / IW3C2, 1–10.
+[25] Xiao Yang, Weiqing Liu, Dong Zhou, Jiang Bian, and Tie-Yan Liu. 2020. Qlib: An
+AI-oriented Quantitative Investment Platform. (2020). arXiv:2009.11189
+[26] Liheng Zhang, Charu C. Aggarwal, and Guo-Jun Qi. 2017. Stock Price Prediction
+via Discovering Multi-Frequency Trading Patterns. In Proceedings of the 23rd
+ACM SIGKDD International Conference on Knowledge Discovery and Data Mining,
+Halifax, NS, Canada, August 13 - 17, 2017 . ACM, 2141–2149.
+[27] Tianping Zhang, Yuanqi Li, Yifei Jin, and Jian Li. 2020. AutoAlpha: an Efficient
+Hierarchical Evolutionary Algorithm for Mining Alpha Factors in Quantitative
+Investment. arXiv preprint arXiv:2002.08245 (2020).
+A LIST OF OPERATORS
+There are four types of operators used in our framework. The four
+types break down into two groups: cross-section operators, and
+time-series operators. Cross-section operators (denoted with “CS”
+in the table) only deal with data on the current trading day, while
+time-series operators (denoted with “TS”) take into consideration
+data from a consecutive period of time. Each of the two groups
+further separates into unary (denoted with “U”) and binary (denoted
+with “B”) operators that apply to one or two series respectively.
+B PROOF OF THEOREM 3.1
+Proof. We know that the elements of a vector 𝑢that is central-
+ized and normalized (using the Noperator mentioned above) have
+a variance of 1/𝑛, since:
+Var[𝑢]=E𝑖
+𝑢2
+𝑖
+−E𝑖[𝑢𝑖]2
+=1
+𝑛∥𝑢∥2−0
+=1
+𝑛.(10)
+Using the original definition of Pearson’s correlation coefficient,
+we have:
+𝜎(𝑢,𝑣)=Cov[𝑢,𝑣]√︁
+Var[𝑢]·Var[𝑣]
+=E𝑖"
+(𝑢𝑖−¯𝑢)√︁
+Var[𝑢]·(𝑣𝑖−¯𝑣)√︁
+Var[𝑣]#
+=E𝑖"
+[N(𝑢)]𝑖√︁
+1/𝑛·[N(𝑣)]𝑖√︁
+1/𝑛#
+=𝑛E𝑖[[N(𝑢)]𝑖[N(𝑣)]𝑖]
+=⟨N(𝑢),N(𝑣)⟩.(11)Generating Synergistic Formulaic Alpha Collections via Reinforcement Learning KDD ’23, August 6–10, 2023, Long Beach, CA, USA
+Table 4: All the operators used in our framework. CS: cross-section, TS: time-series, U: unary, B: binary.
+Operator Category Descriptions
+Abs(𝑥) CS–U The absolute value |𝑥|.
+Log(𝑥) CS–U Natural logarithmic function log(𝑥).
+𝑥+𝑦,𝑥−𝑦,𝑥·𝑦,𝑥/𝑦 CS–B Arithmetic operators.
+Greater(𝑥,𝑦),Less(𝑥,𝑦) CS–B The larger/smaller one of the two values.
+Ref(𝑥,𝑡) TS–U The expression 𝑥evaluated at 𝑡days before the current day.
+Mean(𝑥,𝑡),Med(𝑥,𝑡),Sum(𝑥,𝑡) TS–U The mean/median/sum value of the expression 𝑥evaluated on the recent 𝑡days.
+Std(𝑥,𝑡),Var(𝑥,𝑡) TS–U The standard deviation/variance of the expression 𝑥evaluated on recent 𝑡days.
+Max(𝑥,𝑡),Min(𝑥,𝑡) TS–U The maximum/minimum value of the expression 𝑥evaluated on the recent 𝑡days.
+Mad(𝑥,𝑡) TS–U The mean absolute deviation E[|𝑥−E[𝑥]|]of the expression 𝑥evaluated on the
+recent𝑡days.
+Delta(𝑥,𝑡) TS–U The relative difference of 𝑥compared to 𝑡days ago,𝑥−Ref(𝑥,𝑡).
+WMA(𝑥,𝑡),EMA(𝑥,𝑡) TS–U Weighted moving average and exponential moving average of the expression 𝑥
+evaluated on the recent 𝑡days.
+Cov(𝑥,𝑦,𝑡) TS–B The covariance between two time series 𝑥and𝑦in the recent 𝑡days.
+Corr(𝑥,𝑦,𝑡) TS–B The Pearson’s correlation coefficient between two time series 𝑥and𝑦in recent𝑡
+days.
+That is to say, the Pearson’s correlation coefficient between two
+vectors equals the inner product of the two vectors centralized and
+normalized.
+Therefore the theorem can be proved as follows. Recall that
+𝑓𝑖(𝑥𝑡)and𝑦𝑡are normalized.
+𝑛L(𝑤)=1
+𝑇𝑇∑︁
+𝑡=1∥𝑧𝑡−𝑦𝑡∥2
+2
+=E𝑡
+∥𝑧𝑡∥2−2⟨𝑧𝑡,𝑦𝑡⟩+∥𝑦𝑡∥2
+=E𝑡𝑘∑︁
+𝑖=1𝑤𝑖𝑓𝑖(𝑋𝑡)2
+−2*𝑘∑︁
+𝑖=1𝑤𝑖𝑓𝑖(𝑋𝑡),𝑦𝑡+
++1
+=E𝑡𝑘∑︁
+𝑖=1𝑘∑︁
+𝑗=1𝑤𝑖𝑤𝑗𝜎(𝑓𝑖(𝑋𝑡),𝑓𝑗(𝑋𝑡))
+−2𝑘∑︁
+𝑖=1𝑤𝑖⟨𝑓𝑖(𝑋𝑡),𝑦𝑡⟩+1#
+=𝑘∑︁
+𝑖=1𝑘∑︁
+𝑗=1𝑤𝑖𝑤𝑗¯𝜎(𝑓𝑖(𝑋),𝑓𝑗(𝑋))−2𝑘∑︁
+𝑖=1𝑤𝑖¯𝜎𝑦(𝑓𝑖)+1.(12)
+□
+C EXPRESSION LEGALITY GUARANTEE
+The legality of expressions divides into two parts: Formal legality
+andsemantic legality.
+C.1 Formal Legality
+An RPN can be built with a stack of expressions, constants, or raw
+features. The RPN building procedure follows the rules below, and
+actions that may violate these rules will be masked.•TS (time-series) operators must take a time-delta (e.g. 10d
+for a time-difference of 10 days) as its last parameter;
+•Excluding the aforementioned time-delta, each operator must
+take enough expressions as operands, according to the arity
+of the operator (one for *-Unary, two for *-Binary);
+•A multi-token expression should not be equivalent to a con-
+stant;
+•The special SEP token (end of expression) is only allowed
+when the generated sequence is already a valid RPN.
+For example, when the stack (state) is currently [$open, 0.5],
+we can choose the “Add” token (a binary operator), building an
+expression “Add($open, 0.5)”. Meanwhile, the operator “Log” is
+not allowed here because “Log” will take “0.5” and “Log(0.5)” is a
+constant; similarly, the operator “TS-Mean” is also invalid because
+“Mean($open, 0.5)” is illegal.
+C.2 Semantic Legality
+Some expressions with correct forms might still fail to evaluate due
+to more constraints imposed by the operators. For example, the
+logarithm operator cannot be applied to a non-positive value. This
+kind of semantic invalidity is not directly detected by the procedure
+mentioned in the last section. In our experiments, these expressions
+are given the reward of -1 (the minimum value of Pearson’s corre-
+lation coefficient) to discourage the agent from generating these
+expressions.
+D HYPERPARAMETERS
+The LSTM feature extractor used in the RL agent has a 2-layer
+structure with a hidden layer dimension of 128. A dropout rate of
+0.1 is used in the LSTM network. The separate value and policy
+heads are MLPs with two hidden layers of 64 dimensions. PPO
+clipping range 𝜖is set to 0.2.

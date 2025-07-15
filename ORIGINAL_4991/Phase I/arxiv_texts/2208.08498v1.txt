@@ -1,0 +1,676 @@
+arXiv:2208.08498v1  [math.CO]  17 Aug 2022Onα-excellentgraphs
+1MagdaDettlaﬀ,2MichaelA.Henning∗and3JerzyTopp
+1FacultyofMathematics,PhysicsandInformatics
+UniversityofGdańsk
+80-952Gdańsk,Poland
+Email: magda.dettlaff@pg.edu.pl
+2DepartmentofMathematicsandAppliedMathematics
+UniversityofJohannesburg
+AucklandPark2006,SouthAfrica
+mahenning@uj.ac.za
+3InstituteofAppliedInformatics
+UniversityofAppliedSciences
+82-300Elbl¸ag,Poland
+j.topp@ans-elblag.pl
+Abstract
+Agraph Gisα-excellentifeveryvertexof Giscontainedinsomemaximumindependentset
+ofG.Inthispaper,wecharacterize α-excellentbipartitegraphs, α-excellentunicyclicgraphs,
+α-excellentsimplicialgraphs, α-excellentchordalgraphs, α-excellentblockgraphs,andweshow
+thateverygeneralizedPetersengraphis α-excellent.
+Keywords:independencenumber;independentdominationnumber;exce llentgraph.
+AMSsubjectclassiﬁcation:05C69,05C85
+1 Introduction
+Adominatingsetofagraph GisasetDofverticesof Gsuchthateveryvertexbelongingto
+V(G)\Disadjacenttoatleastonevertexin D. Asubset IofV(G)isindependentifnotwo
+verticesbelongingto Iareadjacentin G.Anindependentdominatingset ,abbreviatedID-set,of
+Gisasetthatisbothadominatingsetandanindependentset.T hedominationnumber γ(G)of
+Gistheminimumcardinalityofadominatingsetin G,whiletheindependentdominationnumber
+i(G)ofGistheminimumcardinalityofanID-setin G.Theindependencenumber α(G)ofGis
+themaximumcardinalityofanindependentsetin G.Anα-setofGisanindependentsetof Gof
+∗ResearchsupportedinpartbytheUniversityofJohannesbur g
+1maximumcardinality α(G).ThestudyofindependentsetsingraphswasbegunbyBerge[1 ,2]and
+Ore[11].Wereferthereadertothesurvey[7]ofresultsonin dependentdominationingraphsby
+GoddardandHenning.Forrecentbooksondominationingraph s,wereferthereaderto[8,9,10].
+Recentlyanotherparameterconcerningtheexistenceandca rdinalityofindependentsetsin
+agraph,thecommonindependencenumberofagraph,wasintro ducedandstudiedbyDettlaﬀet
+al.[4]. Formally,the commonindependencenumber ofagraph G,denotedby αc(G),isdeﬁned
+asthegreatestinteger rsuchthateveryvertexof Gbelongstosomeindependentsubset Xof
+V(G)with|X| ≥r.Thus,thecommonindependencenumberof Greferstonumbersofmutually
+independentverticesof Ganditemphasizesthenotionoftheindividualindependence ofavertex
+ofGfromotherverticesof G. Itfollowsimmediatelyfromtheabovedeﬁnitionsthatthec om-
+monindependencenumberissandwichedbetweentheindepend entdominationnumberandthe
+independencenumber.Westatethisformallyasfollows.
+Observation1.1. ([4])Foreverygraph G,i(G)≤αc(G)≤α(G).
+Agraph Gissaidtobewell-coveredifi(G) =α(G). Equivalently, Giswell-coveredifevery
+maximalindependentsetof Gisamaximumindependentsetof G. Theconceptofwell-covered
+graphswasintroducedbyPlummer[12]in1970andextensivel ystudiedinmanypapers. For
+asurveyofwell-coveredgraphs,see[13].
+Agraph Giscalledan α-excellentgraphifαc(G) =α(G).Equivalently, Gisα-excellentifevery
+vertexiscontainedinsome α-setofG.Theα-excellentgraphs,referredtoas B-graphsin[1,2],
+havebeenstudiedin[1,2,3,4,5,6,15,16].
+Weareinterestedincharacterizationsofgraphs Gforwhich i(G) =αc(G),i(G) =α(G),and
+αc(G) =α(G),respectively. Weremarkthatthefamilyofwell-coveredgr aphsisproperlycon-
+tainedinthefamilyof α-excellentgraphs,andinthefamilyofgraphs Gforwhich i(G) =αc(G),
+respectively. Trees Tforwhich i(T) =αc(T),andblockgraphs Gsuchthat αc(G) =α(G)have
+beencharacterizedin[4]. The α-excellenttreeshavealsobeenstudiedin[5,6]. Inthispap er,
+weprovidecharacterizationsof α-excellentbipartitegraphs,unicyclicgraphs,simplicia lgraphs,
+chordalgraphs,blockgraphs,andweshowthateverygeneral izedPetersengraphis α-excellent.
+1.1 Notation
+Fornotationandgraphtheoryterminology,weingeneralfol low[10].Speciﬁcally,let Gbeagraph
+withvertexset V(G)andedgeset E(G),andoforder n(G) =|V(G)|andsize m(G) =|E(G)|.
+Twoverticesareneighborsiftheyareadjacent. Foragraph Gandavertex v∈V(G),theopen
+neighborhood NG(v)ofvisthesetofneighborsof vinG,andtheclosedneighborhood NG[v] =
+NG(v)∪{v}.Foraset S⊆V(G),theopenneighborhoodofSistheset NG(S) =/uniontext
+v∈SNG(v),and
+theclosedneighborhood NG[S] =NG(S)∪S.
+Anend-edgeofagraph Gisanedgeincidentwithatleastonevertexofdegree 1inG.Asupport
+vertexisavertexadjacenttoavertexofdegree 1,thatis,asupportvertexisincidentwithan
+end-edge.Astrongsupportvertex isavertexwithatleasttwoneighborsofdegree 1.Wenotethat
+iftwoend-edgesshareavertex,thensuchavertexisastrong supportvertex.An interiorvertex
+ofGisavertexofdegreeatleast 2.
+Acaterpillar-wheelisaconnectedunicyclicgraph Gofgirthatleastthreeinwhichasinglecycle
+2C(thebody)isincidentto(orcontains)everyedge,thatis,atleaston eendofeveryedgeof G
+belongstothecycle C.Anend-edgeofacaterpillar-wheelisits leg.
+Avertex vofagraph Gisasimplicialvertexifeverytwoverticesbelongingto NG(v)areadjacent
+inG. Equivalently,asimplicialvertexisavertexthatappears inexactlyonecliqueofagraph,
+whereacliqueofagraph Gisamaximalcompletesubgraphof G.Acliqueofagraph Gcontaining
+atleastonesimplicialvertexof Giscalledasimplex(plural,simplexesorsimplices)ofG. We
+notethatif visasimplicialvertexof G,thenG[NG[v]]istheuniquesimplexof Gcontaining v.
+Agraph Gissimplicialifeveryvertexof Gisasimplicialvertexof Gorisadjacenttoasimplicial
+vertexof G,thatis,agraph Gissimplicialifandonlyifeveryvertexof Gbelongstoatleastone
+simplexof G.
+Agraph Gissaidtobechordal(alsocalledtriangulated,rigid-circuit,perfecteliminated, or
+monotonesensitive intheliterature)ifeverycycleof Goflengthfourormorecontainsa chord,
+i.e.,anedgejoiningtwonon-consecutiveverticesofthecy cle.Weremarkthatchordalgraphshave
+beenalsocharacterizedintermsoftheexistenceofsimplic ialvertices[19]:Agraph Gischordalif
+andonlyifeveryinducedsubgraphof Ghasasimplicialvertex.Certainly,everyinducedsubgraph
+ofachordalgraphischordal.
+Ablockinagraph Gisamaximalconnectedsubgraphhavingthepropertythatitc ontainsno
+cut-vertexofitsown. An end-blockofGisablockcontainingexactlyonecut-vertex,whilean
+inner-blockofGisablockcontainingatleasttwocut-vertices. Agraphisa blockgraphifevery
+blockof Gisacompletegraph.Itisknownthatagraph Gisablockgraphifandonlyifthere
+existsauniqueinducedpathbetweenanytwoverticesof G.
+Foragraph Gandafamily H={Hv:v∈V(G)}ofnonemptygraphsindexedbythevertices
+ofG,thecoronaG◦HofGandHisthedisjointunionof GandHv,v∈V(G),withadditional
+edgesjoiningeachvertex vofGtoallverticesof Hv.Thus,toformthegraph G◦Hweaddacopy
+ofthegraph Hvassociatedwith vforeachvertex vofG,andjoin vtoallverticesof Hv.Ifallthe
+graphsofthefamily Hareisomorphictooneandthesamegraph H,thenweshallwrite G◦H
+insteadof G◦H.Inparticular,thecorona G◦K1isformedfrom Gbyaddingforeachvertex vin
+Ganewvertex v′andtheedge vv′.
+Fork≥1aninteger,weusethestandardnotation [k] ={1,2,...,k}and[k]0= [k]∪ {0}=
+{0,1,...,k}.
+2 Preliminaryresults
+Inthissection,wepresentsomepreliminaryresultsthatwe willneedwhenprovingourmain
+results.Wehavethefollowingsimplepropertyofsimplexes inα-excellentgraphs.
+Proposition2.1.Thesimplexesofan α-excellentgrapharepairwisevertex-disjoint.Inparticu lar,
+noα-excellentgraphcontainsastrongsupportvertex.
+Proof.LetGbeanα-excellentgraph,andso αc(G) =α(G).Suppose,tothecontrary,thatavertex
+vofagraph Gbelongstotwosimplexesof G,saytoG[NG[u]]andG[NG[w]].LetIbeamaximum
+independentsetof Gthatcontains v,andso α(G)≥ |I| ≥αc(G) =α(G).Consequently,wemust
+haveequalitythroughoutthisinequalitychain,implyingt hat|I|=α(G).However, (I\{v})∪{u,w}
+isanindependentsetof Gofcardinality |I|+1 =α(G)+1,acontradiction.
+3LetGbeagraph,andlet H={Hv:v∈V(G)}beafamilyofnonemptygraphsindexedbythe
+verticesof G.Letv∈V(G),andlet Ivbeamaximumindependentsetin G◦Hthatcontainsthe
+vertexv.IfHvisnotacompletegraph,thenreplacing vinIvwithtwonon-adjacentverticesin Hv
+producesanindependentsetofcardinalitygreaterthan |Iv|,implyingthat G◦Hisnotα-excellent.
+Ontheotherhand,if Hvisacompletegraphforeveryvertex vofG,thenα(G◦H) =|V(G)|and
+everyvertexof G◦Hbelongstosome α-setofG◦H.Thisyieldsthefollowingfamilyof α-excellent
+graphs.
+Observation2.2. LetGbeagraph,andlet H={Hv:v∈V(G)}beafamilyofnonemptygraphs
+indexedbytheverticesof G.Thenthecorona G◦Hisanα-excellentgraphifandonlyif Hconsists
+ofcompletegraphs.Inparticular,thecorona G◦K1isanα-excellentgraphforeverygraph G.
+In[18],Ravindraprovedthataconnectedbipartitegraph Goforderatleast2iswell-coveredif
+andonlyif Ghasaperfectmatching Mandforevery uv∈M,theinducedsubgraph G[NG({u,v})]
+isacompletebipartitegraph.Inparticular,itwasobserve din[18]thatatree Giswell-coveredif
+andonlyifeveryinteriorvertexof Gisadjacenttoexactlyoneendvertexof Gor,equivalently,if
+andonlyiftheend-edgesof Gformaperfectmatchingof G,thatis,ifandonlyif Gisthecorona
+graphofatree. InProposition2.5wehaveananalogueofthes eresultsfor α-excellentbipartite
+graphs.Infact,thisanaloguewasprovedbyBerge[2]manyye arsago.Ourproofgivenbelowis
+amodiﬁcationofthatgivenin[2].Webeginwithonedeﬁnitio nandtwopropositions.
+Avertex visacriticalvertexofGifitsremovalfrom Gchangestheindependencenumber,that
+is,avertex visacriticalvertexof Gifanyofthefollowingequivalentconditionsholds:
+(1)α(G−v)/\⌉}atio\slash=α(G).
+(2)α(G−v) =α(G)−1.
+(3)Everymaximumindependentsetof Gcontains v.
+Proposition2.3.([3])Ifagraph Gcontainsnocriticalvertex,theneveryindependentset IofG
+canbematchedinto V(G)\I.
+Proposition2.4. Aconnected α-excellentgraphoforderatleast 2hasnocriticalvertex,and
+everyindependentset IofGcanbematchedinto V(G)\I.
+Proof.LetGbeaconnected α-excellentgraphoforderatleasttwo,andlet vbeavertexof G.
+Toprovethat visnotacriticalvertex,itsuﬃcestoshowthat vdoesnotbelongtosome α-set
+ofG.Letubeanyneighborof v.Fromthefactthat Gisanα-excellentgraph,itfollowsthat u
+belongstosome α-setIofG.Sincevisadjacentto uandu∈I,thevertex vdoesnotbelongto
+I,andthisprovesthat visnotacriticalvertexof G.Consequently, Ghasnocriticalvertexand,
+therefore,byProposition2.3,everyindependentset IofGcanbematchedinto V(G)\I.
+Proposition2.5.([2])IfGisaconnectedbipartitegraphoforder n≥2,thenthefollowingstate-
+mentsareequivalent:
+(a)Ghasaperfectmatching.
+(b)α(G) =n/2.
+(c)Gisanα-excellentgraph.
+4Proof.Assumethat Gisaconnectedbipartitegraphoforder n≥2,sayG= (A,B,E),where
+AandBbethepartitesetsof G,|A| ≥ |B| ≥1,andE=E(G).SinceAandBareindependent
+setsand |A| ≥ |B|=n−|A|,itfollowsthat α(G)≥ |A| ≥n/2≥ |B|.
+Assumeﬁrstthat Ghasaperfectmatching.Then,certainly, α(G)≤n/2and,therefore, α(G) =
+n/2. Consequently, |A|=|B|=n/2 =α(G),andeachofthesets AandBisanα-setofG.
+Thuseveryvertexof Gbelongstoan α-setofGandGisanα-excellentgraph. Thisprovesthe
+implications (a)⇒(b)and(b)⇒(c).
+Nowassumethat Gisanα-excellentgraph.Weshallprovethat Ghasaperfectmatching.By
+Proposition2.4, Ghasnocriticalvertexandeveryindependentset IofGcanbematchedinto
+V(G)\I. Inparticular, Acanbematchedinto BandBintoA. Thus, |A|=|B|andGhas
+aperfectmatching.Thisprovestheimplication (c)⇒(a).
+Thefollowingsimplecharacterizationof α-excellenttreesfollowsimmediatelyfromProposition
+2.5anditwasalreadyprovedin[2],andindependentlyin[4, 5,6].
+Corollary2.6.AtreeToforderatleast 2isanα-excellentgraphifandonlyif Thasaperfect
+matching.
+3α-Excellentunicyclicgraphs
+Inthissection,wecharacterize α-excellentunicyclicgraphs.Ourcharacterizationisacou nterpart
+ofcharacterizationsofwell-coveredunicyclicgraphspre sentedin[22,23].
+Proposition3.1.LetGbeacaterpillar-wheelofgirthatleast3.Then Gisanα-excellentgraphif
+andonlyif Gisacycle(thatis, Gisacaterpillar-wheelwithoutanyleg)or Gisacaterpillar-wheel
+withaperfectmatchingandwithatleasttwolegs.
+Proof.IfGisacycle,then Gisavertextransitivegraph,and,certainly, Gisanα-excellent
+graph(aseverytwoverticesof Ghavethesameproperties).Thusassumethat Gisacaterpillar-
+wheelwithatleasttwolegsandassumethat Ghasaperfectmatching. Let v1,v2,...,vnbethe
+consecutiveverticesoftheonlycycle CofG,andlet L={vi1vi1,...,vilvil}bethesetoflegsof
+G,where1≤i1<···< il≤n,andL={vi1,...,vil}bethesetofleavesof G.LetSbetheset
+ofsupportverticesin G,thatis, S={vi1,...,vil}.LetMbethe(unique)perfectmatchingof G.
+Certainly, Lisasubsetof M.
+IfM=L,thenG=Cn◦K1isacoronagraphanditisan α-excellentgraph,seeObservation2.2.
+Thusassumethat Lisapropersubsetof M. Renamingtheverticeson Cifnecessary,wemay
+assume,withoutlossofgenerality,that i1= 1<···< il≤n−2. Fromthefactthat Mis
+aperfectmatchingof GandL/notsubsetoreqlM,itfollowsthateverycomponentofthesubgraph G′=
+G−{vi1,vi1,···,vil,vil}isapathofevenorder,say Q1,...,Q karethecomponentsof G′,where
+V(Qj) ={uj
+1,uj
+2,...,uj
+2tj}(forsomepositiveinteger tj),andtheorderofverticesof Qjisinherited
+fromtheorderofthevertices v1,v2,...,vnonthecycle C.Itisevidentthattheperfectmatching
+Mistheset
+M=L∪k/uniondisplay
+j=1{uj
+1uj
+2,...,uj
+2tj−1uj
+2tj}
+5andthat α(G) =|M|/2.
+Nowweshallprovethat Gisanα-excellentgraph.Let Vj
+1denotetheset {uj
+1,...,uj
+2tj−1}of“odd”
+verticesofthepath Qj(withoddsubscripts),and,similarly,let Vj
+2denotetheset {uj
+2,...,uj
+2tj}of
+“even”verticesof Qj(withevensubscripts)for j∈[k].Itisevidentthateachofthesets
+I1=L∪k/uniondisplay
+j=1Vj
+1andI2=L∪k/uniondisplay
+j=1Vj
+2
+isanα-setofG.Consequentlyeveryvertexbelongingto I1∪I2=V(G)\Sbelongstoan α-setof
+G.Assumethat vis∈S.Itremainstoshowthat visbelongstosome α-setofG.Wenowconsider
+fourcases.Inwhatfollows,allsubscriptsaretakenmodulo n.
+Case1. vis−1∈Sandvis+1∈S.Inthiscase,eachofthesets (I1\ {vis})∪ {vis}and
+(I2\{vis})∪{vis}isanα-setofGandvisbelongstoeachofthem.
+Case2. vis−1∈Sandvis+1/\⌉}atio\slash∈S.Inthiscase,theset (I2\{vis})∪{vis}isanα-setofGthat
+contains vis.
+Case3. vis−1/\⌉}atio\slash∈Sandvis+1∈S.Inthiscase,theset (I1\{vis})∪{vis}isanα-setofGthat
+contains vis.
+Case4. vis−1/\⌉}atio\slash∈Sandvis+1/\⌉}atio\slash∈S.Inthiscase,withoutlossgenerality,assumethat vis−1and
+vis+1belongto QkandQ1,respectively.Inthiscase,theset
+(L\{vis})∪{vis}∪Vk
+1∪k−1/uniondisplay
+j=1Vj
+2
+isanα-setofGthatcontains vis.Thiscompletestheproofoftheﬁrstpartofthetheorem.
+Assumenowthat Gisanα-excellentcaterpillar-wheelwhichisneitheracyclenort hecoronaof
+acycle. Thusatleastonevertexonthecycle Chasdegree 2inGoratleastonevertexonthe
+cycleCisastrongsupportvertex.ByProposition2.1,the α-excellentgraph Gcontainsnostrong
+supportvertex.Hence,atleastonevertexonthecycle Cisnotasupportvertex(andhasdegree 2
+inG).Weclaimthat Ghasatleasttwoleaves.Suppose,tothecontrary,that Ghasonlyoneleaf.
+Letvbetheonlyleafof G,andlet vbetheuniqueneighborof v.Adoptingourearliernotation,let
+Cdenotethe(unique)cycleof GandletChavelength nwheren≥3.LetIvandIvbealargest
+independentsetof Gcontainingthevertices vandv,respectively.Since Gisanα-excellentgraph,
+wehave α(G) =|Iv|=|Iv|. However, |Iv|= 1+α(G−NG[v]) = 1 + α(Pn−1) = 1+⌈(n−1)/2⌉
+and|Iv|= 1+α(G−NG[v]) = 1+ α(Pn−3) = 1+⌈(n−3)/2⌉,andso |Iv|>|Iv|,acontradiction.
+Hence,Ghasatleasttwoleaves.
+Nowweshallprovethat Ghasaperfectmatching.Let vbeasupportvertexof G,letvbealeaf
+adjacentto v,andlet ubeoneofthetwoneighborsof vonthecycle C.LetG′denotethegraph
+G−uv.Everyindependentsetof Gisanindependentsetof G−uv,andso α(G−uv)≥α(G).
+Ontheotherhand,let Jbeamaximumindependentsetof G−uv.Atleastoneofthesets Jor
+(J\{v})∪{v}isanindependentsetof Gand,therefore, α(G−uv) =|J|=|(J\{v})∪{v}| ≤α(G).
+Consequently, α(G−uv) =α(G). Fromthisandfromthefactthat Gisanα-excellentgraphit
+isevidentthat G−uvisanα-excellentgraph.Thus,since G−uvisatree,Corollary2.6implies
+thatG−uvhasaperfectmatching.Therefore, Ghasaperfectmatching.
+6LetSbethefamilyconsistingofallcyclesandofallcaterpillar -wheelshavingaperfectmatching
+andatleast2legs. ItfollowsfromtheproofofProposition3 .1thatacaterpillar-wheel Gwhich
+isnotacyclebelongstothefamily Sifandonlyif Ghasℓlegs,where ℓ≥2,andthedistance
+betweenanytwoconsecutivelegsof Gisanoddinteger.
+LetHbethefamilyofgraphsdeﬁnedrecursivelyasfollows:
+(1)Thefamily Hcontainseverygraphbelongingtothefamily S.
+(2)Thefamily Hisclosedundertheoperation O1deﬁnedbelow:
+•Operation O1.Ifagraph Hbelongsto H,thenaddavertexdisjointcopyofacomplete
+graphK2oforder 2toHandaddanedgejoiningavertexof Hwithavertexinthe
+addedcopyof K2.
+Proposition3.2.IfHisaconnectedgraphoforderatleast 2,andGisagraphobtainedfrom H
+byapplyingoperation O1,thenthefollowingpropertieshold:
+(1)α(G) =α(H)+1.
+(2)Gisα-excellentifandonlyif Hisα-excellent.
+Proof.Letvandwbethetwoverticesaddedto Hwhenconstructing Gusingoperation O1,andlet
+ubethevertexof Hthatisjoinedtoexactlyoneof vandw,sayv.Thus,uvwisapathin G,where
+whasdegree 1inGandvhasdegree 2inG.Everyα-setinHcanbeextendedtoanindependent
+setofGbyaddingtoitthevertex w,implyingthat α(G)≥α(H)+1.Ontheotherhand,every
+α-setinGisanindependentsetof G−uv=H∪K2,andtherefore α(G)≤α(G−uv) =α(H)+1.
+Consequently, α(G) =α(H)+1.Thisprovespart(1).
+Toprovepart(2),assumeﬁrstthat Gisα-excellent. Let xbeavertexof H,andlet Ixbean
+α-setofGthatcontains x.Wenotethattheset Ixcontainsexactlyoneof vandw.Ifv∈Ix,then
+wecanreplace vinIxwiththevertex w.Hence,wecanchoosetheset Ixtocontainthevertex w.
+Theset Ix\ {w}isanindependentsetof Hofcardinality |Ix| −1 =α(G)−1 =α(H),andis
+thereforean α-setofHthatcontainsthevertex x.Sincexisanarbitraryvertexof H,thegraph
+His,therefore,an α-excellentgraph.
+Nowassumethat Hisanα-excellentgraph.Let ybeavertexof G.Ifybelongsto V(H),and
+ifIyisanα-setofHcontaining y,thenIy∪ {w}isanα-setofGcontaining yandw. Iftisa
+neighborof uinHandifItisanα-setofHcontaining t,thenIt∪{v}isanα-setofGcontaining v.
+Thisprovesthat Gisanα-excellentgraph,andcompletestheproofofpart(2).
+WedeﬁnenexttheoppositeoperationtoOperation O1.
+•Operation O2.IfGisagraphoforderatleast 4thatcontainsasupportvertexofdegree 2,
+thenremovethissupportvertexandits(unique)neighborof degree1fromthegraph G.
+WecallOperation O2apluckingoperation.Thepluckedgraphofagraph Goforderatleast 4,
+denotedby P(G),isagraphobtainedfrom Gbyrepeatedapplicationsofthepluckingoperation
+O2untilnofurtherpluckingoperationispossible. Itfollows fromCorollary2.6andfromthe
+abovedeﬁnitionsthatatree Toforderatleast 2isanα-excellentgraphifandonlyiftheplucked
+graphP(T)isK2.Italsofollowsfromthesedeﬁnitionsthatifagraph Gbelongstothefamily H,
+thenGandP(G)areunicyclicgraphs.NowfromPropositions3.1and3.2weha vethefollowing
+characterizationofthe α-excellentunicyclicgraphs.Weomititsstraightforwardi nductiveproof.
+7Theorem3.3.LetGbeaconnectedunicyclicgraph.Then, Gisanα-excellentgraphifandonly
+ifoneofthefollowingtwostatementsholds:
+(1)Thepluckedgraph P(G)ofGisacycle.
+(2)Thepluckedgraph P(G)ofGisacaterpillar-wheelhavingaperfectmatchingwith ℓlegswhere
+ℓ≥2.
+Thesubdivisiongraphofagraph G,denoted S(G),isthegraphobtainedfrom Gbysubdividing
+everyedgeof Gexactlyonce.AsanimmediateconsequenceofTheorem3.3,we havethefollowing
+result.
+Corollary3.4.IfGisaconnectedunicyclicgraph,thenitssubdivisiongraph S(G)isanα-excellent
+graph.
+Proof.Theresultisobviousif Gisacycle.If Gisaconnectedunicyclicgraphwithatleastoneleg,
+thenS(G)isaunicyclicgraph,anditspluckedgraph P(S(G))isacycle.Thus,byTheorem3.3,
+S(G)isanα-excellentgraph.
+4α-Excellentsimplicial,chordal,andblockgraphs
+Inthissectionwecharacterizesimplicialgraphs,chordal graphs,andblockgraphswhichare α-
+excellentgraphs. Webeginwiththefollowingcharacteriza tionofwell-coveredsimplicialgraphs
+andwell-coveredchordalgraphswhichwasprovedin[14].
+Proposition4.1. ([14])IfGisasimplicialgraphorachordalgraph,then Giswell-coveredif
+andonlyifeveryvertexof Gbelongstoexactlyonesimplexof G.
+Thefollowingtheoremgivesasimplecharacterizationofth eα-excellentsimplicialgraphs.This
+theoremalsoshowsthatasimplicialgraphis α-excellentifandonlyifitiswell-covered.
+Theorem4.2.IfGisasimplicialgraph,thenthefollowingstatementsareequ ivalent:
+(a)Gisawell-coveredgraph.
+(b)Gisanα-excellentgraph.
+(c)Everyvertexof Gbelongstoexactlyonesimplexof G.
+Proof.Thestatements(a)and(c)areequivalent,byProposition4. 1.Theimplication (a)⇒(b)is
+obvious,asif i(G) =α(G),thenbyObservation1.1wehave αc(G) =α(G),andsoGisα-excellent.
+Finally,toprovetheimplication (b)⇒(a),assumethat Gisanα-excellentgraphandsuppose,
+tothecontrary,that Gisnotwell-covered.Inthiscasetheequivalenceof(a)and( c)impliesthat
+somevertexof Gbelongstoatleasttwosimplexesin G,whichisimpossibleinan α-excellent
+graph,seeProposition2.1.
+Thegraph GshowninFig.1isan α-excellentchordalgraphwhichisnotawell-coveredgraph,
+asitiseasytoobservethat i(G) = 2<3 =αc(G) =α(G).Thus,sinceeverywell-coveredgraph
+isanα-excellentgraph,thesetofwell-coveredsimplicialgraph sisproperlycontainedinthesetof
+α-excellentchordalgraphs.
+Forourcharacterizationof α-excellentchordalgraphs,weneedthenexttwopropertieso fsim-
+plicialverticesandthedeﬁnitionofasuccessiveclique-c overofagraph.
+8G
+Figure1:An-excellentchordalgraph whichisnotawell-coveredgraph
+Proposition4.3.Ifisasimplicialvertexofagraph ,then ]) = 
+Proof.Ifisamaximumindependentsetof ,then∪{ isanindependentsetof
+and,therefore, ≥|∪{ }|+1 = ])+1 .Nowassumethat isamaximum 
+independentsetof .Since ]] isacompletegraph,necessarily |≤ and
+isanindependentsetof ,implyingthat ]) ≥|≥||− 1 = 
+Consequently, ]) = 
+Proposition4.4. Ifisasimplicialvertexofan -excellentgraph,thenisan
+-excellentgraph.
+Proof.Assumethatisasimplicialvertexofan -excellentgraph. Weshallshowthat
+isan-excellentgraph. Let beanarbitraryvertexof . ByProposition4.3,
+) = .Sinceis-excellent,inthereisanindependentset,say ,ofcardinality
+thatcontains.Theset isanindependentsetin ofcardinality 1 = 
+thatcontains.Sinceisanarbitraryvertexof ,everyvertexof belongstoan-setof
+thatis,isan-excellentgraph.
+Anorderedsequence ,...,V ofsubsetsofthevertexset ofagraphissaidtobe
+successiveclique-cover ofifthefollowingthreepropertieshold:
+(a)Thesets ,...,V formapartitionof
+(b)isasimplexinj<i for
+(c)Forevery therearevertices +1 +1 ,...,u suchthat ,u +1 ,...,u is
+anindependentsetfor 1] 
+Proposition4.5.Ifagraphhasasuccessiveclique-cover,then isan-excellentgraph.
+Proof.Theresultisobviousif isacompletegraph.Thusassumethat isanon-completegraph
+and,...,V isasuccessiveclique-coverof . Letbeasimplicialvertexofj<i 
+belongingtowhere. Fromtherecursivedeﬁnitionofthesequence ,...,V itis
+evidentthattheset ,...,v isindependentin . Therefore, ≥ |. Onthe
+otherhand,letbeamaximumindependentsetof . Sinceisacompletegraph,we
+notethat | ≤ for. Thus,since ,...,V formapartitionof ,wehave
+) = =1 =1 |≤ .Consequently, ) = 
+Toprovethatisan-excellentgraph,itsuﬃcestoshowthateveryvertex ofbelongs
+toanindependentsetofcardinality .Thisisobviousif ∈{ ,...,v (where,infact,can
+beanyvertexbelongingto ,asisacompletegraph),as ,...,v isanindependent
+setofcardinality in. Thusassumethat ,...,v }∪ . If,then
+fromtheproperty(c)ofthesuccessiveclique-cover ,...,V ofitfollowsthatthereareFigure1:An α-excellentchordalgraph Gwhichisnotawell-coveredgraph
+Proposition4.3.Ifvisasimplicialvertexofagraph G,thenα(G−NG[v]) =α(G)−1.
+Proof.IfIisamaximumindependentsetof G−NG[v],thenI∪{v}isanindependentsetof G
+and,therefore, α(G)≥ |I∪{v}|=|I|+1 =α(G−NG[v])+1.Nowassumethat Jisamaximum
+independentsetof G.SinceG[NG[v]]isacompletegraph,necessarily |J∩NG[v]| ≤1andJ\NG[v]
+isanindependentsetof G−NG[v],implyingthat α(G−NG[v])≥ |J\NG[v]≥ |J|−1 =α(G)−1.
+Consequently, α(G−NG[v]) =α(G)−1.
+Proposition4.4. Ifvisasimplicialvertexofan α-excellentgraph G,thenG−NG[v]isan
+α-excellentgraph.
+Proof.Assumethat visasimplicialvertexofan α-excellentgraph G. Weshallshowthat G′=
+G−NG[v]isanα-excellentgraph. Let ubeanarbitraryvertexof G′. ByProposition4.3,
+α(G′) =α(G)−1.SinceGisα-excellent,in Gthereisanindependentset,say Ju,ofcardinality
+α(G)thatcontains u.Theset Ju\NG[v]isanindependentsetin G′ofcardinality α(G)−1 =α(G′)
+thatcontains u.Sinceuisanarbitraryvertexof G′,everyvertexof G′belongstoan α-setofG′,
+thatis,G′isanα-excellentgraph.
+Anorderedsequence (V1,...,V n)ofsubsetsofthevertexset V(G)ofagraph Gissaidtobe
+asuccessiveclique-cover ofGifthefollowingthreepropertieshold:
+(a)Thesets V1,...,V nformapartitionof V(G);
+(b)G[Vi]isasimplexin G−/uniontext
+j<iVjfori∈[n];
+(c)Forevery ui∈Vitherearevertices ui+1∈Vi+1,...,u n∈Vnsuchthat {ui,ui+1,...,u n}is
+anindependentsetfor i∈[n−1].
+Proposition4.5.Ifagraph Ghasasuccessiveclique-cover,then Gisanα-excellentgraph.
+Proof.Theresultisobviousif Gisacompletegraph.Thusassumethat Gisanon-completegraph
+and(V1,...,V n)isasuccessiveclique-coverof G. Letvibeasimplicialvertexof G−/uniontext
+j<iVj
+belongingto Viwherei∈[n]. Fromtherecursivedeﬁnitionofthesequence (V1,...,V n)itis
+evidentthattheset I={v1,...,vn}isindependentin G. Therefore, α(G)≥ |I|=n. Onthe
+otherhand,let Jbeamaximumindependentsetof G. Since G[Vi]isacompletegraph,we
+notethat |J∩Vi| ≤1fori∈[n]. Thus,since V1,...,V nformapartitionof V(G),wehave
+α(G) =|J|=|J∩V(G)|=|J∩/uniontextn
+i=1Vi|=/summationtextn
+i=1|J∩Vi| ≤n.Consequently, α(G) =n.
+Toprovethat Gisanα-excellentgraph,itsuﬃcestoshowthateveryvertex vofGbelongs
+toanindependentsetofcardinality n.Thisisobviousif v∈ {v1,...,vn}(where,infact, vncan
+beanyvertexbelongingto Vn,asG[Vn]isacompletegraph),as {v1,...,vn}isanindependent
+setofcardinality ninG. Thusassumethat v∈V(G)\({v1,...,vn−1} ∪Vn). Ifv∈V1,then
+fromtheproperty(c)ofthesuccessiveclique-cover (V1,...,V n)ofGitfollowsthatthereare
+9verticesu2∈V2,...,u n∈Vnsuchthat {v,u2,...,u n}isanindependentsetofcardinality nthat
+contains v.Ifv∈Vi,where1< i < n,thenagainfromtheproperty(c)ofthesuccessiveclique-c over
+(V1,...,V n)itfollowsthattherearevertices ui+1∈Vi+1,...,u n∈Vnsuchthat {v,ui+1,...,u n}is
+anindependentset.Inthiscase {v1,...,vi−1,v,ui+1,...,u n}isanindependentsetofcardinality n
+inGthatcontainsthevertex v.Thisprovesthat Gisanα-excellentgraph.
+Thenexttheorempresentsacharacterizationofthe α-excellentchordalgraphs.
+Theorem4.6.Achordalgraph Gisanα-excellentgraphifandonlyif Ghasasuccessiveclique-
+cover.
+Proof.Ifachordalgraph Ghasasuccessiveclique-cover,then Gisanα-excellentgraph,by
+Proposition4.5.Weproceedbyinductionontheorder ntoshowthatan α-excellentchordalgraph
+hasasuccessiveclique-cover. Theresultisimmediatetoch eckforsmall n≤4. Letn≥5and
+assumethatevery α-excellentchordalgraphoforderlessthan nhasasuccessiveclique-cover.Let
+Gbeanα-excellentchordalgraphoforder n.
+Letv0beasimplicialvertexof GandletG′=G−NG[v0].Thegraph G′isachordalgraphof
+orderlessthan n. Inaddition,byProposition4.4,thegraph G′isanα-excellentgraphand,by
+Proposition4.3, α(G′) =α(G)−1.Now,bytheinductionhypothesis, G′hasasuccessiveclique-
+cover,say (V1,...,V k)isasuccessiveclique-coverof G′(wherek=α(G′)),thatis, (V1,...,V k)isa
+sequencehavingtheproperties(a),(b)and(c)speciﬁedint hedeﬁnitionofasuccessiveclique-cover
+ofG′.Itremainstoprovethatthesequence (V0,V1,...,V k),whereV0=NG[v0],hasthedesired
+propertiesofasuccessiveclique-coverof G.
+SinceV1,...,V kisapartitionof V(G′)andV0=V(G)\V(G′),wenotethat V0,V1,...,V kis
+apartitionof V(G). Recallthat v0isasimplicialvertexof GandV0=NG[v0]. Wenotethat
+G[Vi] =G′[Vi]andG′[Vi]isasimplexin G′−/uniontext
+j<iVj=G−/uniontext
+j<iVjfori∈[n].Theseobservations
+implythat G[V0]isasimplexin G(=G−/uniontext
+j<0Vj). Finally,theproperty(c)ofthesequence
+(V0,V1,...,V k)isobvious,forif ui∈ViandIuiisalargestindependentsetcontaining ui,then,
+sinceGisanα-excellentgraph,weinferthat |Iui|=k+ 1. Moreover,since G[Vj]isacomplete
+graphand V0,V1,...,V kisapartitionof V(G),wehave |Iui∩Vj|= 1forj∈[k]0.Thisprovesthat
+(V0,V1,...,V k)asuccessiveclique-coverof G.
+Itwasprovedin[22](seealso[14,17,21])thatablockgraph Giswell-coveredifandonlyif
+everyvertexof Gbelongstoexactlyonesimplexof G.Theα-excellentblockgraphshavealready
+beencharacterizedin[4]. Herewepresentanothercharacte rizationofsuchgraphs. Inorderto
+stateandproveourcharacterization,weneedadditionalde ﬁnitionsandterminology.
+Afamily Pofvertexdisjointblocksofablockgraph Gisaperfectblock-coverofGifeveryvertex
+ofGbelongstosomeblockin P. (Itiseasytoobservethateveryblockgraphhasatmostone
+perfectblock-cover.)Let Knbeacompletegraphoforder n≥1withvertexset {v1,...,vn},and
+letH={H1,...,H n}beafamilyof ncompletegraphs.Recall Kn◦Hdenotesagraphobtained
+fromthedisjointunionofthegraphs Kn,H1,...,H nbyjoiningthevertex viofKntoeveryvertex
+ofHifori∈[n].Thegraph Kn◦HissaidtobethegeneralcoronaofKnandH,anditscomplete
+subgraphinducedbythevertices v1,...,vniscalledthebodyofKn◦H.
+LetFbethefamilyofgraphsdeﬁnedin[4]andsuchthat:
+(1)containseverycompletegraphoforderatleast2;and
+10(2)isclosedunderattachinggeneralcoronasofcompletegr aphs
+Thus,ifagraph G′belongstothefamily FandH=Kn◦Hisageneralcoronaofacomplete
+graphKnandafamily Hofcompletegraphs,thento Fbelongseverygraph G′
+v(H)obtainedfrom
+thedisjointunion G′∪Hbyaddingtheedgesjoiningthebodyof Hwiththevertex vofG′,see
+Fig. 2(a). Itisclearfromthisdeﬁnitionthateverygraphbe longingtothefamily Fisablock
+graph.
+Wearenowinapositiontostateandproveacharacterization oftheα-excellentblockgraphsin
+termsofperfectblock-covers.
+Theorem4.7.LetGbeaconnectedblockgraphoforderatleast 2.Thenthefollowingstatements
+areequivalent:
+(a)Gisanα-excellentgraph.
+(b)G∈ F.
+(c)Ghasaperfectblock-cover.
+Proof.Theequivalencebetween (a)and(b)wasprovedin[4]. Bymakingalittlemodiﬁcation
+ofthatproof,weshallprovetheequivalenceofthestatemen ts(b)and(c). Assumeﬁrstthat
+G∈ F.Thus,Gcanbeobtainedfromasequence G1,...,G mofgraphsbelongingto F,whereG1
+isacompletegraphoforderatleast 2andG=Gm,and,if m≥2,Gi+1canbeobtainedfrom Gi
+byattachingageneralcorona(ofacompletegraph)for i∈[m−1].Byinductiononthenumber
+mweshallprovethat Ghasaperfectblock-cover.
+Ifm= 1,thenGisacompletegraphoforderatleast 2and,certainly,theonlyblockof Gforms
+aperfectblock-coverof G.Thisestablishesthebasecaseoftheinduction.Assume,th en,thatthe
+resultholdsforallgraphsbelongingto Fthatcanbeconstructedfromasequenceoffewerthan
+mgraphs,where m≥2.LetGbeobtainedfromasequence G1,...,G m−1byattachingageneral
+coronaH=Kn◦{H1,...,H n}toavertex vofG′=Gm−1,thatis,assumethat G=G′
+v(H).Bythe
+inductionhypothesis, G′hasaperfectblock-cover,say P′.Now,itisobviousthat P′∪{B1,...,B n}
+isaperfectblock-coverof G,whereB1,...,B naretheblocksof G(andofH)inducedbythevertex-
+setsV(H1)∪{v1},...,V(Hn)∪{vn},respectively,where v1,...,vnaretheverticesofthebodyof
+H.Thisprovestheimplication (b)⇒(c).
+Finally,toprovetheimplication (c)⇒(b),assumethat Gisablockgraphoforderatleast 2and
+Ghasaperfectblock-cover,say P={B1,...,B n}.Weproceedbyinductiononthenumber nof
+blocksin P.Ifn= 1,thenG=B1isacompletegraphand,certainly, G∈ F.Assume,then,that
+n≥2andthatthestatementholdsforallblockgraphshavingaper fectblock-coverofcardinality
+lessthan n. Fromthefactthattheblocks B1,...,B naredisjointand n≥2,itfollowsthatthe
+diameter dofGisgreaterthan2.Let P:u0u1...udbealongestpathwithoutchordsin G.Let
+D1andD2betheblocksin Gthatcontaintheedges u0u1andu1u2,respectively.Fromthechoice
+ofPasthelongestchordlesspathin G,itfollowsthat u0isasimplicialvertexin G.Therefore, D1
+istheonlyblockin Gthatcontains u0.Theblock D1,asdoeseveryothersimplexof G,belongsto
+P,and,consequently,everytwosimplexesof Garepairwisevertex-disjoint.Thisalsomeansthat
+D1istheonlysimplexof Gthatcontains u1.Wenowconsidertwocasesdependingontheorder
+ofD2.
+Case1.D2isofordertwo.Inthiscase, P′=P −{D1}isaperfectblock-coverofthesubgraph
+G′=G−V(D1)ofG. Thus,bytheinductionhypothesis, G′∈ F. Consequently, Gbelongsto
+11thefamily FasGcanbeobtainedfrom G′byattachingthegeneralcorona K1◦ {D1−u1}=
+G[{u1}]◦{D1−u1}tothevertex u2inG′.
+Case2. D2isoforderatleastthree. Assumethat u2,v1=u1,v2,...,vlaretheverticesof D2,
+wherel≥2.SinceD1andD2shareavertex,theblock D2isnotasimplex.Thuseveryvertexof
+D2isacut-vertexin G.Fromthisandfromthechoiceof Pasthelongestchordlesspathin G,it
+followsthateachvertex vibelongstosomeend-blockof G.Inaddition,sinceeveryend-blockof G
+belongsto Pandblocksin Paredisjoint,everyvertex viofD2belongstoexactlyoneend-block
+inG,sayBiisanend-blockof Gthatcontains vi. Certainly, B1=D1,andthesubgraph Hof
+Ginducedbytheverticesbelongingtotheblocks B1,B2,...,B lisageneralcorona, H=Kl◦H,
+whereKl=G[{v1,...,vl}]andH={B1−v1,...,B l−vl}. Now,P \ {B1,...,B l}isaperfect
+block-coverofthesubgraph G′=G−V(H)ofG. Thusbytheinductionhypothesis, G′∈ F.
+Consequently, Gbelongstothefamily FasGcanbeobtainedfrom G′byattachingthegeneral
+coronaHtothevertex u2inG′,seeFig.2(b).ThiscompletestheproofofTheorem4.7.Case1.isofordertwo.Inthiscase, P−{ isaperfectblock-coverofthe
+subgraph of. Thus∈F (bytheinductionhypothesis). Consequently,
+belongstothefamily ascanbeobtainedfrom byattachingthegeneralcorona
+◦{ ◦{ tothevertexin
+Case2.isoforderatleastthree. Assumethat ,v ,v ,...,v aretheverticesof
+,where.Sinceisnotasimplex(asotherwisesimplices andwouldshare
+avertex),everyvertexof isacutvertexin .Fromthisandfromthechoiceof (as
+thelongestchordlesspathin )itfollowsthateachvertex belongstosomeendblockof
+.Inaddition,sinceeveryendblockof belongstoandblocksinaredisjoint,every
+vertexofbelongstoexactlyoneendblockin ,sayisanendblockof that
+contains.Certainly, ,andthesubgraph ofinducedbytheverticesbelonging
+totheblocks ,B ,...,B isageneralcorona, ◦H ,where ,...,v and
+,...,B .Now P−{ ,...,B isaperfectblock-coverofthesubgraph
+of.Thus∈F (bytheinductionhypothesis).Consequently, belongsto
+thefamilyascanbeobtainedfrom byattachingthegeneralcorona tothevertex
+in,seeFig.3(b).Thiscompletestheproof.
+G′
+v(a)
+G′
+v(H)H
+Kn
+v1
+vnv2H1
+H2
+HnG′
+u2 ud(b)
+u0D1=B1
+B2
+BnD2
+u1
+v1
+v2
+vnH
+Figure3:
+-Excellent-trees
+Forapositiveinteger ,agraphiscalleda-treeifitcanbeobtainedfromthecomplete
+graphbyaﬁnitenumberofapplicationsofthefollowingoperation :addanewvertex
+andjoinittomutuallyadjacentverticesoftheexistinggraph.Certainl y,every-treeis
+atreeandviceversa. In[16],Roseprovedthatagraph isa-treeifandonlyifthe
+followingconditionsarefulﬁlled: isconnected, ii containsasasubgraphand
+doesnotcontain +2 asasubgraph, iii ifandarenonadjacentverticesof ,thenthe
+12Figure2:
+5α-ExcellentgeneralizedPetersengraphs
+Letnandkbepositiveintegerswith n≥3andk∈[n−1]. ThegeneralizedPetersengraph
+Pn,kisdeﬁnedinthefollowingway. Ithas 2nvertices,say v0,v1,...,vn−1,u0,u1,...,u n−1,and
+edgesvivi+1,viui,anduiui+kforallisatisfying i∈[n−1]0withallsubscriptstakenmodulo n.
+Byconstructioneachvertex viisofdegree 3inPn,k. Similarly,each uiisavertexofdegree 3if
+k/\⌉}atio\slash=n/2butitsdegreeis 2ifk=n/2.SincePn,kisisomorphicto Pn,n−k,wemaythereforealways
+assumethat k≤ ⌊n/2⌋.Asimpleanalysisshowsthat Pn,kisagraphofgirth 3ifandonlyif n= 3k
+fork≥1.Analogously, Pn,kisagraphofgirth 4ifandonlyif k= 1andn≥4,k= 2andn= 4
+ork≥1andn= 4k.
+Itwasshownin[20]that P3,1,P4,2,P5,1,P6,2,andP7,2(showninFig.3)aretheonlywell-covered
+generalizedPetersengraphs.Incontrast,allgeneralized Petersengraphsare α-excellentgraphs.
+Proposition5.1.EverygeneralizedPetersengraphisan α-excellentgraph.
+12vertexofdegreethreeif n/ butitsdegreeistwoif n/ .Since n,k isisomorphic
+ton,n ,wemaythereforealwaysassumethat ≤⌊ n/ . Asimpleanalysisshowsthat
+n,k isagraphofgirththreeifandonlyif = 3 for.Analogously, n,k isagraphof
+girthfourifandonlyif = 1 and = 2 and= 4 orand= 4 
+Itwasshownin[17]thatthegraphs ,and(showninFig.5)arethe
+onlywell-coveredgeneralizedPetersengraphs.Incontras t,allgeneralizedPetersengraphs
+are-excellentgraphs.
+P3,1P4,2 P5,1 P6,2 P7,2
+Figure2:ThewellcoveredgeneralizedPetersengraphs
+Proposition5.EverygeneralizedPetersengraphisan -excellentgraph.
+Proof.Assumethat n,k isagraphwithvertexset ,where ,v ,...,v 
+,u ,...,u ,andedges +1 ,andforallsatisfying
+withallsubscriptstakenmodulo .Letbean-setof n,k .If,then
+whichisimpossibleas isnotanindependentsetin n,k .Hence,.If
+then,whichisimpossibleas isnotanindependentsetin n,k .Hence,
+Noweachofthesets ,I ,...,I ,where }∪{ and
+1] andwheresubscriptsaretakenmodulo ,isan-setof n,k ,andeachvertexof
+n,k belongstoatleastoneofthesets ,I ,...,I .Thisprovesthat n,k isan-excellent
+graph.
+Michael,fromthispointwehavenewresults
+-Excellentsimplicialgraphs
+Avertexofagraphisasimplicialvertexifeverytwoverticesbelongingto are
+adjacentin.Equivalently,asimplicialvertexisavertexthatappears inexactlyoneclique
+ofagraph,wherea cliqueofagraphisamaximalcompletesubgraphof .Acliqueof
+agraphcontainingatleastonesimplicialvertexof iscalledasimplexof.Notethatif
+isasimplicialvertexof ,then ]] istheuniquesimplexof containing.Agraph
+issaidtobesimplicialifeveryvertexof isasimplicialvertexof orisadjacentto
+asimplicialvertexof . Inthissectionwecharacterizesimplicial -excellentgraphs. We
+beginwiththefollowingpropertyofsimpliciesinwell-cov eredand-excellentgraphs.Figure3:Thewell-coveredgeneralizedPetersengraphs
+Proof.LetGbethegeneralizedPetersengraph Pn,kwithvertexset V(G) =V∪U,whereV=
+{v0,v1,...,vn−1},U={u0,u1,...,u n−1},andedges vivi+1,viui,anduiui+kforallisatisfying
+i∈[n−1]0withallsubscriptstakenmodulo n. LetI0beanα-setofG. IfI0∩V=∅,then
+I0=U,whichisimpossibleas Uisnotanindependentsetin G.Hence, I0∩V/\⌉}atio\slash=∅.IfI0∩U=∅,
+thenI0=V,whichisimpossibleas Visnotanindependentsetin G.Hence, I0∩U/\⌉}atio\slash=∅.Now,if
+Il={vi+l:vi∈I0∩V}∪{uj+l:uj∈I0∩U},wherel∈[k−1]andallsubscriptsaretakenmodulo
+n,theneachofthesets I0,I1,...,Ik−1isanα-setofG,and,certainly,eachvertexof Gbelongsto
+atleastoneofthesets I0,I1,...,Ik−1.Thisprovesthat Gisanα-excellentgraph.
+6 Concludingremarks
+Agraph GisaC(n)-treeifitcanbeconstructedfromacycleoflength nbyaﬁnitenumberof
+applicationsofthefollowingoperation:addanewcycleofl engthnandidentifyanedgeofthis
+cyclewithanedgeoftheexistinggraph.Notethatevery 2-treeoforderatleast 3isaC(3)-tree
+andviceversa. Itisknown(see[20])thata C(n)-treeGisawell-coveredgraphifandonlyif
+G∈ {C3,C4,C5,C7}orGisaC(3)-treeinwhicheveryvertexbelongstoexactlyoneendcycleo fG
+(thatis,toexactlyonesimplexof G).Thewayinwhicheach C(n)-treeisconstructedimpliesthat
+ifniseven,thenevery C(n)-treeisabipartitegraphandhasaperfectmatching. Fromthisand
+fromProposition2.5weconcludethatevery C(n)-treeisan α-excellentgraphif niseven.However,
+wedonotknowwhich C(n)-treesare α-excellentif nisodd.Thegraphs G1andG2inFig.4are
+C(5)-trees,andonly G2isanα-excellentgraph.
+ItwouldalsobeinterestingtoknowwhichCartesianproduct sofgraphsare α-excellentgraphs.
+Theproblemisnotclearevenforbipartitegraphs.Itisobvi ousthattheCartesianproduct G/squareH
+isabipartitegraphifandonlyifboth GandHarebipartiteand,asweknow,abipartitegraph
+isanα-excellentgraphifandonlyifithasaperfectmatching. Thu s,ifGandHarebipartite
+graphsandatleastoneofthemisan α-excellentgraph,thentheCartesianproduct G/squareHisan
+α-excellentgraph. Theoppositeimplicationisnottrue,as, forexample,theCartesianproduct
+S2,2/squareK1,2inFig.4isan α-excellentgraphbutneitherthedoublestar S2,2northestar K1,2isan
+α-excellentgraph.
+Weclosethispaperwiththefollowingtwoopenproblemsthat wehaveyettosettle.
+(1)Characterizethe α-excellent C(n)-treesforodd n≥3.
+(2)Study α-excellentCartesianproductsofgraphs.
+13S2,2/squareK1,2 G1 G2
+Figure4:Graphs ,and
+References
+[1]C.Berge,TheoryofGraphsanditsApplications .Methuen,London,1962.
+[2]C.Berge,Somecommonpropertiesforregularisablegrap hs,edge-criticalgraphsand -graphs.
+In:N.Saito,T.Nishiezeki(eds), GraphTheoryandAlgorithms .LectureNotesinComputer
+Science,108,Springer,NewYork,1981,108–123.
+[3]C.Berge,Graphs.North-Holland,Amsterdam,1985.
+[4]M.Dettlaﬀ,M.Lemańska,andJ.Topp,Commonindependenc eingraphs.Symmetry13 
+(2021),1411.
+[5]G.S.Domke,J.H.Hattingh,andL.R.Markus,Onweaklycon necteddominationingraphs
+II.DiscreteMath.305 (2005),112–122.
+[6]G.H.Fricke,T.W.Haynes,S.M.Hedetniemi,S.T.Hedetni emi,andR.C.Laskar,Excellent
+trees.Bull.Inst.Combin.Appl. 34 (2002),27–38.
+[7]W.GoddardandM.A.Henning,Independentdominationing raphs: Asurveyandrecent
+results.DiscreteMath.313 (2013,839–854.
+[8]T.W.Haynes,S.T.Hedetniemi,andM.A.Henning(eds), TopicsinDominationinGraphs
+DevelopmentsinMathematics,64,Springer,Cham,2020.
+[9]T.W.Haynes,S.T.Hedetniemi,andM.A.Henning(eds), StructuresofDominationin
+Graphs.DevelopmentsinMathematics,66,Springer,Cham,2021.
+[10]T.W.Haynes,S.T.Hedetniemi,andM.A.Henning, DominationinGraphs:CoreConcepts
+SpringerMonographsinMathematics,Springer,Cham,2022.
+[11]O.Ore,TheoryofGraphs.Amer.Math.Soc.Colloq.Publ.38,Providence,RI,1962.
+[12]M.D.Plummer,Somecoveringconceptsingraphs. J.Combin.Theory (1970),91–98.
+[13]M.D.Plummer,Well-coveredgraphs:asurvey. Quaest.Math.16 (1993),253–287.
+[14]E.Prisner,J.Topp,andP.D.Vestergaard,Wellcovered simplicial,chordalandcirculararc
+graphs.J.GraphTheory21 (1996),113–119.
+14Figure4:Graphs G1,G2,andS2,2/squareK1,2
+References
+[1]C.Berge,TheoryofGraphsanditsApplications .Methuen,London,1962.
+[2]C.Berge,Somecommonpropertiesforregularisablegrap hs,edge-criticalgraphsand B-graphs.
+In:N.Saito,T.Nishiezeki(eds), GraphTheoryandAlgorithms .LectureNotesinComputer
+Science,108,Springer,NewYork,1981,108–123.
+[3]C.Berge,Graphs.North-Holland,Amsterdam,1985.
+[4]M.Dettlaﬀ,M.Lemańska,andJ.Topp,Commonindependenc eingraphs.Symmetry13
+(2021),1411.
+[5]G.S.Domke,J.H.Hattingh,andL.R.Markus,Onweaklycon necteddominationingraphs
+II.DiscreteMath.305(2005),112–122.
+[6]G.H.Fricke,T.W.Haynes,S.M.Hedetniemi,S.T.Hedetni emi,andR.C.Laskar,Excellent
+trees.Bull.Inst.Combin.Appl. 34(2002),27–38.
+[7]W.GoddardandM.A.Henning,Independentdominationing raphs: Asurveyandrecent
+results.DiscreteMath.313(2013),839–854.
+[8]T.W.Haynes,S.T.Hedetniemi,andM.A.Henning(eds), TopicsinDominationinGraphs .
+DevelopmentsinMathematics,64,Springer,Cham,2020.
+[9]T.W.Haynes,S.T.Hedetniemi,andM.A.Henning(eds), StructuresofDominationin
+Graphs.DevelopmentsinMathematics,66,Springer,Cham,2021.
+[10]T.W.Haynes,S.T.Hedetniemi,andM.A.Henning, DominationinGraphs:CoreConcepts .
+SpringerMonographsinMathematics,Springer,Cham,2022.
+[11]O.Ore,TheoryofGraphs.Amer.Math.Soc.Colloq.Publ.38,Providence,RI,1962.
+[12]M.D.Plummer,Somecoveringconceptsingraphs. J.Combin.Theory 8(1970),91–98.
+[13]M.D.Plummer,Well-coveredgraphs:asurvey. Quaest.Math.16(1993),253–287.
+[14]E.Prisner,J.Topp,andP.D.Vestergaard,Wellcovered simplicial,chordalandcirculararc
+graphs.J.GraphTheory21(1996),113–119.
+14[15]A.P.Pushpalatha,G.Jothilakshmi,S.Suganathi,andV .Swaminathan, β0-excellentgraphs.
+Int.J.Contemp.Math.Sciences 6(2011),1447–1451.
+[16]A.P.Pushpalatha,G.Jothilakshmi,S.Suganathi,andV .Swaminathan,Very β0-excellent
+graphs.TagaJ.14(2018),144–148.
+[17]B.RanderathandL.Volkmann,Acharacterizationofwel lcoveredblock-cactusgraphs. Aus-
+tralas.J.Combin.91(1994),307–314.
+[18]G.Ravindra,Well-coveredgraphs. J.Comb.Inf.Syst.Sci. 2(1977),20–21.
+[19]D.J.Rose,Onsimplecharacterizationsof k-trees.DiscreteMath.7(1974),317–322.
+[20]J.Topp,Domination,independenceandirredundancein graphs.DissertationesMath. 342
+(1995),99pp.
+[21]J.ToppandL.Volkmann,Ondominationandindependence numbersofgraphs. Result.Math.
+17(1990),333–341.
+[22]J.ToppandL.Volkmann,Wellcoveredandwelldominated blockgraphsandunicyclicgraphs.
+Math.Pannon.1/2(1990),55–66.
+[23]J.ToppandL.Volkmann,Characterizationofunicyclic graphswithequaldominationand
+independencenumbers. Discuss.Math.11(1991),27–34.
+15

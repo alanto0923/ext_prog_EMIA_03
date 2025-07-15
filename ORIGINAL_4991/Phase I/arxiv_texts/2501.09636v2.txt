@@ -1,0 +1,515 @@
+LLM-Based Routing in Mixture of Experts: A Novel Framework for Trading
+Kuan-Ming, Liu1, Ming-Chih, Lo2
+1National Chengchi University, College of Commerce
+2National Yang Ming Chiao Tung University, College of Computer Science
+Abstract
+Recent advances in deep learning and large language mod-
+els (LLMs) have facilitated the deployment of the mixture-
+of-experts (MoE) mechanism in the stock investment do-
+main. While these models have demonstrated promising trad-
+ing performance, they are often unimodal, neglecting the
+wealth of information available in other modalities, such as
+textual data. Moreover, the traditional neural network-based
+router selection mechanism fails to consider contextual and
+real-world nuances, resulting in suboptimal expert selection.
+To address these limitations, we propose LLMoE, a novel
+framework that employs LLMs as the router within the MoE
+architecture. Specifically, we replace the conventional neu-
+ral network-based router with LLMs, leveraging their exten-
+sive world knowledge and reasoning capabilities to select ex-
+perts based on historical price data and stock news. This ap-
+proach provides a more effective and interpretable selection
+mechanism. Our experiments on multimodal real-world stock
+datasets demonstrate that LLMoE outperforms state-of-the-
+art MoE models and other deep neural network approaches.
+Additionally, the flexible architecture of LLMoE allows for
+easy adaptation to various downstream tasks.
+Introduction
+Traditional trading methods have primarily relied on statis-
+tical analysis (Kato 2015) or forecasting models (Zeng et al.
+2022)(Toner and Darlow 2024). However, these approaches
+often struggle to adapt to the complexity and volatility of
+financial markets, failing to address unseen patterns and dy-
+namic data distributions effectively. In response, deep learn-
+ing methods have emerged as a promising alternative for
+quantitative trading (Yoo et al. 2021b)(Xu et al. 2021), of-
+fering superior feature learning and insightful market repre-
+sentations. Despite these strengths, deep learning-based al-
+gorithms typically rely on a single predictor, leading to per-
+formance instability and sensitivity to market fluctuations.
+To overcome these limitations, Mixture-of-Experts (MoE)
+approaches have been introduced (Sun et al. 2023)(Ding,
+Shi, and Liu 2024), achieving superior performance and
+better generalization by leveraging multiple specialized ex-
+perts.
+The MoE mechanism in trading algorithms emulates real-
+world trading rooms, where diverse experts collaborate to
+Copyright © 2025, Association for the Advancement of Artificial
+Intelligence (www.aaai.org). All rights reserved.
+Figure 1: An illustration comparing traditional single-model
+approaches, MoE frameworks, and LLMoE. Traditional
+models use a single predictor with numerical data, MoE adds
+multiple experts but uses static routing, while LLMoE inte-
+grates multimodal data with LLM-driven dynamic routing.
+tackle specific challenges. While promising, traditional MoE
+models often suffer from limitations. Routers, typically de-
+signed as static neural networks, lack flexibility in financial
+contexts and are prone to collapse when trained on limited
+data. Furthermore, current pipelines are predominantly uni-
+modal, relying solely on numerical data and ignoring tex-
+tual information, such as news, which could provide valu-
+able context and enhance expert selection.
+To address these gaps, we propose LLMoE, a novel
+framework that integrates MoE with advanced language
+models as routers, as illustrated in Figure 1. LLMoE pro-
+cesses historical stock prices and news headlines through
+an LLM-based router, which provides a comprehensive
+overview of the current instance. The router dynamically
+selects the most suitable expert model for stock movement
+prediction based on the given context. Finally, trading strate-
+gies are generated using an ”All-in All-out” approach, ensur-
+ing robust and informed decision-making. Our experiments
+demonstrate that LLMoE effectively combines numerical
+and textual data, enhancing expert selection and achieving
+superior performance in financial market applications.arXiv:2501.09636v2  [cs.LG]  17 Jan 2025Problem Formulation and Methodology
+Problem Formulation
+Given a rolling window of five consecutive descriptive rep-
+resentations:
+X(t−4:t)={xt−4, xt−3, xt−2, xt−1, xt},
+where each xiis a descriptive string combining numerical
+features and the corresponding news headline from day i,
+encapsulating the market conditions of that day. The objec-
+tive is to predict the stock movement Yt+1∈Rfor the next
+day.
+Additionally, we aim to develop a trading strategy based
+onYt+1, leveraging the unified integration of quantitative
+data and qualitative context for enhanced decision-making.
+This framework is inspired by methodologies from previ-
+ous studies (Botunac, Bosna, and Matetic 2024)(Sun et al.
+2023).
+LLMoE: The LLM-based Router MoE Approach
+In this work, we propose LLMoE, a novel framework that
+leverages the power of LLMs to serve as routers within a
+MoE architecture, thereby providing more efficient expert
+selection with multimodal data. As illustrated in Figure 2,
+our approach consists of three stages: the LLM-based router,
+expert prediction, and trading algorithm generation.
+Figure 2: Overview of the LLMoE framework, illustrating
+its three stages: LLM-based router, expert prediction, and
+trading algorithm generation.
+LLM-Based Router The first stage utilizes an LLM-
+based router to process and integrate both historical stock
+price data and relevant news information. This router takes
+advantage of the advanced language comprehension capabil-
+ities of LLMs, enabling it to interpret and contextualize mul-
+timodal inputs. This results in a comprehensive view of the
+current market conditions. To further enhance expert selec-
+tion, we categorize the experts based on different contexts,
+such as positive and negative perspectives. Positive experts
+are trained on instances identified by the router as positive,
+while negative experts are trained on instances identified as
+negative. This context-based selection mechanism ensures
+that the most appropriate expert model is chosen to han-
+dle each instance. By leveraging this strategy, the router can
+make better-informed decisions, improving the overall ex-
+pert selection process based on a deeper understanding of
+the given instances.Expert Prediction The second stage focuses on predic-
+tions generated by expert models trained for optimistic and
+pessimistic market conditions. These feedforward neural
+networks (FNNs) leverage data identified by the LLM-based
+router, analyzing numerical inputs such as prices indicators
+to address specific market scenarios. Optimized for accu-
+racy and efficiency, these experts enhance predictive accu-
+racy and decision-making, achieving stable and robust back-
+testing performance (Kou et al. 2024). Temporal Graph Net-
+works for Graph Anomaly Detection in Financial Networks
+Trading Algorithm Generation In the final stage, the se-
+lected expert’s predictions are utilized to generate robust
+trading strategies. We employ an ”All-in All-out” strategy,
+where all available cash is invested when the expert predicts
+positive price movements, and all holdings are liquidated
+when the expert predicts negative price movements. This
+strategy aims to maximize returns by dynamically adjusting
+investment positions based on the expert model’s output.
+Experiment
+Experiment Setup
+1. Datasets To evaluate LLMoE, we use two US mar-
+ket datasets spanning a decade (2006–2016), combining
+stock price data and news headlines for multimodal analy-
+sis. The MSFT dataset, with significant missing news days,
+presents a challenging test for handling incomplete data,
+while the AAPL dataset provides a more complete environ-
+ment. These datasets comprehensively evaluate LLMoE’s
+ability to integrate multimodal data under varying condi-
+tions. Further details on dataset composition and splits are
+provided in Appendix - Experiment Setup Details.
+2. Features To effectively capture market dynamics, we
+engineered a set of features encompassing price ratios, daily
+price changes, and rolling deviations calculated from mov-
+ing averages of various lengths. These features are designed
+to capture both short-term and long-term market trends, pro-
+viding comprehensive insights into market behavior.Further
+details on feature calculations and formulas are provided in
+Appendix - Experiment Setup Details.
+3. Baseline Models To evaluate the effectiveness of the
+proposed LLMoE framework, we compare it against sev-
+eral baseline models, including gradient boosting, neural
+networks, and traditional Mixture of Experts (MoE) mod-
+els. These models provide a diverse set of benchmarks to
+evaluate LLMoE’s performance. Detailed descriptions of the
+baseline models are provided in Appendix - Experiment
+Setup Details.
+4. Evaluation Metrics To evaluate the performance of our
+trading models, we employ seven commonly used financial
+metrics: Total Return (TR), Annualized V olatility (VOL),
+Sharpe Ratio (SR), Sortino Ratio (SoR), Maximum Draw-
+down (MDD), Calmar Ratio (CR), and Downside Deviation
+(DD). These metrics collectively measure the models’ abil-
+ity to balance returns and risks under different market condi-
+tions.Detailed definitions and formulas for these metrics are
+provided in Appendix - Experiment Setup Details.5. Other Experimental Details Hyperparameters for
+baseline models, including learning rates and hidden layer
+sizes, were optimized using random search across three tri-
+als. For LLMoE, grid search focused on batch size, hidden
+layer size, and learning rate. All models used a consistent
+5-day look-back window for fair comparisons. To ensure
+robust performance evaluation, experiments were repeated
+with ten random seeds, and confidence intervals were cal-
+culated from the standard deviation of metrics across these
+trials.
+Implementation and Evaluation
+1. Router
+We use Llama3.2 as our router, which serves as a critical
+component in the LLMoE framework, to classify the market
+outlook based on a five-day rolling window of features and
+descriptions, facilitating the integration of numerical and
+textual data for decision-making.
+Input Features and Descriptions. The input to the router
+consists of a rolling window of five consecutive data points:
+X(t−4:t)={xt−4, xt−3, xt−2, xt−1, xt}
+Each xicombines numerical features with the correspond-
+ing news headline from day i, forming a single descriptive
+string that encapsulates the market conditions of that day.
+This representation integrates quantitative data and qualita-
+tive context into a unified format for analysis.
+Router Outputs The LLM-based router provides two key
+outputs to facilitate classification and interpretability:
+•Classification: The router evaluates the rolling window
+of numerical and textual data, assigning a label as either
+Optimistic orPessimistic , reflecting the predicted mar-
+ket sentiment:
+Router (X(t−4:t))→ {Optimistic, Pessimistic }
+The label ytis selected based on the highest likelihood:
+yt= arg max
+Optimistic,Pessimistic(LLM Prediction (X(t−4:t)))
+•Reasoning: To improve interpretability, the router gen-
+erates a natural language explanation R, offering insights
+into the factors influencing its classification:
+R=LLM Reason Output
+This reasoning enhances transparency without directly
+affecting subsequent expert models.
+2. Expert Models
+The expert models for optimistic and pessimistic market
+conditions share a unified architecture, designed to process
+numerical features and predict the direction of the next day’s
+stock price movement. The architecture begins with an in-
+put layer that processes n= 55 numerical features derived
+from daily market data through feature engineering. These
+features are organized into a rolling window structure:
+X(t−4:t)={xt−4, xt−3, xt−2, xt−1, xt},where each xirepresents 11 numerical attributes, encom-
+passing daily price metrics and rolling deviations:
+xi={zopen, zhigh, zlow, zclose, zadjclose ,
+zd5, zd 10, zd 15, zd 20, zd 25, zd 30}.
+This input representation ensures that the model captures
+both short-term fluctuations and long-term trends, enabling
+it to generate accurate predictions. Further details on the hid-
+den layers and output layer configuration are provided in
+Appendix - Expert Model Architecture.
+3. Experiment Results
+The Router’s Human-Like Reasoning
+The router in the LLMoE framework demonstrates human-
+like reasoning by integrating numerical data and textual in-
+formation. For example, in a specific instance, ” despite con-
+cerns about Apple’s growth highlighted in news headlines ”,
+the router identified ” consistent increases in prices and vol-
+ume”, which suggested a ” cautiously optimistic outlook ”.
+This reasoning showcases the router’s ability to weigh con-
+flicting signals—optimistic numerical trends against mixed
+textual sentiment—allowing it to produce well-balanced and
+context-aware predictions.
+Outstanding Performance of LLMoE
+Our LLMoE model significantly outperformed other base-
+line models in key metrics, including Total Return (TR),
+Sharpe Ratio (SR), and Calmar Ratio (CR), demonstrat-
+ing superior performance in balancing returns and risks, as
+shown in Table 1. This highlights the efficiency and accuracy
+of using LLMs as routers to integrate numerical and textual
+data.
+Comparison Between 2-Expert MoE and LLMoE
+LLMoE demonstrated clear superiority over the 2-expert
+MoE model by leveraging LLMs as intelligent routers.
+Unlike the 2-expert MoE, which relies on static routing,
+LLMoE dynamically integrates multimodal data, enabling
+more effective allocation of expert resources. This resulted
+in significantly better performance in risk-adjusted return
+metrics, such as the Sharpe Ratio (SR) and Calmar Ratio
+(CR), as well as improved risk management with a lower
+Maximum Drawdown (MDD).
+Conclusion
+In this paper, we present LLMoE, a novel framework that
+integrates a pre-trained Large Language Model (LLM) as
+a router within a Mixture of Experts (MoE) architecture.
+By dynamically combining numerical stock features with
+textual news data, LLMoE bridges the gap between quan-
+titative and qualitative analysis, enabling accurate and in-
+terpretable predictions for financial markets. This dynamic
+and context-aware routing mechanism surpasses traditional
+MoE systems’ static limitations, enhancing adaptability to
+volatile market conditions. Our experimental results demon-
+strate LLMoE’s superior performance, achieving over 25%
+improvements in key risk-adjusted return metrics like the
+Sharpe Ratio and Total Return, establishing it as a state-of-
+the-art tool for intelligent trading strategies.Table 1: Performance Comparison of Different Models
+Market Type Model TR SR CR SoR VOL DD MDD
+MSFTENS DNNE 9.48±8.19 0.51±0.36 0.78±0.71 0.66±0.43 0.27±0.04 0.39±0.08 16.69±4.52
+RNN LSTM 27.93±8.20 1.39±0.31 2.26±0.87 1.84±0.45 0.38±0.03 0.42±0.03 14.39±2.60
+BDT LGB 30.63±7.58 1.05±0.21 2.46±0.72 1.14±0.25 0.25±0.01 0.33±0.03 13.86±2.44
+NRNN MLP 33.92±7.59 1.21±0.22 2.54±0.81 1.33±0.35 0.27±0.02 0.36±0.04 14.35±2.12
+MoE MoE 10 10.84±8.85 0.45±0.35 0.78±0.62 0.5±0.32 0.27±0.02 0.39±0.04 17.69±2.71
+MoE MoE 2 22.18±17.13 0.78±0.60 1.86±1.65 0.96±0.78 0.26±0.01 0.38±0.04 17.82±3.57
+MoE LLMoE 65.44±11.10 2.14±0.29 5.91±1.12 2.24±0.37 0.26±0.02 0.34±0.03 11.32±1.09
+AAPLENS DNNE -3.66±4.87 -0.09±0.30 -0.11±0.19 -0.01±0.35 0.62±0.14 0.77±0.12 25.34±3.29
+RNN LSTM 18.04±9.14 0.85±0.43 1.3±0.84 1.17±0.66 0.34±0.02 0.42±0.06 17.84±2.96
+BDT LGBM 8.65±7.22 0.39±0.28 0.4±0.36 0.63±0.39 0.28±0.03 0.3±0.02 26.14±2.91
+NRNN MLP 26.16±6.35 0.99±0.21 1.76±0.69 1.31±0.33 0.3±0.02 0.33±0.02 17.19±2.68
+MoE MoE 10 8.77±10.41 0.41±0.44 0.5±0.51 0.61±0.54 0.43±0.08 0.55±0.11 23.44±2.95
+MoE MoE 2 6.73±8.82 0.32±0.37 0.47±0.48 0.48±0.42 0.35±0.04 0.44±0.05 24.83±5.17
+MoE LLMoE 31.43±11.46 1.17±0.33 2.12±1.10 1.37±0.48 0.29±0.04 0.36±0.04 18.21±4.23
+Note: For each metric, the best-performing model is highlighted in bold , while the second-best is underlined. The results indicate that
+LLMoE consistently outperforms other baseline models across most metrics, demonstrating its superiority in both return and risk-adjusted
+performance. Particularly, LLMoE achieves the highest Total Return (TR), Sharpe Ratio (SR), and Calmar Ratio (CR) on both MSFT and
+AAPL datasets, reflecting its robust and adaptive approach to multimodal data integration.
+References
+Botunac, I.; Bosna, J.; and Matetic, M. 2024. Optimization
+of Traditional Stock Market Strategies Using the LSTM Hy-
+brid Approach. Inf., 15(3): 136.
+Ding, Q.; Shi, H.; and Liu, B. 2024. TradExpert: Revolution-
+izing Trading with Mixture of Expert LLMs. arXiv preprint
+arXiv:2411.00782 .
+Hu, Z.; Liu, W.; Bian, J.; Liu, X.; and Liu, T.-Y . 2018. A
+Deep Learning Framework for News-oriented Stock Trend
+Prediction. Proceedings of the 11th ACM International Con-
+ference on Web Search and Data Mining , 297–305.
+Kato, T. 2015. VWAP execution as an optimal strategy.
+JSIAM Lett. , 7: 33–36.
+Kou, Z.; Yu, H.; Peng, J.; and Chen, L. 2024. Automate
+Strategy Finding with LLM in Quant investment. CoRR ,
+abs/2409.06289.
+Li, K.; and Xu, J. 2023. An Attention-Based Multi-Gate
+Mixture-of-Experts Model for Quantitative Stock Selection.
+International Journal of Trade, Economics and Finance ,
+14(3): 165–173.
+Sawhney, R.; Agarwal, S.; Wadhwa, A.; and Shah, R. R.
+2020. Deep Attentive Learning for Stock Movement Pre-
+diction From Social Media Text and Company Correlations.
+8415–8426.
+Sun, S.; Wang, X.; Xue, W.; Lou, X.; and An, B. 2023. Mas-
+tering Stock Markets with Efficient Mixture of Diversified
+Trading Experts. Proceedings of the 29th ACM SIGKDD
+Conference on Knowledge Discovery and Data Mining ,
+2109–2119.Toner, W.; and Darlow, L. N. 2024. An Analysis of Linear
+Time Series Forecasting Models. In Forty-first International
+Conference on Machine Learning, ICML 2024, Vienna, Aus-
+tria, July 21-27, 2024 . OpenReview.net.
+Xu, W.; Liu, W.; Xu, C.; Bian, J.; Yin, J.; and Liu, T.
+2021. REST: Relational Event-driven Stock Trend Forecast-
+ing. In Leskovec, J.; Grobelnik, M.; Najork, M.; Tang, J.;
+and Zia, L., eds., WWW ’21: The Web Conference 2021, Vir-
+tual Event / Ljubljana, Slovenia, April 19-23, 2021 , 1–10.
+ACM / IW3C2.
+Yoo, J.; Soun, Y .; chan Park, Y .; and Kang, U. 2021a. Accu-
+rate Multivariate Stock Movement Prediction via Data-Axis
+Transformer with Multi-Level Contexts. Proceedings of the
+27th ACM SIGKDD Conference on Knowledge Discovery
+and Data Mining , 313–323.
+Yoo, J.; Soun, Y .; Park, Y .; and Kang, U. 2021b. Accu-
+rate Multivariate Stock Movement Prediction via Data-Axis
+Transformer with Multi-Level Contexts. In Zhu, F.; Ooi,
+B. C.; and Miao, C., eds., KDD ’21: The 27th ACM SIGKDD
+Conference on Knowledge Discovery and Data Mining,
+Virtual Event, Singapore, August 14-18, 2021 , 2037–2045.
+ACM.
+Yu, Z.; Wu, Y .; Wang, G.; and Weng, H. 2024. MIGA:
+Mixture-of-Experts with Group Aggregation for Stock Mar-
+ket Prediction. arXiv preprint arXiv:2410.02241 .
+Zeng, A.; Chen, M.; Zhang, L.; and Xu, Q. 2022. Are
+Transformers Effective for Time Series Forecasting? CoRR ,
+abs/2205.13504.Appendix
+Related Work
+Financial Prediction with Deep Learning
+Deep learning methods for financial prediction leverage
+RNNs, such as LSTM and GRU, to capture temporal pat-
+terns, and NRNNs, like transformers and graph-based mod-
+els, to analyze inter-stock relationships and market dynam-
+ics (Yoo et al. 2021a)(Sawhney et al. 2020)(Hu et al. 2018).
+Additionally, alternative data sources, such as tweets and
+news, improve predictions (Hu et al. 2018)(Sawhney et al.
+2020). However, these approaches often require high com-
+putational resources and lack robustness in volatile markets.
+Lightweight frameworks like AlphaMix address these chal-
+lenges by using simple MLP backbones, achieving compa-
+rable predictive performance while reducing computational
+costs (Sun et al. 2023). By integrating diverse data sources,
+including historical prices and alternative data, AlphaMix
+enhances robustness in highly stochastic markets (Sun et al.
+2023)(Hu et al. 2018).
+Mixture of Experts
+The mixture-of-experts (MoE) framework, widely used in
+computer vision and natural language processing for scal-
+ability and multi-task learning (Yu et al. 2024)(Li and Xu
+2023), remains underexplored in quantitative finance. Al-
+though AlphaMix improves accuracy and efficiency with a
+three-stage design (Sun et al. 2023), it relies on manual
+routing mechanisms, limiting expert specialization and mul-
+timodal integration to structured data while excluding un-
+structured sources like news. Moreover, its routing lacks in-
+terpretability, reducing transparency in decision-making. To
+address these limitations, we propose an MoE framework
+utilizing LLMs as adaptive routers. By dynamically select-
+ing experts based on multimodal inputs such as historical
+prices and alternative data, our approach enhances inter-
+pretability, adaptability, and robustness in volatile financial
+markets.
+Experiment Setup Details
+Datasets
+The datasets include numerical stock price data and textual
+news information, offering a robust environment for multi-
+modal integration. For these two datasets:
+•MSFT Dataset : Includes daily stock prices and news
+headlines. Notably, 1,176 of 2,503 trading days lack
+news, making it a challenging test for LLMoE’s handling
+of incomplete multimodal data.
+•AAPL Dataset : Provides 2,482 trading days, with only
+194 missing news entries. This more complete dataset
+complements MSFT by showcasing LLMoE’s adaptabil-
+ity.
+Dataset Splits The training period spans the first 80% of
+trading days ( 2006-12-07 to2014-12-02 ), while the testing
+period covers the remaining 20% ( 2014-12-03 to2016-11-
+29). These splits test model robustness under varying lev-
+els of news coverage and provide comprehensive evaluation
+conditions.Table 2: Dataset Details for MSFT and AAPL
+Dataset Days No News Days From To
+MSFT 2,503 1,176 06/12/01 16/11/30
+AAPL 2,482 194 06/12/01 16/11/30
+Feature Engineering
+To effectively capture market dynamics, we engineered a
+range of features that encompass:
+•Price Ratios (zopen,zhigh,zlow): These quantify the ra-
+tio between opening, high, and low prices relative to the
+closing price.
+•Daily Price Changes (zclose,zadjclose ): These capture
+the daily percentage change in closing and adjusted clos-
+ing prices.
+•Rolling Deviations (zdn): Calculated from n-day mov-
+ing averages, where n∈ {5,10,15,20,25,30}, these
+features quantify deviations over varying time horizons
+to provide insights into market trends.
+For example, zd20quantifies the deviation of the adjusted
+closing price from its 20-day moving average, offering in-
+sights into medium-term market movements.
+Table 3: Calculation Formulas for Stock Market Features
+Features Calculation Formula
+zopen, zhigh, zlow zopen=open t
+close t−1
+zclose, zadjclose zclose =close t
+close t−1−1
+zd5, zd 10, zd 15,
+zd20, zd 25, zd 30zd5=P4
+i=0adjclose t−i/5
+adjclose t−1
+Baseline models
+To evaluate the effectiveness of the proposed LLMoE frame-
+work, we compare it against the following baseline models:
+•LightGBM (LGB) : A gradient boosting model widely
+used for structured data, offering strong performance in
+various classification tasks. It is included to assess how
+tree-based models compare to neural networks in han-
+dling tabular financial data.
+•Multi-Layer Perceptron (MLP) : A fully connected
+neural network, designed to model complex relationships
+in tabular data. This serves as a baseline for deep learning
+on financial features.
+•Long Short-Term Memory (LSTM) : A recurrent neu-
+ral network capable of capturing temporal dependen-
+cies in sequential data, particularly suited for stock price
+trends. It provides a benchmark for time-series models.
+•Dynamic Neural Network Ensemble (DNNE) : An en-
+semble model that combines multiple neural networks
+trained on bootstrap samples to enhance prediction di-
+versity and robustness. It serves as a comparison point
+for ensemble methods.•Mixture of Experts (MoE) : Traditional MoE models
+employing static routing mechanisms, evaluated with en-
+semble sizes of 2 and 10 experts. These models provide
+insights into the advantages of dynamic routing intro-
+duced by LLMoE.
+These baseline models offer a comprehensive set of
+benchmarks, showcasing their respective strengths and lim-
+itations in financial classification tasks.
+Evaluation Metrics
+To comprehensively evaluate the performance of trading
+models, we employ the following financial metrics:
+•Total Return (TR) : The percentage change in the port-
+folio value over the entire trading period, calculated as:
+TR=Final Portfolio Value −Initial Portfolio Value
+Initial Portfolio Value×100
+•Annualized Volatility (VOL) : A measure of the port-
+folio’s risk, representing the standard deviation of daily
+returns scaled to an annualized basis:
+V OL =Standard Deviation of Daily Returns ×√
+252
+•Sharpe Ratio (SR) : Evaluates the risk-adjusted return
+of the portfolio, defined as the ratio of the mean excess
+return (over the risk-free rate) to its standard deviation:
+SR=Mean Excess Return
+Standard Deviation of Returns
+•Sortino Ratio (SoR) : A variation of the Sharpe Ratio
+focusing only on downside risk, calculated as:
+SoR =Mean Excess Return
+Downside Deviation
+•Maximum Drawdown (MDD) : The largest peak-to-
+trough decline in portfolio value during the trading pe-
+riod, expressed as a percentage:
+MDD = maxPeak Value −Trough Value
+Peak Value
+×100
+•Calmar Ratio (CR) : Measures risk-adjusted return by
+considering the ratio of total return to maximum draw-
+down:
+CR=Total Return
+Maximum Drawdown
+•Downside Deviation (DD) : Captures the standard devi-
+ation of negative returns, emphasizing periods of under-
+performance:
+DD=rP(Negative Returns )2
+Number of Observations
+Expert Model Architecture
+The expert models for optimistic and pessimistic market
+conditions share a common architecture, consisting of the
+following components:
+•Hidden Layers: The model includes three fully con-
+nected dense layers to capture complex patterns in the
+input data:– Layer 1 : 128 neurons with ReLU activation.
+– Layer 2 : 64 neurons with ReLU activation and a
+dropout rate of 0.3.
+– Layer 3 : 32 neurons with ReLU activation and a
+dropout rate of 0.2.
+These layers are optimized to balance model capacity and
+regularization, ensuring the ability to generalize to un-
+seen data.
+•Output Layer: The final output layer consists of a single
+neuron with a Sigmoid activation function. It outputs a
+binary classification indicating the direction of the next
+day’s stock price movement (increase or decrease). The
+predicted direction supports trading strategy generation,
+offering actionable insights into market trends.

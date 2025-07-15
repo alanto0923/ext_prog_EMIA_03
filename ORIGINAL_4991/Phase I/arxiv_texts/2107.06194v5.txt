@@ -1,0 +1,2495 @@
+Geometric insights into robust portfolio construction
+Lara Dalmeyera, Tim Gebbiea
+aDepartment of Statistical Sciences, University of Cape Town, Rondebosch 7701, South Africa
+Abstract
+We investigate and extend the result that an α-weight angle from unconstrained quadratic portfolio optimisations
+has an upper bound dependent on the condition number of the covariance matrix. This is known to imply that better
+conditioned covariance matrices produce weights from unconstrained mean-variance optimisations that are better aligned
+with each assets expected return. Here we relate the inequality between the α-weight angle and the condition number
+to extend the result to include portfolio optimisations with gearing constraints to provide an extended family of robust
+optimisations. We use this to argue that in general the equally weighted portfolio is not preferable to the mean-variance
+portfolio even with poor forecast ability and a badly conditioned covariance matrix. We confirm the distribution free
+theoretical arguments with a simple Gaussian simulation.
+Keywords: mean-variance optimization, Kantorovich inequality, gearing constraints
+MSC: 91G10 90C20 62P05
+1. Introduction
+Using a geometric construction that relates the an-
+gle between the vector of expected returns αand port-
+folio weights ωdetermined under an unconstrained mean-
+variance optimisation, Golts and Jones [19] were able to
+quantify the distortions induced by the optimisation pro-
+cess without making direct distributional assumptions about
+the underlying data generating process. They were able to
+link this angle directly to the condition number of the co-
+variance matrix by showing that this angle has an upper
+bound dependent on the condition number. The interpre-
+tation is novel because of its geometric construction and
+the weak distributional assumptions this allows. When
+a covariance matrix is ill-conditioned, or close to degener-
+ate, the α-weight angle should be very large; whereas well-
+conditioned matrices ensure the angle remains within tight
+bounds. This is much more than merely a representation
+change, because it provides a geometric explanation, why
+an equally weighted portfolio is not always preferable to a
+mean-variance solution even in the presence of estimation
+uncertainty.
+In general portfolio construction, a key question re-
+mains to what extent one should drag the optimal bets
+towards the direction of expected asset returns. In the un-
+constrained case this is clear because in the mean-variance
+setting the resulting portfolios will be multipliers, or geared
+realisations, of the optimal risky portfolio, that are the re-
+sult of solving a Sharpe ratio maximisation. In the con-
+strained case this appears less clear because of how con-
+straints can dominate the solution space.
+Email addresses: DLMLAR001@myuct.ac.za (Lara Dalmeyer),
+tim.gebbie@uct.ac.za (Tim Gebbie)Towards this end we investigate the mathematical re-
+lationship between the α-weight angle, and the condition
+of the covariance matrix in more generality. Golts and
+Jones [19] argued the case for dragging optimal weights
+towards the direction of αfor a family of unconstrained
+quadratic optimisations. We extend this family of portfo-
+lio choice problems to include a gearing constraint and to
+consider whether their geometric insights are more gener-
+ally applicable for practical investment management deci-
+sion making. The gearing constraint defines exactly how
+much of the portfolio should be invested (whether it be
+fully invested, partially invested or geared) and is a fun-
+damental portfolio construction constraint in much of the
+unit-trust, exchange traded fund and the related collective
+investment scheme industry. This constraint is to be dif-
+ferentiated from a leverage constraint, which relates the
+size of portfolio bets relative to a level of borrowing.
+The important point in the geometric setting is that the
+gearing constrained optimal portfolio has a weakened up-
+per bound. Golts and Jones [19] relied on the Kantorovich
+inequality [24], we argue that this can be weakened be-
+cause of the impact of the constraint using [4]. Noting
+that with improved conditioning of the covariance matrix,
+we can reduce the upper bound on the angle between the
+optimal risky portfolio and α, which would in turn reduce
+the overall angle between the optimal portfolio and the di-
+rection of α. To our knowledge, this insight is novel; albeit
+subtle.
+Concretely, we show that a minimisation over the total
+α-angle φis equivalent to minimising the angle between
+the optimal risky portfolio and the direction of expected
+returns. This then extends the unconstrained result and
+motivates why the combination of an α-angle minimisation
+Preprint submitted to Elsevier December 3, 2024arXiv:2107.06194v5  [q-fin.PM]  2 Dec 2024is equally useful both in the unconstrained and constrained
+cases. The key point is then that to minimise the overall
+angle between the optimal portfolio and the expected re-
+turns we can minimise the angle between the optimal risky
+portfolio and the expected returns.
+Reducing the angle between the weights and expected
+return vector is not equivalent to the implementation of
+a return maximisation, or return maximisation constraint.
+The case of pure return maximisation would result in a
+portfolio that weighs toward the asset with the greatest
+expected return, and not the direction of the expected
+return vector in general. In practice the α-weight angle
+should never be zero as there is always a residual correla-
+tion between the assets. In mean variance optimisations
+there is always a conundrum due to correlation specifica-
+tion error – and then determining the degree of shrinkage
+that should be adopted to best reflect this. The test of
+how much one should intervene can only be determined
+by out-of-period portfolio performance simulation, or with
+direct distributional assumptions (as demonstrated with
+simple simulations in Section 5).
+However, we provide a geometric explanation of why,
+when faced with estimation uncertainty using a quadratic
+optimisation, the direction of returns is still of value even
+if the quantum of expected returns is not, without making
+strong a-priori distributional assumptions.
+At a superficial level this work seems to merely promote
+the important benefits related to improving the condition-
+ing of the covariance matrix in the out-of-sample perfor-
+mance of an asset portfolio if the estimated covariance ma-
+trix is used for decision making – a widely known idea that
+is common cause. However, here we specifically promote
+these benefits in the sense of reducing the angle between
+the direction of the optimal portfolio in the control space
+relative to that of the expected asset returns. This is a
+refined perspective with a sound theoretical motivation.
+This specificity better explains where andhowimproved
+conditioning may be beneficial.
+Theoretically, the key insight is that it is not merely co-
+variance matrix inversion, hence error maximisation more
+generally, that is problematic, but rather that the inver-
+sion of a poorly conditioned covariance matrix pushes the
+direction of an optimal portfolio erroneously away from the
+direction of expected returns. This implies that when im-
+proving the conditioning of a covariance matrix this should
+be done in a way that pulls the optimal portfolio back to-
+wards the direction of expected returns – irrespective of
+whether or not one may be in the presence of constraints.
+Merely improving the conditioning may prove to be sub-
+optimal.
+Practically, these insights support the perspective pro-
+moted by Allen et al. [1], that an equally weighted portfolio
+is not always preferable to a mean-variance solution. We
+provide a distribution free argument that even with poor
+forecast ability and the impact of estimation uncertainty,
+that there can be an advantage to using mean-variance
+portfolio theory, over an equally weighted (or any riskonly) portfolio construction.
+1.1. Estimation uncertainty
+Quadratic or mean–variance analysis was introduced
+by Harry Markowitz in his seminal 1952 paper [40] to es-
+tablish what is today known as Modern Portfolio Theory.
+Within this framework a rational investor selects a port-
+folio based on the trade-off between estimated expected
+return and risk. Despite the elegance of this, the practi-
+cal implementation has a variety of short-comings, with
+optimised portfolios perceived to to “behave badly” out
+of sample. Michaud [42] argues that mean variance opti-
+misation often leads to non-intuitive results with unstable
+weights, further characterising it as being an“error max-
+imiser”.
+Additionally, even if means and variances could accu-
+rately represent asset class distributions, the theory as-
+sumes both future expected returns, and the covariance
+matrix of asset returns are known, or even that they can
+be known. The presence of estimation error in input pa-
+rameters unfortunately makes the use of Modern Portfolio
+Theory in its classical Markowitz formulation impractical
+– this is well understood and common cause [44]. The
+short-comings of mean-variance optimisation has been ex-
+tensively discussed in the literature, with highlights in-
+cluding the work by Best and Grauer [6], Frankfurter et al.
+[16], Jobson and Korkie [29, 30], Zimmermann and Nier-
+dermayer [50], Broadie [8], Michaud [42], and Chopra and
+Ziemba [12].
+A broad variety of different forms and approaches to
+robust optimisation are documented in an extensive lit-
+erature. As a small subset, Costa and Paiva [14], Hall-
+dorsson and Tutuncu [21], Goldfarb and Iyengar [18], and
+Ceria and Stubbs [11] have proposed various, and unique,
+specifications of the uncertainty set of the input param-
+eters. Performance and risk metrics of robust portfolios
+have been shown to be distinct from [40] optimal portfo-
+lios. Tutuncu and Koenig [48] showed that robust port-
+folios tend to investment in fewer assets and display less
+turnover over time. Increase in the size of the uncertainty
+sets, when using robust portfolio optimisation procedures,
+means they tend to under-perform in the more likely sce-
+narios, but display more reasonable tail behaviour.
+In order to ameliorate the effect of estimation errors
+in the estimates of expected returns, attempts have been
+made to create better and more stable mean-variance opti-
+mal portfolios by utilising expected return estimators that
+have a better behaviour when used in the context of the
+mean-variance framework [44]. One of the more common
+techniques is the utilisation of James-Stein estimators (see
+Jobson and Korkie [30]) to shrink the expected returns to-
+wards the average expected return based on the volatility
+of the asset and the distance of its expected return from
+the average. Jorion [31] developed a similar technique that
+shrinks the expected return estimate towards the mini-
+mum variance portfolio. The area of robust statistics (see
+[10]) has recently been employed to create stable expected
+2return estimates as well. Chopra and Ziemba [12] show
+that errors in the sample mean estimate have a larger im-
+pact on the out-of-sample performance than errors in the
+sample covariance estimate.
+In a similar way to estimating robust expected return
+inputs, one can also build a more robust process through
+focusing on the estimation of the covariance matrix, which
+is inverted in the mean variance optimisation process. Pa-
+pers investigating different covariance matrix estimation
+techniques include Disatnik and Benninga [15], Clarke et al.
+[13], Jagannathan and Ma [28] and Bengtsson and Holst
+[5].This paper makes use of the methodology employed
+by Ledoit and Wolf [34], who argue that a shrunk covari-
+ance matrix should be used instead of the sample covari-
+ance matrix as it contains significant estimation error.The
+shrunk matrix represents a weighted average of the sample
+covariance matrix, and another structured matrix.
+Black and Litterman [7] combine investor’s views with
+expected returns to generate more robust portfolios. They
+use reverse optimisation, using portfolio weights and the
+covariance matrix as inputs and providing the expected
+returns as output, avoiding the problem of estimation error
+in expected returns.
+The Bayesian approach has been widely recommended
+for dealing with the estimation errors in the sample esti-
+mates, which involves eliminating the dependence of the
+optimisation process on the true parameters by replacing
+them with a prior distribution of the fund manager’s view.
+Brown [9] and Kan and Zhou [32] both investigate the
+Bayesian approach.
+Other attempts to make improvements on the Markowitz
+mean-variance optimisation issues also includes the portfo-
+lio re-sampling methodology of Michaud [43] and Lai et al.
+[33]. Michaud introduces a statistical re-sampling tech-
+nique that indirectly considers estimation error by averag-
+ing the individual optimal portfolios that result from opti-
+mising with respect to many randomly generated expected-
+return and risk estimates. However, portfolio re-sampling
+is an ad-hoc methodology that has pitfalls (see Scherer
+[47]). Lai et al. [33] propose a solution to a stochas-
+tic optimisation problem by extending Markowitz’s mean-
+variance portfolio optimisation theory to the case where
+the means and covariances of the asset returns for the next
+investment period are unknown.
+There are a variety of approaches to shrinking the co-
+variance matrix gap between the largest and smallest eigen-
+values, these include optimisation based approaches [46]
+whose performance is measured using Sharpe ratio’s and
+certainty equivalents. Such approaches are novel, but do
+not directly address the issue of back-test over-fitting [3]
+nor do they provide distribution free setting with theoret-
+ical bounds for both constrained and unconstrained port-
+folio’s.
+Golts and Jones [19] provided a novel geometric per-
+spective on robust portfolio construction using insights
+that arise when one separates the direction and magnitude
+of the portfolio position vector. They make no assump-tions about the distribution of the returns and suggest
+making the covariance matrix better-conditioned by con-
+straining the angle between the vector of optimised weights
+and expected returns – the “alpha” angle. The motivation
+for implementing a minimisation of the α-angle is based on
+showing that this angle is bound by the condition number
+of the estimated covariance matrix.
+Here we demonstrate this relationship geometrically
+and mathematically using an extension of the Kantorovich
+inequality [24, 22] provided by Bauer and Householder [4];
+this elegant machinery will be shown as useful in determin-
+ing why this relationship exists (outlines to both theorems
+are provided in Appendix A and Appendix B).
+The theoretical advantage of the geometric approach
+is not only the distribution free setting, but the theorems
+directly motivate the choice of shrinkage in terms of the an-
+gle between the portfolio controls and the direction of asset
+returns, and thus provide a direct and unique approach.
+This is particularly useful if one is able to predict returns
+and correlations intermittently in real financial markets.
+Inspiration for this idea can be seen in Axelsson [2]
+where much of the geometric interpretation around matri-
+ces is described.
+1.2. The efficient frontier and α-weight angle
+Consider a portfolio with nassets, expected return vec-
+torα, covariance matrix Σ, and a fixed portfolio mean αp.
+To find this portfolio on the efficient frontier with asset
+weights θ, we perform a portfolio variance minimization
+[40, 41]:
+arg min
+θ1
+2θ′Σθ
+s.t.α′θ=αp. (1)
+Here we can use the Lagrange method and solve the Kuhn-
+Tucker conditions to find the optimal portfolio allocation
+as follows:
+θ∗=αp
+α′Σ−1αΣ−1α. (2)
+This is a classical Markowitz-type optimisation. It can be
+shown that all optimisation solutions where there are no
+gearing, or long-only constraints, are of similar form. The
+solutions θ∝Σ−1αall show that the results are calculated
+using the inverse of the covariance matrix contracted in the
+direction of the expected returns.
+Various criticisms with regards to Markowitz portfolios
+noted that mean-variance optimised portfolios can have
+weights ( θ) that are quite different from the original “al-
+phas” ( α). To quantify this difference one can look at the
+angle ( ϕ) between the vector of expected returns, α, and
+the vector of optimised weights, θ∗where ϕ∈[0, π/2].
+The mathematical formula for the angle is as follows:
+cos(ϕ) =α′θ
+|α||θ|=α′θ√
+α′α√
+θ′θ. (3)
+The smaller this angle, the more aligned optimal portfo-
+lio weights are to expected α’s which would indicate a
+3more reasonable and intuitive optimisation result. A poor
+optimisation result would be indicated by an almost per-
+pendicular angle close to 90◦.
+Golts and Jones [19] describe the mathematical rela-
+tionship between this angle and the condition of the co-
+variance matrix; showing how a well conditioned covari-
+ance matrix can ensure a smaller α-weight angle (because
+cos(ϕ) is closer to one), and hence a more reasonable op-
+timisation result. They show how this angle is bounded
+above zero by the condition number of the covariance ma-
+trix:
+cos(ϕ)≥2rκ
+(κ+ 1)2where κ=ρmax
+ρmin. (4)
+Here the condition number κis the ratio of the largest
+eigenvalue, ρmax, to the smallest eigenvalue, ρmin. It is
+important to note that although cos( ϕ) has a lower bound,
+the actual angle ϕhas an upper bound, as cos( ϕ) decreases
+where ϕ∈[0, π/2] increases.
+Despite the intuitive nature of the result, the math-
+ematical reasoning behind how this relationship came to
+be in the Golts and Jones [19] paper was not fully de-
+scribed and was only applied to portfolio optimisations
+that were unconstrained. To clarify, this paper refers to
+unconstrained optimisations as those described in Table
+1, despite the fact that optimisation I and II each have a
+risk and return constraint respectively, and as the paper
+will show, some constraints are implicit in the problem.
+The optimisations described in Table 2, where gearing con-
+straints are explicitly put in place, are referred to as the
+constrained optimisations.
+1.3. Unconstrained α-weight angle
+Theorem 1. Kantorovich Inequality [24]
+LetT∈Mn(R)be a symmetric positive definite matrix
+with eigenvalues 0≤ρn≤. . .≤ρ1. Then for all v∈
+Rn\{0},
+(v′v)2
+(v′Tv) (v′T−1v)≥4ρ1ρn
+(ρ1+ρn)2. (5)
+We first motivate the original unconstrained result in
+our Eqn.(4) [19] using Theorem 1 the Kantorovich inequal-
+ity [24, 23, 22] – this is a special case of the Cauchy-
+Schwarz inequality. We provide an outline of the proof
+of Theorem 1 following [23] in Appendix A. Here we will
+use equations 5 (From Theorem 1) and 2, and that any
+positive semi-definite matrix Σ can be decomposed into
+the product of two symmetric matrices S.
+We start with optimal unconstrained portfolio solution
+from Eqn. 2:
+θ∗∝Σ−1α, (6)
+This is substituted into the α-weight angle using Eqn. (3)
+cos(ϕ) =α′(Σ−1α)√
+α′αp
+(Σ−1α)′(Σ−1α), (7)No Gearing Constraint Portfolio Choice
+# Optimisation Constraints
+Iarg max
+θ
+θ′α	
+σ2
+p=θ′Σθ≤σ2
+0
+soln:θ∗
+1=
+σ0√
+C
+Σ−1α=σ0B√
+Cθα
+IIarg min
+θ1
+2θ′Σθ
+αp=θ′α≥α0
+soln:θ∗
+2= α0
+C
+Σ−1α=α0B
+Cθα
+IIIarg max
+θn
+θ′α−γ
+2θ′Σθo
+soln:θ∗
+3=1
+γΣ−1α=B
+γθα
+IVarg max
+θθ′α√
+θ′Σθ
+soln:θ∗
+4=
+σp
+αp
+Σ−1α= g0
+B
+Σ−1α=g0θα
+Table 1: Some classical unconstrained portfolio optimisation prob-
+lems from [19]. Here portfolios employ no explicit gearing constraint,
+and positions may be unconstrained long/short. Here I is a return
+maximisation problem with risk bound, II is a risk minimisation
+problem with a return bound, III is a conventional mean-variance
+optimisation, and IV is the Sharpe ratio optimisation. In III γis
+the inverse risk aversion parameter. In IV the risk free rate rfis
+assumed to be zero. Here A=1′Σ−11,B=α′Σ−11=1Σ−1α,
+C=α′Σ−1αandD=AC−B2. All the portfolio’s are implicitly
+geared versions of the optimal risky portfolio θα. Optimisation IV
+requires an explicit choice of g0to set the magnitude of the optimal
+portfolio which is typical set to one: g0= 1. The optimal portfolio
+controls θ∗are in the last column for each optimizations in the table.
+The subscript ion the solution θ∗
+iis the number of the optimisation
+in question.
+where, because a symmetric matrix is equivalent to its own
+transpose:
+cos(ϕ) =α′Σ−1α√
+α′α√
+α′Σ−2α. (8)
+Using that an inverse covariance matrix can be factored in
+terms of a symmetric matrix S, where Σ−1=S′S, Eqn.(8)
+becomes:
+cos(ϕ) =α′S′Sα√
+α′α√
+α′S′SS′Sα. (9)
+Now let x=Sαso that α=S−1x,x′=α′Sandα′=
+x′S−1, and substitute these into Eqn.(9) to find:
+cos(ϕ) =x′x√
+x′Σx√
+x′Σ−1x. (10)
+The right hand side of Eqn.(10) is the square root of the
+left hand side of the Kantorovich inequality from Eqn. (5)
+thereby implying that this is bounded:
+cos2(ϕ) =(x′x)2
+(x′Σx)(x′Σ−1x)≥4ρ1ρn
+(ρ1+ρn)2, (11)
+where Σ has ordered eigenvalues 0 ≤ρn≤. . .≤ρ1.
+Following Golts and Jones [19] with the condition num-
+ber of the covariance matrix: κ=ρ1/ρn, we can then show
+4that an upper bound to the α-weight angle exists, and we
+recover Eqn.(4):
+cos2(ϕ)≥4ρ1ρn
+(ρ1+ρn)2=4κ
+(κ+ 1)2where κ=ρmax
+ρmin(12)
+This is the result given in [19], but explicitly derived here
+to motivate the form of our constrained extension. This
+shows that an improved condition number of the covari-
+ance matrix can improve the robustness of the optimisa-
+tion procedure, but only when constraints, such as that
+with gearing, a full investment constraint, or a long-only
+portfolio constraint, are ignored.
+The idea is that as the conditioning of the covariance
+deteriorates the α-angle necessarily increases. With im-
+proved conditioning, when there are no constraints, then
+the optimal portfolio weights can more easily align with
+the directions of the asset expected returns (See Figure 1)
+and so improve the out-of-sample portfolio performance.
+This is because as the optimisation aligns with the direc-
+tion of the expected returns, and if the expected returns
+adequately reflect future scenario’s, then this implies im-
+proved out-of-sample portfolio performance.
+ω1ω2ω3
+αθ∗θα
+ϕ
+Figure 1: Unconstrained geometry of the α-angle where αare the
+asset expected returns, θ∗some optimal portfolio weights, θαis the
+optimal risky portfolio, and ϕis the α-angle. In the unconstrained
+caseθαandθ∗are aligned because the optimal portfolio is just a
+scaled version of the optimal risky portfolio. The optimal portfolio
+is in the direction of the vector Σ−1αand hence does not in general
+align with the αdirection: ˆα. If the covariance matrix Σ is shrunk
+to the identity matrix then all three vectors will align.
+2. The constrained α-weight angle
+Many funds have gearing restrictions and may not be
+outright short an instrument i.e.θ≥0. A portfolio op-
+timisation enforcing a long only constraint often has the
+problem that it cannot ensure that closed form solutions
+can be found. It is similarly problematic to include margin
+and diversity constraints. A margin constraint is required
+when investing in futures, or where some sort of deposit
+proportional to the investment made is required [17, 20]:
+i.e.P
+imi|θi|= 1, for mithe margin account required for
+i-th asset. When the level of margining is the same for allthe assets this can be written as a leverage constraint of
+the form: 1′|θ|=ℓ0.
+However, it is possible to get closed form solutions for
+a gearing constrained optimisation; using the constraint
+θ′1=g0for some gearing parameter g0. A fully invested
+portfolio with constraint 1′θ= 1 is then a special case.
+These can be implemented as: a return maximisation with
+a linear and quadratic constraint, a portfolio variance min-
+imisation with two linear constraints, a mean-variance op-
+timisation with a linear constraint, or a Sharpe ratio max-
+imisation with a linear gearing constraint (See Table 2).
+2.1. Upper bound on the α-weight angle
+Theorem 2. Bauer and Householder Inequality [4]
+Letp,q∈Rnsuch thatp′q
+∥p∥2∥q∥2≥cos(ψ)with0≥ψ≥π
+2.
+Then
+(p′q)2
+(p′Tp) (q′T−1q)≥4
+κψ+ 2 + κ−1
+ψ(13)
+where Tis the same positive semi-definite matrix used in
+Theorem 1 and
+κψ=ρ1
+ρn1 + sin( ψ)
+1−sin(ψ)(14)
+is a function of the angle between the vectors p, and q.
+To prove that the upper bound on the α-weight an-
+gle exists for linearly constrained mean-variance optimi-
+sations, we make use of the result derived by Bauer and
+Householder [4] who extended the Kantorovich inequal-
+ity (Theorem 1) to Theorem 2. A direct by construction
+proof for this is investigated by Huang and Zhou [26]. For
+completeness we rather outline the proof of Theorem 2 fol-
+lowing the original approach of [4] in Appendix B. We note
+that in Theorem 2, and in particular from Eqn. 14, that
+κψis unbound above and bound by κbelow: κψ∈[κ,∞]
+and hence we have that κψ≥κ. This condition is weaker
+than that of Theorem 1:
+4κ
+(κ+ 1)2≥4κψ
+(κψ+ 1)2where κ=ρmax
+ρmin, (15)
+because κψ≥κfor 0≥ψ≥π
+2.
+2.2. Constrained α-angle
+Following from the definition of the α-weight angle
+from Eqn. (3) we can again find an expression for the
+angle, however this angle is now that related to the con-
+strained optimisation angle φfromα′θ∗=|α||θ∗|cos(φ)
+using that θ∗= Σ−1zrepresents some general linear so-
+lution of the constrained problem where in general z̸=α
+(e.g.using Eqn.(33), or equivalently use wfrom Eqn.(38)),
+into the α-weight angle Eqn.(3) for the new angle (say) φ:
+cos(φ) =α′θ∗
+√α αp
+θ∗′θ∗=α′Σ−1z√
+α′α√
+z′Σ−2z. (16)
+5Now, as performed in equations (8) to (10) we exploit the
+properties of the positive semi-definite matrix Σ−1=S′S
+to make the substitutions: x=Sαandy=Sz. The
+desired result then follows from Theorem 2:
+cos(φ) =x′y√
+x′Σxp
+y′Σ−1y≥s
+4κψ
+(κψ+ 1)2. (17)
+If, for some angle ψ, where ψ∈[0,π
+2] and ψ < φ :
+cos2(φ)≥4κψ
+(κψ+ 1)2where κψ=ρmax
+ρmin(1 + sin( ψ))
+(1−sin(ψ)).
+(18)
+Then the α-weight angle is remains bound above by the
+condition number of the covariance matrix: κ. This ex-
+tends the geometric interpretation to include linear port-
+folio constraints, because the α-angle is bounded below.
+Here with more generality, and thus as a weakened condi-
+tion, to again imply that poor conditioning will limit our
+ability to align the portfolio weights with the expected re-
+turns, but again, without making explicit distributional
+assumptions about the data generating process.
+There is now a tension between the linear constraint,
+the alignment of the optimal control with the direction of
+the expected returns, and the impact of the conditioning
+that would push the optimal portfolio out of alignment.
+This more complex tension is visualised in Figure (2) and
+we now need to include the role of the global minimum
+variance (GMV) portfolio θ0. The inclusion of the global
+minimum variance portfolio then introduces a dependency
+on the equally-weighted portfolio when correlations are
+negligible.
+ω1ω2ω3
+α
+θ∗
+θ0θα
+φ
+Figure 2: Constrained geometry of the α-angle where αare the asset
+expected returns, θ∗some optimal portfolio weights, θ0is the Global
+Minimum Variance (GMV) portfolio, θαthe optimal risky portfolio,
+andφtheα-angle for some choice of the vector between the optimal
+portfolio and α. The control space gives a vector ω∈R3, in general
+our control space is Rn. Here the gearing constraint θαno longer
+aligns in general with αbecause the constraints impose a dependency
+on the global minimum variance portfolio θ0.
+3. The linear gearing constraint
+We now explicitly consider the functional form of the
+vector zin the optimal solution θ∗= Σ−1z(and by exten-sionw). Consider the optimisations in Table 1 but now
+include the gearing restriction:
+1′θ=g0. (19)
+Here gearing is used broadly in the sense of the ratio of
+exposure of the investment fund relative to the underly-
+ing equity. As explained before, we differentiate this from
+the concept of leverage, which we use as a measure of the
+amount we have borrowed to gain exposure. Practically
+we will consider leverage to be measured by ℓ0=1′|θ|.
+This is important in order to differentiate the type of con-
+straint we will impose in the fund management problems
+we consider and the limitations of this. The gearing con-
+straint will not in general limit the extent to which bets
+are long/short within the fund.
+Concretely, we consider four unconstrained optimisa-
+tions, those in Table 1, and the four gearing constrained
+optimisations as shown in Table 2. We follow the work of
+Ingersoll [27] and Merton [41] who investigate and derive
+the results of optimal mean variance portfolios in detail.
+In our case, we will only need to investigate two portfolio
+choice problems in detail. First, that of minimising the
+portfolio variance and targeting the return with a gearing
+constraint. Second, by finding a mean-variance optimal
+portfolio with a risk aversion parameter γwith the same
+gearing constraint. Using these solutions we show that
+theirα-angles are bounded above (because the cosine is
+bounded below) by some function of the condition num-
+ber. We then extend the argument made by Golts and
+Jones [19] that the dragging optimal bets towards the di-
+rection of αis limited by poor conditioning, albeit in a
+weakened form. These optimisations are common cause,
+but how they are used here is novel.
+Optimisation V and VIII in Table 2, respectively the
+return maximisation with a linear and quadratic constraint,
+and a Sharpe ratio maximisation with a linear leverage
+constraint, both trivially have optimal portfolios that are
+multiplies of the risky portfolio θα. This means that The-
+orem 1 is valid for optimisations I,II,III,VI,V and VIII.
+This means that we only need to generalise and weaken
+the condition number bound for optimisation VI and VII
+(See Figure 4(b)).
+3.1. Constrained minimum variance portfolio (VI)
+We want to find an investment portfolio with minimum
+variance and a targeted return with the additional gearing
+constraint, hence we want to solve for:
+arg min
+θ1
+2θ′Σθ
+s.t.α′θ=αpand1′θ=g0.(20)
+This is optimisation VI in Table 2. This problem can be
+reduced to a Lagrangian with two Lagrange multipliers
+λ= (λ1, λ2):
+L=1
+2θ′Σθ−λ′
+α′θ−αp
+1′θ−g0
+. (21)
+6Gearing Constrained Portfolio Choice
+# Optimisation Constraints
+Varg max θ
+θ′α	 σ2
+p=θ′Σθ≤σ0
+1′θ=g0
+soln:θ∗
+5=g0θα
+VIarg min
+θ(
+1
+2θ′Σθ)
+αP=α′θ≥α0
+1′θ=g0
+soln:θ∗
+6= (g0−ω)θ0+ωθα, ω=B
+D(α0A−g0B)
+.
+VIIarg max
+θ(
+θ′α−γ
+2θ′Σθ)
+1′θ=g0.
+soln:θ∗
+7= (g0−µ)θ0+µθα, µ=h
+1
+γBi
+VIIIarg max
+θ(
+θ′α√
+θ′Σθ)
+1′θ=g0.
+soln:θ∗
+8=g0θα
+Table 2: Four gearing constrained portfolio optimisation problems
+that can be extend into the geometric framework of [19] (See Table
+1). Here A=1′Σ−11,B=α′Σ−11=1Σ−1α,C=α′Σ−1αand
+D=AC−B2. The GMV portfolio is θ0= Σ−11/Aand the optimal
+risky portfolio is θα= Σ−1α/B. The subscript ion the solution θ∗
+i
+is the number of the optimisation in question.
+Solving for θin terms of the Lagrange multipliers λfrom
+Eqn.(21) by solving the Kuhn-Tucker equations to find:
+θ∗
+6= Σ−1λ1α+ Σ−1λ21. (22)
+Then with some algebra and using the convenient substitu-
+tions: A=1′Σ−11,B=α′Σ−11=1Σ−1α,C=α′Σ−1α
+andD=AC−B2. Here A is the variance of the global
+minimum variance portfolio, B that of the optimal risky
+portfolio,√
+Cis the Sharpe ratio, and D is positive by
+the Cauchy-Schwarz inequality because we have assumed
+that Σ is non-singular and all assets do not have the same
+means. We can eliminate the two Lagrange multipliers to
+find the optimal portfolio control:
+θ∗
+6=g0
+DΣ−1(C1−Bα) +αp
+DΣ−1(Aα−B1).(23)
+We can define two new portfolios aandb:
+θ∗
+6=g0a+αpb. (24)
+The optimal portfolio control can then be written in the
+form of a two fund separation theorem where the portfolios
+are weighted by a combination of gearing g0and expected
+portfolio return αpweighted portfolios, we might naively
+anticipate that fixing the level of returns may fix the gear-
+ing if the solution is unique – this is not the case. In the
+return maximisation (optimisation VI) when we set the
+portfolio variance we will set the gearing because the con-
+straint is quadratic. That is no longer the case with risk
+minimisation.
+To more intuitively understand the portfolio, we can
+also split the optimal portfolio into the global minimumvariance portfolios θ0= Σ−11/Aand optimal risk portfo-
+liosθα= Σ−1α/B. Arranging terms in Eqn.(23):
+θ∗
+6= (g0C−αpB)A
+Dθ0+ (αpA−g0B)B
+Dθα. (25)
+This is convenient because we know that 1′(θ0+θα) =
+0,1′θ0= 1, and that 1′θα= 1. The combination is a
+cash neutral portfolio whose weights sum to zero, and the
+individual portfolios are fully invested. We can factor out
+the geared global minimum risk portfolio to find
+θ∗
+6=g0θ0+B
+D(g0B−αpA)
+(θ0−θα). (26)
+We see that the resulting portfolio is a combination of a
+leveraged global minimum risk portfolio and a geared cash
+neutral portfolio. With some weight ω=B
+D(g0B−αpA)
+this can be written as: θ∗= (g0−ω)θ0+ωθα. This is the
+form we will use more generally as in optimisation VI in
+Table 2.
+If we set the level of returns we notice that this has no
+effect on the overall gearing of the portfolio as long as it
+is part of the set of feasible solutions. It will just change
+our exposure to the cash neutral portfolio. This does not
+imply that the leverage |θ|is fixed as this changes with
+the portfolio return target changes, even for a set level of
+gearing, because our long/short bets in the cash neutral
+portfolio will then change. However, there is a minimum
+return associated with the set of global minimum variance
+portfolios generated by the different levels of gearing.
+The minimum-variance set can be found using σ2
+p=
+θ∗′Σθ∗and Eqn.(22):
+σ2
+p=λ1θ6∗′α+λ2θ6∗′1=λ1αp+λ2g0. (27)
+Or equivalently from Eqn.(24):
+σ2
+p=1
+D 
+α2
+pA−2g0αpB+g2
+0C
+. (28)
+We can find the set of global minimum variance portfolios
+with gearing.
+First, find the expected return at the inflection point
+where the minimum variance portfolio is found:
+∂σ2
+p
+∂αp=1
+D(2αpA−2g0B) = 0 . (29)
+Then find the target return αpin terms of the gearing,
+asset returns and asset covariance:
+αp=g0B
+A. (30)
+We can substitute this into Eqn.(25) to then verify that
+this in fact just the geared global minimum variance port-
+folio:
+θ∗
+6=g0θ0, (31)
+7Eqn.(30) can also be used to eliminate the return target
+from Eqn. (28) to find the variance at the point of global
+minimum variance with gearing: σ2
+p=g2
+0/A.
+We would like to now consider how the lower bound in
+Theorem 1 is weakened. Rewrite Eqn.(23):
+θ∗
+6= Σ−1
+(g0C−αpB)1
+D1+ (αpA−g0B)1
+Dα
+.(32)
+This can be written in the form of θ∗∝Σ−1zwhere z
+represents any vector of the same dimension as α:
+z= (g0C−αpB)1
+D1+ (αpA−g0B)1
+Dα.(33)
+Herezis the same dimension as α. By Theorem 2 we then
+know the angle between this portfolio and the αportfolio
+has an upper bound dependent on the condition number of
+the estimated covariance matrix. It is still advantageous
+to tilt the gearing constrained optimal portfolio towards
+αby improving the conditioning of the covariance matrix
+while maintaining the constraint.
+With the choice of Eqn.(30) we trivially have that z=
+1. This would fix the angle between αand the optimal
+portfolio. This means that the constraint will fix the tilt
+of the optimal portfolio relative to the αwhen selecting
+for the global minimum variance portfolio on the efficient
+frontier. This means that we cannot naively tilt the op-
+timal portfolio towards αif we have any form of gearing
+because this would break the constraint. We can however
+tilt the risky optimal portfolio towards α.
+3.2. Constrained mean-variance optimal portfolio (VII)
+We now consider the relationship between the gearing
+constrained minimum risk portfolio from Eqn.(20) and the
+gearing constrained mean-variance optimal portfolio:
+argmaxθ(
+θ′α−γ
+2θ′Σθ)
+s.t1′θ=g0. (34)
+This is optimisation VII in Table 2. The optimal control
+can be found by solving the Kuhn-Tucker equations to find
+the mean-variance optimal portfolios, Eqn.(23):
+θ∗
+7=
+g0−1
+γ1′Σ−1αΣ−11
+1′Σ−11+1
+γΣ−1α.
+using A=1′Σ−11andB=α′Σ−11=1′Σ−1αwe find
+θ∗
+7=
+g0−1
+γBΣ−11
+A+1
+γΣ−1α. (35)
+The global minimum variance portfolio is θ0= Σ−11/A.
+The sum of its weights are unity: 1′θ0= 1. The optimal
+portfolio can be written as the weighted sum of the GMV
+portfolio and the risky αportfolio θα= Σ−1α/B:
+θ∗
+7=
+g0−1
+γB
+θ0+1
+γB
+θα. (36)Here with µ=1/γBwe have: θ7∗= (g0−µ)θ0+µθα.
+We find that θ∗
+7=g0θ0−µ(θ0−θα), which is a combi-
+nation of the global minimum risk portfolio and an optimal
+risky cash neutral long/short portfolio: 1′(θ0−θα) = 0.
+We can factor out the global minimum variance portfolio
+θ0in Eqn.(35) and with a bit of matrix algebra we see that
+the portfolio is made of a geared global minimum variance
+portfolio, whose weights sum to one, and a risky portfolio
+which is dependent on the return expectations and risk
+aversion [39] but can have gearing:
+θ∗
+7=
+g0+1
+γΣ−1(α1′−1α′)
+θ0. (37)
+By considering the i-th and j-th components on the inner
+bracket in the matrix product in the second term, it can be
+seen to be driven by the pairs of relative α: (α1′−1α′)ij=
+αi−αjwhere diag( α1′−1α′) = 0. The first term on the
+left in the bracket is the geared global minimum variance
+portfolio where, the weights of the GMV portfolio sum to
+one, but is now multiplied by the gearing parameter g0.
+The second term is a portfolio whose weights sum to zero,
+but it is leveraged by risk aversion and then projected onto
+the global minimum risk portfolio. The risky portfolio is
+independent of the gearing parameter g0.
+We can contrast Eqn.(36) with Eqn.(26); and set g0= 1
+to find that θ∗
+6=θ0for the risk minimisation. We see
+that with g0= 1 we have recovered the Global Minimum
+Variance (GMV) portfolio θ0; as in Eqn.(37) when we let
+the risk aversion become sufficiently large. Both portfo-
+lio optimisations have the same minimum variance port-
+folio, as expected following from a two fund separation,
+and the minimum variance portfolio are combined with a
+risky portfolio. This is contrasted with the unconstrained
+optimisations given in Table (1) which are all leveraged
+versions of the optimal risky portfolio θα.
+Finally, we have that from Eqn.(36) that the optimal
+portfolio is not generally aligned with θαand hence we
+cannot explain the lower bound deviation from alignment
+withαbeing due to the condition number. However, we
+can show that there is a weakened condition number lower
+bound. Eqn.(35) can be written in the form of Σ−1w
+θ∗
+7=1
+γΣ−1wwhere w=
+g0−1
+γB1
+A+1
+γα
+,(38)
+where wis the same dimension as α. By Theorem 2,
+as for the risk minimisation with a gearing constraint in
+Eqn.(26), we again know that the angle between this port-
+folio and the αportfolio has a upper bound dependent on
+the condition number of the estimated covariance matrix.
+It is still advantageous to tilt the gearing constrained op-
+timal risky portfolio within the overall optimal portfolio
+towards αby improving the conditioning of the covari-
+ance matrix, while maintaining the constraint. However,
+in this instance the gearing can saturate any information
+advantage as the gearing can drag the portfolio away from
+the direction of αtowards the global minimum variance
+8portfolio, even if in the risky portfolio, the angle can be
+reduced by improving the conditioning.
+3.3. Geometric interpretation
+The key geometric insight of [19] is to consider the
+expected portfolio return as a function of the angle φ:
+αP=α′θ=|α||θ|cosφ. This splits the problem into
+a direction and magnitude and shows that to ameliorate
+the impact of poor covariance conditioning it is sufficient
+to constrain the angle φ. Here the investment “direction”
+is given by the unit vector ˆθ=θ/|θ|associated with the
+optimal portfolio weight in the portfolio weight space –
+which will be some simplex. This is visualised in Figure 1
+for the optimisations I, II, III, IV, V and VIII. The gearing
+constrained optimisations are visualised in Figure 2. The
+investment “magnitude” is given by the |θ|.
+The expected portfolio return can be re-written using
+either of the portfolio solutions (either Σ−1zfrom Eqn.
+(26) or Σ−1wfrom Eqn. (36)). Both are of the form:
+g0θ0−w(θ0−θα), for some weight w∈[µ, ω]:αP=
+α′θ= (g0−w)α′θ0+wα′θα. This has two angles, the
+first between αand the global minimum variance portfo-
+lio, some angle φ0, and the second between the optimal
+risk portfolio and α,φ1. The overall α-angle φcan be
+decomposed into these two angles:
+cos(φ) = (g0−w)|θ0|
+|θ|cosφ0+w|θα|
+|θ|cosφ1. (39)
+If we improve the conditioning of the covariance matrix we
+would be able to reduce the upper bound on the second
+angle φ1(by definition ϕ), the angle between the optimal
+risky portfolio and α. This would in turn reduce the over-
+all angle between the optimal portfolio and the direction
+ofα. However, improving the conditioning of the covari-
+ance matrix does not mean the φ0will lead to the overall
+portfolio being closer to α. It may well drag the optimal
+portfolio away from the expected αbecause it could move
+the minimum variance portfolio away from the expected
+returns. This suggests that one should really be minimis-
+ingφ1i.e.minimise the angle between the optimal risky
+portfolio and α(the unconstrained portfolio optimisation),
+rather than the overall αangle itself (the full constrained
+portfolio optimisation).
+From the first order conditions1and Eqn. (39) :
+∂φ0
+∂φ1=−w
+(g0−w)sinφ1
+sinφ0|θα|
+|θ0|. (40)
+Minimising with respect to the overall angle φis equivalent
+to minimising with respect to φ1because from Eqn.(39)
+and integrating Eqn.(40) where there is some well behaved
+function fsuch that φ0=f(φ1) on φ1∈[0, π/2]. If
+we minimise the α-angle φwe would have minimised φ1
+(equivalently ϕ), the angle between the optimal risky port-
+folioθαand the direction of the expected returns α. It is
+1∂φcosφ= 0sufficient to minimise the angle between the optimal risky
+portfolio and the direction of the expected returns φ1=ϕ
+in order that the overall α-angle is minimised in order to
+achieve optimal outcomes even in the presence of the gear-
+ing constraint. We now consider precisely how to achieve
+such an optimal outcome when there is estimation uncer-
+tainty without making strong distributional assumptions.
+4. Robust portfolio optimisations
+4.1. Constraining the α-angle
+Golts and Jones [19] argue that the mean-variance opti-
+misations can be made robust by constraining the α-angle.
+They considered an uncertainty region Uαas a ball centred
+onαwith radius:
+rα=k|α|fork∈(0,1). (41)
+This is some 1- σneighbourhood. The expected portfolio
+return in this neighbourhood is: αp=θ′α, and the ex-
+pected return of the optimal risky portfolio in the same
+neighbourhood is: αr=θ′
+αα. In the unconstrained cases
+given in Table 1 the robust expected returns of the optimal
+risky portfolios
+min
+Uααr=θ′
+αα−k|α||θα|, (42)
+are equivalent to the robust expected returns of the opti-
+mal portfolio [19]:
+min
+Uααp=θ′α−k|α||θ|. (43)
+Here αp=αr. This is not in general the case in the
+presence of the gearing constraint, in particular for opti-
+misations VI and VII in Table 2, because θα̸=θ∗and
+hence αr̸=αp.
+Our objective is to minimise the angle between the op-
+timal risky portfolio and the expected return in the case
+of the gearing constraint in order to ameliorate the im-
+pact of poor conditioning of the covariance, however, this
+is equivalent to minimising the overall angle between the
+optimal portfolio and the expected returns – see Eqn.(39).
+This implies that from expected portfolio return we can
+minimise this over the α-weight angle φ:
+min
+Uααp=|θ||α|(cos(φ)−k) for k∈(0,1). (44)
+The optimizations now include the expected returns but
+with a regularisation term.
+In practice this can be achieved by minimising the an-
+gle between the optimal risky portfolio θαand the ex-
+pected returns αby shrinking the covariance matrix be-
+cause the difference in the direction of the optimal risky
+portfolio and αis entirely due to the covariance Σ: θα∝
+Σ−1α. Hence we try find some new covariance ˜Σ that will
+approximate the required α-angle minimisation. This now
+links the method of [19] to conventional shrinkage methods
+9that focus entirely, and exclusively, on the conditioning of
+the covariance matrix.
+The reformulated portfolio optimizations are then as
+in Table (3). What is important to realise is that the
+less one trusts the expected asset returns αthe larger we
+make the regularisation hyper-parameter k. This ensures
+that the less certain we are about the asset returns, the
+closer to the expect returns the risky portfolio will be,
+and in turn the closer our portfolio will be – this ensures
+that we do not excessively leverage the errors in the ex-
+pected asset returns. The key difference in the presence of
+the constraint is that we will optimally mix in the equally
+weighted portfolio so that the overall optimal portfolio is
+not always aligned with the optimal risky portfolio.
+α-angle Robust Portfolio Choice
+# Optimisation Constraints
+I, V arg max
+θ
+min
+Uααp
+σ2
+p=θ′Σθ≤σ2
+0
+II arg min
+θ1
+2θ′Σθ
+min
+Uααp=θ′α≥α0
+III arg max
+θ
+min
+Uααp−γ
+2θ′Σθ
+IV,VIII arg max
+θ(min
+Uααp
+θ′Σθ)
+VI arg min
+θ(
+1
+2θ′Σθ)
+min
+Uααp=α′θ≥α0
+1′θ=g0
+VII arg max
+θ(
+min
+Uααp−γ
+2θ′Σθ)
+1′θ=g0
+Table 3: Two linearly constrained portfolio optimisation problems,
+VI and VII, can then be extend into the robust geometric framework
+of [19] (See Table 1) by including a minimisation over the ball Uα
+defined in Eqn.(44). Optimization V from Table 2 is equivalent to
+optimization I because fixing σpfixes the gearing g0. Optimization
+IV is equivalent to VIII where the solution of IV is scaled by g0.
+4.2. Shrinking with the α-angle
+Estimating covariance matrices of stock returns has al-
+ways been a problematic area. The sample covariance un-
+fortunately creates a well documented problem, where if
+the number of stocks under consideration are large, partic-
+ularly relative to the number of observations, the sample
+covariance matrix contains a lot of error [29]. The most
+extreme coefficients in the matrix tend to take on extreme
+values not because they are correct, but because they con-
+tain an extreme amount of error. This also implies that the
+condition number of covariance matrices tend to be large,
+and very sensitive to the input data. Covariance shrink-
+age can ameliorate this, as shown by Ledoit and Wolf [34].
+Here we argue that the shrinkage itself should be consid-
+ered in the context of the optimisation constraints.
+Following [19] one can consider a shrunk covariance for
+a portfolio with nassets. For example, we can considerthe Sharpe ratio maximization solution, optimization IV,
+but with a new covariance where k∈[0,1]:
+˜Σ =k|α||θ|√
+θ′ΣθI+α′θ−k|α||θ|√
+θ′Σθ
+Σ. (45)
+Here Σ is the original estimated covariance matrix, Iis the
+identity matrix, θ,αandkare as before. When kis zero
+we recover the optimal risky portfolio θα= Σ−1α/Bby
+solving: θ=˜Σ−1αto recover the Sharpe ratio maximisa-
+tion solution of the optimal portfolio θ∗for optimization
+IV. This is just the optimal risky portfolio θα. This con-
+struction is valid for optimisations I, II, III, VI, V and VIII
+as these are all scalar multiples of Sharpe ratio maximisa-
+tion optimal risky portfolio.
+We can eliminate a direct dependency on the optimal
+portfolio returns and risk and set the optimal risky port-
+folio to be fully invested ( g0= 1), so that from Eqn.(45)
+with k∈[0,cosφ] and using that α′θ=|α||θ|cos(φ) we
+can pick a covariance that updates the optimal solution
+directly to find ˜θα=˜Σ−1α/˜Bwhere:
+˜Σ =k
+cosφI+
+1−k
+cosφ
+Σ. (46)
+Here kcan be understood as some quantity cos( φk) for
+some targeted optimal angle φk∈[φ, π/ 2] between the
+risky portfolio and the expected returns. When Σ →I
+will recover the same limiting solution as k→cosφand
+align the optimal portfolio with the direction of the ex-
+pected returns: ˆα. Any of the unconstrained optimal
+portfolio solutions can be modified in this way using an
+appropriate chosen covariance that would shrink the co-
+variance towards the identity matrix so that the portfolio
+can be shifted between the original solution and a regu-
+larised one. This is equivalent to conventional covariance
+shrinkage methods.
+We can now extend this to find a new regularised co-
+variance given a prudent choice of kfrom Eqn.(46) for
+any of the gearing constrained optimisations. We com-
+pute a new global minimum variance portfolio ˜θ0and a
+new optimal risky portfolio ˜θαwith k∈[0,cosφ]. Then,
+we combined these to form a new efficient frontier exploit-
+ing the two fund separation theorems. This ensures that
+we have retained consistency with the constraints, while
+minimising the α-angle as in Eqn.(44). Optimisations VI
+and VII are combinations of the GMV portfolio and the
+optimal risky portfolio. The overall portfolio is built up
+of the combination of two portfolios: one with direction
+˜Σ−11, and the other with the direction of ˜Σ−1α. When
+one is less certain about the asset returns αthen the regu-
+larisation parameter kis chosen to be larger. The choice of
+any hyper-parameter such as the regularisation parameter
+requires some sort of cross-validation. Hence in practice
+it should be expected that one would need to engage in
+simulation work to best decided on the value of k in a way
+that was not overly prone to backtest over-fitting [3].
+In the presence of the gearing constraint, the greater
+k, the more exposed we are to the 1 /nportfolio factored
+10from the GMV portfolio. This is because when kincreases
+towards k0= cos φwe will shrink the covariance towards
+the identity matrix In. This will shrink the GMV portfolio
+towards the equally weighted 1 /nportfolio given by a unit
+vector ˆe:
+˜θ0=˜Σ−11
+1′˜Σ−11k→k0− − − − →1
+1′In1=1
+n=ˆe. (47)
+Here ˆe′1= 1, where 1′1=n. The risky portfolio becomes
+the weighted average of the expected returns which is just
+the unit vector in the direction of α:
+˜θα=˜Σ−1α
+1′˜Σ−1αk→k0− − − − →Inα
+1′Inα=α
+α′1=ˆα. (48)
+Here ˆα′1= 1 and α′1=n¯α=|α|for the average alpha
+¯α. The combination of the GMV portfolio, ˜θ0, and the
+optimal risky portfolio, ˜θα, is controlled by the amount
+of gearing g0, as seen in equations (26) and (36). The
+combination remains cash neutral: 1′(˜θ0−˜θα) = 0.
+For the gearing constrained mean-variance optimisa-
+tion given by Eqn.(36) and using covariance shrinkage to-
+wards the identity matrix will have ˜A=nand ˜B=α′1
+to find from Eqn.(37):
+˜θ∗
+6=g0ˆe+1
+γIn(α1′−1α′)ˆe. (49)
+The average expected return is: ¯ α=1
+nα′1and this can
+be used to find:
+˜θ∗
+6=g0ˆe+1
+γ(α−1¯α). (50)
+We can confirm this by checking that the last term cor-
+rectly sums to zero when multiplied by 1′. From the unit
+vector in the direction of α:|α|=n¯αwhere α=|α|ˆα
+and using this we can write Eqn.(50) as:
+˜θ∗
+6=g0ˆe+|α|
+γ(ˆα−ˆe). (51)
+This is geometrically intuitive because we see that when
+theαdirection ˆαaligns with the equally weighted portfo-
+lioˆethen our best case optimal portfolio is just the geared
+GMV and independent of αbecause of the constraint.
+For the case of the risk minimisation the αstandard
+deviation will be required: n2σ2
+α=nα′α−(α′1)2. From
+Eqn.(26) again with ˜A=n,˜B=α′1,˜C=α′αand ˜D=
+nα′α−(α′1)2. We can identify ˜Dwith the αvariance:
+˜D=n2σ2
+α. For optimization VII:
+˜θ∗
+7=g0ˆe+ ˜ω(ˆα−ˆe). (52)
+Here the weight is: ˜ ω= (g0(α′1)2−nα0(α′1))/˜D. Putting
+this all together we find that the maximally shrunk optimal
+risk minimisation with gearing constraint is:
+˜θ∗
+7=g0ˆe+g0(α′1)2−nα0(α′1)
+nα′α−(α′1)2
+(ˆα−ˆe). (53)This can then be written as:
+˜θ∗
+7=g0ˆe+1
+σ2α
+g0(α′ˆe)2−α0(α′ˆe)
+(ˆα−ˆe). (54)
+From the definition of the average expected returns:
+˜θ∗
+7=g0ˆe+1
+σ2α 
+g0¯α2−α0¯α
+(ˆα−ˆe). (55)
+When the αaligns with the equally weighted portfolio we
+find the best case portfolio is once again the geared equally
+weighted portfolio: g0ˆe. When the αis orthogonal to
+the equally weight portfolio α′ˆe= 0 we again find some
+combination.
+In the unconstrained optimisation the risky portfolio is
+shrunk towards the asset views α; this is no longer the case
+in the presence of gearing. There will be a combination of
+an equally weighted portfolio and α. However, the gearing
+contributions can be conveniently factored out and treated
+separately relative to the unconstrained solution.
+ω1ω2ω3αθα
+˜θ∗
+θ∗
+θ0ˆeφk→k0
+k→k0k→k0
+Figure 3: The stylised geometry of the robust portfolio construction
+for optimisations VI and VII. Here ˆeis the unit vector ˆe′1= 1 and
+ˆαis the direction of the expected returns. The equally weighted
+portfolio is given by ˆe. With the shrinkage of the covariance, Σ →˜Σ
+ask→k0, the optimal portfolio θ∗is rotated to ˜θ∗. For optimisa-
+tions VI and VII this will be some linear combination of ˆαandˆe.
+The optimal risky portfolio θαis rotated towards α, and the global
+minimum variance portfolio is rotated towards ˆe. Optimisations I,
+II, III, IV, V and VIII rotate towards α.
+5. Simulated Portfolios
+5.1. Simulated Pareto surfaces
+The efficient frontiers for the different optimisations are
+shown in Figure 4. Optimisations I, II, III and VI from Ta-
+ble 1 are shown in Figure 4(a). These are implicitly geared
+versions of the fully invested optimal risky portfolio and
+hence generate a straight line in the ( αp, σp) space that
+can be identified as the Capital Market Line (CML) asso-
+ciated with a 0% risk-free rate. The fully invested version
+of optimisations VI and VII from Table 2 are shown along
+11with the GMV portfolio. Figure 4(b) depicts a stylised
+version of optimisations V, VI, VII and VIII from Table
+2. Optimisations V and VIII generate the Capital Mar-
+ket surface (the grey plane) which intersects the solutions
+to optimisations VI and VII (the green curved surface)
+along the line representing the family of geared optimal
+risky portfolios (the red line). The family of geared global
+minimum risk portfolios is also shown (the blue line). The
+figures are indicative and demonstrate the well known gen-
+eral geometry of the fully invested portfolio optimisation
+Pareto surfaces. Figure 4(a) is the slice at g0= 1 from the
+surface shown in Figure 4(b).
+5.2. Simulated α-angle dependency
+The equally-weighted portfolio has been a benchmark
+in the portfolio selection literature and we consider what
+theα-weight angle of equally-weighted portfolios are com-
+pared to those of portfolios resulting from mean variance
+optimisation. Here we demonstrate the relative perfor-
+mance relation between the equally weighted portfolio and
+the mean variance optimal portfolio via direct simulation.
+This relationship was investigated by simulating 10 years
+worth of monthly stock returns, for 10 stock portfolios,
+from normal distributions with random mean (between 0%
+and 50% p.a) and random standard deviation (between 0%
+and 20% p.a.) with 1000 replications per simulation.
+First, the α-weight angle for the equally weighted port-
+folio was compared to the α-weight angle of the optimal
+risk portfolio ( θα) on every simulation. Since all uncon-
+strained mean variance optimisation results (see Table 1)
+and solutions V and VIII of the constrained mean vari-
+ance optimisation results (see Table 2) are geared versions
+of the optimal risky portfolio, it is appropriate that the
+Golts and Jones [19] conditioned matrix was applied to
+this solution (See Figure 5(a)).
+Unconstrained simulations without the use of covari-
+ance shrinkage show that only 3.8% of optimal risky port-
+folios simulations had better (lower) α-weight angles than
+the equally weighted portfolios, and were on average 27.5◦
+worse than the equally weighted portfolio α-weight an-
+gles. This demonstrate that the naive treatment results
+in equally-weighted portfolios, on average, out perform-
+ing the mean-variance optimal portfolios. This confirms
+the distribution free perspective presented above, that the
+out performance of equally weighted benchmarks in sim-
+ulations is due to selecting sub-optimal optimisation out-
+comes under estimation uncertainty.
+Second, when considering the α-weight angle of con-
+strained mean variance optimisation solutions VI and VII
+of Table 2 compared to that of equally weighted portfo-
+lios, only 3.4% and 3.2% of optimal risky portfolios simu-
+lations had better (lower) α-weight angles than the equally
+weighted portfolios for solutions VI and VII respectively.
+Additionally, the α-weight angles were both 27.6◦worse
+than the equally weighted portfolio’s α-weight angle re-
+spectively. Again, confirming the result that naive sim-ulations would suggest that equally weighted portfolio’s
+would outperform the mean variance portfolio’s.
+Finally, simulations were then repeated to assess whether
+the covariance shrinkage methodology proposed by Golts
+and Jones [19] for the optimal risky portfolio ( θα) allows
+for consistently smaller α-weight angles than those pro-
+duced by equally-weighted portfolios, in a normally dis-
+tributed environment, and in the presence of constraints.
+When considering constrained mean variance solutions VI
+and VII of Table 2, which are not simply geared versions of
+the optimal risky portfolio θα(Figure 5(a)) because of the
+linear constraints, similar results can be seen; these are ev-
+ident in Figure 5(b) below. As soon as some conditioning
+is introduced, 100% of simulations show better α-weight
+angles than those produced by the equally weighted port-
+folios. This implies that 100% of the simulations show
+improved covariance matrix conditioning, given the fact
+that the the matrix condition number provides an upper
+bound to the α-weight angle (see equations 12 and 18).
+This confirms the theoretical implications, that only
+the correct formulation of conditioning creates appropri-
+ate optimal outcomes under linearly constrained quadratic
+optimisation. That the equally weighted portfolio, in the
+distribution free setting, are typically sub-optimal rela-
+tive to the α-angle shrunk covariances, and that this has
+been confirmed under simulation for the case of normal
+distributed returns.
+5.3. Simulated Portfolio Results
+Various alternatives for shrinkage estimates are avail-
+able, and this section intends to briefly introduce the bene-
+fits of the Golts and Jones [19] methodology, through real
+data simulations. We make use of monthly total return
+data from all stocks included in the FTSE/JSE All Share
+Index from January 1996 to August 2016. This includes
+332 stocks, all with varying times of listing/de-listing. A
+set of 1000 simulations is performed. Each simulation fol-
+lows the steps outlined in Table 4.
+An important adjustment to note is that alpha-weight
+angles can be greater than 90 degrees (between 90 and 180
+degrees) in real world data. This infrequently occurs when
+there are large negative expected return vectors, or large
+negative correlations. The Golts and Jones [19] method-
+ology does not make provision for this and is addressed in
+the simulations by applying a cap on the alpha-weight an-
+gles. This means that any alpha-weight angle greater than
+90 degrees, is set to the maximum value of 90 degrees.
+Seven well known shrinkage methodologies are tested
+in this simulation. The range of shrinkage methods in the
+literature is significant, and this list is by no means ex-
+haustive. For this reason we refer the interested reader
+to one of the many review papers given in the introduc-
+tion. In terms of indicative methods we focus on those
+given by Ledoit [35] and Ledoit and Wolf [36, 38]. This
+is because we are just trying to show from this sample,
+the competitive nature of our proposed methodology and
+12(a) No explicit gearing constraint with g0= 1
+ (b) Gearing constrained g0∈(0.5,1.5)
+Figure 4: Fig (a) is the Pareto frontier sliced from Fig (b) at g0= 1. This visualises and compare the stylised Pareto (efficient) frontiers
+for the optimizations problems I, II, III and VI from Table 1 with those that have explicit gearing constraints: optimisations V, VI, VII and
+VIII from Table 2. Optimisations I,II, III and IV are portfolios that generate a Capital Market Line (CML) as they can be considered linear
+combinations of some risk-less portfolio 0and the optimal risky portfolio θα.
+(a) Unconstrained performance (I)
+ (b) Constrained performance (VI & VII)
+Figure 5: Both figures show the percentage number nϕω∗<ϕ1/Nof performance simulations with weights better aligned with those of the
+returns (in circles against the left axis), and the average difference (in triangles against the right axis) between the conditioned angles and
+the unconditioned angles µ∆ϕk=Em[ϕk−ϕ0] with confidence intervals. Fig. 5(a) is for the unconstrained optimisations, and Fig. 5(b) for
+the constrained cases (VI and VII). Each point represents m= 1000 replications. This shows the unconditioned optimisations ( k=0) relative
+to those with Golts and Jones [19] covariance conditioning ( k > 0). 100% of the simulations show smaller α-weight angles for k > 10−1
+on the resulting optimal risk portfolios relative to the the equally weighted portfolio. On average, this angle is just under 30◦better. [19]
+conditioned optimal portfolios outperform the equally weighted portfolios.
+when we believe it should be used. The seven different
+methodologies we consider are given in Table 5.
+Figure 6 provides the simulation results for the uncon-
+strained solutions (Table 1). This includes the constrainedsolutions (V and VIII from Table 2) which are simply
+geared versions of each other. The results are shown across
+1000 simulations, for varying k, for each shrinkage method-
+ology. This figure shows the average out-of-sample Sharpe
+13(a) Sharpe Ratio
+ (b) Probabilistic Sharpe Ratio
+(c) Average α-weight angle
+ (d) Condition Number improvement
+Figure 6: The historic simulations results for the unconstrained solutions (Table 1). Fig. 6a shows the average out-of-sample Sharpe ratios,
+Fig. 6b shows the average out-of-sample probabilistic Sharpe ratio’s, Fig. 6c shows the average α-weight angle, and Fig. 6d shows the average
+percentage improvement of the condition number of the covariance matrix; all across 1000 simulations, for varying k, for each shrinkage
+methodology given in Table 5. The G&J appears to deliver returns most aligned to future asset returns, generates higher Sharpe ratios, at
+high confidence levels, and improves the condition number of the covariance matrices significantly.
+ratios (Figure 6a), the average out-of-sample probabilis-
+tic Sharpe ratio’s (Figure 6b), the average α-weight an-
+gle (Figure 6c) and the average percentage improvement
+of the condition number of the covariance matrix (Figure
+6d). Here the α-weight angle is the angle between the
+”shrunk” weights and the forward looking returns, show-
+ing which methodology will deliver performance most in
+line with future returns. G&J appears to deliver returns
+most aligned to future asset returns. We see that the G&J
+methodology generates higher Sharpe ratios, at high con-
+fidence levels, especially around smaller kestimates, and
+the G&J methodology improves the condition number of
+the covariance matrices significantly.
+Figure 7 shows the simulations results for the con-
+strained solution VI from Table 2. The figure shows the
+average out-of-sample Sharpe ratios (Figure 7a), the aver-
+age out-of-sample probabilistic Sharpe ratios (Figure 7b),the average α-weight angle (Figure7c) and the average per-
+centage improvement of the condition number of the co-
+variance matrix (Figure 7d) across 1000 simulations, for
+varying k, for each shrinkage methodology. We see that
+the G&J methodology does not tend to generate higher
+sharpe ratios using solution VI. Again, we note that the α-
+weight angle is the angle between the“shrunk” weights and
+the forward looking returns, showing which methodology
+will deliver performance most in line with future returns.
+While the α-weight angle does decrease very slightly, the
+G&J methodology does not appear to be most favourable
+in this regard.
+Figure 8 demonstrates the simulation results for the
+constrained solution VII from Table 2. Here the aver-
+age out-of-sample sharpe ratios are in Figure 8a, the av-
+erage out-of-sample probabilistic Sharpe ratios in Figure
+8b, the average α-weight angle in Figure 8c, and the aver-
+14(a) Sharpe Ratio
+ (b) Probabilistic Sharpe Ratio
+(c) Average α-weight angle
+ (d) Condition Number improvement
+Figure 7: The historic simulation results for the constrained solution VI (Table 2) are shown. Fig.7a shows the average out-of-sample Sharpe
+ratios, Fig. 7b shows the average out-of-sample probabilistic Sharpe ratios, Fig. 7c shows the average α-weight angle, and Fig. 7d shows
+the average percentage improvement of the condition number of the covariance matrix; again across 1000 simulations, for varying k, for each
+shrinkage methodology given in Table 5. While G&J methodology improves the condition number of the covariance matrices, and see’s strong
+α-weight angles at small k, the methodology does not appear superior under this solution.
+age percentage improvement of the condition number of
+the covariance matrix is given in Figure 8d. The his-
+toric simulations are across 1000 simulations following the
+methodology outlined in Table 4, for varying k, and for
+each shrinkage methodology from Table 5. We see that
+the G&J methodology generates higher Sharpe ratios, at
+high confidence levels, especially around smaller kesti-
+mates. Again, we can see which methodology will deliver
+performance most in line with future returns because the
+α-weight angle is the angle between the “shrunk” weights
+and the forward looking returns. The G&J method ap-
+pears to deliver returns most aligned to future asset re-
+turns, and improves the condition number of the covari-
+ance matrices significantly.
+In summary, what one can conclude from the simula-
+tions shown in figures 6, 7 and 8, is that under uncon-
+strained solutions and constrained solutions V, VII andVIII the Golts and Jones [19] method appears superior in
+delivering portfolios that are better aligned to the returns
+of the assets, and generating out-of-sample performance
+with superior Sharpe ratios.
+However, under constrained Solution VI, this does not
+appear to be the case. Solution VI implements a minimum
+return threshold, and solutions naturally tend to solve
+for weights that generate that minimum return exactly.
+This means that all solutions are solving for the same re-
+turn, and improved Sharpe ratio’s are only being generated
+from the standard deviation, which the G&J methodol-
+ogy does not necessarily solve for. Moving the portfolio
+weights closer to the expected return vector (shrinking the
+α-weight angle) is not beneficial when the return benefit
+is not there.
+Importantly, we tested this methodology naively using
+historical return means as the expected return vectors, and
+15(a) Sharpe Ratio
+ (b) Probabilistic Sharpe Ratio
+(c) Average α-weight angle
+ (d) Condition Number improvement
+Figure 8: The historic simulation results for the constrained solution VII (Table 2) are shown. Fig . 8a shows the average out-of-sample Sharpe
+ratios, Fig. 8b the average out-of-sample probabilistic Sharpe ratios across 1000 simulations, for varying k, for each shrinkage methodology,
+Fig. 8c the average α-weight angle, and Fig. 8d shows the average percentage improvement of the condition number of the covariance matrix
+across 1000 simulations, for varying k, for each shrinkage methodology given in Table 5. G&J appears to deliver returns most aligned to
+future asset returns,generates higher Sharpe ratios, at high confidence levels, and improves the condition number of the covariance matrices
+significantly.
+even with this large degree of naivety around the future as-
+set returns, this methodology returns weights more closely
+resembling future asset returns. So while using historical
+returns is a reasonable enough forward estimate for future
+returns to make this method beneficial in practice, when
+managers have more insight, even intermittently, into fu-
+ture expected returns, it is clear that this methodology
+will be even more useful.
+6. Conclusions
+Mean-variance portfolio decisions that combine pre-
+diction and optimisation have been shown to have poor
+empirical performance for a variety of shrinkage predic-
+tors under different distributional assumptions that com-
+bined mean-variance optimisation with reasonable depar-tures from Gaussianity [44]. Here we directly consider
+both constrained and unconstrained mean-variance portfo-
+lio construction and performance in a general setting that
+does not have strong distributional assumptions and we
+then confirm these theoretical results using a simple Gaus-
+sian simulation. This is made possible by casting mean-
+variance portfolio theory into a geometric setting.
+To present the geometric perspective we consider the
+upper bound of the α-weight angle as introduced by Golts
+and Jones [19]. First, we show how this result arises as
+a result of the Kantorovich inequality in Theorem 1. De-
+spite being framed in the mean-variance setting the α-
+angle approach to covariance shrinkage makes no distribu-
+tional assumptions about the data generating processes.
+Golts and Jones [19] only considered unconstrained op-
+timisation problems when demonstrating the relationship
+16α-Angle Simulation Methodology
+Description
+1. Start date : A random start date is selected and all stocks
+with a 10 year history following this date are noted.
+2. Investment universe ; 10 stocks are randomly selected from
+the full set of stocks in the randomly selected 10 year window.
+These form the data for this simulation (120 x 10 data frame)
+3. Simulation data window : The first five years of the data is
+used in the simulation to find the sample covariance matrix. The
+shrunk covariance matrix of each shrinkage methodology is then
+computed at each shrinkage intensity ( kbetween 0 and 1, in in-
+crements of 0.01). This five year history is also used to calculated
+the expected return vector, by merely using the historical mean.
+4. Calculate θα: The optimal risk portfolio weights are found
+for each of the shrinkage methodologies, for varying k.
+5. Calculate the α-weight angle : This is found for the varying
+shrinkage methodologies, to see how aligned the portfolio weights
+are to the forward returns. The forward returns is the perfor-
+mance of those assets in 2 months time.
+6. Out-of-sample Performance : The out-of-sample portfo-
+lio performance of the Optimal Risky portfolio, for each of the
+shrinkage methods, at varying shrinkage intensity ( κ) is calcu-
+lated. This is performed by multiplying the optimiser weights
+(which uses the various covariance matrices as inputs), with the
+performance of each asset in 2 months time. From this perfor-
+mance, we find the out-of-sample Sharpe ratio (SR), and a prob-
+abilistic Sharpe ratio (PSR) (see de Prado and Bailey [45]).
+7. Step forward : We then roll the five year period forward one
+month, until 5 years (minus 1 month) of out-of-sample perfor-
+mance is calculated, for each of the shrinkage methodologies, at
+varying k.
+Table 4: Simulation steps for the demonstration of the out-of-sample
+behaviour of the different shrinkage methods and their impact on the
+α-weight angle. In step 5, we delay the implementation by one month
+and are not using the asset’s direct price 1 month later, or the return
+over the following months performance, because this would not be
+practically possible for managers to implement from a timing per-
+spective. For practical relevance a month is skipped to allow for the
+real world mechanics of fund management implementation. It would
+be equivalent to introducing a look-a-head bias in the simulation.
+In addition, we note that in step 6, the probabilistic Sharpe ratio is
+included because it provides us with a confidence level of a particular
+Sharpe ratio
+between the α-weight angle and the condition of the co-
+variance matrix; as in optimisations I, II, III and IV in
+Table 1. Then, we show that this result can be weakened
+and generalised when gearing constraints are added; as in
+the optimisations V, VI, VII and VIII in Table 2 using the
+extension of Bauer and Householder given by Theorem 2.
+When looking at the results of various forms of mean
+variance optimisation problems, we note that results of the
+unconstrained optimisations: I,II, III and IV, can simply
+be thought of as portfolios combined with a risk-less port-
+folio and hence generate Pareto surfaces equivalent to the
+Capital Market Line with a risk fee rate set to 0%. In-
+terestingly, these optimisations (I, II, III and IV) all have
+implicit gearing, as imposed by the choice of α0,σ0and
+γ, despite that there is no outright, or explicit gearing
+constraint.
+We see that optimisation V is equivalent to I because
+the choice of gearing, g0, is equivalent to a choice of port-Selected Shrinkage Methodologies Considered
+Acr. Description
+Diag. Diagonal Matrix : Shrinkage moves away from the sam-
+ple covariance matrix toward the diagonal covariance ma-
+trix, diagΣ, at intensity k:˜Σ = (1 −k)Σ + kdiagΣ. The
+diagonal covariance matrix diagΣ is one where the diago-
+nal of the sample covariance matrix is preserved, but the
+off-diagonal terms are all set to zero [35] (Appendix B2).
+CCM Constant Correlation Matrix : Shrinkage moves away
+from the sample covariance matrix toward the con-
+stant correlation covariance matrix, ΣCCM, at inten-
+sity k:˜Σ = (1 −k)Σ + kΣCCM. Here ΣCCM
+the diagonal of the sample covariance matrix is pre-
+served, but the off-diagonal terms are all set to the
+average of all the stock covariances [37]: ΣCCM
+ij=n
+Σii, i=j;1
+n(n−1)/2Pn
+i=1Σij, i̸=jo
+.
+OPM One Parameter Matrix : Shrinkage moves away from
+the sample covariance matrix toward the one parameter
+covariance matrix, ΣOPM, at intensity k:˜Σ = (1 −k)Σ+
+kΣOPM. Here ΣOPMhas the diagonal terms set to the
+the average variance, while the off-diagonal terms are all
+set to zero [38]: ΣOPM
+ij=1
+nPn
+i=1Σii, i=j; 0, i̸=j	
+.
+TPM Two Parameter Matrix : Shrinkage moves away
+from the sample covariance matrix toward the two
+parameter covariance matrix, ΣTPM, at intensity k:
+˜Σ = (1 −k)Σ + kΣTPM. Here ΣTPMis one
+where diagonal terms of the sample covariance ma-
+trix are all set to the the average variance, and the
+off-diagonal terms are all set to the average of all
+the stock covariances [35] (Appendix B.1): ΣTPM
+ij=n
+1
+nPn
+i=1Σii, i=j;1
+n(n−1)/2Pn
+i=1Σij;i̸=jo
+.
+OFMM One Factor Market Model : Shrinkage moves away
+from the sample covariance matrix toward the one factor
+market model covariance matrix, ΣOFMM, at intensity
+k:˜Σ = (1 −k)Σ + k(ΣOFMM). Here ΣOFMMis one
+where the diagonal is preserved (due to the idiosyncratic
+volatility of the residuals), but the off-diagonal terms are
+shrunk to the cross-sectional average of all the random
+variables: ΣOPMM
+ij= (s2
+mββ′+ϵ)ij[36]. Here βis the
+n×1 matrix of market factor loadings, ϵan×ndiagonal
+matrix of residual variance estimates, and s2
+mthe market
+sample variance.
+AOCS Asymptotically Optimal Convex Shrinkage : The
+covariance matrix is a linear shrinkage between the sam-
+ple covariance matrix and the identity matrix: ˜Σ =
+(1−α)Σ + α(τΣ) [38].Here τis the average sample vari-
+ance and α∈[0,1] is the intensity parameter computed
+using α=1
+tr([Σ−τ]2)1
+NPN
+i=1tr([zizT
+i−Σ]2). This is the
+only method investigated in this paper, where the shrink-
+age intensity is set (and knot varied) in the simulations.
+G&J Golts & Jones α-angle minimization : The covari-
+ance matrix is a linear shrinkage between the sample
+covariance matrix and the identity matrix, with the α-
+weight angle informing the degree of shrinkage as fol-
+lows (see Equation (46)), repeated here: ˜Σ =k
+cosφI+
+1−k
+cosφ
+Σ. Here kis some quantity cos( φk) for a
+targeted optimal angle φk∈[φ, π/ 2] between the risky
+portfolio and the expected returns.
+Table 5: Shrinkage method descriptions for the methods compared
+in the comparative portfolio simulations (Figures 6, 7 and 8).
+folio risk, σ0. Optimisations I,II,III,IV as well as gearing
+constrained optimisations V and VIII, all have the same
+investment directions; in the direction of the optimal risky
+17portfolio (i.e. they are all geared versions of the optimal
+risky portfolio). The optimal risky portfolio is always fully
+invested, and gearing can subsequently be applied, which
+will make the portfolio move up the Capital Market Line
+and be the tangent portfolio for the efficient frontier where
+the level of gearing is a constraint.
+It is the fact that these solutions are in the direction
+of the optimal risk portfolio that makes the Kantorovich
+inequality (Theorem 1) appropriate for proving the upper
+bound of the α-weight angle (using the lower bound of the
+cosine of this angle). From a geometric perspective there
+is no tension between the gearing and the αdirection in
+these cases, and there is only a tension between the poor
+conditioning of the covariance matrix and the direction of
+α. This insight lead to the idea of directly minimising
+theα-angle by shrinking the covariance because for these
+optimisations this direction is generated by the covariance
+matrix: i.e.by the vector Σ−1α. This is not equivalent
+to including a return maximisation constraint.
+However, when adding an explicit gearing restriction
+to certain problems, such as solutions VI and VII, gearing
+can actually mimic poor conditioning and the portfolios
+will have investment directions different from those opti-
+misations without a gearing constraint. From the two fund
+separation theorems the resulting optimal portfolio is a
+weighted average of the global minimum variance portfolio
+and the optimal risky portfolio. We see that naively ap-
+plying gearing to any optimisation other than optimisation
+IV (the Sharpe optimal portfolio that generates the opti-
+mal risky portfolio) and VIII (the return maximisation)
+will drag the portfolios out of alignment with αtowards
+the global minimum variance portfolio.
+Using fund separation theorems the global minimum
+variance portfolio can be factored from the optimal portfo-
+lio Eqn.(26). Geometrically there is now a tension between
+the gearing, the αdirection, and the impact of poor condi-
+tioning. However, the global minimum variance portfolio
+is shown to be purely a function of the covariance matrix,
+and is a fully invested portfolio that sums to one; it’s gear-
+ing can be managed separately from the minimisation of
+theα-angle. This key insight allows us to retain the idea
+of minimising the α-angle.
+The gearing constrained optimal portfolio has a weak-
+ened upper bound that is now given by Theorem 2 [4],
+and not Theorem 1 (the Kantorovich inequality) because
+of the impact of the constraint. With improved condi-
+tioning of the covariance matrix we see we are still able
+to reduce the upper bound on the angle between the op-
+timal risky portfolio and α, which would in turn reduce
+the overall angle between the optimal portfolio and the
+direction of αand improve overall portfolio performance
+out-of-sample. In fact, we note for the constrained opti-
+misation from Eqn.(26) that a minimisation over the total
+α-angle φis equivalent to minimising the angle between
+the optimal risky portfolio and the direction of expected
+returns. This extends the unconstrained result and moti-
+vates why the combination of an α-angle minimisation isequally useful both in the unconstrained and constrained
+cases. To minimise the overall angle between the optimal
+portfolio and the expected returns we can minimise the an-
+gle between the optimal risky portfolio and the expected
+returns, Eqn.(42).
+What this means practically is that even when faced
+with poor forecast ability in the presence of estimation
+uncertainty, uncertainty that is amplified by the inversion
+of the covariance matrix, the choice is not a binary one
+between e.g.an equally weighted, or risk-weighted portfo-
+lio, and the mean-variance solution; but rather there is a
+smooth deformation of the solution between the traditional
+mean-variance and the risk-weighted or equally-weight so-
+lutions, that can enter the problem via constraints where
+optimality is dependent on the conditioning of the covari-
+ance and the constraints. This suggest that there is a
+regularisation parameter that can be optimally chosen for
+a given use case and dataset.
+Towards this end we again look at the spherical un-
+certainty region model for α, and used it to motivate a
+simple robust optimisation framework. This motivates the
+use of covariance matrix shrinkage that explicitly reduces
+the angle between optimal risky Sharpe ratio portfolio, the
+optimal risky portfolio, and the direction of expected re-
+turns, and is given in Eqn.(46). We shrink the covariance
+matrix using the α-angle minimisation with some regular-
+isation parameter kwhich is thought of as some optimal
+regularisation angle φk.
+By regularising the covariance matrix to constrain the
+direction of the optimal risk portfolio we achieve the over-
+allα-angle minimisation regularisation as in Eqn.(46) that
+is consistent with reducing the impact of the estimation
+uncertainty, as expressed by the upper bound in Eqn.(17)
+from Theorem 2. This choice demonstrates the emergence
+of special cases, such as the equally weight portfolio solu-
+tions as the limiting case of the global minimum variance
+portfolio, and how this is optimally mixed within the lin-
+early constrained mean-variance solution.
+This is demonstrated for the case of normal returns
+in Section 5.2. Where we show that in the case of ni-
+ave unconstrained portfolio optimisation that the equally-
+weighted portfolio’s performance better than the mean-
+variance optimal portfolios. However, when applying the
+method first proposed by [19] this is no longer the case, the
+mean-variance portfolio’s would on average out-perform
+the equally weighted portfolio’s. Similarly in the presence
+of linear constraints, when the shrinkage hyper-parameters
+are appropriate selected one can ensure that the constrained
+mean-variance portfolio’s, on average, out-perform the equally
+weighted portfolio’s. This is consistent with the distribu-
+tion free general result used to motivate the method of
+[19].
+This is in turn confirmed using historic simulation in
+Section 5.3. Here we find that under unconstrained solu-
+tions and constrained solutions V, VII and VIII that the
+method of Golts and Jones [19] delivers portfolios that are
+better aligned to the returns of the assets, and generat-
+18ing out-of-sample performance with superior Sharpe ratios
+than the other methods considered. However, we note that
+under constrained solution VI, this is not the case because
+that particular solution naturally tends to solve for weights
+that generate that minimum returns exactly, and as such
+moving the portfolio weights closer to the expected return
+vector is not beneficial despite improve the conditioning of
+the covariance matrix.
+Practically, when a fund manager is extremely uncer-
+tain about the covariance between the assets, and uncer-
+tain about the returns, but one has a gearing constraint,
+then one should be holding Eqn.(55) where the broad di-
+rection of expected returns is still of value. However, if one
+has a sense for the relative variances of assets, then instead
+of the diagonal matrix Iin Eqn.(46), one could use the di-
+agonal covariance matrix with zero off-diagonals. The key
+realisation is not that one is optimally shrinking the covari-
+ance matrix to the diagonal matrix to dilute correlations
+to ameliorate the impact of estimation uncertainty under
+covariance matrix inversion, but rather that one is opti-
+mally distorting the covariance matrix so as to optimally
+exploit the geometry of the control problem itself in the
+presence of constraints.
+Ackowledgements
+We thank Dave Bradfield for thoughtful and inspiring
+discussions.
+Conflict of Interest
+The authors declare there is no conflict of interest.
+References
+Allen, D., Lizieri, C., Satchell, S., 2019. In Defense of Portfolio
+Optimization: What If We Can Forecast? Financial Analysts
+Journal 75:3, 20–38. doi: DOI:10.1080/0015198X.2019.1600958 .
+Axelsson, O., 1996. Iterative Solution Methods. (Cambridge Univ.
+Press).
+Bailey, D., Borwein, J., de Prado, M.L., Zhu, Q.J., 2015. The
+probability of backtest overfitting. Journal of Computational
+Finance (Risk Journals) URL: https://ssrn.com/abstract=
+2326253 , doi: 10.2139/ssrn.2326253 .
+Bauer, F., Householder, A., 1960. Some inequalities involving the
+euclidean condition of a matrix. Numer. Math. 2, 308–311. doi: 10.
+1007/BF01386231 .
+Bengtsson, Holst, 2002. On portfolio selection: Improved covari-
+ance matrix estimation for swedish asset returns. Unpublished
+Manuscript, Department of Economics, Lund University .
+Best, M.J., Grauer, R.R., 1991. On the sensitivity of mean-variance
+efficient portfolios to changes in asset means: Some analytical and
+computational results. The Review of Financial Studies 4, 315–
+342.
+Black, F., Litterman, R., 1992. Global portfolio optimization. Fi-
+nancial Analysts Journal 48, 28–43.
+Broadie, M., 1993. Computing efficient frontiers using estimated
+parameters. Annals of Operations Research 45, 21–58.
+Brown, S., 1976. Optimal Portfolio Choice Under Uncertainty: A
+Bayesian Approach. Ph.D. thesis. Univeristy of Chicago.Cavadini, H., Sbuelz, A., Trojani, F., 2001. A simplified way of
+incorporating model risk, estimation risk, and robustness in mean
+variance portfolio management. Technical Report, University of
+Southern Switzerland .
+Ceria, S., Stubbs, R., 2016. Incorporating estimation errors into
+portfolio selection: Robust portfolio construction., in: Satchell S.
+(eds) Asset Management.. Palgrave Macmillan, Cham.
+Chopra, V., Ziemba, W., 1993. The effect of errors in means, vari-
+ances, and covariances on optimal portfolio choice. Journal of
+Portfolio Management Winter, 19, 2, 6–11.
+Clarke, R.G., de Silva, H., Thorley, S., 2006. Minimum-variance
+portfolios in the u.s. equity market. Journal of Portfolio Manage-
+ment 33, 10–24. doi: 10.3905/jpm.2006.661366 .
+Costa, O.L.V., Paiva, A.C., 2002. Robust portfolio selection using
+linear-matrix inequalities. Journal of Economic Dynamics and
+Control 26, 889–909.
+Disatnik, Benninga, 2007. Shrinking the covariance matrix. Journal
+of Portfolio Management 33, 55–63.
+Frankfurter, G., Phillips, H., Seagle, J., 1971. Portfolio selection:
+The effect of uncertain means, variances and covariances. Journal
+of Financial and Quantitative Analysis , 1251–1262.
+Galluccio, S., Bouchaud, J.P., Potters, M., 1998. Ratio-
+nal decisions, random matrices and spin glasses. Phys-
+ica A: Statistical Mechanics and its Applications 259, 449–
+456. URL: https://www.sciencedirect.com/science/article/
+pii/S037843719800332X , doi: 10.1016/S0378-4371(98)00332-X .
+Goldfarb, D., Iyengar, G., 2003. Robust portfolio selection problems.
+Mathematics of operations research 28, 1–38.
+Golts, M., Jones, G.C., 2009. A sharper angle on optimization. SSRN
+(October 5, 2009). URL: https://ssrn.com/abstract=1483412 ,
+doi:http://dx.doi.org/10.2139/ssrn.1483412 .
+G´ abor, A., Kondor, I., 1999. Portfolios with nonlinear con-
+straints and spin glasses. Physica A: Statistical Mechanics
+and its Applications 274, 222–228. URL: https://www.
+sciencedirect.com/science/article/pii/S0378437199003878 ,
+doi:10.1016/S0378-4371(99)00387-8 .
+Halldorsson, B.V., Tutuncu, R.H., 2003. An interior-point method
+for a class of saddle-point problems. Journal of Optimization The-
+ory and Applications 116, 559 to 590.
+Horn, R.A., Johnson, C.R., 1985. Matrix Analysis. (Cambridge
+University Press, London).
+Householder, A., 1965. The kantorovich and some related in-
+equalities. SIAM Review 7, 463–473. URL: RetrievedJune23,
+2021,fromhttp://www.jstor.org/stable/2027767 , doi: 10.1137/
+1007104 .
+Householder, A.S., 1964. The Theory of Matrices in Numerical Anal-
+ysis. (Blaisdell, New York).
+Householder, A.S., Bauer, F.L., 1960. On certain iterative methods
+for solving linear systems. Numer. Math. 2, 55–59.
+Huang, J., Zhou, J., 2005. A direct proof and a generalization for a
+kantorovich type inequality. Linear Algebra and its Applications
+394, 185–192.
+Ingersoll, J.E., 1987. Theory of Financial Decision Making. (Rowman
+and Littlefield Publishers, Lanham).
+Jagannathan, Ma, 2003. Risk reduction in large portfolios: Why
+imposing the wrong constraints helps. The Journal of Finance 58,
+1651–1683.
+Jobson, J., Korkie, B., 1980. Estimation for markowitz efficient port-
+folios. Journal of the American Statistical Association , 544–554.
+Jobson, J., Korkie, B., 1981. Performance hypothesis testing with
+the sharpe and treynor measures. Journal of Finance 36, 889–908.
+Jorion, P., 1985. International portfolio diversification with estima-
+tion risk. Journal of Business 58, 259–278.
+Kan, R., Zhou, G., 2007. Optimal portfolio choice with parameter
+uncertainty. Journal of Financial and Quantitative Analysis 42,
+621–656.
+Lai, T.L., Xing, H., Chen, Z., 2011. Mean-variance portfolio opti-
+mization when means and covariances are unknown. The Annals
+of Applied Statistics 5, 798–823.
+Ledoit, Wolf, 2003a. Honey, i shrunk the sample covariance matrix.
+Journal of Portfolio Management 30, 110–119. doi: 10.3905/jpm.
+192004.110 .
+Ledoit, O., 1995. Essays on risk and return in the stock market.
+PhD thesis, Massachusetts Institute of Technology, Sloan School
+of Management .
+Ledoit, O., Wolf, M., 2003b. Improved estimation of the covariance
+matrix of stock returns with an application to portfolio selection.
+Journal of Empirical Finance 10, 603–621.
+Ledoit, O., Wolf, M., 2004a. Honey, i shrunk the sample covariance
+matrix. Journal of Portfolio Management 30, 110–119.
+Ledoit, O., Wolf, M., 2004b. A well-conditioned estimator for large-
+dimensional covariance matrices. Journal of Multivariate Analysis
+88, 365–411.
+Lee, W., 2000. Theory and methodology of tactical asset allocation.
+volume 65. (John Wiley & Sons).
+Markowitz, H., 1952. Portfolio selection. The Journal of Finance ,
+77–91.
+Merton, R.C., 1972. An analytic derivation of the efficient portfo-
+lio frontier. Journal of financial and quantitative analysis 7(4),
+1851–1872.
+Michaud, R.O., 1989. The markowitz optimization enigma is opti-
+mized optimal. Financial Analysts Journal 45, 31–42.
+Michaud, R.O., 1998. Efficient Asset Management: A Practical
+Guide to Stock Portfolio Optimization and Asset Allocation. (Ox-
+ford University Press, USA).
+Paskaramoorthy, A., Gebbie, T., Van Zyl, T.L., 2021. The efficient
+frontiers of mean-variance portfolio rules under distribution mis-
+specification, in: 2021 IEEE 24th International Conference on In-
+formation Fusion (FUSION), pp. 1–8. doi: 10.23919/FUSION49465.
+2021.9626916 .
+de Prado, M.L., Bailey, D., 2012. The sharpe ratio efficient frontier.
+Journal of Risk 5(12), Winter 2012/13.
+Pun, C.S., Wong, H.Y., 2019. A linear programming model for se-
+lection of sparse high-dimensional multiperiod portfolios. Euro-
+pean Journal of Operational Research 273, 754–771. doi: https:
+//doi.org/10.1016/j.ejor.2018.08.025 .
+Scherer, B., 2002. Portfolio resampling: Review and critique. Finan-
+cial Analysts Journal 58, 98–109. doi: 10.2469/faj.v58.n6.2489 .
+Tutuncu, R.H., Koenig, M., 2004. Robust asset allocation. Annals
+of Operations Research 132, 157–187.
+Tuy, H., Hoai-Phuong, N., 2007. A robust algorithm for quadratic
+optimization under quadratic constraints. Journal of Global Op-
+timization 37, 557–569. doi: 10.1007/s10898-006-9063-7 .
+Zimmermann, H., Nierdermayer, D., 2007. Robust portfolio opti-
+mization. Finance Theory Course, Winter 2007, University of
+Basel.
+Appendix A. Kantorovich Inequality
+Following Householder (1964) and Horn and Johnson
+(1985). Let A∈Mnbe Hermitian and positive definite;
+letρ1andρnbe its smallest and largest eigenvalues. Let
+there be a non-zero vector x∈Cnwith a Euclidean norm.
+Consider two positive semi-definite matrices ρnI−Aand
+A−ρ1I, and a positive definite matrix A−1. These are
+Hermitian matrices and commute; their product is Her-
+mitian and positive semi-definite. Therefore, for any non-
+zero complex valued vector xwith a complex conjugate
+transpose xH
+0≤xH(ρnI−A)(A−ρ1I)A−1x
+=xH 
+(ρ1+ρn)I−ρ1ρnA−1−A
+x (A.1)
+and so xHAx+ρ1ρn(xHA−1x)≤(ρ1+ρn)(xHx). Ift0=
+ρ1ρn(xHA−1x) then t0(xHAx)≤t0(ρ1+ρn)(xHx)−t2
+0.
+The function f(t) =t(ρ1+ρn)(xHx)−t2is concave and
+has a critical point at t=1
+2(xHx)(ρ1+ρn) where it hasa global maximum. Therefore f(t0)≤1
+4(xHx)2(ρ1+ρn)2
+and it then follows that ρ1ρn(xHA−1x)(xHAx)≤1
+4(ρ1+
+ρn)2(xHx)2. This is the Kantorovich inequality:
+(xHAx)(xHA−1x)≤(ρ1+ρn)2
+4ρ1ρn(xHx)2. (A.2)
+The inequality now holds by construction for all v∈Rn\{0}
+as in Theorem 1 where the Hermitian transpose Hbecomes
+a matrix transpose T.
+Appendix B. Bauer and Householder Inequality
+A very elegant direct proof is given in Huang and Zhou
+(2005). Here we rather follow Bauer and Householder
+(1960) to motivate the result. Let Abe a non-singular
+matrix, and xany vector with Euclidean norm. When A
+has a Euclidean bound norm2and if the inverse of A exists
+then there is an associated condition number3(also known
+as the Euclidean condition). Given any two unit vectors
+ξandηthen4ξHη=eiθcosψwhere the angle ψbetween
+the two unit vectors is restricted to ψ∈[0, π/2]. Consider
+matrices eA= (Aξ, Aη) andfM=eAHeA. Ifζis another
+unit vector in the place of ξandηand orthogonal to ξ,
+then for some M= (ξ,ζ)HAHA(ξ,ζ) we can define a ma-
+trixQ= [1 eiθcosψ; 0eiθsinψ] such that fM=QHMQ.
+From the Euclidean condition κ(fM)≤κ2(Q)κ(M). If
+κ(M)≤κ(AHA) then
+κ2(Q) =κ(QHQ) =1 + cos ψ
+1−cosψ= cot2ψ
+2
+. (B.1)
+This means that for unit vectors ξandηandeA= (Aξ, Aη)
+where |ξHη| ≤ cos(ψ) then ( κ(eAHA))1
+2≤κ(A) cotψ/2.
+Similarly, with fM= (ξ,η)HM(ξ,η) and some positive
+definite Mthen κ(fM)≤κ(M) cot2ψ/2. From the cosine
+angle between AξandAηand iffM= [em11em12;em21em22]
+then:
+(Aξ)HAη
+∥Aξ∥·∥Aη∥2
+=em12em21
+em11em22= 1−detfM
+em11em22. (B.2)
+IffMhas characteristic roots τandτκ(fM) then det fM=
+τ2κ(fM) and ( em11em22)1
+2≤1
+2(em11+em22) =τ
+2(1 +κ(fM))
+so that B.2 is bounded above
+(Aξ)HAη
+∥Aξ∥·∥Aη∥2
+≤1−4κ(M)
+(1 +κ(M))2=κ(M)−1
+κ(M) + 12
+≤κ2(A) cot2ψ/2−1
+κ2(A) cot2ψ/2+ 12
+.
+2For singular values σ2
+i(A) =λi(AHA) with eigenvalues λithe
+Euclidean norm is a scalar ∥A∥= max ∥x∥=1∥Ax∥=σmax(A).
+3The condition number or Euclidean condition is a scalar κ(A) =
+∥A∥·∥A−1∥=σmax(A)
+σmin(A)
+4For (Hermitian) complex conjugate transpose H.
+20Forκ≥1 the term ( κ−1)/(κ+1) is a monotonic function
+ofκso we can choose some cot(ϕ/2) =κ(A) cotψ/2. The
+last term above, the squared quotient on the right, then
+becomes cos2ψwithξ=x∥x∥−1andη=y∥y∥−1. Thus,
+we have shown that for any two non-null vectors xandy,
+and any non-singular matrix A, that |yHx| ≤ ∥x∥∥y∥cosψ
+forψ∈[0, π/2]. This implies that
+|(Ay)HAx| ≤ ∥Ax∥∥Ay∥cosϕ, (B.3)
+for cotϕ/2=κ(A) cotψ/2. Similarly, for any positive defi-
+nite matrix Mthis can then be extended to imply:
+|yHMx|2≤(xHMx)(yHMy) cos2(ϕ), (B.4)
+for cot2ϕ/2=κ(M) cot2ψ/2. Now, consider an arbitrary
+rectangular matrix of linearly independent columns Yso
+thatAYcan be defined.
+The matrix H=I−AHY(YHAAHY)−1YHAis then
+a Hermitian idempotent annihilating5AHY. Using that
+we can choose some M=AAH, we change notation to
+r=Asandx=AHs= [I−MY(YHMY)−1YH]r. Ifr
+is in the subspace of MY, then either Hs= 0 or xis a
+null-vector, and then xHM−1x=rHM−1x. Using this,
+and that H2=H:
+∥Hs∥2
+∥s∥2=(rHM−1x)
+(rHM−1r)=|rHM−1x|2
+(rHM−1r)(xHM−1x).(B.5)
+Since κ(M−1) = κ(M) and κ(AH) = κ(A) then H=
+I−AHY(YHAAHY)−1YHAands=A−1r. IfYhas only
+a single column ythen H=I−(AHy)(yHA)/||AHy||and
+with some linear algebra it follows that
+∥Hs∥2
+∥s∥2= 1−|rHy|2
+∥yHA∥∥A−1r∥. (B.6)
+Using that xis orthogonal to Ywhere the cosine of
+the angle between rand the subspace of Yis cos( Y,r) =
+∥Y(YHY)−1Yr∥/∥r∥we have that cos( x,r)≤[1−cos2(Y,r)]1
+2.
+Then we have that ∥Y(YHY)−1YHr∥ ≥ ∥ r∥sinψwhich
+implies that ∥Hs∥ ≤ ∥ s∥cosψ. From this an optimal
+bound for B.5, and thus B.6, can be obtained when the
+space of Ycontains r:
+||Hs||
+||s||≤[κ2(A)−1]
+[κ2(A) + 1]. (B.7)
+The bound |yHr| ≥ ∥y∥∥r∥sinψfor implies ∥Hs∥ ≤ ∥s∥cosϕ.
+Now, if the equality |yHr|=∥y∥∥r∥sinψ0holds for ψ0∈
+[0, π/2] then:
+∥yHA∥∥A−1r∥
+∥yH∥∥r∥≤sinψ0
+sinϕ=1
+2
+(κ+κ−1) + (κ−κ−1) cosψ0
+.
+5Solving systems of linear equations can be done using a sequence
+of Hermitian operators of the form H, each operating upon the pre-
+vious residual s, to form a new residual Hs; this is the method of
+iterative projection (Householder and Bauer, 1960).Here the bound on the right decreases as ψ0increases be-
+cause cos ψ0decreases on [0 , π/2]. It then follows that for
+any non-null vectors uandv, and any non-singular ma-
+trixA, that |vHu| ≥ ∥vH∥∥u∥sinψwith ψ∈[0, π/2] for
+κ=κ(A) implies:
+∥vHA∥∥A−1u∥
+∥vH∥∥u∥≤sinψ
+sinϕ=1
+2
+(κ+κ−1) + (κ−κ−1) cosψ
+.
+Now, for any non-null vectors vandu, and any positive
+definite matrix M=AA−1:
+(uHMu)(vHM−1v)
+(uHu)(vHv)≤sin2ψ
+sin2ϕ=
+(κ2+ 1) + ( κ2−1) cos ψ2
+4κ2
+where κ2=κ(M). Re-arranging terms then gives this
+equivalently as Theorem 26:
+(uHv)2
+(uHMu)(v∗M−1v)≥4
+κψ+ 2 + κ−1
+ψforκψ=κ(M)1+sin ψ
+1−sinψ.
+Appendix C. Minimax degeneracy
+When the mean variance optimisation problem is un-
+constrained, then the direction of the optimised weights
+vector θ∗in a mean variance optimisation procedure can
+be given by θ∗∝Σ−1αand the quantity cos( ϕ) is shown
+to be bounded from below when using that the covari-
+ance matrix is positive semi-definite and can be factored
+as Σ = S′Sin terms of symmetric matrices S and choosing
+thatv=Sαin the Kantorovich inequality (Theorem 1 in
+Section 1.3):
+cos2ϕ=(α′θ∗)2
+(α′α)(θ∗′θ∗)
+=(v′v)
+(v′Σv)(v′Σ−1v)≥√ρnρ1
+1
+2(ρn+ρ1)2
+.(C.1)
+The lower bound quantity√ρnρ1
+1
+2(ρn+ρ1)is the minimax de-
+generacy (or condition number) of the matrix Σ. The α-
+weight angle can be thus be estimated from the covariance
+matrix Σ with eigenvalues ρnand eigenvectors qn. This
+presents the worst case angle that can be achieved when
+attempting to align the direction of the optimal risky port-
+folio with that of the direction of expected returns. Equal-
+ity can only be achieved in Equation (C.1) when:
+α=±√ρ1q1±√ρnqnandθ∗=±q1√ρ1±qn√ρn.(C.2)
+This is visualised in Figure C.9. This worst case angle of
+alignment can be seen to be problematic as the portfo-
+lio is largely invested along the lowest volatility principal
+component qn. This implies a potentially significant loss
+of investment performance due to estimation error (See
+Appendix C).
+6Forψ=π/2, and u=v, this recovers the Kantorovich inequality
+derived in Appendix A
+21qn(min)q1(max)
+α=√ρ1q1+√ρnqn
+θ∗=q1√ρ1+qn√ρnϕ
+θ∗
+z=q1√ηρ1+qn√ρnφ
+Figure C.9: The constrained α-weight angle and maximum and min-
+imum eigenvalues, ρ1andρn, with associated eigenvectors q1and
+qn, where α′θ=|α||θ|cos(φ). Here θis the optimal portfolio con-
+trol, and αthe expected asset return vector. This visualises the
+extent to which the optimal portfolio is typically invested aligned
+with the lowest volatility direction qn.
+Similarly, when the mean variance optimisation prob-
+lem is linearly constrained, in particular when we get solu-
+tions VI and VII (from Table 2), the direction of the opti-
+mal portfolio weight vector θ∗is now given by θ∗
+z∝Σ−1z
+in terms of a vector zthat does not in general align with
+the direction of the returns αbecause it now includes de-
+pendency on the constraints and we use y=Sz.:
+cos2φ=(α′θ∗
+z)2
+(α′α)(θ∗
+z′θ∗
+z)
+=(v′z)
+(v′Σv)(z′Σ−1z)≥4κψ
+(κψ+ 1)2(C.3)
+Here ψis 0≥ψ≥π
+2and smaller than the angle φ
+κψ=ρ1
+ρn(1 + sin( ψ))
+(1−sin(ψ)). (C.4)
+By setting η=(1+sin( ψ))
+(1−sin(ψ))≥1 we can calculate that the
+worst case angle for alignment with the expected returns
+from equality with the lower bound achieved when:
+α=±√ηρ1q1±√ρnqnandθ∗
+z=±q1√ηρ1±qn√ρn.(C.5)
+Again this is problematic (See Appendix C). However, a
+key nuance is that optimal portfolio lower bound in gear-
+ing constrained optimisations, optimisations VI and VII
+(from Table 2), is given by equation (C.5) from Bauer
+and Householder (1960), but that the key lower bound for
+the optimal risky portfolio remains that given in equation
+(C.2) as governed by the Kantorovich inequality (House-
+holder, 1964, Horn and Johnson, 1985). This is the key
+insight that allows the refined shrinkage method to be de-
+fined: 1.) constrain the angle as in the unconstrained op-
+timisation using the method of Golts and Jones (2009),
+and then 2.) include the linear constraint restrictions.
+This is also why exclusively deciding between either the
+optimal mean-variance portfolio or the equally weighted
+benchmark is inconsistent and sub-optimal irrespective of
+the level of estimation uncertainty (similarly confirmed un-
+der normally distributed numerical simulation in Section
+5).Appendix D. Two-fund Separation
+The two fund separation theorem derived by Markowitz
+(1952) states that: i.) the optimal portfolio exists, ii.) it
+is unique for any given return expectation level αp, and
+iii.) it can be separated into two distinct portfolios aand
+bfrom which all optimal portfolios θ∗can be generated:
+θ∗= (1−αp)a+αp(a+b).
+This is can proved by first considering two new optimal
+portfolios gandh. Then let qbe another optimal portfolio
+such that q=µg+ (1−µ)hfor a real number µ.
+Now αg̸=αh, because they are distinct portfolios.
+So, there exists an unique solution to the equation: αq=
+µαg+(1−µ)αh. Consider another portfolio pwith weights
+(µ,(1−µ)) which has invested in portfolio’s gandh, it
+will satisfy: p=µ(a+bαg) + (1 −µ)(a+bαh), so that
+p=a+bαq. Therefore, p=q; and the optimal portfo-
+lio is unique and exists. Further details relating to fund
+separation theorems can be seen in Ingersoll (1987).
+All investors who choose portfolios by examining only
+mean and variance can be satisfied by holding different
+combinations of only a few (in this case 2) portfolios re-
+gardless of their preferences. All of the original assets,
+therefore, can be purchased by just two portfolios, and
+the investors can then just buy them in various ratios.
+Appendix E. Maximum return portfolio
+To find an investment portfolio with maximum return
+at a given level of portfolio variance with a gearing con-
+straint we want to solve:
+arg max
+θ
+θ′α	
+s.t. σ2
+p=θ′Σθ≤σ0and1′θ=g0.(E.1)
+which can be reduced to the following Lagrangian with two
+Lagrange multipliers λ= (λ1, λ2) but with a quadratic
+constraint and a linear constraint:
+L=−θ′α−λ′σ2
+p−θ′Σθ
+g0−1′θ
+. (E.2)
+It should be expected here that picking a gearing g0neces-
+sarily fixes the variance of the portfolio. However there are
+multiple portfolios with the different portfolio variances,
+but the same leverage. We would like the minimum vari-
+ance portfolio at a particular gearing g0. This is then a
+multi-objective function optimisation. Hence we rather
+find the targeted variance first, and then set that variance
+to provide a portfolio with the required leverage.
+Here we want to ensure that there is an upper bound
+on portfolio risk: σ2
+p≤σ2
+0and we know that a choice of
+σ2
+pwill set the portfolio gearing. Hence we rather solve
+the well known reduced problem with a single Lagrange
+multiplier λand then fix the leverage:
+L=−θ′α−λ(σ2
+p−θ′Σθ). (E.3)
+22The first order (Kuhn-Tucker) conditions are: Lθ=−α+
+λ2Σθ= 0, and Lλ=σ2
+p−θ′Σθ= 0. The second order
+conditions are Lθθ= 2λΣ1≥0=⇒λ≥0.
+Multiplying the first order condition Lθbyθ′and Σ−1
+to find:
+0 = −θ′α+ (2λ)θ′Σθ, (E.4)
+0 = −Σ−1α+ (2λ)θ. (E.5)
+We factor the optimal portfolio out of equation (E.5):
+(2λ)θ∗= Σ−1α. (E.6)
+We now make use of the following substitutions
+A=1′Σ−11 (E.7)
+B=α′Σ−11=1′Σ−1α (E.8)
+C=α′Σ−1α (E.9)
+D=AC−B2. (E.10)
+Here Dis positive, by the Cauchy-Schwarz inequality, since
+we have assumed that Σ is non-singular and all assets do
+not have the same mean: α̸=|α|
+n1. If all means were the
+same, then D= 0, and this problem has no solution.
+Multiply equation (E.5) from the left by α′to find:
+C= (2λ)αp. (E.11)
+To find λwe now substitute the portfolio expected returns
+and risk into equation (E.4) to find αp= (2λ)2σ2
+pand then
+substitute αpinto equation (E.11) to find:
+(2λ)2σ2
+p=C. (E.12)
+Which gives the solution to optimisation I when substi-
+tuted into equation (E.6):
+θ∗
+1=σp√
+CΣ−1α. (E.13)
+To set the gearing we multiply (E.13) from the left by 1′
+to find that
+g0=σpB√
+C. (E.14)
+The solution to optimisation V in terms of gearing is:
+θ∗
+5=g01
+BΣ−1α=g0θα. (E.15)
+This is just a gearing optimal risky portfolio. For this
+reason optimisations I and V are treated as equivalent as
+they have the same investment directions. The ratio B/A
+is just the ratio of the variance of optimal risky portfolio
+to the variance of global minimum variance portfolio.
+Appendix F. Minimum risk portfolio
+We want to find an investment portfolio with minimum
+variance and a targeted return with the additional gearing
+constraint, hence we want to solve for:
+arg min
+θ1
+2θ′Σθ
+s.t.α′θ=αp≥α0and1′θ=g0.
+(F.1)which can be reduced to the following Lagrangian with
+two Lagrange multipliers λ= (λ1, λ2):
+L=1
+2θ′Σθ−λ′
+α′θ−αp
+1′θ−g0
+. (F.2)
+From the Kuhn-Tucker conditions
+Lθ= Σθ−λ′α
+1
+= 0, (F.3)
+Lλ=α′θ−αp
+1′θ−g0
+= 0 (F.4)
+Solving for θin terms of λfrom (F.3)
+θ∗
+6= Σ−1λα
+1
+=λ1Σ−1α+λ2Σ−11 (F.5)
+We now solve for λby multiplying (F.5) first by 1′and
+then by α′and then substituting these into equation (F.4):
+g0=λ11′Σ−1α+λ21′Σ−11 (F.6)
+αp=λ1α′Σ−1α+λ2α′Σ−11 (F.7)
+We again make use of the following substitutions from
+equations (E.7),(E.8),(E.9) and (E.10). Using these we
+simplify equations (F.6) and (F.7) to:
+g0=λ1B+λ2A, (F.8)
+αp=λ1C+λ2B. (F.9)
+From (F.9) above, we can see that
+λ2=αp−λ1C
+B(F.10)
+And by substituting (F.10) above into (F.8)
+g0=λ1B+A
+B(αp−λ1C) (F.11)
+Solving for λ1:
+λ1=αpA−g0B
+D. (F.12)
+Substituting (F.12) into (F.10) we then solve for λ2:
+λ2=αpA−g0B
+D(F.13)
+Finally, from (F.12) and (F.13) as substituted into (F.5)
+we find
+θ∗
+6=αpA−g0B
+D
+Σ−1α+g0C−αpB
+D
+Σ−11
+(F.14)
+We can then put this into the form θ∝Σ−1z, where zis
+the same dimension as α:
+θ∗
+6= Σ−1αpA−g0B
+D
+α+g0C−αpB
+D
+1
+.
+This can be reduced further to find the global minimum
+risk portfolio associated with a particular value of the gear-
+ing parameter g0, this allows us to define a second efficient
+frontier, as a function of g0, by eliminating αpby enforcing
+that∂αpσ2
+p= 0. We are effectively putting a lower bound
+on the portfolio returns α0by associating this with the
+unleveraged global minimum variance portfolio.
+23Appendix G. Mean-variance portfolio
+The gearing constrained mean-variance optimal port-
+folio choice problem is given by the optimisation:
+argmaxθ(
+θ′α−γ
+2θ′Σθ)
+s.t1′θ=g0. (G.1)
+It has a Lagrangian with a single Lagrage multiplier:
+L=−θ′α+γ
+2θ′Σθ−λ(θ′1−g0). (G.2)
+Solving the first order optimality conditions (the Kuhn-
+Tucker equations) we find:
+Lθ=−α+γΣθ−λ1=0, (G.3)
+Lλ=θ′1−g0= 0 (G.4)
+Using equation (G.3) to solve for the optimal control θ∗
+and then substituting this into equation (G.4) to eliminate
+the Lagrange multiplier, to then find the optimal portfolio:
+θ∗
+7=
+g0−1
+γ1′Σ−1αΣ−11
+1′Σ−11+1
+γΣ−1α.
+Appendix H. Optimal risky portfolio
+To find an investment portfolio that maximises the
+Sharpe ratio αp/σpbut with a gearing constraint and set-
+ting the risk free rate to zero; we want to solve:
+arg max
+θθ′α√
+θ′Σθ
+s.t.1′θ=g0. (H.1)
+This can be reduced to a Lagrangian with a single La-
+grange multiplier:
+L=−θ′α√
+θ′Σθ−λ(θ′1−g0). (H.2)
+From the first order conditions
+Lθ=−α
+(θ′Σθ)1
+2+θ′α
+(θ′Σθ)3
+2Σθ−λ1=0. (H.3)
+Lλ=θ′1−g0= 0. (H.4)
+We can multiply equation (H.3) by θ′and using equation
+(H.4) we find that the Lagrange multiplier: λg0= 0 and
+hence that λ= 0 for g0̸= 0.
+Using this and multiplying equation (H.3) from the left
+by Σ−1we can show that:
+θ∗
+8=θ′α√
+θ′Σθ−1
+Σ−1α. (H.5)
+This is convenient because we can now multiply this from
+the left by the transposed unit vector 1′and use equation
+(H.4), to find that:
+g0=θ′α√
+θ′Σθ−1
+1′Σ−1α. (H.6)Substituting this into equation (H.5) this gives the optimal
+leveraged risk adjusted portfolio:
+θ∗
+8=g0Σ−1α
+1′Σ−1α=g0θα. (H.7)
+We note that optimisation I, II, III and IV are all spe-
+cial cases of general leverage Sharpe ratio optimisation in
+problem VIII – they are all geared optimal risky portfolios.
+Appendix I. Portfolio diversity constraint
+The problem of finding a portfolio constrained to a
+given number of effective bets n0(Galluccio et al., 1998,
+G´ abor and Kondor, 1999) requires a quadratic constraint,
+and this constraint can been seen to act as a regularisa-
+tion condition. Such an investment portfolio with mini-
+mum variance, gearing constrained, but with a quadratic
+constraints is the following problem:
+arg max
+θn
+θ′α−γ
+2θ′Σθo
+s.t.1′θ=g0andθ′θ=1/n0.
+This is a special case of the problem of Quadratic Op-
+timisation with Quadratic Constraint (QOQC) (Tuy and
+Hoai-Phuong, 2007). Here the Lagrangian has two La-
+grange multipliers λ= (λ1, λ2):
+L=−θ′α+γ
+2θ′Σθ−λ′θ′θ−1/n0
+1′θ−g0
+. (I.1)
+The first order conditions are:
+Lθ=−α+γΣθ−λ′θ
+1
+= 0, (I.2)
+Lλ=θ′θ−1/n0
+1′θ−g0
+= 0. (I.3)
+By multiplying equation (I.2) by θand using the con-
+straints (I.3) we find that: λ2=αp−1
+γσ2
+p−λ1
+n0.
+The second order constraint gives a convexity condi-
+tion:
+Lθθ=γΣ1−λ11≥0=⇒λ1≥γ
+n1′Σ1. (I.4)
+Solving for θin terms of λfrom equations (I.2) and
+(I.3) where for the identity matrix Inwe find:
+θ∗= (λ1In+γΣ)−1(α+λ21). (I.5)
+This is no longer of the form θ∗∝Σ−1xfor some vector
+xbut we can make the substitution:
+˜Σ = ( λ1In+γΣ) (I.6)
+to get the solution into a regularised form θ∗∝˜Σ−1x. The
+regularised covariance matrix is still positive semi-definite
+and hence it can still be factorised into two symmetric
+matrices; the Bauer and Householder (1960) extension of
+the Kantorovich inequality then remains valid with regards
+to the condition number of new covariance matrix ˜Σ. So
+theα-angle is still bound below by the condition number.
+Hence improving the conditioning by aligning the resulting
+optimal portfolio with the expected returns makes sense.
+24

@@ -1,0 +1,618 @@
+arXiv:2108.11536v1  [math.AC]  26 Aug 2021FACTORIZATIONS IN EVALUATION MONOIDS OF
+LAURENT SEMIRINGS
+SOPHIE ZHU
+Abstract. Forα∈R>0, letN0[α,α−1] be the semiring of real numbers f(α) with
+allf(x)∈N0[x,x−1], whereN0is the set of nonnegative integers and N0[x,x−1] is the
+semiring of Laurent polynomials with coeﬃcients in N0. In this paper, we study var-
+ious factorization properties of the additive structure of N0[α,α−1]. We characterize
+whenN0[α,α−1]isatomic. Thenwecharacterizewhen N0[α,α−1]satisﬁesthe ascend-
+ing chain condition on principal ideals in terms of certain well-studied fa ctorization
+properties. Finally, we characterize when N0[α,α−1] satisﬁes the unique factorization
+property and show that, when this is not the case, N0[α,α−1] has inﬁnite elasticity.
+1.Introduction
+The purpose of this paper is to understand the (additive) factoriz ation properties
+of the commutative semirings N0[α,α−1] for any α∈R>0. To be more precise, let
+N0[x,x−1] denote the set of Laurent polynomials with coeﬃcients in the set of nonneg-
+ative integers N0. SinceN0[x,x−1] is closed under both addition and multiplication, it
+is a commutative semiring. For each α∈R>0, we letMαdenote the additive monoid
+of the semiring N0[α,α−1], that is,
+Mα={f(α)|f(x)∈N0[x,x−1]}.
+It is a sub-semiring of the commutative semiring R≥0. For ease of notation, we shall use
+Mαin this paper to denote the additive monoid of the semiring N0[α,α−1] forα∈R>0.
+LetMbe a cancellative and commutative (additive) monoid. A non-invertible element
+ofMis called an atom if it is not the sum of two non-invertible elements, and M
+is atomic if every non-invertible element is a sum of atoms. It is well-kno wn that
+every commutative (and cancellative) monoid satisfying the ascend ing chain condition
+on principal ideals (ACCP) is atomic (see, for example, [ 11, Proposition 1.1]). As
+for integral domains, Mis called a unique factorization monoid (UFM) provided that
+every non-invertible element can be written as a sum of atoms in an es sentially unique
+way (i.e., up to order and associates). Here, we study the propert ies of being atomic,
+Date: August 27, 2021.
+2010Mathematics Subject Classiﬁcation. Primary: 20M13; Secondary: 20M14, 16Y60.
+Key words and phrases. atomicity, atomic monoid, commutative semiring, Laurent semiring, L au-
+rent polynomial, ACCP, bounded factorization monoid, BFM, ﬁnite fa ctorization monoid, FFM, half-
+factorial monoid, HFM, length-factorial monoid, LFM, elasticity.
+12 S. ZHU
+satisfying the ACCP, and being a UFM for the additive monoids Mα(withα∈R>0),
+oﬀering various characterizations for each of such properties in t erms of atoms and
+(additive) factorizations.
+Most of the results we establish here are motivated by some of the r esults in the re-
+cent paper [ 12] by Correa-Morris and Gotti, where the authors investigated the atomic
+structure of the additive monoids of the evaluation semirings N0[α] forα∈R>0, gen-
+eralizing some of the results already established by Chapman et al. in [ 9] whenαis
+taken in Q>0. The study of atomicity and factorizations in the setting of commut ative
+semirings has received a great deal of attention in the last few year s. For instance,
+Campanini and Facchini [ 6] studied the factorization structure of the multiplicative
+monoid of the semiring N0[x]. In addition, Baeth et al. [ 4] recently studied the atomic
+structure of both the additive and the multiplicative monoids of subs emirings of R≥0.
+Finally, factorizations in certain subsemirings of Q≥0have also been considered in [ 1]
+by Albizu-Campos et al. and in [ 5] by Baeth and Gotti.
+We begin by introducing the main terminology in Section 2.1and outlining the
+main known results we use later. Then, in Section 3, we discuss the atomicity of the
+monoids Mα.We characterize the monoids Mαthat are atomic as well those Mαthat
+are not atomic in Theorem 3.1and Proposition 3.4, respectively. In contrast with [ 12,
+Proposition 5.13], the monoid Mαis only ﬁnitely generated when α= 1.In particular,
+ifα/\e}atio\slash= 1 and the monoid Mαis atomic, then Mαmust contain inﬁnitely many atoms;
+indeed, we show in Theorem 3.1that the atoms of Mαare precisely the integer powers
+ofα.
+LetMbe an atomic (additive) monoid. A factorization of a non-invertible ele ment
+x∈Mis, up to order and associates, a sequence of ﬁnitely many atoms (a llowing
+repetitions) with sum x, and the number of atoms in such a sequence (counting rep-
+etitions) is called the the length of the factorization. A non-invertib le element in M
+may have distinct factorizations (even inﬁnitely many). For a non-in vertible element
+x∈M, we letZ(x) andL(x) denote the set of factorizations and factorization lengths
+ofx, respectively. Following Anderson et al. [ 2] and Halter-Koch [ 23], we say that
+the monoid Mis an FFM (resp., a BFM) provided that Z(x) (resp., L(x)) is ﬁnite
+for all non-invertible x∈M. The property of being a BFM was ﬁrst studied back in
+1949 by Neumann [ 24] in connection to the ACCP. Note that every FFM is a BFM.
+In Section 4, we prove that the conditions of satisfying the ACCP, being a BFM, a nd
+being an FFM are equivalent for any monoid Mα(see Theorem 4.3). In addition, we
+construct monoids Mαthat are FFMs but not UFMs (see Subsection 4.2).
+In Section 5, we identify the monoids Mαthat are UFMs. Following Zaks [ 28], we
+say thatMisa half-factorialmonoid(HFM) if L(x) is asingleton for every x∈M. The
+property of being an HFM was ﬁrst considered by Carlitz [ 7] in the context of algebraic
+number theory to characterize rings of integers with class number two. Following
+Chapman et al. [ 8], we say that Mis called a length-factorial monoid (LFM) if forEVALUATION MONOIDS OF LAURENT SEMIRINGS 3
+everyx∈M, not two factorizations in Z(x) have the same length. Additionally, in
+Section5, we prove that the conditions of being a UFM, an HFM, and an LFM are
+equivalent for any monoid Mα.
+It is not hard to argue that classes satisfying the atomic propertie s we have just
+deﬁned are somehow nested, as indicated by the following chain of imp lications in
+Diagram ( 1.1). In Section 5, we produce a diagram (Diagram ( 5.1)) specialized for the
+class of all monoids Mαthat reﬁnes Diagram ( 1.1).
+(1.1) UFM⇒[FFM, HFM ]⇒BFM⇒ACCP ⇒atomicity
+The elasticity of a monoid is an arithmetic statistic that measures how much a
+monoid deviates from being an HFM. The elasticity was ﬁrst considere d by Steﬀan [ 25]
+and Valenza [ 27] back in the eighties to understand how far from being a UFD is a
+Dedekind domain or a ring of integers, respectively. Since then the e lasticity has
+become probably the most studied arithmetic invariant to measure n on-uniqueness of
+factorizations (see [ 29] by Zhong, and references therein). We conclude this paper with
+showing that Mαhas inﬁnite elasticity when it is not an HFM (see Proposition 5.4),
+which means that either Mαis an HFM or it is as far from being an HFM as a monoid
+can possibly be.
+2.Background
+2.1.General Notation. We letP,N, andN0denote the set of primes, positive in-
+tegers, and nonnegative integers, respectively. If Xis a subset of Randris a real
+number, we let X≥rdenote the set {x∈X|x≥r}. Similarly, we use the notations
+X>r,X≤r, andX<r. For a positive rational q, the positive integers aandbwithq=a/b
+and gcd( a,b) = 1 are denoted by n(q) andd(q), respectively.
+Givenamonicpolynomial f(x)∈Q[x], letℓbethesmallestpositiveintegersuchthat
+ℓ·f(x)∈Z[x]. Then there exist unique p(x),q(x)∈N0[x] such that ℓf(x) =p(x)−q(x)
+and that p(x) andq(x) share no monomials of the same degree (that is, the greatest
+common divisor of p(x) andq(x) in the free commutative monoid ( N0[x],+) is 0).
+We call the pair ( p(x),q(x)) theminimal pair off(x). In addition, if αis a real
+algebraicnumber, the minimal pair of αis deﬁned tobetheminimal pairof itsminimal
+polynomial over Q.4 S. ZHU
+2.2.Monoids. Amonoidis a cancellative and commutative semigroup with an iden-
+tity element. Monoids here will be written additively, unless we say oth erwise. Let M
+be a monoid. An element x∈Mis called invertible (or aunit) if there exists y∈M
+such that x+y= 0. We tacitly assume that M(and every monoid we deal with here)
+isreduced; that is, its only invertible element is 0. We set M•=M\{0}. For a subset
+SofM, we let/a\}bracketle{tS/a\}bracketri}htdenote the submonoid of Mgenerated by S, i.e., the intersection of
+all submonoids of Mcontaining S. We say that a monoid is ﬁnitely generated if it can
+be generated by a ﬁnite set. A nonzero element a∈Mis called an atomif whenever
+a=x+yfor some x,y∈Meitherx= 0 ory= 0. It is customary to let A(M) denote
+the set consisting of all atoms of M, and we do so. If A(M) is empty, Mis said to be
+antimatter . The monoids we are mostly interested in this paper are atomic.
+Deﬁnition 2.1. An (additive) monoid is atomicif every nonzero element can be writ-
+ten as a sum of atoms.
+IfIis a subset of M, thenIis called an idealprovided that I+M=I(or,
+equivalently, I+M⊆I). Every subset of Mof the form x+M, wherex∈M, is
+an ideal and is called a principal ideal. The monoid Msatisﬁes the ascending chain
+condition on principal ideals (ACCP) if every increasing sequence (under inclusion)
+of principal ideals of Mbecomes stationary from one point on. It is well known that
+every monoid satisfying the ACCP is atomic (see [ 15, Proposition 1.1.4]). The converse
+does not hold: for instance, the additive submonoid /a\}bracketle{t(2
+3)n|n∈N/a\}bracketri}htofQis an atomic
+monoid that does not satisfy the ACCP [ 10, Corollary 4.4].
+2.3.Factorizations. Assume now that Mis atomic. Let Z(M) denote the free (com-
+mutative) monoid on the set A(M). For each x∈M, we let Z(x) denote the set
+of all formal sums z:=a1+···+aℓ∈Z(M) witha1,...,a ℓ∈A(M) such that
+a1+···+aℓ=xinM. In this case, ℓis called the lengthofzand is denoted by |z|.
+For each x∈M, we set L(x) :={|z| |z∈Z(x)}. The sets Z(x) andL(x) play an
+important role in factorization theory (see [ 14]). Note that Mis atomic if and only if
+Z(x) is nonempty for all x∈M•.
+The monoid Mis called a bounded factorization monoid (BFM) if L(x) is ﬁnite for
+allx∈M. Every BFM satisﬁes the ACCP [ 15, Corollary 1.3.3], but the converse
+does not hold: /a\}bracketle{t1/p|p∈P/a\}bracketri}htsatisﬁes the ACCP but is not a BFM [ 10, Corollary 4.6].
+The monoid Mis called a half-factorial monoid (HFM) if |L(x)|= 1 for all x∈M•.
+Observe that every HFM is a BFM. The monoid Mis called a ﬁnite factorization
+monoid) (FFM) if Z(x) is ﬁnite for all x∈M•. Every ﬁnitely generated monoid is
+an FFM [ 3, Corollary 3.7]. Note that every FFM is a BFM; however, {0} ∪Q≥1is
+a BFM that is not an FFM [ 10, Example 4.10]. In addition, one can see that /a\}bracketle{t2,3/a\}bracketri}ht
+is an FFM that is not an HFM. On the other hand, there are HFMs that are not
+FFMs; this is the case of the additive monoid {(0,0)}∪(Z×N) (see [3, Example 3.9]).
+Finally,Mis called a unique factorization monoid (UFM) provided that |Z(x)|= 1 forEVALUATION MONOIDS OF LAURENT SEMIRINGS 5
+allx∈M•. Every UFM is, by deﬁnition, both an HFM and an FFM. Then we see tha t
+each implication in Diagram ( 1.1) holds and that such a diagram does not support, in
+general, any additional implication.
+3.Atomicity
+In this section, we study the atomicity of the additive monoids Mα, whereMα=
+N0[α,α−1] forα∈R>0. We characterize the monoids Mαthat are atomic, and then we
+give examples of monoids Mαthat are atomic but do not satisfy the ACCP. The next
+theorem, which gives a simple characterization of the monoids Mαthat are atomic, also
+providesanexplicitdescriptionofthesetofatomsof Mα. Moreover, itgivesanecessary
+conditionfor theatomicityof Mαwhenαisalgebraic. Forany algebraicnumber αwith
+minimal polynomial m(x)∈Q[x], the polynomial ℓ·m(x) is a primitive polynomial in
+Z[x] for a unique ℓ∈N, soℓ·m(x) =p(x)−q(x) for unique p(x),q(x)∈N0[x] that do
+not share monomials of equal degrees. We call ( p(x),q(x)) the minimal pair of α(see
+Section2.1).
+Theorem 3.1. For each α∈R>0,the following statements are equivalent.
+(a) 1∈A(Mα).
+(b)A(Mα) ={αn|n∈Z}.
+(c)Mαis atomic.
+Suppose that α∈R>0\{1}is an algebraic number. If Mαis atomic, then neither of
+the two components in the minimal pair of αis a monic monomial.
+Proof.(a)⇒(b): Suppose that A(Mα)/\e}atio\slash={αn|n∈Z}. Then there exists n∈Z
+such that αn/\e}atio\slash∈A(Mα) and, therefore, there exists a ﬁnite set S⊂Zsuch that
+αn=/summationtext
+i∈Sciαifor some coeﬃcients ci∈Nfor each i∈Ssuch that/summationtext
+i∈Sci≥2.
+Dividing by αngives 1 =/summationtext
+i∈Sciαi−n.Thus, 1/\e}atio\slash∈A(Mα),as desired.
+(b)⇒(c): This holds by the deﬁnition of Mα.
+(c)⇒(a): Suppose 1 /\e}atio\slash∈A(Mα).Then there exists a ﬁnite set S⊂Zand coeﬃcients
+ci∈Nfor eachi∈Ssuch that/summationtext
+i∈Sci≥2 and 1 =/summationtext
+i∈Sciαi.For each k∈Z, we can
+multiplying both sides of 1 =/summationtext
+i∈Sciαibyαkto obtain the equality αk=/summationtext
+i∈Sciαi+k.
+Thus,αkis not an atom for any k∈Z, which implies that Mαhas no atoms and,
+therefore, that it is not atomic.
+Assume now that αis a positive algebraic real number such that α/\e}atio\slash= 1. Let m(x)
+and (p(x),q(x)) be the minimal polynomial and the minimal pair of α, respectively.
+Suppose, by way of contradiction, that either p(x) orq(x) is a monic monomial. We
+can say, without loss of generality, that q(x) =xnfor some n∈N0. Thus,p(α)−αn=
+p(α)−q(α) =ℓm(α) = 0 for some ℓ∈N,sop(α) =αn. Because α/\e}atio\slash= 1, we
+see that p(x) must be the sum of at least two nonzero monomials (not necessarily6 S. ZHU
+distinct). Consequently, αn/∈A(Mα). Therefore, Mαis not atomic in light of the
+characterizations established above, which yields the desired cont radiction. /square
+It is worth mentioning that, as a direct consequence of Theorem 3.1, one obtains
+that every monoid Mαsatisﬁes|A(Mα)| ∈ {0,∞}and also that Mαis either atomic or
+antimatter. In addition, when αis transcendental, Mαis atomic, as we now illustrate.
+Corollary 3.2. Ifα∈R>0is transcendental, then Mαis atomic.
+Proof.Suppose that 1 =/summationtext
+i∈Sciαifor a ﬁnite set S⊆Zand coeﬃcients ci∈N0for
+everyi∈S. Thenαwould be a root of the polynomial f(x) :=xm−/summationtext
+i∈Scixi+m∈
+Z[x], wherem=−min({0}∪S). Sinceαis transcendental, f(x) is the zero polynomial
+and, therefore, S={0}andc0= 1. Hence 1 ∈A(Mα), andMαis atomic by
+Theorem 3.1. /square
+It is worth emphasizing that the necessary condition in Theorem 3.1is not suﬃcient;
+this is illustrated in the following example.
+Example 3.3. Consider themonic polynomial m(x) =x3−2x2+3x−7. Because m(x)
+has no integer roots, it follows fromGauss’s lemma that m(x) is irreducible in Q[x]. On
+the other hand, m(2) =−1 andm(3) = 11, the polynomial m(x) has a positive root α
+in the interval (2 ,3). Consider the monoid Mα. Asm(x)(x+2) =x4−x2−x−14, we
+see thatαis a root of the polynomial x4−x2−x−14, soα4=α2+α+14. Hence αis
+not an atom of Mα, and it follows from the characterization in Theorem 3.1thatMα
+is not atomic. However, none of the polynomials in the minimal pair ( x3+3x,2x2+7)
+ofαare monic monomials. Therefore we conclude that the necessary co ndition in
+Theorem 3.1is not suﬃcient.
+Ifα= 1, then Mα=N0, which is atomic. On the other hand, if α∈N≥2(or if
+α= 1/nfor some n∈N≥2), then 1 is the sum of αcopies of α−1(resp.,α−1copies of
+α) and, therefore 1 /∈A(Mα), and so Theorem 3.1ensures that Mαis not atomic. In
+addition, we have exhibited in Example 3.3a monoid Mαthat is not atomic for some
+α∈R>0\Q. We now characterize the monoids Mαthat are not atomic.
+Proposition 3.4. Forα∈R>0withα/\e}atio\slash= 1, the following statements are equivalent.
+(a)Mαis not atomic.
+(b) (N0[α],+)is antimatter or ﬁnitely generated.
+Proof.(a)⇒(b): Suppose that Mαis not atomic. Then αis algebraic as otherwise
+Mαwould be a free commutative monoid, which is atomic. We consider the f ollowing
+two cases.
+Case 1:α <1. SinceMαis not atomic, 1 /∈A(Mα) by Theorem 3.1, so we can write
+1 =/summationtextn
+i=1ciαifor some n∈Nandc1,...,c n∈N0(here, we use that α <1). Then 1 is
+not an atom of the additive monoid N0[α], and it follows from [ 12, Theorem 4.1] that
+N0[α] is antimatter.EVALUATION MONOIDS OF LAURENT SEMIRINGS 7
+Case 2: α >1. Since 0 is not a limit point of N0[α]•(because α >1), it follows
+from [21, Proposition 4.5] that N0[α] is atomic. As in the case already considered, the
+fact that Mαis not atomic allows us to write 1 =/summationtextn
+i=1ciα−ifor some n∈Nand
+c1,...,c n∈N0(here, we use that α >1). Therefore αn=/summationtextn
+i=1ciαn−i. AsN0[α] is
+an atomic monoid, the inclusion A(N0[α])⊆ {αk|k∈ {0,...,n−1}}holds by [ 12,
+Theorem 4.1]. Thus, N0[α] is ﬁnitely generated.
+(b)⇒(a): Note that αis algebraic, for otherwise, N0[α] would be a free commuta-
+tive monoid on a countable basis, which is neither antimatter nor ﬁnite ly generated.
+Suppose ﬁrst that the additive monoid N0[α] is antimatter. Since the set {αn|n∈N0}
+generates N0[α], the equality 1 =/summationtextk
+i=1ciαiholds for some k∈Nandc1,...,c k∈N0.
+Hence 1 /∈A(Mα), and so Mαis not atomic by Theorem 3.1.
+Finally, suppose that the additive monoid N0[α] is ﬁnitely generated. Then N0[α] is
+atomic by [ 15, Proposition 2.7.8], and it follows from [ 12, Theorem 4.1] that
+A(N0[α]) ={αk|k∈ {0,...,n−1}}
+for some n∈N. Sinceα/\e}atio\slash= 1, we see that n≥2. Then αn=/summationtextn−1
+k=0ckαkfor some
+c0,...,c n−1∈N0, which means that 1 =/summationtextn−1
+k=0ckαk−n. Hence 1 /∈A(Mα), and it
+follows from Theorem 3.1thatMαis not atomic. /square
+We conclude this section with examples of monoids Mαthat are atomic but do not
+satisfy the ACCP.
+Example 3.5. Takea,b∈Nwith gcd( a,b) = 1 such that 1 < a < b, and set α=a/b.
+It follows from [ 20, Proposition 3.5] that the monoid Mαis atomic. On the other
+hand, we claim that Mαdoes not satisfy the ACCP. By [ 10, Corollary 4.4], there is
+an ascending chain ( xn+N0[α])n∈Nof principal ideals of the monoid ( N0[α],+) that
+does not stabilize. From the fact that Mαis a reduced monoid having ( N0[α],+) as
+a submonoid, we can deduce that the chain of principal ideals ( xn+Mα)n∈NofMα
+cannot stabilize in Mα,showing that Mαdoes not satisfy the ACCP.
+4.The Ascending Chain Condition on Principal Ideals
+We have just seen in the previous section that satisfying the ACCP is a stronger
+condition than being atomic when restricted to the class consisting o f the monoids Mα.
+In this section, we provide two necessary conditions for a monoid Mαto satisfy the
+ACCP, and then we establish two factorization-theoretical chara cterizations: satisfying
+the ACCP is equivalent to both the bounded factorization property and the ﬁnite
+factorization property if one restricts attention to the class con sisting of all monoids
+Mα. We conclude this section by constructing monoids Mαsatisfying the ACCP that
+are not UFMs.8 S. ZHU
+Proposition 4.1. Letα∈(0,1)be an algebraic number with minimal pair (p(x),q(x)).
+IfMαsatisﬁes the ACCP, then p(x)−Q(x)q(x)/∈N0[x,x−1]for any nonzero Laurent
+polynomial Q(x)∈N0[x,x−1].
+Proof.Suppose, for the sake of contradiction, that there exists a nonz ero Laurent
+polynomial Q(x)∈N0[x,x−1] such that r(x) :=p(x)−Q(x)q(x)∈N0[x,x−1]. Now
+consider the sequences ( an)n∈Nand (bn)n∈Ndeﬁned by
+an=Q(α)nq(α) and bn:=Q(α)nr(α),
+respectively, for every n∈N. Observe that the terms of both ( an)n∈Nand (bn)n∈Nare
+nonzero elements in Mα. On the other hand,
+an=Q(α)nq(α) =Q(α)np(α) =Q(α)n+1q(α)+Q(α)nr(α) =an+1+bn
+for every n∈N. Therefore ( an+Mα)n∈Nis an ascending chain of principal ideals of
+Mα. Sincean−an+1=bn>0 for every n∈N, the chain of ideals ( an+Mα)n∈Ndoes
+not stabilize, contradicting that Mαsatisﬁes the ACCP. /square
+In Example 3.5, we saw that Mαis an atomic monoid that does not satisfy the
+ACCP for most choices of q∈Q>0. However, there are also some examples of irrational
+algebraic real numbers αsuch that Mαis atomic but does not satisfy the ACCP, and
+we can identify some of them using Proposition 4.1.
+Example 4.2. Takea,b∈Nsuch that gcd( a,b) = 1 and 1 < a < b . Assume,
+in addition, that aandbare not perfect squares, and then set α:=/radicalbig
+a/b. Then
+αis a non-rational algebraic number with minimal polynomial m(x) :=x2−a/b.
+Suppose, by way of contradiction, that Mαis not atomic. By Theorem 3.1, we can
+takec1,...,c n∈N0such that 1 = c1α+···+cnαn. Sinceαis a root of the polynomial
+f(x) :=cnxn+···+c1x−1∈Z[x], there exists a polynomial g(x)∈Q[x] such
+thatf(x) =m(x)g(x). By Gauss’s lemma, there exists q∈Q>0such that m′(x) :=
+qm(x)∈Z[x] andg′(x) :=q−1g(x)∈Z[x]. Since qm(x) has integer coeﬃcients,
+q∈bN. Therefore a|m′(0), soa|m′(0)g′(0) =f(0) = 1, a contradiction. Thus, Mα
+is atomic. Let us argue now that Mαdoes not satisfy the ACCP. Since αhas minimal
+pair (p(x),q(x)) := (bx2,a), forQ(x) :=x2we see that p(x)−Q(x)q(x) = (b−a)x2,
+which belongs to N0[x,x−1]. Hence Mαdoes not satisfy the necessary condition in
+Proposition 4.1, and so it does not satisfy the ACCP.
+4.1.The Bounded and Finite Factorization Properties. In this subsection we
+prove that in the context of the monoids Mα, satisfying the ACCP, being a BFM, and
+being an FFM are equivalent properties. Recall that a monoid Mis a BFM (resp., an
+FFM) provided that L(x) (resp.,Z(x)) is ﬁnite for all x∈M•. We proceed to establish
+the main result of this section.
+Theorem 4.3. Forα∈R>0,the following statements are equivalent.EVALUATION MONOIDS OF LAURENT SEMIRINGS 9
+(a)Mαis an FFM.
+(b)Mαis a BFM.
+(c)Mαsatisﬁes the ACCP.
+Proof.(a)⇒(b): This follows from the deﬁnitions of a BFM and an FFM.
+(b)⇒(c): This is a special case of [ 15, Corollary 1.3.3].
+(c)⇒(a): Suppose that the monoid Mαsatisﬁes the ACCP. If αis transcendental,
+thenMαis a free commutative monoid, and thus an FFM. We assume, therefo re, that
+αis algebraic.
+Suppose, by way of contradiction, that Mαis not an FFM. Then α/\e}atio\slash= 1 and, after
+replacing αbyα−1if necessary, we canassume that α >1. SinceMαis notanFFM,we
+can choose β∈Mαsuch that |ZMα(β)|=∞. Because α >1, there exists N∈Nsuch
+thatαn∤Mαβfor anyn∈Zwithn > N. AsMαis atomic, A(Mα) ={αn|n∈Z}
+by Theorem 3.1. Consequently, there is a bijection ZMα(β)→ZMα(β/αN) given by
+multiplication by α−N. In addition, β/αNis not divisible by any positive power of αin
+Mα. Then after replacing βbyβ/αN,we can further assume that αk|Mαβimplies that
+k≤0. Since Mα−1=Mαis atomic, it follows from Proposition 3.4that the additive
+monoidN0[α−1] is neither antimatter nor ﬁnitely generated. Hence, [ 12, Theorem 4.1]
+guarantees that A(N0[α−1]) ={α−k|k∈N0}. As a result, the fact that αk∤Mαβfor
+anyk∈Nensures that ZMα(β) =ZN0[α−1](β) and, therefore, that |ZN0[α−1](β)|=∞.
+Thus,N0[α−1] is not an FFM. Now it follows from [ 12, Theorem 4.11] that N0[α−1]
+does not satisfy the ACCP. However, this is a contradiction to the f act thatN0[α−1] is
+a submonoid of the reduced monoid Mα, which satisﬁes the ACCP. Hence, Mαis an
+FFM. /square
+4.2.A Class of FFMs that are not UFMs. We have exhibited in Examples 3.5
+and4.2some atomic monoids Mαthat do not satisfy the ACCP. However, the only
+examples we have so far of monoids Mαsatisfying the ACCP (or, equivalently, being
+FFMs)arethetrivialcases, namely, thosecorrespondingto α= 1andαtranscendental.
+Our purpose in this subsection is to produce monoids Mαthat are FFMs for some
+algebraic αdiﬀerent from 1. This will yield monoids Mαthat are FFMs but not
+UFMs.
+To do so, let α1,α2∈Rbe distinct roots of an irreducible quadratic polynomial in
+Q[x], and set M:=Mα1andK:=Q(α1). ThenKis a real quadratic ﬁeld extension
+ofQthat contains the monoid M. In addition, let T:Q(α1)→R2be theQ-linear map
+induced by the assignments 1 /mapsto→(1,1) andα1/mapsto→(α1,α2), and set M′=T(M). Let
+TM:M→M′be the map obtained by restricting the domain and codomain of Tto
+MandM′, respectively. We use the notation introduced in this paragraph th roughout
+the rest of this section.
+Lemma 4.4. The following statements hold.10 S. ZHU
+(1)Tis an injective Q-algebra homomorphism.
+(2)TMis a monoid isomorphism.
+(3)M′=/braceleftbig/summationtext
+i∈Ici(αi
+1,αi
+2)|ci∈N0,I⊆Z,|I|<∞/bracerightbig
+.
+Proof.(1) Since Tis aQ-linear map, the equalities T(x+y) =T(x) +T(y) and
+T(qx) =qT(x) hold for all x,y∈Q(α1) andq∈Q. For each i∈ {1,2}, we letσi
+denote the Q-algebra homomorphism Q(α1)→Rinduced by the assignment α1/mapsto→αi.
+Then for each x∈Q(α1), we can verify that T(x) = (σ1(x),σ2(x)).Therefore, for all
+x,y∈Q(α1),
+T(xy) = (σ1(xy),σ2(xy)) = (σ1(x)σ1(y),σ2(x)σ2(y)) =T(x)T(y).
+HenceTis aQ-algebra homomorphism. Note that T(α−1
+1) =T(α1)−1= (α−1
+1,α−1
+2).
+Now ifx∈kerTfor some x∈Q(α1), then ( σ1(x),σ2(x)) = (0,0), and so the fact
+thatσ1is the inclusion map ensures that x= 0. Thus, Tis an injective Q-algebra
+homomorphism.
+(2) Since Tis injective, it is also injective when restricted to M⊆Q(α1). Moreover,
+becauseM′is the image of MunderT, the map TM:M→M′is a bijection. In addi-
+tion, thelinearityof ToverQimmediately impliesthat TMisamonoidhomomorphism,
+making it a monoid isomorphism from MontoM′.
+(3) Finally, let xbe an arbitrary element in M. Thenx=/summationtext
+i∈Iciαi
+1for a ﬁnite
+subsetIofZand coeﬃcients ci∈N0. Because Tis aQ-algebra homomorphism by
+part (1), we see that
+T(x) =/summationdisplay
+i∈IciT(α1)i=/summationdisplay
+i∈Ici(α1,α2)i=/summationdisplay
+i∈Ici(αi
+1,αi
+2).
+Therefore M′⊆/braceleftbig/summationtext
+i∈Ici(αi
+1,αi
+2)|ci∈N0,I⊆Z,|I|<∞/bracerightbig
+. The reverse implication
+follows immediately as Tis aQ-algebra homomorphism and Mis a monoid containing
+{αi
+1|i∈Z}. /square
+In order to establish the main result of this section, we need the follo wing two
+lemmas.
+Lemma 4.5. LetMbe an additive submonoid of R2
+≥0. Ifv,w∈Mwithv= (v1,v2)
+satisfyv+M⊆w+M, thenw∈[0,v1]×[0,v2].
+Proof.Sincev+M⊆w+M, we see that wdividesvinMand, therefore, we can
+writev=w+d, whered= (d1,d2)∈M⊆R2
+≥0. Thenw= (v1−d1,v2−d2) belongs
+to [0,v1]×[0,v2]. /square
+For the rest of this section, we further assume that 0 < α1<1< α2. We observe
+that, in light of part (3) of Lemma 4.4, the inclusion M′⊆ {(0,0)}∪R>0×R>0holds.
+Lemma 4.6. If(v1,v2)∈M′, then the set M′∩([0,v1]×[0,v2])is ﬁnite.EVALUATION MONOIDS OF LAURENT SEMIRINGS 11
+Proof.Setv:= (v1,v2) andSv:=M′∩([0,v1]×[0,v2]). Ifv= (0,0), then Svis a
+singleton and thus ﬁnite. Now we assume that v/\e}atio\slash= (0,0). Note that since α−1
+1>1
+andα2>1,the sequences ( α−n
+1)n∈N0and (αn
+2)n∈N0both increase to inﬁnity and, as a
+result, the nonempty set
+N:={n∈Z|αn
+1≤v1andαn
+2≤v2}
+is bounded. Let mbe the maximum of N. Take a nonzero s∈Sv. SinceTis injective,
+there exists a unique α∈Msuch that s=T(α). Write
+(4.1) α=m/summationdisplay
+i=0qiα−i
+1+m/summationdisplay
+i=0piαi
+1∈M•,
+whereq0,...,q mandp0,...,p mare nonnegative integers. As a result, we see that
+s=m/summationdisplay
+i=0qiT(α−i
+1)+m/summationdisplay
+i=0piT(αi
+1)
+=m/summationdisplay
+i=0qi(α−i
+1,α−i
+2)+m/summationdisplay
+i=0pi(αi
+1,αi
+2)
+=/parenleftbiggm/summationdisplay
+i=0(qiα−i
+1+piαi
+1),m/summationdisplay
+i=0(qiα−i
+2+piαi
+2)/parenrightbigg
+.
+Becauseα2>1, after looking at the second coordinate of s, we infer that pi≤piαi
+2≤
+v2for every i∈ {0,...,m}. Hence, there are at most ( v2+ 1)m+1many possible
+(m+ 1)-tuples ( p0,p1,...,p m) to choose for the respective coeﬃcients of α0
+1,...,αm
+1
+for a representation of αas in (4.1). Symmetrically, since α−1
+1>1,there are ﬁnitely
+many possible ( m+ 1)-tuples ( q0,q1,...,q m) one can choose to express αas in (4.1).
+Consequently, the set T−1
+M(Sv) is ﬁnite, which implies that Svis also ﬁnite. /square
+We are in a position to prove that Mis an FFM.
+Theorem 4.7. Suppose that α1andα2are the roots of an irreducible quadratic poly-
+nomial in Q[x]such that 0< α1<1< α2. ThenMα1is an FFM and, therefore,
+satisﬁes the ACCP.
+Proof.DeﬁneT:Q(α1)→R2andM′as before. Let v= (v1,v2) be a nonzero element
+inM′. It follows from Lemma 4.6thatSv:=M′∩([0,v1]×[0,v2]) is a ﬁnite set. On
+the other hand, it follows from Lemma 4.5that every divisor of vinM′belongs to Sv.
+Therefore, vhas only ﬁnitely many divisors in M′and, as a result, M′is an FFM
+by virtue of [ 23, Theorem 2]. Since Mis isomorphic to M′and being an FFM is an
+algebraic property, we conclude that Mis an FFM, whence it satisﬁes the ACCP. /square
+There are monoids Mαthat are FFMs but not UFMs. The following example illus-
+trates this observation.12 S. ZHU
+Example 4.8. Consider the polynomial p(x) :=x2−2x+1
+2∈Q[x]. Since the roots
+ofp(x) areα:= 1−√
+2
+2andβ:= 1 +√
+2
+2, it is an irreducible polynomial. In light of
+Theorem 4.7, the chain of inequalities 0 < α <1< βguarantees that the additive
+monoidMαis an FFM. However, Mαis not a UFM: indeed, since 1 ,α,α2∈A(Mα)
+by Theorem 3.1, the two sides of the equality 4 α= 2α2+1 yield distinct factorizations
+of the same element of Mα(see also Proposition 5.1in the next section).
+5.Factoriality and Elasticity
+In this last section, we characterize the monoids Mαthat are half-factorial, and we
+brieﬂy discuss the elasticity of Mα. The elasticity is a factorization invariant that
+measures how far from being half-factorial a given monoid is.
+5.1.Half-Factoriality. Recall that an atomic monoid Mis an HFM if |L(x)|= 1 for
+everyx∈M. In the class consisting of evaluation monoids of Laurent semirings, being
+an HFM and being a UFM are equivalent conditions. We determine such m onoids in
+the following proposition.
+Proposition 5.1. Forα∈R>0, the following statements are equivalent.
+(a)Mαis an UFM.
+(b)Mαis an HFM.
+(c)α= 1orαis transcendental.
+Proof.(a)⇒(b): This follows by deﬁnition.
+(b)⇒(c): Suppose for the sake of contradiction that αis an algebraic number not
+equal to 1. Let ( pα(x),qα(x)) be the minimal pair for mα(x) overZ. Because Mαis an
+HFM, it is an atomic monoid; thus, A(Mα) ={αn|n∈Z}by Theorem 3.1. Hence,
+zp=pα(α) andzq=qα(α) are factorizations for the same element of Mα. AsMαis an
+HFM,pα(1) =|zp|=|zq|=qα(1), which implies that 1 is a root of mα(x). However,
+this contradicts the irreducibility of mα(x).
+(c)⇒(a): Ifα= 1, then Mα=N0; hence, it is a UFM. On the other hand,
+suppose that αis transcendental. Then any equality of the form 1 =/summationtext
+n∈Zcnαn,
+where all but ﬁnitely many cnare zero, implies that c0= 1 and cn= 0 for every
+n/\e}atio\slash= 0. Therefore 1 ∈A(Mα), and it follows from Theorem 3.1thatMαis atomic.
+Now suppose that p(α) andq(α) are two factorizations of the same element in Mα,
+wherep(x),q(x)∈N0[x,x−1]. Takek∈Nsuch that f(x) :=xk(p(x)−q(x))∈Z[x].
+Sincef(α) = 0, the fact that αis transcendental ensures that f(x) = 0 and, hence,
+p(x) =q(x). Thus, the factorizations p(α) andq(α) are identical, concluding that Mα
+is a UFM. /squareEVALUATION MONOIDS OF LAURENT SEMIRINGS 13
+We proceed to discuss a dual notion of half-factoriality. A monoid Mis called a
+length-factorial monoid (LFM) provided that for all a∈Mandz,z′∈Z(a), the
+equality |z|=|z′|implies that z=z′. Observe that every UFM is an LFM. The
+notion of length-factoriality was ﬁrst considered in [ 13] under the term “other-half-
+factoriality,” and it has been recently investigated in [ 8,16,19]. On the other hand,
+not every LFM is a UFM, as illustrated next.
+Example 5.2. Letq∈Q>1\Nand consider the additive submonoid MofQ≥0
+generated by the set {1,q}. Since 1 = min M•andq /∈N, we conclude that A(M) =
+{1,q}. In addition, one can check that if z1:=m1+n1qandz2:=m2+n2qare two
+factorizationsofthesameelementof Mhavingthesamelengths, then m1+n1=m2+n2
+and, therefore, ( m1,n1) = (m2,n2); that is, z1=z2. Thus,Mis an LFM. However, M
+is not a UFM since, for instance, the two sides of the equality n(q)·1 =d(q)·qyield
+distinct factorizations of n(q) inM. Additive submonoids of Q≥0that are LFMs have
+been determined in [ 22, Proposition 2.2].
+Proposition 5.3. Forα∈R>0, Mαis an LFM if and only if it is a UFM.
+Proof.Ifαis transcendental, then Mαis a UFM; hence, the statement of the propo-
+sition immediately follows. Then we assume that αis algebraic. It suﬃces to ar-
+gue the direct implication, for the reverse implication follows by deﬁnit ion. To do
+this, suppose, by way of contradiction, that Mαis not a UFM. Then there exists
+an element of Mαhaving two distinct factorizations, namely, p(α) andq(α), where
+p(x),q(x)∈N0[x,x−1]. After rearranging ( α−1)p(α) = (α−1)q(α), we obtain that
+z1:=αp(α) +q(α) andz2:=αq(α) +p(α) are factorizations of the same element
+inMα. Observe that z1/\e}atio\slash=z2as, otherwise, the Laurent polynomials p(x) andq(x)
+would satisfy xp(x)+q(x) =xq(x)+p(x), which is not possible because p(x)/\e}atio\slash=q(x).
+However, the fact that |z1|=p(1) +q(1) =|z2|indicates that z1andz2are distinct
+factorizations of the same element having the same length, which co ntradicts the fact
+thatMαis an LFM and completes the proof. /square
+Now we can summarize the main results we have established in this pape r via the
+following diagram of implications, which is a specialization of Diagram ( 1.1) for the
+class consisting of all the evaluation monoids of Laurent semirings. A s illustrated in
+Examples 3.5and4.8the two (one-way) implications in the diagram are not reversible.
+(5.1) [UFM⇔HFM⇔LFM]⇒[FFM⇔BFM⇔ACCP]⇒atomicity14 S. ZHU
+5.2.The Elasticity. We conclude this paper by saying a few words about the elas-
+ticity of the monoids Mα. LetMbe an atomic monoid. The elasticity of a nonzero
+elementx∈M, denoted by ρ(x), is deﬁned as
+ρ(x) :=supL(x)
+minL(x).
+In addition, we set ρ(M) := sup{ρ(x)|x∈M•}and call it the elasticity ofM. Notice
+thatρ(M)≥1. Furthermore, observe that ρ(M) = 1 if and only if Mis an HFM. As
+a result, the elasticity provides a measure of how far is an atomic mon oid from being
+half-factorial.
+As we proceed to argue, the elasticity of every monoid Mαis either 1 or inﬁnity.
+Proposition 5.4. Ifα∈R>0, thenρ(Mα) = 1if eitherα= 1orαis transcendental,
+andρ(Mα) =∞otherwise.
+Proof.Ifα= 1 orαis transcendental, it follows from Proposition 5.1thatMαis an
+HFM and, therefore, ρ(Mα) = 1.
+Now suppose that αis algebraic and α/\e}atio\slash= 1. We construct a sequence ( βn)n∈Nwith
+terms in Mαsuch that sup {ρ(βn)|n∈N)}=∞. Let (p(x),q(x)) be the minimal
+pair ofα. Thenz1:=p(α) andz2:=q(α) are two distinct factorizations of the same
+element, namely, β1∈Mα. Since 1 is not a root of the minimal polynomial of α, we see
+thatp(1)/\e}atio\slash=q(1), soz1andz2are factorizations of diﬀerent lengths. Suppose, without
+loss of generality, that |z1|<|z2|. For each n∈N, setβn=βn
+1.Then we see that, for
+everyn∈N, bothzn
+1andzn
+2are factorizations of βninMαwhose lengths are p(1)n
+andq(1)n, respectively. Therefore
+ρ(Mα)≥ρ(βn) =supL(βn)
+minL(βn)≥q(1)n
+p(1)n=/parenleftbigg|z2|
+|z1|/parenrightbiggn
+for every n∈N. Since|z2|/|z1|>1, it follows that ρ(Mα) =∞, which concludes the
+proof. /square
+Acknowledgments
+First and foremost, it is my pleasure to thank Dr. Felix Gotti for sug gesting this
+project and for his mentorship all the way through. I also thank th e MIT PRIMES-
+USA program for their support, without which this paper would not e xist.EVALUATION MONOIDS OF LAURENT SEMIRINGS 15
+References
+[1] S. Albizu-Campos, J. Bringas, and H. Polo: On the atomic structure of exponential Puiseux
+monoids and semirings , Comm. Algebra 49(2021) 850–863.
+[2] D. D. Anderson, D. F. Anderson, and M. Zafrullah: Factorization in integral domains , J. Pure
+Appl. Algebra 69(1990) 1–19.
+[3] D. F. Anderson and F. Gotti: Bounded and ﬁnite factorization domains . In: Rings, Monoids, and
+Module Theory (Eds. A. Badawi and J. Coykendall), Springer (to ap pear). Available in arXiv:
+https://arxiv.org/pdf/2010.02722.pdf
+[4] N. R. Baeth, S. T. Chapman, and F. Gotti: Bi-atomic classes of positive semirings , Semigroup
+Forum (2021). https://doi.org/10.1007/s00233-021-10189-8
+[5] N. R. Baeth and F. Gotti: Factorization in upper triangular matrices over informati on semial-
+gebras, J. Algebra 562(2020) 466–496.
+[6] F. Campanini and A. Facchini: Factorizations of polynomials with integral non-negative coeﬃ-
+cients, Semigroup Forum 99(2019) 317–332.
+[7] L. Carlitz: A characterization of algebraic number ﬁelds with class num ber two, Proc. Amer.
+Math. Soc. 11(1960) 391–392.
+[8] S. Chapman, J. Coykendall, F. Gotti, and W. W. Smith: Length-factoriality in commutative
+monoids and integral domains , J. Algebra 578(2021) 186–212.
+[9] S. T. Chapman, F. Gotti, and M. Gotti: Factorization invariants of Puiseux monoids generated
+by geometric sequences , Comm. Algebra 48(2020) 380–396.
+[10] S. T. Chapman, F. Gotti, and M. Gotti: When is a Puiseux monoid atomic? , Amer. Math.
+Monthly 128(2021) 302–321.
+[11] P. M. Cohn: Bezout rings and and their subrings , Proc. Cambridge Philos. Soc. 64(1968) 251–
+264.
+[12] J. Correa-Morris and F. Gotti: On the additive structure of algebraic valuations of cyclic free
+semirings . Available on arXiv: https://arxiv.org/pdf/2008.13073.pdf
+[13] J. Coykendall and W. W. Smith: On unique factorization domains , J. Algebra 332(2011) 62–70.
+[14] A. Geroldinger: Sets of lengths , Amer. Math. Monthly 123(2016) 960–988.
+[15] A. Geroldinger and F. Halter-Koch: Non-unique Factorizations: Algebraic, Combinatorial and
+Analytic Theory , Pure and Appl. Math. Vol. 278, Chapman & Hall/CRC, Boca Raton, 20 06.
+[16] A. Geroldinger and Q. Zhong: A characterization of length-factorial Krull monoids . Preprint.
+Available on arXiv: https://arxiv.org/pdf/2101.10908.pdf
+[17] A. Geroldinger and Q. Zhong: Factorization theory in commutative monoids , Semigroup Forum
+100(2020) 22–51.
+[18] R. Gilmer: Commutative Semigroup Rings , The University of Chicago Press, Chicago, 1984.
+[19] F. Gotti: Geometric and combinatorial aspects of submonoids of a ﬁnit e-rank free commutative
+monoid, Linear Algebra Appl. 604(2020) 146–186.
+[20] F. Gotti: Puiseux monoids and transfer homomorphisms , J. Algebra 516(2018) 95–114.
+[21] F. Gotti: Increasing positive monoids of ordered ﬁelds are FF-monoid s, J. Algebra 518(2019)
+40–56.
+[22] F. Gotti: Irreducibility and factorizations in monoid rings . In:Numerical Semigroups (Eds. V.
+Barucci, S. T. Chapman, M. D’Anna, and R. Fr¨ oberg) pp. 129–139 , Springer INdAM Series, vol.
+40, Cham 2020.
+[23] F. Halter-Koch: Finiteness theorems for factorizations , Semigroup Forum 44(1992) 112–117.
+[24] B. H. Neumann: On ordered division rings , Trans. Amer. Math. Soc. 66(1949) 202–252.
+[25] J. L. Steﬀan: Longueurs des d´ ecompositions en produits d’´ el´ ements ir r´ eductibles dans un anneau
+de Dedekind , J. Algebra 102(1986) 229–236.16 S. ZHU
+[26] I. Stewart, D. Tall: Algebraic Number Theory and Fermat’s Last Theorem , Chapman &
+Hall/CRC, 2016.
+[27] R. Valenza: Elasticity of factorization in number ﬁelds , J. Number Theory 36(1990) 212–218.
+[28] A. Zaks: Half-factorial domains , Israel J. Math. 37(1980) 281–302.
+[29] Q. Zhong: On elasticities of locally ﬁnitely generated monoids , J. Algebra 534(2019) 145–167.

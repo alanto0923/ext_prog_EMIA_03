@@ -1,0 +1,1017 @@
+arXiv:2103.03204v1  [math.PR]  4 Mar 2021On the empirical spectral distribution for certain models
+related to sample covariance matrices with diﬀerent correl ations
+Alicja Dembczak-Kołodziejczyk, Anna Lytova
+Abstract
+Givenn,m∈N, we study two classes of large random matrices of the form
+Ln=m/summationdisplay
+α=1ξαyαyT
+αandAn=m/summationdisplay
+α=1ξα(yαxT
+α+xαyT
+α),
+where for every n,(ξα)α⊂Rare iid random variables independent of (xα,yα)α, and(xα)α,(yα)α⊂Rn
+are two (not necessarily independent) sets of independent r andom vectors having diﬀerent covariance
+matrices and generating well concentrated bilinear forms. We consid er two main asymptotic regimes
+asn,m(n)→ ∞: a standard one, where m/n→c, and a slightly modiﬁed one, where m/n→ ∞ and
+Eξ→0whilemEξ/n→cfor some c≥0. Assuming that vectors (xα)αand(yα)αare normalized and
+isotropic “in average”, we prove the convergence in probabi lity of the empirical spectral distributions
+ofLnandAnto a version of the Marchenko-Pastur law and so called eﬀecti ve medium spectral
+distribution, correspondingly. In particular, choosing n ormalized Rademacher random variables as
+(ξα)α, in the modiﬁed regime one can get a shifted semicircle and se micircle laws. We also apply our
+results to the certain classes of matrices having block stru ctures, which were studied in [9, 21].
+1 Introduction
+In [9, 21], the authors studied the empirical spectral distr ibutions of the following two related models
+of sparse block matrices. Given r,d∈N, let(vkl)1≤k<l≤rbe independent copies of a random vector v
+uniformly distributed on the unit sphere in Rd, and let (ξkl)1≤k<l≤rbe independent copies of a 0/1random
+variableξ=ξrsuch that Eξ=prfor some pr∈(0,1]. Deﬁne ArdandLrdasrd×rdblock matrices of
+the form
+Ard=/parenleftBig
+(1−δkℓ)Bkℓ/parenrightBigr
+k,ℓ=1,Lrd=/parenleftBig
+δkℓ/summationdisplay
+j/negationslash=kBjℓ/parenrightBigr
+k,ℓ=1−Ard, (1.1)
+where for 1≤k < l≤rblocks
+Bkℓ=ξkℓvkℓvkℓT(1.2)
+ared×drank-one matrices with probability pr(and 0 otherwise). These models were introduced in
+[9] while studying the elastic vibrational modes of amorpho us solids. Roughly speaking they describe a
+system of r d-dimensional points connected by springs (see also [15, 27] and references therein for the
+application of these models in the study of certain disorder ed systems). Evidently, for d= 1matrices Ard
+andLrdreduce to the adjacency matrix and Laplacian of the Erdős–Ré nyi graph.
+Recall that given a Hermitian or symmetric n×nmatrixMnwith eigenvalues (λi)i, the empirical
+spectral distribution NMnofMnand its Stieltjes transform sMnare deﬁned by the formulas
+NMn(∆) =|{i:λi∈∆}|/n,∀∆⊂R,and
+sMn(z) =/integraldisplayNMn(dλ)
+λ−z=1
+nTr(Mn−z)−1,ℑz/\e}atio\slash= 0.
+1In [9, 21], the authors studied the empirical spectral distr ibutionsNArdandNLrdasr→ ∞ in diﬀerent
+asymptotic regimes, depending on dandpr. In the case when dandrprare some ﬁxed numbers (sparse
+matrices), the ﬁrst several moments of the limiting distrib utions were computed. In the “dense” regime
+when
+d→ ∞, pr=O(1),andprr/d→c >0,asr→ ∞,
+theconvergence in mean ofNLrdandNArdto the Marchenko-Pastur law and to the so called eﬀective
+medium spectral distribution, correspondingly, was prove d. (Here we follow terminology from [9], see also
+[23].) It was shown that the limits of the corresponding Stie ltjes transforms, fL:= lim r→∞EsLrdand
+fA:= limr→∞EsArd, satisfy equations
+2zf2
+L+(z+2−c)fL+1 = 0 andzf3
+A+(1−c)f2
+A−zfA−1 = 0. (1.3)
+Also the ﬁrst several moments of NArdandNLrdwere calculated in the so called “dilute” regime when d
+is ﬁxed and pr=O(r−δ),δ∈(0,1), asr→ ∞, and it was claimed that for big enough rthese moments
+coincide with the moments of the semicircle and shifted semi circle distributions and, in particular,
+2f2
+Lrd+(z−cr)fLrd+1 = 0 andcrf2
+Ard+zfArd+1 = 0, (1.4)
+wherecr:=rpr/d→ ∞, asr→ ∞.
+In our work we suppose that dgrows to inﬁnity with r. We modify the dilute regime as follows:
+pr→0andr/d→ ∞ whilecr=rpr/d→c≥0asr,d→ ∞. This guarantees that the corresponding
+sequences of empirical spectral distributions NLrdandNArdare tight and also allows to unify two regimes
+as follows:
+d→ ∞ andrpr/d→c≥0asr→ ∞. (1.5)
+We consider models (1.1) corresponding to normalized isotr opic vectors (vkℓ)k<ℓwhich generate well-
+concentrated bilinear forms (see Assumption 1), and applyi ng the Stieltjes transform method give a
+straightforward proof of the convergence in probability of NLrdandNArdto the Marchenko-Pastur law
+and the eﬀective medium spectral distribution. We show that the limits are the same for both regimes
+(in contrast to (1.3) and (1.4)), and that to get (1.4) with cr=cin the new dilute regime, (ξkℓ)k<ℓneeds
+to take both negative and positive values with non-zero prob ability. In particular, one can get (1.4) if
+(ξkℓ)k<ℓare properly normalized Rademacher random variables (see E xample 3 and Remark 1.6).
+Note that we can rewrite matrices ArdandLrdin the form
+Lrd=/summationdisplay
+1≤k<ℓ≤rξkℓYkℓYkℓTandArd=/summationdisplay
+1≤k/negationslash=ℓ≤rξkℓXkℓXℓkT, (1.6)
+whereξkℓ=ξℓk,(Xkℓ)k/negationslash=ℓand(Ykℓ)k<ℓare sparse block vectors in Rrdgiven by
+Ykℓ= ((δjk−δjℓ)vkl)r
+j=1andXkℓ= (δjkvkl)r
+j=1.
+This naturally leads to the study of more general classes of r andom matrices of the form
+Ln=/summationdisplay
+αξαyαyT
+αandAn=/summationdisplay
+αξα(yαxT
+α+xαyT
+α), (1.7)
+whereξα∈Randyα,xα∈Rn,α≤m, are some random variables and vectors. We mainly concentra te
+on model Ln, which is closely related to the sample covariance matrices , only that here we allow vectors
+(yα)αto have diﬀerent covariance matrices Qα:=EyαyT
+α,α≤m(note that here Qαare not necessarily
+centered). We suppose that these vectors are normalized and isotropic "in average", m−1/summationtext
+αQα≈n−1In,
+which allows to show that the empirical spectral distributi ons still converge to the Marchenko-Pastur
+2law. A similar model was considered in [25] and [16], where th e convergence of spectral distributions
+was studied, in particular, for matrices of the form/summationtext
+αyαyT
+αcorresponding to vectors with essentially
+diﬀerent covariance matrices (not isotropic in average). I n these papers the limiting distribution is given
+implicitly (in terms of asymptotic closeness to the solutio n of a certain system of equations), and our
+result does not follow directly from [25, 16]. Certain close ly related models were also studied in [8],
+where the authors proved the convergence to the Marchenko-P astur law of empirical spectral measures
+corresponding to the certain block-independent models and tensor models (in [8], see also a review of known
+results on convergence to the Marchenko-Pastur law with rel axed independence requirements including
+[18, 26, 14, 4, 6, 19, 1, 22, 13, 24]).
+In (1.6), we choose (yα)αand(ξα)αfrom the following classes.
+Assumption 1. We suppose that for every n∈N,yα=yα,n∈Rn,α≤m,are mutually independent
+random vectors such that for all deterministic matrices D=Dnwith/bardblD/bardblop= 1we have
+sup
+αVar(Dyα,yα) =o(1), n→ ∞. (1.8)
+Here and in what follows, given a matrix Dwe use notations /bardblD/bardblopand/bardblD/bardblHSfor its operator and
+Hilbert-Schmidt norms.
+Assumption 2. For every n∈N, letξα=ξα,n∈R,α≤m,be mutually independent copies of a random
+variableξnwith a cumulative distribution function σn. To treat simultaneously both cases, m/n=O(1)
+andm/n→ ∞,m
+nEξn=O(1), we introduce a signed measure /tildewideσn, which controlsm
+nEξn. Let/tildewideσnbe deﬁned
+as follows: for every ﬁnite ∆⊂R
+/tildewideσn(∆) =m
+n/integraldisplay
+∆ξdσn(ξ).
+We suppose that as n→ ∞,/tildewideσnconverges weakly to a signed measure /tildewideσsuch that |/tildewideσ(R)|<∞, and
+sup
+n/integraldisplay
+|ξpd/tildewideσn(ξ)|= sup
+nm
+nE|ξn|p+1<∞, p= 1,2,3.
+We use notation c1:=/tildewideσ(R)∈R,|c1|<∞.
+Remark 1.1. Note that if m/n→c >0, then/tildewideσn=cσn+o(1)asn→ ∞. Also, a bit more delicate but
+quite standard nowadays argument based on a truncation proc edure for ξn(see, for example, [19]) allows
+to show that the results of Theorem 1.2 below remain valid wit hout any moment conditions on σnin the
+casem/n=O(1)and with the only moment conditionm
+nEξn=O(1)in the case m/n→ ∞,m/n2→0.
+Our main result concerns convergence of the empirical spect ral distributions of (Ln)n, it can be
+considered as a generalization of Theorem 3.3 of [19] (for H(0)= 0) on the case of “samples” with entries
+having diﬀerent covariance matrices.
+Theorem 1.2. Givenm,n∈N, consider n×nmatrices
+Ln=/summationdisplay
+αξαyαyT
+α,
+whereξαandyα∈Rn,α≤m, are mutually independent random variables satisfying Ass umptions 1, 2.
+LetQα:=EyαyT
+αbe such that
+sup
+α/bardblQα/bardblop=O(n−1),sup
+α|TrQα−1|=o(1),and (1.9)
+Q(n):=1
+m/summationdisplay
+αQα=1
+nIn+Bn,where/bardblBn/bardblHS=o(n−1/2), n→ ∞. (1.10)
+3Then asn→ ∞the empirical spectral distributions NLnconverge in probability to a non-random probability
+measure NLwhich Stieltjes transform fis uniquely determined by the equation
+zf(z) =−1+f(z)/integraldisplayd/tildewideσ(ξ)
+1+ξf(z)(1.11)
+in the class of Stieltjes transforms of non-negative measur es.
+Remark 1.3. A simple renormalization allows to show that if in (1.9) and ( 1.10) we have
+sup
+α|TrQα−a|=o(1)andQ(n)=a
+nIn+Bnfor some a >0,
+thenzf=−1+af/integraltext
+(1+aξf)−1d/tildewideσ(ξ).Also in the case d/tildewideσ(ξ) =cξdσ(ξ)we restore the Marchenko-Pastur
+distribution.
+Some additional information about the moments of ξαallows to solve (1.11) exactly, here are several
+simple examples:
+Examples. In the following three examples we use notations δandδ′for the Dirac delta function and
+its generalized derivative, and ρ,/tildewideνn,/tildewideνfor the densities of N,/tildewideσn,/tildewideσ, correspondingly.
+1. Let(ξn)nbe not random, and ξα,n=bn→b,mbn/n→c1asn→ ∞. Then
+/tildewideνn=m
+nξδ(ξ−bn)→/tildewideν=c1δ(ξ−b),
+and by (1.11) fsatisﬁesbzf2+f(z+b−c1)+1 = 0 , so that
+ρ(λ) =/braceleftbiggδ(λ−c1) ifb= 0,
+1
+2πbλ/radicalbig
+((c+−λ)(λ−c−))+,ifb/\e}atio\slash= 0,(1.12)
+wherex+=xifx≥0and 0 otherwise and c±= (√
+b±√c1)2.
+2. Let for every n,(ξn)nare 0/1 random variables such that P(ξn= 1)m/n→c1asn→ ∞. Then
+again/tildewideν=c1δ(ξ−1), and we get (1.12) with b= 1.
+3. Suppose that all moments of /tildewideσare ﬁnite,
+cj:=/integraldisplay
+ξj−1d/tildewideσ(ξ) = lim
+n→∞m
+nEξj
+n<∞,∀j≥1,
+and for some k0≥1we have cj= 0∀j > k0. Note that this is possible only if k0≤2, and moreover, for
+k0= 2the condition 0< c2<∞whilec3= 0is not fulﬁlled for pure non-negative (or pure non-positive )
+random variables. Indeed, if ξn≥0a.s. then by the Schwartz inequality we would have
+0< c2= limm
+nEξ2
+n≤limm
+n(Eξ3
+nEξn)1/2=c1c3= 0.
+So letξntake both negative and positive values with positive probab ility, and cj= 0∀j≥3. Then
+expanding (1+ξf(z))−1into the Taylor’s series we get from (1.11) c2f2+(c1−z)f+1 = 0 , thus in this
+case the limiting density is given by the shifted semicircle law,
+ρ(λ) =1
+2πc2/radicalbig
+(4c2−(λ−c1)2)+.
+For example, if (ξn)ntake values ±/radicalbig
+n/mwith probability 1/2, than/tildewideνn→/tildewideν=δ′,c2= 1,cj= 0,j/\e}atio\slash= 2,
+andρ(λ) =1
+2π/radicalbig
+(4−λ2)+.
+4Return now to the starting point of this research, namely, mo delsLrdandArd(1.1) introduced and
+studied in [9, 21], and consider ﬁrst Laplacian Lrd. It is easy to check that the condition /bardblQα/bardblop=O(n−1)
+of Theorem 1.2 is not fulﬁlled (now n=rdwhile/bardblEYkℓYkℓT/bardblop=O(d−1)), hence we cannot apply
+Theorem 1.2 directly. Nevertheless, using the sparsity of v ectorsyα=Ykℓand slightly modifying the
+proof of Theorem 1.2, we get the following result for Lrd:
+Theorem 1.4. LetLrdbe deﬁned in (1.1) - (1.2), where for every r∈N,(ξkℓ)1≤k<l≤rare iid copies of
+a0/1random variable ξ=ξrwithP(ξ= 1) =pr, and(vkl)1≤k<l≤rare mutually independent normalized
+isotropic random vectors, EvklvklT=d−1Id, satisfying Assumption 1 and having norms uniformly bounde d
+inr. Then in regime (1.5), NLrdconverge in probability to a non-random probability measur eNLwith
+the density
+ρ(λ) =1
+4πλ/radicalbig
+((c+−λ)(λ−c−))+, c±= (√
+2±√c)2.
+As to adjacency matrices Ard, in Section 4 we ﬁrst treat matrices having a more general str ucture and
+prove an analog of Theorem 1.2 for matrix Andeﬁned in (1.7) (see Theorem 1.5). Then using essentially
+the same scheme we get the following result for Ard:
+Theorem 1.5. LetArdbe deﬁned in (1.1) - (1.2), where for every r∈N,(ξkℓ)1≤k<l≤rare iid copies of
+a0/1random variable ξ=ξrwithP(ξ= 1) =pr, and(vkl)1≤k<l≤rare mutually independent normalized
+isotropic random vectors, EvklvklT=d−1Id, satisfying Assumption 1 and having norms uniformly bounde d
+inr. Then in regime (1.5), NArdconverge in probability to a non-random probability measur eNAwhich
+Stieltjes transform fAis uniquely determined by the second equation in (1.3) in the class of Stieltjes
+transforms of non-negative measures.
+Remark 1.6. 1. One can ﬁnd the explicit forms of the solution of the cubic e quation (1.3) and the
+density of NAin [23] and [9].
+2. It can be shown that if (ξkℓ)k/negationslash=ℓtake values ±/radicalbig
+d/rwith probability 1/2, thenfAsolves equation
+f2
+A+zfA+1 = 0 (cf (1.4)), so that the limiting density is given by the semic ircle law ρ(λ) =1
+2π/radicalbig
+(4−λ2)+
+(see also Remark 4.2.)
+The structure of the remaining part of the paper is very simpl e: in Sections 2, 3, and 4 we give the
+proofs of Theorems 1.2, 1.4, and 1.5, correspondingly. The p roof of Theorem 1.2 (based on [19]) is more
+detailed, while in the rest of the proofs we mostly discuss pl aces which should be modiﬁed.
+Acknowledgments A.L. was supported by grant nr 2018/31/B/ST1/03937 National Science Centre,
+Poland. A.L. also would like to thank the organizers of XV Brun el – Bielefeld Workshop on Random
+Matrix Theory and Applications for the excellent condition s and Prof. Cicuta for the introducing to the
+problem during this workshop.
+2 Proof of Theorem 1.2
+The proof is based on the standard nowadays method of Stieltj es transform which goes back to [18] (see
+[2, 3, 5, 20] for the details of the method and main properties of the Stieltjes transform), and which is used
+in a huge number of results on convergence of empirical spect ral distributions of random matrices. This
+method is based on the fact that there is a one-to-one continu ous correspondence between non-negative
+measures and their Stieltjes transforms, so that to ﬁnd a wea k limit in probability of random probability
+measures NLnit is enough to show that for every z∈C\Rthe Stieltjes transforms sn:=sLnofNLn
+converge in probability to a deterministic limit fsatisfying limη→∞η|f(iη)|= 1. Thenfis the Stieltjes
+5transform of a probability measure Nsuch that NLnconverge weakly in probability to Nand for every
+∆⊂R
+N(∆) =1
+πlim
+η→+0/integraldisplay
+∆f(λ+iη)dλ.
+Our scheme of the proof is as follows: in Lemma 2.2 we show that Varsn(z) =o(1)asn→ ∞, that
+reduces the problem to ﬁnding the limit of the expectations Esn:=fn, then in the main body of the proof
+(Lemma 2.3) we show that for every convergent subsequence of (fn)n, its limit satisﬁes (1.11), and ﬁnally,
+the unique solvability of (1.11) in the class of the Stieltje s transforms of probability measures follows from
+Lemma (2.1) below.
+Lemma 2.1. (Solvability and uniqueness). Let /tildewideσbe a signed measure deﬁned in Assumption 1. Then there
+is a unique solution fof (1.11) in the class of Stieltjes transforms of the non-neg ative measures. Moreover,
+limη→∞η|f(iη)|= 1, so that the corresponding to fmeasure Nis a probability measure, N(R) = 1.
+Proof. We show ﬁrst that if fis the Stieltjes transform of a non-negative measure Nthen for any ξ∈R
+|1+ξf(z)|−1≤max{2,4|ξ|/|ℑz|}. (2.1)
+(Note also that for ξ >0we have a simpler bound |1 +ξf(z)|−1≤ |z|/|ℑz|, which follows from the
+inequality ℑzℑf(z)≥0.) To this end given ξ∈Rdeﬁne
+Eξ:=/braceleftbig
+z:|ξ||f(z)|=|ξ|/vextendsingle/vextendsingle/vextendsingle/integraldisplay
+(λ−z)−1dN(λ)/vextendsingle/vextendsingle/vextendsingle<1/2/bracerightbig
+.
+Ifz∈Eξ, we have |1+ξf(z)|>1/2. Ifz /∈Eξ, by the Schwartz inequality/integraltext
+|λ−z|−2dN≥1/(2|ξ|)2,
+so that|1+ξf(z)| ≥ |ξ||ℑz|/integraltext
+|λ−z|−2dN≥ |ℑz|/(4|ξ|),and (2.1) follows.
+By the conditions of the lemma we have
+/integraldisplay
+d/tildewideσ(ξ) =c1<∞and/integraldisplay
+|ξpd/tildewideσ(ξ)|<∞, p= 1,2,3. (2.2)
+Note that/integraltext
+|d/tildewideσ(ξ)|is not necessarily ﬁnite, that is why it is better to rewrite ( 1.11) in the form
+zf(z) =−1+c1f(z)−f(z)2/integraldisplayξd/tildewideσ(ξ)
+1+ξf(z),
+where now by (2.1) – (2.2),/integraltext
+|ξ(1+ξf(z))−1d/tildewideσ(ξ)|is uniformly bounded in
+z∈Cη0:={z∈C:η=ℑz≥η0} (2.3)
+for some η0>0. In particular this allows to show that limη→∞η|f(iη)|= 1. Next, if there are two
+solutions f1,f2of this equation, than
+z(f1−f2) = (f1−f2)/parenleftBig
+c1−/integraldisplayξ(f1+f2+ξf1f2)d/tildewideσ(ξ)
+(1+ξf1)(1+ξf2)/parenrightBig
+,
+where as it follows from (2.1) – (2.2), if f1/\e}atio\slash=f2then the r.h.s. is uniformly bounded and the l.h.s. tends
+to inﬁnity as z→ ∞. Hence f1=f2. The solvability of (1.11) in the class of Stieltjes transfo rms of the
+non-negative measures follows from the Banach ﬁxed-point th eorem.
+LetG(z) := (Ln−zIn)−1,z∈C\R, be the resolvent of Ln, so that sn=n−1TrG. Lemma 2.2 below
+shows that the variance of sntends to zero as n→ ∞, hence, by Chebyshev’s inequality the convergence
+of(sn)nin probability follows from the convergence in means.
+6Lemma 2.2. (Self-averaging properties.) Under conditions of Theorem 1.2 we have uniformly in z∈Cη0
+for big enough η0
+(i)Varn−1TrG(z) =O(n−1),and (2.4)
+(ii) sup
+βVarTrQβG(z) =O(n−1), n→ ∞. (2.5)
+Proof. Our proof is based on a standard martingale technique introd uced in random matrix theory by
+Girko (see [10] and [20]). For every 1≤α≤m, introduce
+Lα
+n=Ln−ξαyαyT
+αandGα(z) = (Lα
+n−zIn)−1,
+so thatLα
+n,Gα
+ndo not depend on ξαandyα. Applying the result of [10], one can get
+Varn−1TrG(z)≤1
+n2/summationdisplay
+αE/vextendsingle/vextendsingleTr(G−EαG)/vextendsingle/vextendsingle2≤4
+n2/summationdisplay
+αE/vextendsingle/vextendsingleTr(G−Gα)/vextendsingle/vextendsingle2,
+(see also Lemma 3.2 [17]), where by the resolvent identity
+E/vextendsingle/vextendsingleTr(G−Gα)/vextendsingle/vextendsingle2=E/vextendsingle/vextendsingleξα(GαGyα,yα)/vextendsingle/vextendsingle2≤E|ξα|2E/bardblyα/bardbl4
+2/η4
+0,
+and (2.4) follows. Here we also used that as it follows from As sumptions 1,2, E|ξα|2andE/bardblyα/bardbl4
+2are
+bounded. Similarly we have
+VarTrQβG(z)≤4/summationdisplay
+αE/vextendsingle/vextendsingleTrQβ(G−Gα)/vextendsingle/vextendsingle2≤4/summationdisplay
+αE|ξα|2E/bardblyα/bardbl4
+2/bardblQβ/bardbl2
+op/η4
+0, (2.6)
+and by (1.9) we get (2.5).
+As it follows from Lemma 2.2 (i), it remains to show that for ev eryz∈C\Rthe expectations of
+snconverge to fwhich solves (1.11). Then since fis the Stieltjes transform of a non-negative measure
+(which is in fact a probability measure due to the tightness o fENLn), Lemma 2.1 ﬁnishes the proof of
+Theorem 1.2.
+Lemma 2.3. (Convergence in mean.) Let fn:=Esn=n−1ETrG. Then for every z∈C\Rthere exists
+limn→∞fn(z) =:f(z), andfsatisﬁes (1.11).
+Proof. Since|fn(z)| ≤ |ℑz|−1, there is a subsequence (fnj)njand an analytic function f(z),z∈C\R,
+such that (fnj)njconverges to funiformly on every compact set in C\R. Due to the uniqueness property
+of analytic functions it suﬃces to consider domain Cη0(2.3) for some ﬁxed η0>0which will be chosen
+later, and to show that every convergent subsequence conver ges inCη0to a solution fof (1.11).
+Saving notation (fn)nfor a convergent subsequence, applying the resolvent ident ity,zG=−1+GLn,
+and a rank-one perturbation formula
+G−Gα=−ξαGαyαyT
+αGα
+1+ξα(Gαyα,yα), (2.7)
+we get
+zfn+1 =1
+n/summationdisplay
+αEξα(Gyα,yα) =1
+n/summationdisplay
+αEξα(Gαyα,yα)
+1+ξα(Gαyα,yα)
+=/integraldisplay1
+m/summationdisplay
+αE(Gαyα,yα)
+1+ξ(Gαyα,yα)d/tildewideσn(ξ). (2.8)
+7By the conditions of the theorem we have
+E(Gαyα,yα) =ETrQαGα,
+Varα(Gαyα,yα) =o(1), n→ ∞, (2.9)
+where in the ﬁrst equality we can replace GαwithG. Indeed, by the resolvent identity and (1.9) we have
+|ETrQα(Gα−G)|=|Eξα(GQαGαyα,yα)| ≤ /bardblQα/bardblop|ξ|TrQα/η2
+0=O(n−1), (2.10)
+(more precisely,/integraltext
+|ETrQα(Gα−G)d/tildewideσn(ξ)|=o(1)), and we also used that E/bardblyα/bardbl2= TrQα.Hence,
+introducing
+fn,α:=ETrGQα,
+and applying (1.10) we get
+E(Gαyα,yα) =fn,α+O(n−1)andfn=1
+m/summationdisplay
+αfn,α+o(1).
+Using the above equalities we get
+1
+1+ξ(Gαyα,yα)=1
+1+ξfn/parenleftBigg
+1+ξ(fn−fn,α)
+1+ξ(Gαyα,yα)−ξ(Gαyα,yα)◦
+1+ξ(Gαyα,yα)/parenrightBigg
++o(1),
+wherex◦=x−Ex. This and (2.8) yield
+zfn+1 =/integraldisplayfn
+1+ξfnd/tildewideσn(ξ)+Rn+R′
+n+o(1), (2.11)
+Rn=/integraldisplay1
+1+ξfn1
+m/summationdisplay
+αE(Gαyα,yα)◦
+1+ξ(Gαyα,yα)d/tildewideσn(ξ),
+R′
+n=/integraldisplay1
+1+ξfn1
+m/summationdisplay
+αE(fn,α−fn)
+1+ξ(Gαyα,yα)d/tildewideσn(ξ).
+By the Schwartz inequality E|(Gαyα,yα)◦| ≤(Var(Gαyα,yα))1/2, where by (2.5) and (2.12)
+Var(Gαyα,yα) =EVarα(Gαyα,yα)+VarTrGαQα=o(1). (2.12)
+Note that by (2.1),
+|1+ξfn(z)|−1≤max{2,4|ξ|/|ℑz|}.
+Also it follows from (2.7) that (1+ξα(Gαyα,yα))−1= 1−ξα(Gyα,yα), hence,
+1
+|1+ξ(Gαyα,yα)|≤1+|ξ|/bardblyα/bardbl2
+2/η0.
+This and Assumption 2 allow to get
+|Rn|=o(1)and
+|R′
+n| ≤C
+n/summationdisplay
+α|fn,α−fn| ≤C∆n(z),where∆n(z) = max
+α|fn,α(z)−fn(z)| (2.13)
+8andC >0depends only on η0. To ﬁnish the proof it remains to show that ∆n=o(1). Repeating all the
+steps leading to (2.11) – (2.13) one can get
+zfn,α+TrQα=/summationdisplay
+αEξα(QαGαyα,yα)
+1+ξα(Gαyα,yα)(2.14)
+=/integraldisplayn
+m/summationdisplay
+αE(QαGαyα,yα)
+1+ξ(Gαyα,yα)d/tildewideσn(ξ)
+=/integraldisplayfn,α
+1+ξfnd/tildewideσn(ξ)+Rn,α+R′
+n,α+o(1),
+where
+Rn,α=−/integraldisplay1
+1+ξfnn
+m/summationdisplay
+βEξ(QαGβyβ,yβ)(Gβyβ,yβ)◦
+1+ξ(Gβyβ,yβ)d/tildewideσn(ξ) =o(1), (2.15)
+R′
+n,α=−/integraldisplay1
+1+ξfnn
+m/summationdisplay
+βEξ(QαGβyβ,yβ)(fn,β−fn)
+1+ξ(Gβyβ,yβ)d/tildewideσn(ξ),|R′
+n,α| ≤C∆n(z), (2.16)
+and we used additionally that by (1.9) /bardblQα/bardblop=O(n−1). It follows from (2.11) and (2.14) that
+z(fn,α−fn)+(1−TrQα) = (fn,α−fn)/integraldisplayd/tildewideσn(ξ)
+1+ξfn+R′
+n,α−R′
+n+o(1),
+hence, using bounds for R′
+n,αandR′
+nand also (1.9) we get
+/vextendsingle/vextendsingle/vextendsinglez−/integraldisplayd/tildewideσn(ξ)
+1+ξfn/vextendsingle/vextendsingle/vextendsingle|fn,α−fn| ≤C∆n(z)+o(1),
+whereC >0is uniformly bounded in η0. Choosing η0big enough one can get
+/vextendsingle/vextendsingle/vextendsinglez−/integraldisplayd/tildewideσn(ξ)
+1+ξfn/vextendsingle/vextendsingle/vextendsingle>2C,
+which implies 2C|fn,α−fn| ≤C∆n(z)+o(1). Taking the maximum over α≤mwe get
+∆n(z) =o(1), n→ ∞. (2.17)
+This leads to R′
+n=o(1)asn→ ∞ and ﬁnishes the proofs of the lemma and of the theorem.
+3 Proof of Theorem 1.4
+Givenr,d∈N, letLrdbe deﬁned in (1.1) - (1.2) and (1.6):
+Lrd=/summationdisplay
+1≤k<ℓ≤rξkℓYkℓYkℓT, Ykℓ= (Yj)r
+j=1= ((δjk−δjℓ)vkl)r
+j=1∈Rrd,
+where(ξkℓ)1≤k<l≤rare iid copies of a 0/1random variable ξ=ξrwithP(ξ= 1) =pr, and(vkl)1≤k<l≤r
+are mutually independent normalized isotropic random vect ors,Evkl
+αvkl
+β=d−1δαβ, satisfying Assumption
+1 and having norms uniformly bounded in r,
+sup
+k,ℓ/bardblvkℓ/bardbl2
+2≤C0
+9for some C0>0. Here for block vectors of the form X= (Xj)r
+j=1= (Xjα)r,d
+j,α=1we use Latin indexes to
+count blocks and Greek indexes to count entries within a bloc k. Let
+Qkℓ=/parenleftBig
+Qkℓ
+iγ,jβ/parenrightBigr,d
+i,j,γ,β=1:=EYkℓYkℓT=/parenleftBig
+EYkℓ
+iYkℓ
+j/parenrightBigr
+i,j=1.
+By the deﬁnition of Ykℓ,
+Qkℓ=1
+d/parenleftBig
+(δjk−δjℓ)(δik−δiℓ)Id/parenrightBigr
+i,j=1,
+so it has only four non-zero blocks (equal d−1Id). To check the conditions of Theorem 1.2 note ﬁrst that
+now
+m=r(r−1)/2, n=rd,so that lim
+n→∞m
+nEξ= lim
+r→∞prr
+2d=c/2 =c1.
+For anyrd×rdblock matrix D=/parenleftbig
+Dij/parenrightbigr
+i,j=1withd×dblocksDij= (Diα,jβ)d
+α,β=1we have
+/parenleftbig
+DYkℓ,Ykℓ/parenrightbig
+=/parenleftbig/tildewideDvkℓ,vkℓ/parenrightbig
+,where/tildewideD=Dkk+Dℓℓ−Dkℓ−Dℓk,
+so that (1.8) for Ykℓfollows from (1.8) for vkℓ. Also it is easy to check that TrQkℓ= 2and
+Qrd:=2
+r(r−1)/summationdisplay
+1≤k<ℓ≤rQkℓ=2
+rdIrd+Brd,whereBrd=−2
+r(r−1)d/parenleftBig
+(1−δij)Id/parenrightBigr
+i,j=1,
+and/bardblBrd/bardblHS=o((rd)−1/2),r→ ∞, thus (1.10) is fulﬁlled. The only condition of Theorem 1.2 w hich is
+not fulﬁlled is the ﬁrst part of (1.9), namely, we have /bardblQkℓ/bardblop=O(d−1)(instead of /bardblQkℓ/bardblop=O((rd)−1)).
+On the other hand, matrix Qkℓis very sparse and has only four non-zero blocks.
+Hence we need to go through the proof of Theorem 1.2 and check t he places, where condition (1.9)
+was used. There are three such places: Lemma 2.2 (ii), (2.10) , and (2.15) – (2.16). As to Lemma 2.2 (ii),
+we reprove it in Lemma 3.1 below. Now we recall the main steps o f the proof of Lemma 2.3 and check
+(2.10) and (2.15) – (2.16).
+Similar to (2.8), one can get
+zfr+1 =c1−c1
+r(r−1)/2/summationdisplay
+1≤k<ℓ≤rE1
+Akℓ,whereAkℓ= 1+(GkℓYkℓ,Ykℓ),
+Gkℓ= (Lrd−ξkℓYkℓYkℓT−zIrd)−1. It is easy to show that
+|Akℓ|−1,|EAkℓ|−1≤1/(1−2C0/η0).
+We also have E(GkℓYkℓ,Ykℓ) =ETrQkℓGkℓ. Similar to (2.10), here we can replace GkℓwithG. Indeed,
+since by the deﬁnition of Qkℓ,
+(QkℓX,Y) =1
+d/summationdisplay
+γ(Xkγ−Xℓγ)(Ykγ−Yℓγ),∀X,Y∈Rrd, (3.1)
+we have
+|ETrQkℓ(Gkℓ−G)|=|Eξkℓ(QkℓGkℓYkℓ,GYkℓ)|
+=|Eξkℓ1
+d/summationdisplay
+γ((GkℓYkℓ)kγ−(GkℓYkℓ)ℓγ)((GYkℓ)kγ−(GYkℓ)ℓγ)|
+≤4
+dη2
+0E/bardblYkℓ/bardbl2
+2=O(d−1).
+10Thus
+E(GkℓYkℓ,Ykℓ) =fr,kℓ+O(d−1), fr,kℓ=ETrQkℓG,
+and repeating the steps leading to (2.8) – (2.16), we get
+zfr+1 =2c1fr
+1+2fr+R′
+r+o(1),|R′
+r| ≤C∆r(z),∆r= max
+k,ℓ|fr,kℓ−2fr|,
+and
+zfr,kℓ+2 =2c1fr,kℓ
+1+2fr+Rr,kℓ+R′
+r,kℓ+o(1),
+Rr,kℓ=2c1
+1+2frd
+r/summationdisplay
+1≤i<j≤rE(QkℓGijYij,Yij)A◦
+ij
+Aij
+R′
+r,kℓ=2c1
+1+2frd
+r/summationdisplay
+1≤i<j≤rE(QkℓGijYij,Yij)
+Aij(fr,ij−2fr).
+It follows from (3.1) that for any X∈Rrd
+(QkℓX,Yij) = [δik+δiℓ−δjk−δjℓ]1
+d/summationdisplay
+γ(Xkγ−Xℓγ)vij
+γ.
+Hence instead of the double sums over i,jin the expressions above we have single sums over ior over
+j. This and the boundedness of vijandAijallows to treat Rr,kℓandR′
+r,kℓsimilar to (2.15) – (2.16) and
+then to show that Rn,α,R′
+n,α=o(1)and to get the equation for fL= limfr(see (1.3)).
+It remains to prove
+Lemma 3.1. VarTrQkℓG=o(1),r→ ∞.
+Proof. We have (see (2.6) and (3.1))
+VarTrQkℓG≤4/summationdisplay
+i<jE|TrQkℓ(Gij−G)|2= 4/summationdisplay
+i<jE|ξij(QkℓGijYij,GYij)|2
+=4
+d2/summationdisplay
+i<jE/vextendsingle/vextendsingle/vextendsingleξij/summationdisplay
+γ((GijYij)kγ−(GijYij)ℓγ)((GYij)kγ−(GYij)ℓγ)/vextendsingle/vextendsingle/vextendsingle2
+,
+where
+1
+d2/summationdisplay
+i<jE/vextendsingle/vextendsingle/vextendsingleξij/summationdisplay
+γ(GijYij)kγ(GYij)kγ/vextendsingle/vextendsingle/vextendsingle2
+≤1
+d2/summationdisplay
+i<jEξ2
+ij/bardblGijYij/bardbl2
+2/summationdisplay
+γ|(GYij)kγ|2
+≤C0
+η2
+0d2E/summationdisplay
+γ/summationdisplay
+i<jξij|(GYij)kγ|2
+and by the deﬁnition of Lrdand the resolvent identity,
+/summationdisplay
+i<jξij|(GYij)kγ|2=/summationdisplay
+i<jξij(GYijYijTG)kγ,kγ= (GLrdG)kγ,kγ= (G(zG+Ird))kγ,kγ=O(1).
+This ﬁnishes the proof of the lemma.
+114 Adjacency matrices. Proof of Theorem 1.5
+The scheme of the proof is essentially the same as in the case o f Laplacian Lrd. The main diﬀerence is
+that here for every vector Xkℓin the deﬁnition of Ard(see (1.6)) there are two terms containing this
+vector,XkℓXℓkTandXℓkXkℓT, so that in order to separate this vector from the rest we need to apply the
+rank one perturbation formula twice. Also it is convenient t o consider ﬁrst a more general model without
+block structure. We have
+Theorem 4.1. Givenn,m∈N, consider an n×nmatrixAn=/summationtext
+αξα(xαyT
+α+yαxT
+α),where
+(i)(ξα)αare iid copies of a 0/1 random variable ξ=ξnwithP(ξ= 1) =pn,
+(ii)m
+npn→c1>0asn→ ∞(without loss of generality we assume thatm
+npn≡c1),
+(iii)(xα)α,(yα)α⊂Rnare two sets of mutually independent random vectors such tha t/bardblxα/bardbl2
+2≤C0,
+/bardblyα/bardbl2
+2≤C0for some C0>0and for all deterministic matrices D=Dnwith/bardblD/bardblop= 1we have (cf
+(1.8))
+sup
+u,v∈(xα,yα)αVar(Du,v) =o(1), n→ ∞.
+(iv) matrices Qxα:=ExαxT
+α,Qyα:=EyαyT
+α, andQxyα:=ExαyT
+α=QyxαThave the operator norms
+of order O(n−1)and
+sup
+Qα∈(Qxα,Qyα)α|TrQα−1|=o(1),
+(v) for every n×nmatrices K1,K2we have
+1
+m/summationdisplay
+αTrQxαK1TrQyαK2=1
+nTrK11
+nTrK2,
+(vi) matrix Qxy:= (1
+m/summationtext
+α|Qxyα
+ij|)i,jsatisﬁes/bardblQxy/bardblHS=o(n−1/2).
+Then as n→ ∞ the empirical spectral distributions NAnconverge in probability to a non-random
+probability measure NAwhich Stieltjes transform fis uniquely determined by the equation
+zf3+(1−2c1)f2−zf−1 = 0 (4.1)
+in the class of Stieltjes transforms of non-negative measur es.
+Remark 4.2. A more general case corresponding to ξαsatisfying Assumption 2 contains more pure
+technical details and we do not treat it here, but we strongly believe that following essentially the same
+scheme one can prove that in this case fsolves the equation
+zf=−1−2f2/integraldisplayξd/tildewideσ(ξ)
+1−ξ2f2.
+Proof. Following the scheme of the proof of Theorem 1.2 note ﬁrst tha t the proof of the analog of
+Lemma 2.1 is trivial in this case and the proof of the analog of Lemma 2.2 is essentially the same.
+Thus we only need to prove the convergence in mean (cf Lemma 2. 3). To this end introduce
+Aα
+n:=An−ξα(xαyT
+α+yαxT
+α)andGα(z) := (Aα
+n−zIn)−1,
+wherez∈Cη0for a big enough η0. Given an n×nsymmetric matrix K, applying twice (2.7) we get
+(KGxα,yα) =(KGαxα,yα)(1+ξα(Gαxα,yα))−ξ2
+α(KGαyα,yα)(Gαxα,xα)
+(1+ξα(Gαxα,yα))2−ξ2α(Gαyα,yα)(Gαxα,xα). (4.2)
+12It follows from the resolvent identity, (ii) and (4.2) with K=I, that
+zfn(z)+1 =2
+n/summationdisplay
+αEξα(Gxα,yα)
+=2c1
+m/summationdisplay
+αE(Gαxα,yα)(1+(Gαxα,yα))−(Gαyα,yα)(Gαxα,xα)
+(1+(Gαxα,yα))2−(Gαyα,yα)(Gαxα,xα)
+= 2c1−2c1
+m/summationdisplay
+αE1+(Gαxα,yα)
+Aα
+= 2c1−2c1
+m/summationdisplay
+α1+ETrQxyαGα
+EAα+Rn, (4.3)
+where
+Aα= (1+(Gαxα,yα))2−(Gαyα,yα)(Gαxα,xα),
+Rn=2c1
+m/summationdisplay
+α1
+EAαE(1+(Gαxα,yα))A◦
+α
+Aα.
+Applying (iii) and an analog of Lemma 3.1 (ii), one can show th at
+|Aα| ≥1
+2−3C0/η2
+0>0,
+VarAα=o(1),(see also (2.12)) and
+EAα= (1+ETrQxyαGα)2−ETrQxαGαETrQyαGα+o(1),
+where with the help of (iv) Gαcan be replaced with Gwith an error term of order O(n−1)(cf (2.10)) so
+that
+EAα= (1+ETrQxyαG)2−fxα
+nfyα
+n+o(1),
+and we use notations
+fxα
+n=ETrQxαG, fyα
+n=ETrQyαG.
+By (iv) and (vi), |TrQxyαG|=O(1)and
+1
+m/summationdisplay
+α|TrQxyαG| ≤/summationdisplay
+i,jQxy
+ij|Gij| ≤ /bardblQxy/bardblHS/bardblG/bardblHS=o(1). (4.4)
+HenceRn=o(1)and
+zfn+1 = 2c1−2c1
+m/summationdisplay
+α1
+1−fxαnfyα
+n+o(1).
+It follows from (v) that m−1/summationtext
+αfxα
+nfyα
+n=f2
+n, hence,
+zfn+1 = 2c1−2c1
+1−f2n+R′
+n+o(1), (4.5)
+where
+R′
+n=−1
+1−f2n2c1
+m/summationdisplay
+αfxα
+nfyα
+n−f2
+n
+1−fxαnfyα
+n, (4.6)
+|R′
+n| ≤2c1
+η0(1−η−2
+0)2∆n,∆n:= max
+α(|fxα
+n−fn|+|fyα
+n−fn|).
+13It remains to show that ∆n=o(1). To this end we treat similarly fxα
+n(andfyα
+n) and applying (4.2) with
+K=Qxαwe get
+zfxα
+n+TrQxα=2c1
+m/summationdisplay
+βE(nQxαGβxβ,yβ)(1+(Gβxβ,yβ))−(nQxαGβyβ,yβ)(Gβxβ,xβ)
+Aβ.
+Note that /bardblnQxα/bardblop=O(1), hence repeating steps leading to (4.5) – (4.6) and applying (v), one can get
+zfxα
+n+TrQxα=−2c1
+m/summationdisplay
+βEnTrQxαQyβGETrQxβG
+1−fxβ
+nfyβ
+n+o(1)
+=−2c1fxα
+nfn
+1−f2n+R′
+n,α+o(1), (4.7)
+where
+R′
+n,α=−1
+1−f2n2c1
+m/summationdisplay
+βfxβ
+nEnTrQxαQyβG(fxα
+nfyα
+n−f2
+n)
+1−fxβ
+nfyβ
+n,
+|R′
+n,α| ≤2c1C2
+0
+(1−η−2
+0)2∆n.
+Now subtracting (4.7) from (4.5) and using (iv) one can show t hat∆n=o(1)(cf(2.17)). Thus
+zfn+1 =−2c1f2
+n
+1−f2n+o(1),
+which leads to (4.1) and ﬁnishes the proof of Theorem 4.1.
+Proof of Theorem 1.5. Now we have
+Ard=/summationdisplay
+1≤k/negationslash=ℓ≤rξkℓXkℓXℓkT, Xkℓ= (δjkvkℓ)n
+j=1, (4.8)
+so that in terms of Theorem 1.4
+/summationdisplay
+α=/summationdisplay
+1≤k<ℓ≤r, m=r(r−1)/2, n=rd, c1=c/2,xα=Xkℓ,yα=Xℓk, k < ℓ,
+and the analogs of QxαandQxyαare given by
+Qkk:=EXkℓXkℓT=d−1(δikδjkId)r
+ij=1,TrQkk= 1,and
+Qkℓ:=EXkℓXℓkT=d−1(δikδjℓId)r
+ij=1.
+We suppose that (vkℓ)k<ℓhave uniformly bounded norms, so let C0>0be such that /bardblvkl/bardbl2
+2≤C0for
+everyk < ℓ.
+Checking the conditions of Theorem 4.1, note ﬁrst that (iii) follows from the deﬁnition of Xkℓand
+conditions for vkℓ. As to (v-vi), these conditions are not fulﬁlled with/summationtext
+α=/summationtext
+k<ℓ, but since in (4.8) we
+have/summationtext
+k/negationslash=ℓ, by the deﬁnitions of Qkℓwe get the following analogs of (v-vi):
+(v’)1
+r/summationdisplay
+kTrQkkK=1
+rdTrKand
+(vi’)/bardbl/tildewideQxy/bardblHS=O/parenleftbig
+(r√
+d)−1/parenrightbig
+,where/tildewideQxy
+iγ,jβ:=1
+r2/summationdisplay
+k,ℓ|Qkℓ
+iγ,jβ|=1
+dr2δγβ.
+14Thus again the only condition which is not fulﬁlled is the ﬁrs t part of (iv), because now /bardblQkk/bardblop,/bardblQkℓ/bardblop=
+O(d−1)(instead of O((rd)−1)). On the other hand, matrices (Qkk)kare “orthogonal” up to normalisation:
+QkkQpℓ=1
+dδkpQkℓ,and also QkkXpℓ=1
+dδkpXkℓ, (4.9)
+thus in the corresponding places of the proof we have single s ums instead of double sums. This allows to
+repeat the proof of Theorem 4.1 with slight modiﬁcations and to get ﬁrst
+zfr+1 =1
+rd/summationdisplay
+k/negationslash=ℓEξkℓ(GXkℓ,Xℓk) =c−c
+r2/summationdisplay
+k/negationslash=ℓE1+(GkℓXkℓ,Xℓk)
+Akℓ, (4.10)
+where
+Akℓ= (1+(GkℓXkℓ,Xℓk))2−(GkℓXkℓ,Xkℓ)(GkℓXℓk,Xℓk).
+Since for any matrix B,|(Bvkℓ,vkℓ)| ≤C0/bardblB/bardblop, we have
+VarAkℓ≤C(η0)max
+k,ℓ{Var(GkℓXkℓ,Xℓk),Var(GkℓXkℓ,Xkℓ)}, (4.11)
+where we use notation C(η0)for every positive function uniformly bounded in η0→ ∞,
+C(η0) =O(1), η0→ ∞.
+It follows from Assumption 1 and Lemma 4.3 below that
+Var(GkℓXkℓ,Xℓk) =EVarkℓ(GkℓXkℓ,Xℓk)+VarTrQkℓGkℓ=o(1),and
+Var(GkℓXkℓ,Xkℓ) =EVarkℓ(GkℓXkℓ,Xkℓ)+VarTrQkkGkℓ=o(1), (4.12)
+(cf (4.11)), hence, VarAkℓ=o(1),r→ ∞. Also similar to (4.4) one can show that the terms containing
+E(GkℓXkℓ,Xℓk) = TrQkℓGkℓdo not contribute to the limit. It follows from above that
+zfr+1 =c−c
+r2/summationdisplay
+k,ℓ1
+1−fkkrfℓℓr+o(1)
+=c−c
+1−f2r+R′
+r+o(1), (4.13)
+where
+fkk
+r=ETrQkkG=d−1/summationdisplay
+γEGkγ,kγ,1
+r/summationdisplay
+kfkk
+r=fr,
+and
+R′
+r=−c
+1−f2r1
+r2/summationdisplay
+k,ℓfkk
+rfℓℓ
+r−f2
+r
+1−fkkrfℓℓr,|R′
+r| ≤C(η0)∆r,∆r= max
+ℓ|fr−fℓℓ
+r|.
+Using (4.9) – (4.10), similar to (4.7) one can get for every q≤r
+zfqq
+r+1 =/summationdisplay
+k/negationslash=ℓEξkℓ(QqqGXkℓ,Xℓk) =1
+d/summationdisplay
+k/negationslash=qEξkq(GXkq,Xqk) (4.14)
+=c−c
+r/summationdisplay
+k/negationslash=q1
+1−fkkrfqq
+r+o(1) =c−c
+1−fqq
+rfr+Rq
+r+o(1),
+15where|Rq
+r| ≤C(η0)∆r. Hence,
+z(fr−fqq
+r) =cfr(fqq
+r−fr)
+(1−fqq
+rfr)(1−f2r)+R′
+r−Rq
+r+o(1),
+and choosing η0big enough we get similar to (2.17) ∆′
+r=o(1), which leads to (2.11). To ﬁnish the proof
+of Theorem 1.4, it remains to prove the following statement, which is an analog of Lemma 3.1 (see also
+Lemma 2.2).
+Lemma 4.3. LetVr:= max 1≤k,ℓ≤rVarTrQkℓG. ThenVr=o(1)asr→ ∞.
+Proof. Note that the simple trick based on the resolvent identity, w hich we have used in the last line of
+the proof of Lemma 3.1 to get reed of the double sum over i,j, does not work here. So we will go another
+way.
+For every q≤r, it follows from (4.14) that
+zVarTrQqqG=zETrQqqG(TrQqqG)◦
+=1
+d/summationdisplay
+k/negationslash=qEξkq(GXkq,Xqk)(TrQqqGkq)◦+Rr, (4.15)
+wherex◦=x−Exand
+Rr=1
+d/summationdisplay
+k/negationslash=qEξkq(GXkq,Xqk)(TrQqq(G−Gkq))◦.
+We have
+|TrQqq(G−Gkq)|=ξkq|(QqqGkqXkq,GXqk)+(QqqGkqXqk,GXkq)| ≤2/bardblQqq/bardblop/bardblvqk/bardbl2
+2/η2
+0=O(d−1),
+hence,Rr=O(d−1). Also, we have
+VarTrQqqG=VarTrQqqGkq+O(d−1).
+Applying (4.2), one can continue (4.15) and get similar to (4 .10)
+zVarTrQqqG=−c
+r/summationdisplay
+k/negationslash=qE(1+(GkqXkq,Xqk))(TrQqqGkq)◦
+Akq
+=−c
+r/summationdisplay
+k/negationslash=qE(GkqXkq,Xqk)(TrQqqGkq)◦
+EAkq
++c
+r/summationdisplay
+k/negationslash=q1
+EAkqE(1+(GkqXkq,Xqk))(TrQqqGkq)◦A◦
+kq
+Akq=:T(1)
+r+T(2)
+r.
+Since by the Schwartz inequality
+|E(GkqXkq,Xqk)(TrQqqGkq)◦|=|ETrQkqGkq(TrQqqGkq)◦|
+≤(VarTrQkqGkq)1/2(VarTrQqqGkq)1/2≤Vr+O(d−1),
+we have |T(1)
+r| ≤C(η0)Vr+O(d−1). It follows from (4.11) – (4.12) that VarAkq≤Vr+o(1). This and
+the Schwartz inequality allows to get
+|T(2)
+r| ≤C(η0)V1/2
+r(max
+k,qVarAkq)1/2≤C(η0)Vr+o(1).
+16Summarising we get from for every q≤r
+η0VarTrQqqG≤C(η0)Vr+o(1).
+Similar, one can show that η0VarTrQqkG≤C(η0)Vr+o(1)for every k,q. Hence, taking maximum over
+k,q, we get η0Vr≤C(η0)Vr+o(1), whereC(η0)remains bounded as η0→ ∞. Thus choosing η0big
+enough we get Vr=o(1)asr→ ∞. This ﬁnishes the proof of the lemma and the proof of Theorem 1 .5.
+References
+[1] R. Adamczak, On the Marchenko-Pastur and circular laws f or some classes of random matrices with
+dependent entries, Electron. J. Probab. 16(2011), no. 37, 1068–1095. MR2820070 .
+[2] Akhiezer, N. I., Glazman, I. M. Theory of Linear Operators in Hilbert Space , Dover, New York, 1993.
+[3] G. W. Anderson, A. Guionnet and O. Zeitouni, An introduction to random matrices , Cambridge
+Studies in Advanced Mathematics, 118, Cambridge Universit y Press, Cambridge, 2010. MR2760897
+[4] G. Aubrun, Random points in the unit ball of ln
+p, Positivity 10(2006), no. 4, 755–759. MR2280648
+[5] Z. Bai and J. W. Silverstein, Spectral analysis of large dimensional random matrices , second edition,
+Springer Series in Statistics, Springer, New York, 2010. MR 2567175
+[6] Bai, Z. D., Zhou, W. (2008). Large sample covariance matrices without independence str uctures in
+columns . Statistica Sinica, 18(2), 425.
+[7] D. Banerjee and A. Bose, Bulk behaviour of some patterned block matrices , Indian J. Pure Appl.
+Math. 47(2016), no. 2, 273–289. MR3517625
+[8] Bryson, J., Vershynin, R. and Zhao, H., (2019). Marchenko-Pastur law with relaxed independence
+conditions. arXiv preprint arXiv:1912.12724.
+[9] G. M. Cicuta, J. Krausser, R. Milkus, A. Zaccone, Unifying model for random matrix theory in
+arbitrary space dimensions , Phys. Rev. E 97(2018), no. 3, 032113, 8 pp. MR3789138
+[10] Dharmadhikari, S. W., Fabian, V., and Jogdeo, K. (1968) .Bounds on the moments of martingales ,
+Ann. Math. Statist. 39, 1719–1723.
+[11] J. S. Geronimo and T. P. Hill, Necessary and suﬃcient con dition that the limit of Stieltjes transforms
+is a Stieltjes transform, J. Approx. Theory 121(2003), no. 1, 54–60. MR1962995
+[12] Girko, V. (2001). Theory of Stochastic Canonical Equations , vols.I, II Kluwer, Dordrecht.
+[13] G¨ootze, F., Naumov, A.A., and Tikhomirov, A.N. (2014). Limit theorems for two classes of random
+matrices with dependent entries , Teor. Veroyatnost. i Primenen., 59(1), 61–80.
+[14] F. Götze and A. N. Tikhomirov, Limit theorems for spectr a of random matrices with martingale
+structure, in Stein’s method and applications , 181–193, Lect. Notes Ser. Inst. Math. Sci. Natl. Univ.
+Singap., 2005, Singapore Univ. Press, Singapore. MR220533 6
+[15] A. Lemaître and C. Maloney, Sum rules for the quasi-stat ic and visco-elastic response of disordered
+solids at zero temperature, J. Stat. Phys. 123(2006), no. 2, 415–453. MR2227089
+17[16] Louart, C. and Couillet, R., 2018. Concentration of mea sure and large random matrices with an
+application to sample covariance matrices. arXiv preprint arXiv:1805.08295.
+[17] A. Lytova, Central limit theorem for linear eigenvalue statistics for a tensor product version of sample
+covariance matrices, J. Theoret. Probab. 31(2018), no. 2, 1024–1057. MR3803923
+[18] Marchenko, V., Pastur, L. (1967). The eigenvalue distribution in some ensembles of random mat rices.
+Math. USSR Sbornik, 1, 457–483.
+[19] Pajor, A. and Pastur, L. (2009). On the limiting empirical measure of eigenvalues of the sum o f rank
+one matrices with log-concave distribution , Studia Math., 195(1), 11–29.
+[20] L. Pastur and M. Shcherbina, Eigenvalue distribution of large random matrices , Mathematical Sur-
+veys and Monographs, 171, American Mathematical Society, P rovidence, RI, 2011. MR2808038
+[21] M. Pernici and G. M. Cicuta, Proof of a conjecture on the inﬁnite dimension limit of a unif ying model
+for random matrix theory , J. Stat. Phys. 175(2019), no. 2, 384–401. MR3968860
+[22] S. O’Rourke, A note on the Marchenko-Pastur law for a cla ss of random matrices with dependent
+entries, Electron. Commun. Probab. 17(2012), no. 28, 13 pp. MR2955493
+[23] G. Semerjian and L. F. Cugliandolo, Sparse random matri ces: the eigenvalue spectrum revisited, J.
+Phys. A 35(2002), no. 23, 4837–4851. MR1916090
+[24] P. Yaskov, A short proof of the Marchenko-Pastur theore m, C. R. Math. Acad. Sci. Paris 354(2016),
+no. 3, 319–322. MR3463031
+[25] Yin, Y. (2018). On singular value distribution of large dimensional data matrices whose columns have
+diﬀerent correlations. arXiv preprint arXiv:1802.01245.
+[26] Y. Q. Yin and P. R. Krishnaiah, Limit theorems for the eig envalues of product of large-dimensional
+random matrices when the underlying distribution is isotro pic, Teor. Veroyatnost. i Primenen. 31
+(1986), no. 2, 394–398. MR0851002
+[27] Zaccone, A. and Scossa-Romano, E., 2011. Approximate a nalytical description of the nonaﬃne re-
+sponse of amorphous solids. Physical Review B, 83(18), p.184 205.
+Alicja Dembczak-Kołodziejczyk,
+University of Opole,
+48 Oleska, 45-052,
+Opole, Poland.
+e-mail: alicja.dembczak@uni.opole.pl
+Anna Lytova,
+University of Opole,
+48 Oleska, 45-052,
+Opole, Poland.
+e-mail: alytova@uni.opole.pl
+18

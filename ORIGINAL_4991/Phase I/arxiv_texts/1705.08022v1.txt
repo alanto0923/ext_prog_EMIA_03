@@ -1,0 +1,363 @@
+arXiv:1705.08022v1  [q-fin.TR]  22 May 2017Using Macroeconomic Forecasts to Improve Mean Reverting
+Trading Strategies
+Yash Sharma
+Abstract
+A large class of trading strategies focus on opportunities o ﬀered by the yield curve. In partic-
+ular, a set of yield curve trading strategies are based on the view that the yield curve mean-
+reverts. Based on these strategies’ positive performance, a multiple pairs trading strategy on ma-
+jor currency pairs was implemented. To improve the algorith m’s performance, machine learning
+forecasts of a series of pertinent macroeconomic variables were factored in, by optimizing the
+weights of the trading signals. This resulted in a clear impr ovement in the APR over the evalua-
+tion period, demonstrating that macroeconomic indicators , not only technical indicators, should
+be considered in trading strategies.
+1. Yield Curve
+The Yield Curve is a line that plots the interest rate, at a set point in time, of bonds having
+equal credit quality but di ﬀering maturity dates. The U.S. Treasury Yield Curve is used a s a
+benchmark for other debt in the market, and can also be used to predict changes in economic
+output and growth. The shape of the yield curve gives an idea o f future interest rate changes
+and economic activity. An inverted yield curve is often a har binger of recession. A positively
+sloped yield curve is often a harbinger of inﬂationary growt h. These predictive properties make
+the yield curve quite applicable in devising successful tra ding strategies.
+Many yield curve trading strategies are based on the convent ional view that the yield curve
+mean-reverts to some historical norm. This market view is co nsistent with historical experience.
+For instance, U.S. Treasury bill rates, spreads and curvatu re all trade within tight, ﬁnite bounds.
+The interest rate term structures in other countries also ex hibit similar patterns. This suggests
+that some form of mean-reversion mechanism is at work that pr events the yield curve from drift-
+ing to extreme levels or shapes over time.
+In [1], three classes of mean-reverting trading strategies were considered, focusing on three
+aspects of the yield curve: level, spread, and curvature. Fo r each strategy, the holding period
+of a trade was ﬁxed at one month, after which a new trade was ini tiated. The condition of cash
+neutrality was imposed, so that any excess cash was deposite d at the 1-month tenor. Similarly,
+if additional funding was required, that was also carried ou t at the 1-month tenor. A 102-month
+training period was allowed in the construction of the uncon ditional yield curve, so that the cal-
+culation of the average payo ﬀof each yield curve strategy starts from January 1973 to Dece mber2000.1
+These mean-reverting trading strategies were compared to t wo benchmarks, investment in
+the Lehman Brothers U.S. Government Intermediate Bond Inde x, and cash-neutral investment in
+the S&P index.2
+The performance analysis indicated that a yield spread mean -reverting trading strategy per-
+forms remarkably well compared to the benchmarks. The month ly payoﬀis about 5.1 times that
+of the monthly payo ﬀof the equity benchmark, hence outperforming an equity inve stment strat-
+egy, on a risk-adjusted basis. Furthermore, it outperforme d the bond benchmark, with an average
+monthly payoﬀof about 5.9 times that of the benchmark.3
+A paired-t test and the Diebold-Mariano statistical test (D -M test) [2] was conducted to test
+whether the strategy signiﬁcantly outperforms the benchma rks. The tests were successful; even
+when transaction costs were accounted for, the yield spread mean-reverting strategy was still
+signiﬁcantly more proﬁtable than both of the benchmarks und er all measures.4
+As the yield curve is highly correlated with changes in econo mic activity, the yield spread
+mean reverting is a strong justiﬁcation for trading upon the mean reversion of the spread, in-
+dependent of the ﬁnancial instrument used. Therefore, a Mul tiple Pairs trading strategy was
+implemented.
+2. Multiple Pairs Trading
+A Pairs Trade is a strategy based on securities involved in th e pair having a mean-reverting
+nature. The goal is to match two trading vehicles, trading on e long and the other short when the
+pair’s price ratio diverges. The number of standard deviati ons the pair’s price ratio diverges in
+order to initiate a trade is determined through historical d ata analysis. If the pair reverts to its
+mean trend, a proﬁt is made.
+In our implementation, currency pairs were used. Daily data from January 2008 to June 2014
+for each of the major currency pairs was retrieved through Ya hoo Finance.
+The currency pair price series were plotted, shown in Figure 1. Clearly, the series do not look
+stationary. In order to perform a pairs trade, we desire a sta tionary pair, as the spread is ﬁxed,
+and hence statistically the pair is mean reverting.
+Consider a pair of non-stationary time series. If a particul ar linear combination of these series
+will lead to a stationary series, the pair of series are terme d cointegrated. In order to ﬁnd that
+particular combination, one needs to utilize tests for unit roots.
+1Proﬁting from Mean Reverting Yield Curve Trading Strategie s, 9
+2Proﬁting from Mean Reverting Yield Curve Trading Strategie s, 14
+3Proﬁting from Mean Reverting Yield Curve Trading Strategie s, 16
+4Proﬁting from Mean Reverting Yield Curve Trading Strategie s, 17-19
+22008 2010 2012 20140.6 0.8 1.0AUDUSD
+TimePrices
+2008 2010 2012 20141.2 1.4 1.6EURUSD
+TimePrices
+2008 2010 2012 20141.4 1.7 2.0GBPUSD
+TimePrices
+2008 2010 2012 20140.5 0.7NZDUSD
+TimePrices
+2008 2010 2012 20140.80 0.95CADUSD
+TimePrices
+2008 2010 2012 20140.8 1.0 1.2 1.4CHFUSD
+TimePrices
+2008 2010 2012 20140.009 0.012JPYUSD
+TimePrices
+Figure 1: Major Currency Pair Price Series
+2.1. Cointegration
+One would normally test for cointegration using the Augment ed Dickey-Fuller test (ADF)
+[3]. However, a big drawback of that test is that it is only cap able of being applied to two sep-
+arate time series. However, one can imagine a set of three or m ore ﬁnancial assets that might
+share an underlying cointegrated relationship. Hence the J ohansen test is used, which can be
+seen as a multivariate generalization of the ADF test. [4]Th e maximum number of currency
+pairs that can be combined in one relationship was set to 4. Th is gives the algorithm more ﬂexi-
+bility, as all combinations of two, three, or four separate t ime series were tested for cointegration.
+Before applying the Johansen test, or any unit root test for t hat matter, one must ensure that
+all the series are integrated of order 1. Technically, if two or more series are individually inte-
+grated, but some linear combination of them has a lower order of integration, then the series are
+said to be cointegrated. So, to guarantee that the cointegra ted series is stationary, the time series
+need to be I(1). A price series is I(1) if the levels contain a u nit root, meaning the price series is
+at least I(1), and the di ﬀerenced prices are stationary, I(0), meaning the price seri es is not I(2).
+The ADF test with the general regression equation was used, a ssuming the series has drift
+but no linear trend, in order to test for the existence of a uni t root. Lags are included in the
+ADF formulation, allowing for higher-order autoregressiv e processes. The BIC information cri-
+terion is used to select the optimal lag length. [5] This crit erion is used for consistency reasons
+due to the large sample size. Though ine ﬃcient, the criterion delivers asymptotically correct
+3results. Finally, the maximum lag length is chosen by the rul e of thumb formula, proposed by
+Schwert, in [6]. The ADF test is performed on the levels and th e diﬀerenced levels, and the test
+values were compared with the critical value at the 95% conﬁd ence level to generate conclusions.
+Each of the major currency pair price series were conclusive ly found to be I(1), and hence
+were used in the Johansen test. For the Johansen test, the V AR optimal solution lag length needs
+to be found. Again, the series was assumed to have drift but no linear trend, and the lag length
+was found by minimizing the SC information criterion for, ag ain, the large sample size. Again,
+though ineﬃcient, it provides asymptotically correct results. A lagge d V AR is used in the Jo-
+hansen procedure, so 1 is subtracted from the optimal V AR lag length.
+The Johansen procedure was then initiated, again with the as sumption of drift but no linear
+trend. The trace statistic was used, where the null hypothes is is that the number of cointegration
+vectors is less than or equal to the total number of vectors te sted. Lastly, the longrun speciﬁcation
+for error correction was used.
+91 combinations of time series were tested for cointegratio n, and 16 were found to be coin-
+tegrated. The spreads of the cointegrated portfolios were p lotted, shown in Figure 2.
+As can be seen, the half life for each of the spreads was comput ed. Ignoring the drift
+and lagged diﬀerence terms, the di ﬀerential form of the spread is equivalent to the Ornstein-
+Uhlenbeck stochastic process [7]. The di ﬀerential form leads to an analytical solution for the
+expected value of the portfolio spread which, for a mean-rev erting process with negative λ, tells
+us that the expected value of the price decays exponentially at a half-life of−log(2)/λ.λ, which
+measures the speed of an O-U process returning to its mean lev el, can be estimated from a linear
+regression of the daily change of the spread versus the sprea d itself. In order to perform this
+calculation, the spread and transaction costs are needed fo r the portfolio, and computing these
+costs will be discussed subsequently when the mean reversio n strategy execution is described.
+2.2. Execution
+Finally, a mean reversion strategy was executed on each of th e cointegrated spreads. Firstly,
+the spread and transaction costs that are incurred when buyi ng/selling the cointegrated portfolio
+at the corresponding timestamp were computed. This computa tion depends on the individual
+price series of the instruments within the portfolio, and th e optimal eigenvector associated with
+the results of the cointegration test. The eigenvectors gen erated from the Johansen test can be
+used as hedge ratios. The optimal eigenvector is the one that has the maximum eigenvalue, as it
+has the shortest half life.
+The spread is calculated by multiplying the hedge ratio valu es with their associated price
+values and a summation is made. If the portfolios are cointeg rated, the resulting spread will be
+stationary.
+The absolute value of the hedge ratio represents the number o f units of each currency pair
+that we buy or sell. Hence, the total transaction costs can be computed with a summation on
+these amounts multiplied by the transaction costs per unit f or each currency pair.
+42009 2011 2013−7.5 −6.0(AUDUSD,GBPUSD)
+Time  (HalfLife is 118 days)Spread
+2009 2011 2013−1.10 −0.95(AUDUSD,CADUSD)
+Time  (HalfLife is 43 days)Spread
+2008 2010 2012 20140.05 0.25(EURUSD,GBPUSD)
+Time  (HalfLife is 76 days)Spread
+2009 2011 2013−0.5 0.5(AUDUSD,EURUSD,GBPUSD)
+Time  (HalfLife is 84 days)Spread
+2009 2011 2013−1.40 −1.20(AUDUSD,GBPUSD,CADUSD)
+Time  (HalfLife is 49 days)Spread
+2009 2011 2013−1.5 −1.2(AUDUSD,GBPUSD,JPYUSD)
+Time  (HalfLife is 111 days)Spread
+2009 2011 2013−0.95 −0.80(AUDUSD,CADUSD,CHFUSD)
+Time  (HalfLife is 30 days)Spread
+2009 2011 2013−1.05 −0.85(AUDUSD,EURUSD,GBPUSD,CADUSD)
+Time  (HalfLife is 59 days)Spread
+2009 2011 2013−0.85 −0.70(AUDUSD,EURUSD,CADUSD,CHFUSD)
+Time  (HalfLife is 30 days)Spread
+2009 2011 2013−0.80 −0.70(AUDUSD,GBPUSD,NZDUSD,CADUSD)
+Time  (HalfLife is 35 days)Spread
+2009 2011 2013−1.00 −0.85(AUDUSD,GBPUSD,CADUSD,CHFUSD)
+Time  (HalfLife is 30 days)Spread
+2009 2011 2013−1.1 −0.8(AUDUSD,GBPUSD,CADUSD,JPYUSD)
+Time  (HalfLife is 51 days)Spread
+2009 2011 2013−0.90 −0.80(AUDUSD,NZDUSD,CADUSD,CHFUSD)
+Time  (HalfLife is 30 days)Spread
+2009 2011 2013−0.75 −0.65(AUDUSD,NZDUSD,CADUSD,JPYUSD)
+Time  (HalfLife is 30 days)Spread
+2009 2011 2013−0.95 −0.80(AUDUSD,CADUSD,CHFUSD,JPYUSD)
+Time  (HalfLife is 30 days)Spread
+2008 2010 2012 2014−0.10 0.10(EURUSD,GBPUSD,NZDUSD,CHFUSD)
+Time  (HalfLife is 40 days)Spread
+Figure 2: Cointegrated Spreads
+The mean and standard deviation of the spread were computed i n order to calculate the z
+score, which simply represents the number of standard devia tions separating the current price
+from the mean. If the z score is positive, the current price of the security is above the mean. If
+the z score is negative, the current price of the security is b elow the mean. Hence, the z score is
+used to generate the mean reversion trading signals.
+The entry z score was set to 1 and the exit z score was set to 0. Th ese values set the extreme
+values, or thresholds, which when crossed by the signal, tri gger trading orders. Entry into a long
+position is made if the z score is less than the negated entry s core. Exit from a long position is
+made if the z score is greater than the negated exit score. Ent ry into a short position is made if
+the z score is greater than the entry score. Exit from a short p osition is made if the z score is less
+than the exit score.
+With this, the long /short positions were set, yielding the number of units of the portfolio
+bought or sold at each timestamp. The USD capital allocation to buy the portfolio, speciﬁcally
+the USD capital invested in each currency pair at each timest amp, was found by computing the
+product between the hedge ratio matrix, which represents th e hedge ratio of each currency pair
+at each timestamp, and the price matrix, which represents th e price of each currency pair at each
+timestamp.
+Using these computations, the P&L of the strategy at each tim estamp was computed. Trans-
+5action costs were subtracted from this value, and Return was found by dividing the resulting
+P&L by the gross market value of the portfolio. From the retur n, the APR, Sharpe Ratio, and
+Maximum Drawdown of the strategy was computed. The spread (w /half life), the standardized
+spread with color-coding indicating the long and short posi tions, the daily returns, and the cu-
+mulative returns were all plotted. Furthermore, the averag e and standard deviation of the daily
+returns, the APR, Sharpe Ratio, and Maximum Drawdown result s were all reported.
+For the forthcoming analysis, a cointegrated portfolio was randomly selected. The chosen
+portfolio consists of a combination of AUDUSD, CADUSD, NZDU SD, and JPYUSD currency
+pairs. The results generated after backtesting the strateg y is shown in Figure 3
+2009 2010 2011 2012 2013 2014−0.75 −0.651*AUDUSD−0.52*NZDUSD−1.1*CADUSD−13.66*JPYUSD
+Time  (HalfLife is 30 days)Spread
+2009 2010 2011 2012 2013 2014−4 −2 0 1 2Zscore entry 1 std, Zscore exit 0 std
+TimeStandardized Spread
+2009 2010 2011 2012 2013 2014−1.0 0.0 1.0Daily Returns (average: 0.0156%, std: 0.1591%)
+TimeDaily Returns (%)
+2009 2010 2011 2012 2013 20140 5 15 25APR: 3.983%, Sharpe Ratio: 1.559, maxDD: 3.0018%
+TimeCumulative Returns (%)
+Figure 3: Mean Reversion Results
+3. Macroeconomic Indicators
+Our goal was to use macroeconomic indicators to improve upon the implemented Multiple
+Pairs trading strategy. By generating buy /sell/hold signals based upon the forecasts of the cho-
+sen variables, and combining these signals with the mean rev erting signal, we hoped to obtain
+improved performance.
+There is much history with improving a Pairs Trading Strateg y by factoring in additional
+variables, however the indicators chosen have typically be en technical, and not macroeconomic.
+6In [8], the authors’ implemented Pairs Trading model was ext ended to take into account
+technical indicators. Rather than only considering the spr ead of the price, technical indicator
+movements were also considered. Technical indicators whic h were selected exhibited similar be-
+haviors for both securities: Simple moving average (SMA), W eighted moving average (WMA),
+Money ﬂow index (MFI), and Relative strength index (RSI). T- scores were computed for the
+price and the selected indicators, and a trained SVM was appl ied to the test dataset to make the
+ﬁnal trading decisions.
+This decision is typical, to not only use the price spread but other indicators intrinsic to
+the currency pair being traded. However, little exploratio n has been done for considering how
+macroeconomic movements reﬂecting the overall economy can improve trading performance. As
+currency pairs are representative of foreign exchange rate s, with a downturn /upturn in the U.S.
+economy, a increase /decrease in the prices of currency pairs relative to the U.S. Dollar should
+take place.
+Therefore, macroeconomic indicators which exhibit moveme nts that are correlated with the
+strengthening/weakening of the U.S. Dollar were considered.
+3.1. S&P 500
+The Standard & Poor’s 500 Composite Stock Price Index was use d. The S&P Index Com-
+mittee chooses the indexed stocks based upon market size, li quidity and industry group repre-
+sentation. Component companies are periodically replaced . Companies are most often removed
+because of a merger with another company, ﬁnancial operatin g failure or restructuring. Prospec-
+tive companies are placed in an index ”replacement pool” and vacancies are ﬁlled from that pool.
+The index is designed to measure changes in the stock prices o f component companies. It
+is used as a measure of the nation’s stock of capital, as well a s a gauge of future business and
+consumer conﬁdence levels. With that growth, the U.S. Dolla r should strengthen.
+3.2. Federal Funds
+The eﬀective Federal Funds Rate was also used. It is the interest ra te at which a deposi-
+tory institution lends funds maintained at the Federal Rese rve to another depository institution
+overnight. The higher the federal funds rate, the more expen sive it is to borrow money. Since
+it is only applicable to very creditworthy institutions for extremely short-term (overnight) loans,
+the federal funds rate can be viewed as the base rate that dete rmines the level of all other interest
+rates in the U.S. economy.
+The Federal Open Market Committee (FOMC), which is the Feder al Reserves primary mon-
+etary policymaking body, telegraphs its desired target for the federal funds rate through open
+market operations. A rise in the Federal Funds Rate indicate s the FOMC attempting to curb bur-
+geoning economic growth to prevent an inﬂationary period, a nd therefore the U.S. Dollar should
+strengthen.
+3.3. 10-Year Treasury
+The 10-Year Treasury Note Yield at Constant Maturity was als o used. The Treasury Yield is
+the return on investment, expressed as a percentage, on the U .S. government’s debt obligations
+7(bonds, notes and bills). From another perspective, it is th e interest rate the U.S. government
+pays to borrow money for di ﬀerent lengths of time.
+The 10-Year Treasury in particular tends to signal investor conﬁdence. When conﬁdence is
+high, the ten-year treasury bond’s price drops and yields ri se because investors feel they can ﬁnd
+higher returning investments and do not feel the need to play it safe. But when conﬁdence is low,
+the price increases and yields fall as there is more demand fo r safe investment. Therefore, the
+higher the yield on long-term bonds like the 10-Year Treasur y, the better the economic outlook,
+and the stronger the U.S. dollar.
+4. Macroeconomic Forecasts
+Each of the indicators were forecast in order to generate a tr ading signal. A Support Vec-
+tor Machine was utilized for this purpose. Support Vector Ma chines, or SVMs, are supervised
+learning models with associated learning algorithms that a nalyze data used for classiﬁcation and
+regression analysis. Given a set of training examples, each marked as belonging to one of mul-
+tiple categories, an SVM training algorithm builds a model t hat assigns new examples to one
+of the categories, making it a multiclass non-probabilisti c linear classiﬁer. An SVM model is a
+representation of the examples as points in space, mapped so that the examples of the separate
+categories are divided by a clear gap that is as wide as possib le. New examples are then mapped
+into that same space and predicted to belong to a category bas ed on which side of the gap they fall.
+Support Vector Machines have been found to particularly sho w excellent performance in the
+ﬁeld of time series prediction. [9] SVMs can accurately fore cast time series data when the un-
+derlying system processes are typically nonlinear, nonsta tionary and not deﬁned apriori.
+However, forecasting the exact value that the macroeconomi c indicators would hold on a
+month-to-month basis is a infeasible problem, even for SVMs . A vast amount of feature engi-
+neering would need to be done, which is both di ﬃcult and expensive. Variables would need to be
+created using domain knowledge of the data to give the SVM the adequate data needed to make
+accurate forecasts. But, for our purposes, forecasting the direction in which the macroeconomic
+indicators move would be su ﬃcient, and this is certainly a easier problem to solve.
+An SVM was trained on monthly data, acquired through the Have r Analytics Database, from
+1995-2008, in order to successfully forecast whether the in dicator of note increased, decreased,
+or stayed constant in the evaluation period, 2008-2014, on a month-by-month basis. With little
+feature engineering, a classiﬁcation accuracy of 70% was yi elded.
+With these monthly forecasts, a trading signal can be genera ted. If the forecast details that the
+indicator will stay constant, a ”hold” position was taken. I f instead it predicts that the indicator
+will increase, then a ”sell /short” position was taken, and if a decrease is predicted, a ” buy/long”
+position was taken. This is because if, for example, the indi cator were to increase, the value of
+the major currencies relative to the U.S. Dollar would decre ase, meaning a ”sell /short” position
+should be taken.
+These monthly signals were normalized to daily signals, in o rder to be compared with the
+mean reverting signal.
+85. Signal Weighting
+In order to combine the 4 signals into one, the signals were on e-hot encoded. If each of the
+possible signals were encoded with nominal values, the ordi nal property would cause greater
+values to have greater weight. Instead, a boolean vector is g enerated for each possible position,
+and only one of these vectors can take on the value ”1” for each sample.
+With the signals one-hot encoded, each possible signal now m athematically is equal in value.
+With that, a weight vector was generated which signiﬁes how m uch weight will be given to each
+indicator’s signal. The weights were bounded on the range 0 t o 1, and these weights were then
+optimized using Sequential Least-Squares Programming (SL SQP), an iterative method for non-
+linear optimization. The objective function here was the AP R, and the near negligible transaction
+costs were not considered for the optimization.
+The results are summarized in the following table:
+10-Year S&P 500 Federal Funds Mean Reversion APR
+0 0 0 1 4.084%
+0.5 0.5 0.75 1 4.112%
+Table 1: Optimization Results
+If only the mean reverting signal was considered, an APR of 4. 084% was yielded. After op-
+timization, giving non-zero weight to the macroeconomic in dicators was found to be ideal, with
+a increased APR of 4.112% obtained. With an evaluation perio d spanning 6 years and only 3
+macroeconomic signals stemming from satisfactory forecas ts considered, this is certainly a sig-
+niﬁcant improvement.
+The full backtested results can be seen in Figure 4, and can be compared to the results gener-
+ated using solely the mean reverting signal, summarized in F igure 3. The lessening in the APR is
+due to the transaction costs factored in. Qualitatively eva luating the positions taken by examining
+the plot on the upper-right reveals the beneﬁt to giving non- zero weight to the macroeconomic
+signals.
+Comparing the historical positions taken reveals a similar pattern, except for the 2008-2010
+period. The recession in the United States spanned the major ity of that time, beginning Decem-
+ber 2007 and ending June 2009. During this time, rather than c ontinuing to rapidly transition
+between taking short and long positions based solely on the l evel of the spread, the macroeco-
+nomic indicators inﬂuenced the strategy to simply hold a sho rt position throughout that time,
+betting that though the U.S. dollar was weak during this rece ssionary phase, it should revert
+back to the mean. That decision was the signiﬁcant di ﬀerence between the strategies, and what
+primarily net the improvement in performance.
+92009 2010 2011 2012 2013 2014−0.75 −0.651*AUDUSD−0.52*NZDUSD−1.1*CADUSD−13.66*JPYUSD
+Time  (HalfLife is 30 days)Spread
+2009 2010 2011 2012 2013 2014−4 −2 0 1 2Zscore entry 1 std, Zscore exit 0 std
+TimeStandardized Spread
+2009 2010 2011 2012 2013 2014−1.0 0.0 1.0Daily Returns (average: 0.016%, std: 0.1955%)
+TimeDaily Returns (%)
+2009 2010 2011 2012 2013 20140 5 15 25 35APR: 4.0573%, Sharpe Ratio: 1.297, maxDD: 3.7254%
+TimeCumulative Returns (%)
+Figure 4: Optimal Signal Weighting Results
+6. Conclusion
+The Yield Curve is a strong economic indicator, and studies s uggest that trading upon the
+mean-reverting nature of its spread yields statistically s igniﬁcant positive performance results.
+Due to that, a Multiple Pairs Trading Strategy was implement ed using major currency pairs. Us-
+ing the Johansen test, stationary cointegrated portfolios were yielded from the major currency
+pairs considered. With that, a mean reversion strategy was e xecuted, by computing z scores
+and comparing them to the entry and exit thresholds. The repr esentative cointegrated portfolio
+yielded a APR of 4.084%. By using a SVM to generate monthly for ecasts on a set of macroe-
+conomic indicators, trading signals for each of the indicat ors considered were obtained. After
+optimizing upon the weights for each of the indicators, it wa s found that giving the macroeco-
+nomic signals nonzero weights yielded an APR of 4.112%, an im provement upon the original
+strategy. With a large evaluation period and a small indicat or set, this improvement is signiﬁcant
+and demonstrates that macroeconomic indicators can certai nly improve trading strategies.
+References
+[1] C. T. Chua, W. T. H. Koh, K. Ramawamy, Proﬁting from Mean Re verting Yield Curve Strategies (2004).
+[2] F. X. Diebold, R. S. Mariano, Comparing Predictive Accur acy (1995).
+[3] S. E. Said, D. A. Dickey, Testing For Unit Roots in Auto-Re gressive Moving Average Models of Unknown Order
+(1984).
+10[4] S. Johansen, Estimation and Hypothesis Testing of Coint egration Vectors in Gaussian Vector Autoregressive Models
+(1991).
+[5] G. E. Schwarz, Estimating the Dimension of a Model (1978) .
+[6] G. W. Schwert, Tests for Unit Roots: A Monte Carlo Investi gation (1989).
+[7] G. Uhlenbeck, L. Ornstein, On the Theory of Brownian Moti on (1930).
+[8] J. Wu, A Pairs Trading Strategy for GOOG /GOOGL Using Machine Learning (2015).
+[9] K. Miller, A. Smola, G. Ratsch, B. Schollopf, J. Kohlmorg en, V . Vapnik, Using Support Vector Machines for Time
+Series Prediction (2000).
+11

@@ -1,0 +1,378 @@
+arXiv:1006.3030v1  [cs.DM]  15 Jun 2010Satisﬁability thresholds for k-CNF formula with
+bounded variable intersections
+Karthekeyan Chandrasekaran∗
+Georgia Institute of TechnologyNavin Goyal†
+Microsoft Research, India
+Bernhard Haeupler‡
+Massachusetts Institute of Technology
+Abstract
+We determine the thresholds for the number of variables, number o f
+clauses, number of clause intersection pairs and the maximum clause de-
+gree of a k-CNF formula that guarantees satisﬁability under the assumption
+that everytwoclauses shareat most αvariables. Moreformally, we call these
+formulas α-intersecting and deﬁne, for example, a threshold µi(k,α) for the
+number of clause intersection pairs i, such that every α-intersecting k-CNF
+formulainwhichatmost µi(k,α)pairsofclausesshareavariableissatisﬁable
+and there exists an unsatisﬁable α-intersecting k-CNF formula with µm(k,α)
+such intersections. We provide a lower bound for these thresholds based on
+the Lov´ asz Local Lemma and a nearly matching upper bound by con struct-
+ing an unsatisﬁable k-CNF to show that µi(k,α) =˜Θ(2k(2+1/α)). Similar
+thresholds are determined for the number of variables ( µn=˜Θ(2k/α)) and
+the number of clauses ( µm=˜Θ(2k(1+1
+α))) (see [10] for an earlierbut indepen-
+dent report on this threshold). Our upper bound construction giv es a family
+of unsatisﬁable formula that achieve all four thresholds simultaneo usly.
+1 Introduction
+Satisﬁability of CNFisoneofthemoststudiedandversatile problemsincomputer
+science with its own journal (JSAT), competitions and an yea rly conference, Inter-
+national Conference on Theory and Applications of Satisﬁab ility Testing (SAT).
+∗karthe@gatech.edu
+†navingo@microsoft.com
+‡haeupler@mit.edu
+1In this paper we investigate a simple class of criteria that c an guarantee satisﬁa-
+bility of a given k-CNF formula. We consider threshold criteria, i.e., for sev eral
+quantities connected to a CNF (like the number of clauses, va riables or variable
+intersections) we determineamaximum magnitudeleading to satisﬁable formulas.
+We would like to determine the exact threshold of such quanti ties, in the sense
+that there exist unsatisﬁable formulas for which this quant ity is greater than the
+threshold. A tightly determined threshold can be used as a si mple satisﬁability
+test: given a formula F, determine or count the speciﬁc quantities in Fand de-
+clareFsatisﬁable if one of these quantities is below the threshold . Observe that
+such thresholds help in deciding satisﬁability only if the c onsidered quantity are
+below the threshold. The problem of deciding satisﬁability when all these quan-
+tities are above the threshold is still a hard problem.
+One such threshold that we consider is the number of clauses m. We denote this
+threshold by µm(k) and it denotes the smallest number of clauses in an unsatisﬁ -
+able formula. The trivial lower bound of µm(k)≥2kis easily seen: each formula
+that consists of less than 2kclauses is satisﬁable since each clause eliminates only
+one out of the 2kpossible satisfying assignments. On the other hand there is an
+unsatisﬁable k-CNF formula with 2kclauses, namely the formula consisting of
+all possible 2kclauses (all positive/negative literal combinations) on kvariables.
+Hence,µm(k) = Θ(2k).
+Yet another prominent threshold is the maximum clause degree ∆ of ak-CNF for-
+mula, i.e. the maximum number of clauses that share at least o ne variable with
+a ﬁxed clause. The complete formula on kvariables once again has maximum
+degree 2kand gives an easy upper bound for this threshold. On the other hand
+an application of the powerful Lov´ asz Local Lemma [3] shows that every formula
+with ∆<2k/eis satisﬁable leading to the conclusion that µ∆= Θ(2k).
+In this paper we focus on satisﬁability-threshold for a spec ial class of formulas
+which guarantee that two clauses intersect only in a bounded number (henceforth
+we denote this by α) of variables. These formulas are a natural extension of
+linear CNF formulas, i.e., formulas with α= 1, which have been introduced in [9].
+The naming and concept of linear CNF formula comes from hyper graphs with
+bounded intersections as studied for example in [3]. Intuit ively, the restriction
+to bounded intersection makes it harder to build conﬂicting clauses which lead
+to unsatisﬁability. And indeed it was the original goal of th e authors to prove
+a higher satisﬁability-threshold for ∆ in linear k-CNF using stronger versions
+of the LLL, e.g., the soft-core LLL version of [13]. While it t urned out that the
+satisﬁability thresholdfor∆remains ˜Θ(2k)evenforlinearCNFswegot interesting
+2dependencies on αin the thresholds for other quantities, namely the number of
+variables, the number of clauses and the number of clause int ersection pairs.
+2 Related work
+This paper builds highly on the techniques developed by Erd˝ os and Lov´ asz in the
+classical paper “Problems and results on 3-chromatic hyper graphs and some re-
+latedquestions”[3]. OurproofsarebuiltonthepowerfulLo v´ aszLocalLemmaand
+also make use of and extend the shrinking operation (see Sect ion 5) that was used
+in [3] to construct interesting linear hypergraphs. Indepe ndently but roughly a
+year beforetheauthorsconducted thisresearch thepaper[1 0] byDominik Scheder
+examined the satisﬁability threshold for the number of clau ses/constraints apply-
+ing essentially the same techniques as here and in [3]. While Scheder considers
+multi-value constraint satisfaction problems – essential ly a non-binary variant of
+CNF formula—he restricts himself to the threshold µm. All results presented here
+directly extend to these multi-value CSPs too and to our know ledge this paper is
+the ﬁrst to states the thresholds for the number of clause int ersection pairs, vari-
+ables and the max degree explicitly. More complicated algeb raic constructions
+based on ideas of Kuzjurin [6] and Kostochka and R¨ odl [5] wor k for the restricted
+caseα= 1 and can be found in Lemma 2.2. of [11] without explicit stat ement of
+thresholds. Most notably, we use the α-shrinking procedure not just in the lower
+bound but apply it to a maximal ( k+α)-uniform α-intersecting formula in our
+upper bound construction. This is the key to obtaining bound s on the number
+of clause intersections and gives an unsatisﬁable α-intersecting formula that is
+extremal (up to log-factors) in all considered quantities.
+Another very interesting related work by Scheder and Zumste inis thepaper “How
+many conﬂicts does it need to be Unsatisﬁable” [12] in which u pper and lower
+bounds on the threshold for conﬂicts are given. The notion of a conﬂict is closely
+related to clause intersections. Instead of counting the pa irs of clauses that share
+a variable the number of conﬂict only counts clause pairs in w hich at least one
+variable is shared in an opposite literal. The reason why con ﬂicts are interesting
+is because the lopsided version of the Lov´ asz Local Lemma [4 ] can be applied to
+k-CNF formulas in which each clause is involved in at most 2k/econﬂicts and thus
+guarantees their satisﬁability. In contrast to the nearly t ight threshold µi(k,α) =
+˜Θ(2k(2+1/α)) for clause intersections in α-intersecting formula established here,
+the conﬂict threshold is much harder to determine: the best k nown result for
+α=kisω(2.69k)≤µc(k,k)≤O(4klog2k
+k) [12].
+33 Preliminaries
+A hypergraph is k-uniform if all edges contain exactly kvertices. Two edges
+are called intersecting if they share at least one vertex and a hypergraph is
+calledα-intersecting if any two intersecting edges share at most αvertices. A
+1-intersecting hypergraph is called linear. Theedge intersection pairs of a
+hypergraph are all pairs of edges that are intersecting. The degree of a vertex
+is the number of edges it appears in and the degree of an edge is the number
+of edges it intersects with.
+Everyk-CNF formula Finduces ak-uniform (multi)-hypergraph GF= (V,E)
+whereVis the set of variables and the edge (multi)-set Econtains an hyperedge
+over vertices {v1,···,vk}if and only if there exists a clause consisting of the cor-
+responding variables. This gives a one-to-one mapping betw een clauses and edges
+in the induced hypergrah and we adopt all previously introdu ced hypergraph ter-
+minology for k-CNF formula accordingly, e.g., we deﬁne clause intersecti on pairs
+as all pairs of clauses that intersect in at least one variabl e.
+Throughoutthispaperweareinterestedinsatisﬁabilityth resholdsfor α-intersecting
+k-CNF formula. We consider the following quantities: number of clauses m,
+number of variables n, maximum degree ∆ and number of clause intersection
+pairsi. Denote the thresholds for a quantity qwithµq(α,k). Asatisﬁability
+threshold µq(α,k) is the smallest number such that there exists an unsatisﬁab le
+α-intersecting k-CNF with q=µm(α,k). Phraseddiﬀerently it is thelargest num-
+ber such that every α-intersecting k-CNF formula with q < µq(α,k) is satisﬁable.
+Our lower bounds to the thresholds are based on a classical ap plication of the
+Lov´ asz Local Lemma [3] and its more recent constructive alg orithmic versions
+that give randomized [7] and deterministic [8, 1] algorithm s:
+Theorem 1. Everyk-CNF with maximum clause degree ∆at most2k
+eis satisﬁ-
+able and there is an eﬃcient algorithm to ﬁnd such an assignme nt.
+4 Results
+We present lower bounds (Theorem 2) and nearly matching cons tructive upper
+bounds (Theorem 3) that determine all thresholds µi,µm,µn,µ∆up to log-factors
+(Theorem 4). Our lower bound in Theorem 2 consists of an algor ithm based on
+Theorem 1 that eﬃciently ﬁnds a satisfying assignment for an yα-intersecting k-
+CNF formula with few clause intersection pairs, variables o r clauses. The upper
+4bound in Theorem 3 proves the existence of unsatisﬁable form ulas which have
+only slightly more clause intersections, variables and cla uses. Note that while
+our proof of Theorem 2 is algorithmic, one needs an eﬃcient im plementation of
+Lemma 7 to make Theorem 3 constructive(see also [11]). We sus pect that some
+of the bounds below can be improved by O(k)-factors but since all bounds are
+exponential in kwe did not optimize for these polylogarithmic factors.
+Theorem 2. Everyα-intersecting k-CNF with less than
+Li=1
+2α/parenleftBigg
+2(k−α)
+ek−1/parenrightBigg(2+1/α)
+clause intersections
+or
+Ln=/parenleftBigg
+2(k−α)
+ek/parenrightBigg1/α
+variables
+or
+Lm=1
+k/parenleftBigg
+2(k−α)
+ek/parenrightBigg1+1/α
+clauses
+is satisﬁable and a satisfying assignment can be found eﬃcie ntly.
+Theorem 3. For anykandα < kthere is an unsatisﬁable α-intersecting k-CNF
+with at most
+Ui=α22(k+α)(2+1/α)k(5+2/α)clause intersections
+and
+Un= 2α2k/αk2(1+1/α)variables
+and
+Um=α2(k+α)(1+1/α)k2(1+1/α)clauses
+and
+U∆=α2(k+α)k2maximum degree .
+In the following ˜Θ(x) means Θ( x(logx)c) for some absolute (positive or negative)
+constant c. Combining the above two theorems yields good estimates for the
+thresholds:
+Corollary 4. The thresholds for satisﬁability are:
+•number of clause intersections: µi=˜Θ(2k(2+1/α))
+5•number of variables: µn=˜Θ(2k/α)
+•number of clauses: µm=˜Θ(2k(1+1
+α))
+•maximum degree: µ∆=˜Θ(2k)
+5 Shrinking and Maximal α-intersecting Hypergraphs
+This section contains useful lemmas about hypergraphs need ed to prove the main
+theorems. One operation that will be particularly helpful f or both the lower and
+the upper bound is the β-shrinking operation. The shrinking operation creates
+ak-uniform hypergraph H′from a (k+β)-uniform hypergraph Hby deleting the
+βvertices of maximum degree from each edge breaking ties arbi trarily. Shrinking
+is similarly deﬁned for ( k+β)-CNF formulas where the variables with highest
+degree are deleted from each clause. The next lemma shows tha t a high degree
+vertex can survive the β-shrinking procedure to remain a high degree vertex only
+if many such high degree vertices are present in the original hypergraph.
+Lemma 5. LetHbe a(k+α)-uniform α-intersecting hypergraph and H′be the
+result of α-shrinking H. IfH′has a vertex of degree d, thenHhas more than
+d1/αvertices of degree at least d.
+Proof.Letvbe the vertex in H′of degree d. SinceH′was created by shrinking H
+there are at least dedges in Hin which vis present but did not get deleted. We
+call the set of those edges E; then we know that |E| ≥d. From each edge e∈ E,
+exactlyαvertices got deleted all of which are of degree of at least d. We claim
+that the mapping that maps each e∈ Eto thisα-sized set of deleted vertices is
+injective:
+Suppose two edges e1,e2∈ Eget mapped to the same α-sized set of vertices.
+Then, the edges e1ande2intersect in these αvertices; furthermore they also in-
+tersect in the vertex vand thus intersect in α+1 vertices. This is a contradiction
+to theα-intersecting property of H.
+Injectivity gives us that there are |E| ≥ddiﬀerent α-sized subsets of vertices
+which got deleted instead of vwhile shrinking. All vertices in those subsets must
+have degree at least dby deﬁnition of the shrinking operation. Furthermore if N
+is the number of distinct vertices in those subsets then we ha ved≤/parenleftbigN
+α/parenrightbig
+< Nα.
+Therefore there are at least N > d1/αvertices with degree at least dinH.
+6The next lemma proves that any maximal α-intersecting hypergraph on nvertices
+must have a large number of edges. It uses a bound on the Tur´ an number that is
+due to de Caen [2]. The Tur´ an number T(n,k,r) forr-uniform hypergraphs with
+nvertices is the smallest number of edges possible such that e very set of kvertices
+contains at least one edge. This number was determined for gr aphs by Tur´ an [14]
+and extended to hypergraphs by himself in the report ”Resear ch Problems”[15].
+Lemma 6. Every maximal α-intersecting hypergraph Honnvertices has at least
+m≥(n
+α+1)
+(k
+α+1)2edges.
+Proof.LetHbe a maximal α-intersecting hypergraph on medges. Since His
+α-intersecting each of the/parenleftbign
+α+1/parenrightbig
+subsets of vertices of size α+1 is covered by at
+most one distinct hyperedge of H. Also,Hcovers exactly m/parenleftbigk
+α+1/parenrightbig
+distinct subsets
+of sizeα+ 1 inH. Ifm/parenleftbigk
+α+1/parenrightbig
+< T(n,k,α+1) the α+ 1-uniform hypergraph
+consisting of all covered α+1-size subsets has less than T(n,k,α+1) edges and
+therefore ∃ak-subsetKthat does not contain any covered edge. This k-subset
+can be added as an edges into Hwhile preserving it to be α-intersecting. Indeed,
+if some edge eintersects Kin at least α+1 vertices, then the corresponding set
+of vertices is covered contradicting the choice of K. Thus if m <T(n,k,α+1)
+(k
+α+1)then
+His not maximal α-intersecting. To ﬁnish we use a lower bound of de Caen [2]
+on the Tur´ an number: T(n,k,α+1)≥n−k+1
+n−α/parenleftbign
+α+1/parenrightbig
+//parenleftbigk−1
+α/parenrightbig
+; plugging this in gives
+the desired result.
+We remark that the same result also appears in Scheder [10] wi th somewhat
+simpler and self-contained proof.
+6 A Constructive Lower Bound
+This section gives the proof for the lower bound in Theorem 2:
+Proof.(of Theorem 2)
+We prove that every α-intersecting k-CNFFis either satisﬁable by Theorem 1 af-
+terα-shrinking it or it must have large clause intersection pair s, variables, clauses
+and a high maximum degree contradicting the hypothesis abou t the formula F.
+LetF′be the resulting ( k−α)-CNF we get from α-shrinking F. If all variables
+inF′have degree less than d= 2(k−α)/ekthen the Lov´ asz Local Lemma guaran-
+tees that F′is satisﬁable and Theorem 1 states that a satisfying assignm ent can
+7be eﬃciently found. Note that a satisfying assignment for F′is also a satisfying
+assignment for F.
+In the other case, suppose F′has at least one variable of degree d. Then, Lemma
+5 shows that Fmust have at least d1/αvariables of degree at least d.
+To count the number of clause intersection pairs in F, we count the intersections
+of clauses containing one of the d1/αhigh degree variables. For each such variable
+the clauses containing it induce a clique with ( d−1)2/2 intersections. Taking the
+disjoint union of these intersections we get at least ( d−1)2+1/α/2 intersections
+but overcount each intersection up to α-times since two clauses can intersect in
+up toαvariables. Therefore Fhas at least1
+2α(d−1)2+1/αintersections.
+To count the number of clauses in Fwe look at the union of the clauses containing
+one of the d1/αvariables. There are at least d1+1/αclauses in the non disjoint
+union and each clause can get added because of each of its kvariables at most
+once. Thus Fhas at least d1+1/α/kclauses.
+Finally it is clear that Fhas at least d1/αvariables.
+7 Upper bounds for the thresholds
+This section gives the proof for the upper bounds in Theorem 2 .
+Before we prove the theorem itself, the following lemma give s a general way to
+transform a suﬃciently dense k-uniform hypergraph into an unsatisﬁable k-CNF
+formula by iteratively taking a hyperedge and greedily choo sing positive or nega-
+tive literals for the variables:
+Lemma 7. If there is a k-uniform hypergraph Honnvertices and at least m=
+n2kedges than there exists an unsatisﬁable k-CNFFinducing H.
+Proof.Denote the vertices in Hbyv1,...,vnand associate with them, the vari-
+ablesx1,···,xnthat will occur in F.
+We will denote A ∈ {0,1}nto be an assignment if we pick an assignment of val-
+ues to variables xby setting xi=Ai. We say that a clause coversan assignment
+A ∈ {0,1}nif it is not satisﬁed by the assignment. We will iteratively c reate
+a clause for every edge in Hgreedily covering the maximum number of yet un-
+covered assignments. We have to show that in the end all 2nassignments are
+8covered. Consequently, the conjunction of the created clau ses forms an unsatisﬁ-
+ablek-CNF.
+We pick edges efromHin an arbitrary order. We want to create a clause for
+eon thekvariables associated with the kvertices in e. For each variable we
+have the choice to pick the positive or the negative literal. These are 2kdiﬀerent
+choices and the assignments covered by two diﬀerent choices a re disjoint. Since
+every assignment can be covered in this way the assignments g et partitioned into
+2kparts. Simple averaging then guarantees that there exists a choice covering at
+least 1/2kfraction of the assignments not covered so far. After miterations of
+greedily creating clauses covering the maximal number of un covered assignments
+is at most 2n/parenleftbig
+1−1/2k/parenrightbigm=/parenleftBig
+2
+(1−2−k)2−k/parenrightBign
+<1. With all assignments covered
+the created formula Fis unsatisﬁable and by construction also induces Has
+required.
+The above lemma shifts the focus towards ﬁnding a suitable de nsek-uniform hy-
+pergraph in order to ﬁnd an unsatisfying k-CNF. The following proof of Theorem
+2 shows that α-shrinking a maximal α-intersecting ( k+α)-uniform hypergraph
+results in hypergraphs with nice additional extremal prope rties. Furthermore
+choosing a large number of vertices results in hypergraphs t hat obey the bound
+in Lemma 7 and can thus be transformed into the desired unsati sﬁablek-CNF.
+Proof.(of Theorem 3)
+We create the formula by applying Lemma 7 to an α-intersecting hypergraph. We
+obtain this hypergraph by α-shrinking a maximal α-intersecting ( k+α)-uniform
+hypergraph. Observe that it makes the resulting hypergraph k-uniform.
+We choose n=α/parenleftbig
+2k+αk2(α+1)/parenrightbig1/αand build a α-intersecting ( k+α)-uniform
+hypergraph on nvertices. The choice of nis such that Lemma 6 guarantees that
+we can ﬁnd a k+α-uniform hypergraph Hwith
+m=nα+1
+k2(α+1)αα=α2(k+α)(1+1/α)k2(1+1/α)= 2k+αn
+edges. This is suﬃciently large number of edges to construct an unsatisﬁable for-
+mulaFfor hypergraph Husing Lemma 7. Having constructed H, weα-shrink it
+to obtain hypergraph H′and its correspoding formula F′. Note that F′is unsat-
+isﬁable because Fis unsatisﬁable. The signiﬁcant advantage about H′obtained
+this way is that it has guarantees on the maximum degree and on the number of
+clause intersections. More precisely, we claim that H′has maximum degree less
+9than (mk)1/(1+1/α). Suppose that after the shrinking there is a vertex of degree
+d >(m(k+α))1/(1+1/α). Lemma 5 shows that in this case Hcontains at least
+d1/αvertices of degree larger than d. The disjoint union of the edges containing
+those vertices has size at least d1+1/αand each edge gets counted at most ( k+α)
+times this way. Therefore Hwould have at least d1+1/α/(k+α)> medges — a
+contradiction.
+Lemma 7 transforms the hypergraph Hinto an unsatisﬁable k-CNF formula F.
+This formula has nvariables and medges since shrinking preserves these quanti-
+ties. Furthermore, the maximum degree ∆ of Fis at most ( mk)1/(1+1/α)which
+also implies that the number of clause intersections is at mo stm∆.
+Acknowledgments
+The research for this paper was done in the summer of 2009 whil e the authors
+where at MSR India. We thank Aravind Srinivasan for pointing out the questions
+about satisﬁability thresholds for almost disjoint k-CNF formula which lead to
+this paper. We also want to thank Dominik Scheder.
+References
+[1] K. Chandrasekaran, N. Goyal, and B. Haeupler. Determini stic Algorithms
+for the Lov´ asz Local Lemma. In Proceedings of ACM-SIAM Symposium on
+Discrete Algorithms (SODA) , 2010.
+[2] D. De Caen. Extension of a theorem of Moon and Moser on comp lete sub-
+graphs.Ars Combinatoria 16 , pages 5–10, 1983.
+[3] P. Erd˝ os and L. Lov´ asz. Problems and results on 3-chrom atic hypergraphs
+and some related questions. Inﬁnite and ﬁnite sets , 2:609–627, 1975.
+[4] P. Erd˝ os and J. Spencer. Lopsided Lov´ asz local lemma an d latin transversals.
+Discrete Applied Mathematics , 30(2-3):151–154, 1991.
+[5] A. V. Kostochka and V. R¨ odl. Constructions of sparse uni form hypergraphs
+with high chromatic number. Random Struct. Algorithms , 36(1):46–56, 2010.
+[6] N. N. Kuzjurin. On the diﬀerence between asymptotically g ood packings and
+coverings. Eur. J. Comb. , 16(1):35–40, 1995.
+[7] R. A. Moser. A constructive proof of the lov´ asz local lem ma. InSTOC ’09:
+Proceedings of the 41st annual ACM symposium on Theory of compu ting,
+pages 343–350, New York, NY, USA, 2009. ACM.
+10[8] R. A. Moser and G. Tardos. A constructive proof of the gene ral lov´ asz local
+lemma.Journal of the ACM , 57(2):1–15, 2010.
+[9] S. Porschen, E. Speckenmeyer, and X. Zhao. Linear CNF for mulas and sat-
+isﬁability. Discrete Applied Mathematics , 157(5):1046–1068, 2009.
+[10] D. Scheder. Satisﬁability of almost disjoint cnf formu las.CoRR,
+abs/0807.1282, 2008.
+[11] D. Scheder. Unsatisﬁable Linear CNF Formulas Are Large and Complex.
+STACS 2010, 27th International Symposium on Theoretical Aspec ts of Com-
+puter Science , pages 621–632, 2010.
+[12] D. Scheder and P. Zumstein. How many Conﬂicts does it nee d to be Unsat-
+isﬁable? Theory and Applications of Satisﬁability Testing–SAT 2008 , pages
+246–256, 2008.
+[13] A. Scott and A. Sokal. The repulsive lattice gas, the ind ependent-set polyno-
+mial, andtheLov´ aszlocallemma. Journal of Statistical Physics , 118(5):1151–
+1261, 2005.
+[14] P. Tur´ an. On an extremal problem in graph theory. Mat. Fiz. Lapok , 48:436–
+452, 1941.
+[15] P. Tur´ an. Research problems . Akad. Kiad´ o, 1961.
+11

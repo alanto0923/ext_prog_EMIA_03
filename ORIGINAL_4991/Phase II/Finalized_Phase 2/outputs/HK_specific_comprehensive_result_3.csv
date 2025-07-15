@@ -1,0 +1,19 @@
+domain,name,code
+Momentum,Price Momentum (14 days),"((CLOSE - DELAY(CLOSE, 14)) / DELAY(CLOSE, 14))"
+Mean Reversion,Mean Reversion (20 days),"(MEAN(CLOSE, 20) - CLOSE)"
+Volatility,20-Day Volatility,"STD(CLOSE, 20)"
+Fundamental,Price-to-Earnings Ratio (P/E),(CLOSE / EPS)
+Liquidity,Trading Volume,VOLUME
+Quality,Gross Profit Margin,(GROSS_PROFIT / REVENUE)
+GROWTH,Earnings Growth Rate,"(EPS / DELAY(EPS,1) - 1)"
+Technical,Moving Average (MA),"SMA(CLOSE, 20)"
+Macro Economics,GDP Growth Rate,"GDP - DELAY(GDP, n)"
+Momentum,Relative Strength Index (RSI),(100 - ((100 / (1 + ABS((CLOSE - PREV_CLOSE) / PREV_CLOSE)))))
+Mean Reversion,Bollinger Bands,(CLOSE > BANDS[2])
+Volatility,Stochastic Oscillator,"(100 - (STOCH[(CLOSE * 3.93)] / (MAX(CLOSE, CLOSE MAX) * 0.022)))"
+Fundamental,Dividend Yield,DIVIDENDS / CLOSE
+Liquidity,Average Volume,"(VOLUME + DELAY(VOLUME, 1) + DELAY(VOLUME, 2)) / 3"
+Quality,Return on Equity (ROE),(EPS / TOTAL EQUITY)
+GROWTH,Price-to-Book Ratio (P/B),(CLOSE / BOOK_VALUE)
+Technical,Fibonacci Retracement Levels,"100 * ((1 + ABS(CLOSE - DELAY(CLOSE, 2)) / DELAY(CLOSE, 1)))"
+Macro Economics,Inflation Rate,(INFLATION_RATE) - (PREV_INFLATION_RATE)

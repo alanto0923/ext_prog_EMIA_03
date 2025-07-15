@@ -1,0 +1,359 @@
+Quantum Prisoner's Dilemma and High Frequency
+Trading on the Quantum Cloud
+Faisal Shah Khan∗1and Ning Bao†2
+1Dark Star Quantum Lab, 211 Attain St, Fuquay-Varina, NC 27526
+2Computational Science Initiative, Brookhaven National Lab, Upton,
+NY, 11973
+April 13, 2021
+Abstract
+High-frequency trading (HFT) oers an excellent user case and a
+potential killer application of the commercially available, rst genera-
+tion quasi-quantum communication and computation technologies. To
+this end, we oer here a simple but complete game-theoretic model
+of HFT as the famous two player game, Prisoner's Dilemma. We ex-
+plore the implementation of HFT as a game on the (quasi) quantum
+cloud using the Eisert, Wilkens, and Lewenstein quantum mediated
+communication protocol, and how this implementation can increase
+transaction speed and improve the lot of the players in HFT. Using
+cooperative game-theoretic reasoning, we also note that in the near
+future when the internet is properly quantum, players will be able to
+achieve Pareto-optimality in HFT as an instance of reinforced learning.
+1 Introduction
+Non-cooperative game theory is the art of strategic interaction between in-
+dividuals competing for joint stakes over which they entertain diering pref-
+erences. Game-theoretic reasoning can formally be traced back the Ancient
+Chinese General Sun Tzu (circa 500 BCE) and the ancient Indian minister,
+Chanakya (circa 300 BCE).
+Mathematical formalization of non-cooperative game theory in the 20th
+century goes back to the work of von Neumann and Nash. The publication
+the seminal work of von Neumann and Morgenstern titled Theory of Games
+and Economic Behavior [1] brought focus upon game theory as the right
+∗Corresponding Author: quantumsheikh@gmail.com
+†ningbao75@gmail.com
+1arXiv:2104.04663v1  [quant-ph]  10 Apr 2021Figure 1: Prisoner's Dilemma.
+mathematical language to analyze economic behavior and strategic decision
+making. The practical usefulness of the subject was made apparent by
+the awarding of several Noble prizes in Economics to developers of game-
+theoretic reasoning, including Nash [2], Harsanyi [3], Selten [4], Aumann
+[5], and Smith [6] for work in applications of game-theoretic reasoning to
+economics, political stratagem, and evolutionary biology. With the ongoing
+Covid-19 pandemic, game theoretic reasoning has also been used to shed
+light on best practices in developing optimal public health policy [7].
+With the recent advent of commercially viable quantum computation
+and communication technologies, the conuence of ideas from game theory
+and quantum information processing has gained strong interest. This inter-
+est has given birth to the subject known as quantum game theory (section
+3), where the impact of quantum information technology on game-theoretic
+reasoning is studied. An area where quantum game theory may be of par-
+ticular interest is the area of high-frequency trading. Here, many players
+participate in iterated buy/sell interactions at a very high rate, capitalizing
+on small market uctuations in either duration, intensity, or both to gain
+revenue. Because the timing of such interactions is critical to the success of
+high-frequency rms compared to rms that trade at slower rates, new tools
+that can improve the degree of synchronicity between the rms and which
+can provide provably-secure communication, are of great interest.
+2 Prisoner's Dilemma - A Game Theory Primer
+Consider the non-cooperative game called Prisoner's Dilemma , a 2-player
+non-cooperative game in which each of the two players (prisoners) who com-
+mitted a crime together are given the opportunity to reduce their time served
+in prison by helping authorities implicate the other player for the crime.
+This game is presented in tabular form in Figure 1 where the outcomes of
+the game are given as ordered pairs of numbers. The rst number in each
+outcome is the payo to Player I in the form of the number of years com-
+muted from his sentence, and the second number is the payo to Player
+II.
+The players have disparate preferences over the outcomes of the game,
+2which are captured below using the symbol to denote the notion of \pre-
+ferred over":
+Player I : (5 ;0)(3;3)(1;1)(0;5)
+Player II : (0 ;5)(3;3)(1;1)(5;0):(1)
+It is assumed that the players are rational , that is, each player will play
+the game in way that is consistent with his preferences. The game is played
+by employing strategies to optimize the payos. The two strategies available
+to both players are to either cooperate with the authorities to implicate the
+other player ( C), or to defect from oer to help the authorities ( D). The
+question is: what is the outcome of the game (or the play of the game)?
+The answer is provided in the form of Nash equilibrium , a prole of
+strategies, one per player, in which no player has motivation to deviate from
+his strategic choice. In other words, Nash equilibrium is a strategy prole
+in which each player's strategy is a best reply (with respect to the players'
+preferences) to all others. Not all games have a Nash equilibrium.
+For Prisoners' Dilemma, Figure 2 shows that the Nash equilibrium is
+the strategy prole ( D;D). This is the dilemma; for clearly, each player
+will be better o playing the strategy C, but this is not a best reply to
+the strategic choice of Cby the other player. The strategy prole ( C;C)
+(and its corresponding outcome) is Pareto-optimal , that is, its corresponding
+outcome is such that moving away from it to make one player better o will
+necessarily make another player worse o. Note that the strategy proles
+(C;D) and ( D;C) are also Pareto-optimal; however, no player wishes to
+complete her full sentence while her partner in crime walks free (as evidenced
+by the preference relations in expression (1)).
+2.1 Mixed Strategies and Mediated Communication
+When Nash equilibrium is not present in a game, or if it is sub-optimal,
+game-theorists suggest that players employ randomization over the outcomes
+as a mechanism for introducing or improving Nash equilibrium. To this
+end, players are allowed to independently randomize over their respective
+strategies, a notion referred to as mixed strategies , to produce probability
+distributions over the outcomes. The resulting mixed game will have at least
+one Nash equilibrium outcome (John Nash's Nobel prize winning result [2]).
+However, this mixed strategy Nash equilibrium need not be better paying
+than the one available in the original game, and it need not be Pareto-
+optimal. Indeed, this holds true for Prisoner's Dilemma.
+Further renement of the Nash equilibrium may be possible if a referee is
+inducted into the game at negligible cost. This proper extension of a game is
+know as the game with mediated communication . In such games, the referee
+creates a probability distribution over the outcomes of the game that the
+players could not using mixed strategies. The referee then tells each player
+3Figure 2: Nash equilibrium versus Pareto-optimal outcomes in Prisoner's
+Dilemma.
+in condence which strategy he should employ. Each player than checks the
+viability of the referee's advice with respect to his preferences and the 50-50
+chance of the other player agreeing to the advice given to him by the referee.
+If the viability checks out, the player agrees with the referee. When both
+players agree to the referees advice, the resulting Nash equilibrium is known
+as a correlated equilibrium .
+Even further renements of Nash equilibrium are conceivable by simply
+extending the domain of the game from Euclidean space to more exotic
+(and non-trivial) mathematical spaces such as Hilbert space and Banach
+space. The challenge then becomes how to keep the mathematical extensions
+grounded in physical reality. For the case of games extended to complex
+projective Hilbert space, the physical context is quantum mechanics. The
+result of this extension is the theory of \quantum games".
+3 Quantum Games
+Foreseeing the rise of quantum technologies like quantum computers and
+quantum communication devices and protocols, Meyer oered the rst game-
+theoretic model of quantum algorithms. In his seminal work [8] on the
+topic, he showed that in a simple penny ipping game, the player with
+access to quantum physical operations (or \quantum strategies") acting on
+the penny always won the game. His work was followed by Eisert et al.'s
+work [9] where the authors showed how to properly extend a game into
+the quantum realm with quantum mediated communication . These authors
+presented a two qubit (two player) quantum circuit that implemented the
+quantum communication protocol for Prisoner's Dilemma. This protocol is
+known as the EWL protocol and appears in gure 3.
+The EWL protocol is a quantum circuit that takes in as input the two-
+4Figure 3: The quantum circuit implementation of the EWL quantum game
+protocol. The referee consists of two quantum logic gates, J, which entangles
+the two qubits, and its inverse, Jy. In the middle of these two operations are
+the players' independent quantum strategic choices that each of them enacts
+on her qubit as unitary operations. We assume the top qubit is Player I's
+and the second one is Player II's.
+qubit state
+j00i=0
+BB@1
+0
+0
+01
+CCA; (2)
+with each qubit belonging to one player. This state is acted upon by the
+referee to produce a higher-order randomization in the form of a quantum
+superposition followed by measurement. In particular, the referee entangles
+the two qubits using a general entangling operator
+J() = cos
+2I
+I+isin
+2x
+x (3)
+whereIis the 22 identity operator, xis the Pauli-spin ip operator, and
+0
+2. When= 0, the protocol reproduces the original \classical"
+game.
+For=
+2, the game exhibits maximal entanglement between the qubits
+and the remarkable features discussed below. For this value of ,
+J=0
+BBB@1p
+20 0ip
+2
+01p
+2ip
+20
+0ip
+21p
+20
+ip
+20 01p
+21
+CCCA: (4)
+5Therefore,
+Jj00i=1p
+2(j00i+ij11i) =0
+BBB@1p
+2
+0
+0
+ip
+21
+CCCA: (5)
+The referee forwards the state in (5) to the players as her advice upon which
+the players can act with their quantum strategies. Finally, the referee disen-
+tangles the resulting two qubit state and makes a measurement, producing
+a probability distribution over the outcomes of the game (the observable
+states) from which expected payos to the players can be computed. Since
+the probability distribution was created using higher-order randomization by
+quantum superpositioning, the correlations it creates between the outcomes
+of the game after measurement are stronger than those possible classically
+[10].
+3.1 (Almost) Solving the Dilemma
+The remarkable implication of the EWL protocol for Prisoner's Dilemma is
+that under the right subset of quantum strategies, this quantum extension
+of the game eliminates the dilemma and the resulting Nash equilibrium
+is Pareto-optimal! The quantum strategies that allow this are the two-
+parameter subset of the set of one qubit gates:
+A:=eicos sin
+ sin e icos
+: 0
+2;0
+2
+: (6)
+However, when the full set of quantum strategies is made available to
+the players [11], that is,
+B:=eicos eisin
+ e isin e icos
+: 0
+2; ; ;
+;(7)
+the dilemma reappears in the quantum version of the game and the Nash
+equilibrium solution is the same as of the classical game. This is because a
+best reply to a quantum strategy from set Ais a quantum strategy from set
+B. But now, the other player also responds with a quantum strategy from
+setB, thus nullifying the quantum solution to the dilemma.
+Emulating mixed strategies, a further natural quantum extension is pos-
+sible by allowing players to randomize over their quantum strategies, giving
+rise to the notion of mixed quantum strategies . Eisert et al. showed that
+while the players cannot solve the dilemma by resorting to mixed quantum
+strategies in Prisoner's Dilemma, they can come close to it. By using mixed
+quantum strategies, the players can aect a Nash equilibrium in which the
+payo is (2 :5;2:5). This solution is closer to the Pareto-optimal outcome
+(3;3) than the sub-optimal outcome (1 ;1). Mixed strategies have a realistic
+6physical interpretation as the result of quantum strategies being transmitted
+over a noisy communication channel.
+Motivated by the results of the seminal works of Meyer and Eisert et al.,
+quantum game theory has become a major area of research since the seminal
+papers of Meyer and Eisert et al. A relatively recent and comprehensive
+review of the subject can be found in [12].
+4 The Dilemma in High Frequency Trading
+High-frequency trading (HFT) is dened by Gomber et al. in [13] as follows.
+HFT relates to the implementation of proprietary trading strate-
+gies by technologically advanced market participants. ... HFT
+enable market participants to dramatically speed up the recep-
+tion of market data, internal calculation procedures, order sub-
+mission and reception of execution conrmations.
+Our aim here is to show that quantum computing via the cloud can be used
+to implement HFT as a quantum game. For this, rst note that HFT is an
+instance of Prisoner's Dilemma where Player I and Player II represent the
+trading mindset of a market, buying and selling of commodities using the
+two strategies Buy orSell. Assuming that in markets there is a preference
+toward being part of a mass-buy versus a mass-sell, we set the following pref-
+erences for the players over the four possible strategy proles as reasonably
+reecting the mood of any market,
+Player I : (Sell ;Buy)(Buy;Buy)(Sell;Sell)(Buy;Sell)
+Player II : (Buy ;Sell)(Buy;Buy)(Sell;Sell)(Sell;Buy);(8)
+with a player most preferring to sell on his terms versus buying on the other
+payers terms.
+These preferences are identical to those in Prisoners' Dilemma when the
+numerical payo values from expression (1) are faithfully substituted into
+expression (8). Figure 4 shows HFT as an instance of Prisoners' Dilemma.
+Note that the dilemma in HFT is that the game will reach the sub-optimal
+Nash equilibrium (Sell ;Sell) = (1;1), which is a highly detrimental outcome
+for markets.
+4.1 HFT on the Quantum Cloud
+Today, the internet is quasi-quantum, meaning that users can access third
+party, rst generation quantum processors via the cloud (the quantum cloud),
+which can oer transnational speed up. More importantly, the quasi-quantum
+internet can oer enhanced payos in the transaction when implemented us-
+ing the EWL protocol for Prisoner's Dilemma.
+7Figure 4: High-frequency trading as an instance of Prisoners' Dilemma, as
+per the preferences described in expression (8).
+Due to the quasi-quantum nature of the internet, only noisy quantum
+communications are possible to date. Therefore, the referee will likely only
+be able to create limited entanglement between the qubits. This means that
+HFT on the quantum cloud will improve the lot of the players to only a near
+Pareto-optimal Nash equilibrium, the upper-limit of which for the moment
+is the appropriate equivalent of the notional (2 :5;2:5) payo. Nonetheless,
+even these small improvement in the payos will be worthwhile given the
+large amounts of money being traded.
+In the near future, the internet will be fully quantum, and improved -
+delity of the transmission of the quantum information will mean that quan-
+tum entanglement between the players' qubits will be maintained for longer
+duration. This will allow the realization of the upper limit of the mixed
+quantum strategy Nash equilibrium, (2 :5;2:5).
+4.2 Optimality and cooperation in HFT on the quantum
+cloud
+From a non-cooperative game theory perspective, the pure quantum strat-
+egy Nash equilibrium that resolves the dilemma and produces the Pareto-
+optimal Nash equilibrium (3 ;3) is fundamentally irrational. This is due to
+the fact that the best reply to any strategy from the set Ain (6) is a strategy
+from the set Bin (7). This would then seem to invalidate the whole idea of
+implementing HFT on the quantum internet of the near future for optimal
+benets. However, there is an appropriate game-theoretic solution for this
+issue found in the the cooperative theory of games. As Aumann points out
+in [5]:
+We use the term cooperative to describe any possible outcome
+of a game, as long as no player can guarantee a better out-
+come for himself. It is important to emphasize that in general, a
+cooperative out-come is not in equilibrium; it's the result of an
+agreement. For example, in the well-known \prisoner's dilemma"
+game, the outcome in which neither prisoner confesses is a coop-
+erative outcome; it is in neither player's best interests, though it
+8is better for both than the unique equilibrium.
+Hence, the solution lies in the notion of agreement contracts and the
+ability to enforce them. For this, the game has to be played repeatedly
+and the behavioral history of the players collected and used to develop the
+contracts and the enforcement methods (incentives and disincentives). It
+is noteworthy then that quantum games such as the quantum prisoner's
+dilemma can be thought of as the available policy space for an agent under-
+going reinforcement learning. Here, however, it is known that the quantum
+policy options, in for example the quantum prisoner's dilemma, are Pareto-
+optimal over the classical policy options. Therefore, if the task undertaken
+in quantum reinforcement learning can be thought of as having instances
+of the prisoner's dilemma as subtasks, an agent with quantum strategies
+available to them will perform strictly better than one with only classical
+policy options, as observed by Meyer in his seminal work.
+5 Conclusion
+We established a game-theoretic interpretation of high-frequency trading as
+the game Prisoner's Dilemma, and showed how it can be implemented as
+a quantum game using quantum computing processors available over the
+cloud. We argue that even today's nascent quantum technology infrastruc-
+ture allows substantial improvement in the payos of the players of this
+game, and that in the near future, a fully quantum internet and better
+performing quantum processors will allow players to completely avoid the
+dilemma via reinforced learning of contracts, as predicted by cooperative
+game theory.
+Acknowledgments
+We would like to thank Nathan Benjamin, James Sully, Nathan Urban,
+for useful discussions. N.B. is supported by the Computational Science
+Initiative at Brookhaven National Laboratory.
+References
+[1] John von Neumann, Oskar Morgenstern, and Ariel Rubinstein. Theory
+of Games and Economic Behavior (60th Anniversary Commemorative
+Edition) . Princeton University Press, 1944.
+[2] John F. Nash. Equilibrium points in n-person games. Proceedings of
+the National Academy of Sciences , 36(1):48{49, 1950.
+9[3] John C. Harsanyi. Games with incomplete information played by
+"bayesian" players, i-iii. part ii. bayesian equilibrium points. Manage-
+ment Science , 14(5):320{334, 1968.
+[4] Reinhard Selten. Multistage game models and delay supergames. The-
+ory and Decision , 44:1{36, 1994.
+[5] Robert J. Aumann. War and peace. Nobel Prize Lecture , 2005.
+[6] J. MAYNARD SMITH and G. R. PRICE. The logic of animal conict.
+Nature , 246:15{18, November 1973.
+[7] A.S Elgazzar. Coopetition in quantum prisoner's dilemma and covid-19.
+Quantum Information Processing , 20, 2021.
+[8] David A. Meyer. Quantum strategies. Phys. Rev. Lett. , 82:1052{1055,
+Feb 1999.
+[9] Jens Eisert, Martin Wilkens, and Maciej Lewenstein. Quantum games
+and quantum strategies. Physical Review Letters , 83(15):3077{3080,
+Oct 1999.
+[10] J. SHIMAMURA, A. K. ZDEMIR, F. MORIKOSHI, and N. IMOTO.
+Quantum and classical cor-relations between players in game theory.
+International Journal of Quantum Information , 02(01):1052, 2004.
+[11] Adrian P. Flitney and Lloyd C.L. Hollenberg. Nash equilibria in quan-
+tum games with generalized two-parameter strategies. Physics Letters
+A, 363(5):381{388, 2007.
+[12] Faisal Shah Khan, Solmeyer, Neal, Radhakrishnan Balu, and Travis
+Humble. Quantum games: a review of the history, current state, and in-
+terpretation. Quantum Information Processing , 17(309), October 2018.
+[13] Peter Gomber, Bj orn Arndt, Marco Lutat, and Time Uhle. High-
+frequency trading. Pre-print at SSSRN , June 2011.
+10

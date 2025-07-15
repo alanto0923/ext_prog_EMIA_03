@@ -1,0 +1,28 @@
+domain,name,code
+Momentum,Relative Strength Index (RSI) - Overbought,"(CLOSE - LAG(CLOSE,14)) / LAG(CLOSE,14)"
+Mean Reversion,Exponential Moving Average (EMA) 50,"LAG(CLOSE,50)"
+Volatility,20-Day Volatility,"STD(CLOSE,20)"
+Fundamental,Price-to-Earnings Ratio (P/E),(CLOSE / EPS)
+Liquidity,Trading Volume,VOLUME
+Quality,Gross Profit Margin,(GROSS_PROFIT / REVENUE)
+GROWTH,Price Growth Rate,"(CLOSE / LAG(CLOSE,1)) - 1"
+Technical,SMA (Simple Moving Average) 50,"AVG(CLOSE,50)"
+Macro Economics,GDP Growth Rate,"GDP - DELAY(GDP, n)"
+Momentum,Momentum Momentum (21 days),"((CLOSE - LAG(CLOSE,21)) / LAG(CLOSE,21))"
+Mean Reversion,Bollinger Bands - Upper Band,"STD(CLOSE,20) + AVG(HIGH,20)"
+Volatility,VIX Index,VIX
+Fundamental,Dividend Yield,(DIVIDEND / CLOSE)
+Liquidity,Open Interest,OPEN INTEREST
+Quality,Operating Margin,(OPERATING INCOME / REVENUE)
+GROWTH,Earnings Yield,"(EPS / (CLOSE - DELAY(CLOSE,1)))"
+Technical,RSI (Relative Strength Index) - Oversold,"1 - ((CLOSE - LAG(CLOSE,14)) / LAG(CLOSE,14))"
+Macro Economics,Inflation Rate,INFLATION RATE
+Momentum,Rate of Change (ROC) - 14 days,"(CLOSE / LAG(CLOSE,14)) - 1"
+Mean Reversion,Stochastic Oscillator - 14 periods,"(MAX(HIGH,PERIODS) + MIN(LOW,PERIODS)) / CLOSE"
+Volatility,VIX Futures,VIX FUTURES
+Fundamental,Price-to-Book Ratio (P/B),(CLOSE / BOOK VALUE)
+Liquidity,Market Capitalization,MARKET CAPITALIZATION
+Quality,Return on Equity (ROE),(NET INCOME / EQUITY)
+GROWTH,Price-to-Sales Ratio (P/S),(CLOSE / SALES)
+Technical,MACD (Moving Average Convergence Divergence),"LAG(CLOSE,26) - LAG(CLOSE,12)"
+Macro Economics,Unemployment Rate,UNEMPLOYMENT RATE

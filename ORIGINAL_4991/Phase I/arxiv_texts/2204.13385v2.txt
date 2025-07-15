@@ -1,0 +1,824 @@
+Fuzzy Expert System for Stock Portfolio Selection: An
+Application to Bombay Stock Exchange
+Gour Sundar Mitra Thakura, Rupak Bhattacharyyab, Seema Sarkar (Mondal)c
+aDepartment of Articial Intelligence and Machine Learning, Dr. B. C. Roy Engg. College,
+Durgapur, West Bengal, India
+bDepartment of Mathematics,Bijoy Krishna Girls' College, Howrah, West Bengal, India
+cDepartment of Mathematics, National Institute of Technology Durgapur, West Bengal,
+India
+Abstract
+Selection of proper stocks, before allocating investment ratios, is always a cru-
+cial task for the investors. Presence of many inuencing factors in stock perfor-
+mance have motivated researchers to adopt various Articial Intelligence (AI)
+techniques to make this challenging task easier. In this paper a novel fuzzy ex-
+pert system model is proposed to evaluate and rank the stocks under Bombay
+Stock Exchange (BSE). Dempster-Shafer (DS) evidence theory is used for the
+rst time to automatically generate the consequents of the fuzzy rule base to
+reduce the eort in knowledge base development of the expert system. Later
+a portfolio optimization model is constructed where the objective function is
+considered as the ratio of the dierence of fuzzy portfolio return and the risk
+free return to the weighted mean semi-variance of the assets that has been used.
+The model is solved by applying Ant Colony Optimization (ACO) algorithm
+by giving preference to the top ranked stocks. The performance of the model
+proved to be satisfactory for short-term investment period when compared with
+the recent performance of the stocks.
+Keywords: Ranking of stocks, Stock Portfolio Selection, Fuzzy rule-based
+system, Dempster-Shafer Theory.
+1. Introduction
+Stock portfolio selection is basically an optimal allocation of investor' assets
+among certain number of stocks to provide maximum return with minimum risk.
+There are dierent types of factors which directly or indirectly inuence the
+performance of stocks. This has made the task of stock selection and portfolio
+construction very challenging and uncertain for the stock market researchers
+Email addresses: cse.gsmt@gmail.com (Gour Sundar Mitra Thakur),
+mathsrup@gmail.com (Rupak Bhattacharyya), seemasarkarmondal@yahoo.co.in (Seema
+Sarkar (Mondal))arXiv:2204.13385v2  [cs.AI]  4 May 2022since the very beginning. According to [1] portfolio selection may include two
+stages: rstly, performances of dierent securities is observed with beliefs about
+their future performances and secondly, a proper choice of portfolio is made with
+relevant beliefs about future performances. The main aim in Modern Portfolio
+Theory (MPT) of investment is to maximize the expected return of the portfolio
+for a given amount of portfolio risk or equivalently minimize risk for a given level
+of expected return, by carefully choosing the proportions of various assets. In
+a ground-breaking work [1], Markowitz has quantied return as the mean and
+risk as the variance of the portfolio of securities. The relationship between risk
+and mean-variance are later examined in various researches like [2, 3, 4, 5]. The
+twin objectives of investors', prot maximization and risk minimization, are
+thus quantied. Though this theory has been widely accepted and adopted, it
+is being criticized since last few years. The main reason behind this is in MPT
+the eciency of market is considered to be the basic assumption and obtaining
+information about markets in frequent intervals is costly and time consuming [6].
+Computational burden caused by the quadratic utility functions and covariance
+matrix when number of stock increases, is another major concern in MPT.
+Another limitation of MPT is, it does not give importance to real investors'
+preferences [7]. In practice, it is also found that investors prefer portfolios
+that lie behind the ecient frontier of Markowitz model even though they are
+dominated by other portfolios with respect to return and risk. From the above
+discussion it is obvious that some additional criteria should be added to the
+classical risk-return framework.
+Thus portfolio selection problem is proved to be a multi-dimensional problem
+and to solve this inherent multi-criteria nature of this problem Multi-criteria
+Decision Making (MCDM) approach has been adopted in various researches
+like [8, 9, 10, 11]. In spite of all these eorts researchers were facing diculties
+in bringing eciency in portfolios specially in dynamic uncertain environment.
+As a result the use of dierent AI techniques in stock selection and portfolio
+construction became inevitable due to their well known capability of handling
+uncertain and vague data. In literature we can nd wide use of dierent AI and
+Soft Computing techniques to analyse and predict the performance of stocks in
+various stock exchanges around the world. In some researches [12, 13, 14, 15, 16]
+ecient learning capability of Articial Neural Network (ANN) is adopted to
+select stocks and construct portfolios whereas in some other researches [17, 18,
+19, 20, 21] optimization capability of Genetic Algorithm is used for portfolio
+optimization. But the application of Fuzzy Logic and Fuzzy Set theory has
+become the most popular among other soft computing techniques, due to its
+uncertainty handling capability and the eciency to incorporate vagueness in
+investors' preferences in portfolio construction [22, 23, 24, 25, 26].
+Portfolio selection process can be divided into two stages [7]. In the rst
+stage, some stocks are selected to construct the portfolio and in the second
+stage, the percentage of the total value for each stock is identied. Use of
+fuzzy expert systems in the selection of stocks and equity have recently become
+very eective and popular. In a work Fasanghari et al. [24] developed an
+fuzzy expert system to select superior stocks in Tehran Stock Exchange (TSE)
+2by identifying 7 factors inuencing the stock market. A rule base of total 932
+rules was constructed for this purpose. Though no proper portfolio optimization
+model was used in this work, the outcome of the model proved to be satisfactory.
+But the major concern of this model can be the development time and cost due
+to repetitive expert interactions for the development of the model. Authors
+have used only fuzzy set theory to deal with the inherent uncertainty present in
+the rule base though fuzzy set theory is more eective in dealing with vagueness
+in the model than addressing inherent uncertainty of the model [27]. In another
+signicant work Xidonas et al.[7] developed an expert system for the selection
+of equity securities but the concerns remained more or less same as the previous
+one.
+In this proposed work selection of stocks are made with the help of an ex-
+pert system where the fuzzy rule base is automatically generated by applying
+DS evidence theory. This has considerably minimized the development time
+and cost as no cost is incurred here in terms of experts' consultations for the
+construction of the rule base. DS evidence theory is well known for its capa-
+bility of dealing with incomplete and uncertain information. So another level
+of uncertainty handling mechanism beside fuzzy set theory is incorporated in
+the model. Though there are many factors which function as evidences of stock
+performance, here four most popular performance indicators: Price to Earning
+Ratio (P/E), Price to Book Value (P/B), Price to Sales ratio (P/S) and Long
+Term Debt to Equity ratio (LTDER) are initially identied and their historical
+data for all the registered stocks under BSE, are collected during the period of
+FY 2003-04 to FY 2011-12. In the rst phase of the design, these four factors
+has functioned as input variables of a fuzzy inference system in the proposed
+model and their historical data have been used to generate the consequents of
+the fuzzy rules with the help of DS evidence theory. The model is tested with
+the historical data of FY 2012-13, when values of these four factors for each
+stocks are provided as input to the fuzzy inference system and then they are
+ranked based on their defuzzied output. In the second phase, a portfolio op-
+timization model is constructed and then it is solved with ACO by considering
+top 10 stocks, as per the previous ranking, in the portfolio, to allocate invest-
+ment ratios by giving preferences to the top ranked stocks. As mentioned earlier
+the model is tested with the data of FY 2012-13 to predict the performance of
+dierent stocks in FY 2013-14 and FY 2014-15, the performance of the model is
+proved to be satisfactory when compared with their actual performance. Figure
+1 depicts the brief structure of the article.
+The rest of the paper is organized as follows: Section 2 gives brief description
+about the four identied factors and their importance in stock performance.
+In Section 3 design of the proposed fuzzy expert system model is elaborated.
+Portfolio construction using top 10 stocks is discussed in Section 4. Result
+analysis and comparison with recent performance of stocks is done in Section 5
+and nally Section 6 concludes the discussion.
+3Figure 1: Design diagram of the proposed ination forecasting model
+2.
+There are many technical and fundamental factors which inuence the stock
+market directly or indirectly. In this work four fundamental factors Price to
+Earning Ration (P/E), Price to Book Value (P/B), Price to Sales ratio (P/S)
+and Long Term Debt to Equity ratio (LTDER) are identied and their brief
+denitions are given below:
+2.1. Price to Earnings (P/E):
+The price to earnings ratio (P/E) is a valuation ratio of a stock that is
+determined by Market Value per Share divided by earnings per share (EPS) of
+the stock.P
+E=Market Value per Share
+EPS(1)
+In general, a high price to earnings ratio for any company indicates that investors
+are expecting higher earnings growth in future from it compared to companies
+with a lower price to earnings ratio.
+2.2. Price to Book value (P/B):
+Price to book value ration is used to compare market value of a stock to
+its Book value. It is also known as price to equity ratio. It is calculated by
+dividing the current closing price of the stock by the latest quarter's book value
+per share.
+P
+B=Stock Price
+Total Assets Intangible Assets and Liabilities(2)
+4In general, If P/B value is low then it suggests that the stock is undervalued
+and it could also mean that something is going wrong with the company.
+2.3. Price to Sales (P/S):
+Price to Sales ratio is another valuation ratio that compares a company's
+stock price to its revenues. It can be calculated by dividing the company's
+market capitalization by its total sale. This ratio is also known as revenue
+multiple or sales multiple.
+P
+S=Market Capitalization
+Total Sales(3)
+2.4. Long term debt/equity (LTDER):
+Long term debt to equity ratio is the ratio of total liabilities of a stock to its
+shareholders' equity. It is a leverage ratio and it measures the degree to which
+the assets of the stock are nanced by the debts and the shareholders' equity of
+a stock. It is calculated by the total liabilities divided by shareholders' equity.
+LTDER =Total Liabilities
+Shareholders' Equity(4)
+3. DS-Fuzzy model for evaluation and ranking of stocks
+DS evidence theory and fuzzy rule based expert system are hybridized in
+this work to evaluate and rank the stocks under BSE. Brief introduction of DS
+evidence theory and fuzzy rule based expert system are given here before their
+application in the proposed model is elaborated.
+3.1. DS evidence theory
+A. P. Dempster in 1967 [28] proposed a multi-valued mapping from one space
+to another which was used for statistical inference when we needed to identify
+a single hypothesis from multiple sample information. The DS-theory was rst
+proposed by Dempster in 1968 [29] and later in 1976 it was extended by Shafer
+[30] to deal with incomplete and uncertain information.
+DS-Theory mainly deals with four components: Frame of discernment, Basic
+Probability Assignment (BPA), plausibility function Pland belief function Bel.
+In evidence theory rst a set of hypothesises  called frame of discernment,
+is assumed and dened as follows:
+ =fH1;H2;H3;:::;HNg: (5)
+The set is composed of N mutually exhaustive and exclusive hypothesises. From
+the , let us denote P(), be the power set composed with 2Npropositions Xof
+:
+P() =f?;fH1g;fH2g;:::;fHNg;fH1[H2g;fH1[H3g;:::;g (6)
+5where?denotes the empty set. The most important task in applying evidence
+theory is Basic Probability Assignment (BPA). A BPA is a function from P()
+to [0;1] dened by:
+m:P()![0;1]
+X7!m(A)(7)
+and which satises the following criteria:
+X
+X2P()m(X) = 1;
+m(?) = 1:(8)
+Dempster's rule of combination is denoted by m=m1m2, which can
+combine two BPAs m1andm2to yield a new BPA:
+m(A) =P
+Y\Z=Xm1(Y)m2(Z)
+1 k(9)
+with
+k=X
+Y\Z=?m1(Y)m2(Z)(10)
+where k is a normalization constant, known as conict because it measures the
+degree of conict between m1andm2.k= 0 corresponds to the absence of
+conict between m1andm2, whereask= 1 implies total contradiction between
+them. The resulting belief function from the combination of Iinformation
+sources can be dened as:
+m=m1m2m3:::mI (11)
+With the help of Equation (11) multi source information can be fused into a
+single framework in belief theory very easily and it proved to be very eective
+when it is applied in fuzzy rule generation discussed later in Section 3.3.3.
+3.2. Fuzzy Expert System
+For many real world problems, like strategic planning, medical diagnosis
+and other decision making problems solutions are something more than simple
+reasoning and require some expertise knowledge to solve. So the use of Expert
+Systems (ES) became popular because it is capable of representing and reasoning
+knowledge rich domain with a view to solve problems and giving advice [31].
+The main advantage of ES over any other conventional software applications
+is its eective reasoning capability as they process knowledge instead of data
+or information [32]. On the other hand the application of fuzzy set theory
+in uncertainty handling has become one of the strongest tool to design any
+framework. As fuzzy set theory is now widely applied in information gathering,
+modelling, analysis, optimization, control, decision-making and supervision [33],
+fuzzy expert system is used in the construction of the proposed model.
+6Fuzzy expert system is an expert system that uses fuzzy logic instead of
+Boolean logics in its knowledge base and derives conclusion from user inputs
+and fuzzy inference process [34]. Figure 2 depicts the basic architecture of a
+fuzzy expert system.
+Figure 2: Architecture of Fuzzy Rule-based Expert System
+Various components of a fuzzy expert system are briey discussed below:
+•Fuzzy Knowledge Base : Fuzzy knowledge base is a collection of fuzzy
+rules and it is built up by the knowledge engineer after eliciting knowledge
+from domain experts. The basic structure of a fuzzy rule is as follows:
+IFI1isi1ANDI2isi2AND ... AND InisinTHENOiso:
+whereI1,I2... ,Inare fuzzy linguistic input variables and i1,i2, ... ,in
+are possible linguistic values of I1,I2... ,Inrespectively. Similarly, Ois
+fuzzy linguistic output variable and ois its linguistic value. The terms I1is
+i1andI2isi2... are fuzzy propositions suggesting partial set membership
+or partial truth. In this way modifying the fuzzy sets parameters of the
+output fuzzy sets, the partial truth of the rule premise can be evaluated
+[35].
+•Fuzzy Inference Engine : To analyse and manipulate the rules in the
+knowledge base an inference mechanism is adopted to conclude a logical
+result. Various inference mechanisms can be adopted for fuzzy inference
+engine depending on the aggregation, implications and operators used for
+s-norms and t-norms [36]. Defuzzication of the results is also achieved in
+this module. This modules functions as per the agenda. An agenda is a
+prioritized list of rules identied and enlisted by inference engine. Patterns
+of these rules are satised by facts or objects in the working memory.
+•Working Memory : This module is contained of a global database of
+facts those are going to be used by the fuzzy rule base.
+7•Explanation Facility : This particular module explains every steps in
+reasoning process of the ES.
+•Knowledge Acquisition Facility : This module provides an automated
+facility for the user to enter knowledge in the system.
+•User Interface : All kinds of interactions of the user with the system is
+facilitated by this module. This is used to accept inputs from the user
+and display the outcomes of the inference process.
+3.3. Design and Implementation of the proposed model
+The designed diagram of the proposed model is introduced in Section 1 as
+Figure 1. Here individual steps followed to construct and implement the whole
+model are elaborated.
+3.3.1. Collection of Historical Data
+Total 30 stocks are registered under BSE. Initially, historical data of last 12
+years (2003-04 to 2014-15) of four factors (P/E, P/B, P/S and LTDER) are col-
+lected from dierent web sources like www.capitaline.com, www.bseindia.com,
+www.nseindia.com etc. First 9 years' data are used for the implementation of
+the model and last 3 years' data are used for testing and comparison. For the
+simplicity of the model the data are normalized within the range of [0, 10] by
+scaling up/down the maximum historical value of any factor in last 9 years to 10
+and then scaling other data accordingly relative to the maximum value. Table
+1 shows an example of actual data and transferred for Axis Bank Ltd.
+Table 1: Sample normalized data for Axis Bank Ltd.
+Financial YearActual P/E ratio of
+Axis Bank Ltd.Transferred Data
+2011-12 11.46 4.24
+2010-11 17.5 6.48
+2009-10 19.47 7.2
+2008-09 8.49 3.14
+2007-08 27.02 10
+2006-07 21.67 8.02
+2005-06 21.12 7.82
+2004-05 20.5 7.59
+2003-04 12.54 4.64
+3.3.2. Fuzzication
+Fuzzication is a process of taking a crisp value as input and transforming
+it into the degree required by the terms. Uncertainty basically comes from
+imprecision, vagueness or ambiguity and one of the best ways to represent these
+in any variable can be in the form of fuzzy variable. Fuzzy membership functions
+8are used to represent the fuzzy variables. All four factors have been illustrated
+in TABLE II in terms of fuzzy linguistic variables and each of them has three
+linguistic values, Low, Standard and High . Trapezoidal membership function
+has been used to represent the inputs within the range of [0, 10].
+Table 2: Membership functions for the linguistic values of the Input Variables
+Factors in terms of
+linguistic variablesLinguistic ValuesFuzzy Trapezoidal
+Membership
+P/E Ratio (Range 0
+to 10)Low (0 0 1.8 2.8)
+Standard (1.7 3.5 4.6 5.8)
+High (5.3 7.5 10 10)
+P/B Ratio (Range 0
+to 10)Low (0 0 2.2 3.5)
+Standard (2.5 4.6 5.6 7.9)
+High (6.4 9.6 10 10)
+P/S Ratio (Range 0
+to 10)Low (0 0 2.4 3.6)
+Standard (1.8 4.4 5.7 8.2)
+High (6.4 8.7 10 10)
+LTDER (Range 0 to
+10)Low (0 0 2.3 3.6)
+Standard (2.8 4.6 5.7 7.6)
+High (6.124 8.09 10 10)
+3.3.3. Fuzzy Rule Construction using DS-Theory
+The most signicant novelty of this research work is the application of DS
+evidence theory in fuzzy rule construction. The knowledge base of any fuzzy
+inference system is developed using collection of fuzzy rules which determines
+how the output will be generated based on the given input. The proposed system
+has four input parameters namely, P/E, P/B, P/S and LTDER, and based on
+these input parameter the DS-Fuzzy system is expected to determine whether
+the selection of any stock will be Highly Favourable, Moderately Favourable or
+Not Favourable , as output. The frame of discernment is considered as  =
+fHigh Performance ;Average Performance ;and Poor Performance g.
+Risk/Return ratio is one of the most commonly used measure to evaluate
+the performance of stocks. Risk is generally measured by semi-variance(S) of
+the stocks' previous returns and Return(R) is actually the mathematical mean
+of previous returns. Obviously lower value of this ratio indicate better perfor-
+mance of stocks. Based on linguistic values of each input factors and comparing
+those with S/R values as a measure of the performance of various stocks BPAs
+for dierent hypothesises are achieved. The historical data of FY 2012-13 are
+used to identify the stocks. Consulting various domain experts and analysing
+historical data initially standard values for each factors for all the stocks are
+decided. By analysing last 9 years' historical data it is found that when P/E
+ratio was around its standard value then 75% of stocks under BSE performed
+better and S/R value was also found to be satisfactory. So a belief of 0.75 is as-
+signed towards the hypothesis fHigh Performance gwhen the P/E ratio is near
+9to its standard value. Again, when P/E value found to be much lower than
+its standard value, 65% of total stocks under BSE performed average and S/R
+value also found to be average. So 0.6 degree of belief is assigned towards the
+hypothesisfAverage Performance gwhen P/E ratio is lower than its standard
+value. Similarly, when the value of P/E ratio was much higher than the stan-
+dard value then it was found that 70% of stocks under BSE performed poor
+and S/R value was also very high. So 0.7 degree of belief is assigned towards
+the hypothesisfPoor Performance g. In the same way initial believes or Basic
+Probabilities are assigned for all other factors as mentioned in Table 3.
+Table 3: Basic Probability Assignment
+FactorsLinguistic
+ValuesHigh
+Performance
+(HP)Average
+Performance
+(AP)Poor
+Performance
+(PP)
+P/ELow 0.6
+Standard 0.75
+High 0.7
+P/BLow 0.8
+Standard 0.6
+High 0.65
+P/SLow 0.7
+Standard 0.65
+High 0.75
+LTDERLow 0.6
+Standard 0.75
+High 0.65
+Now to elaborate further let us consider the following four sample rules with
+their initial belief:
+Rule 1. IF P/E is Low THEN Performance will be Average (m1(AP) =
+0:6).
+Rule 2. IF P/B is Standard THEN Performance will be Average (m2(AP) =
+0:6).
+Rule 3. IF P/S is High THEN Performance will be High (m4(HP) = 0:75).
+Rule 4. IF LTDER is High THEN Performance will be Poor (m6(PP) =
+0:65).
+The above four rules represent the belief towards the performance of stocks with
+respect to the values of four input factors as the presence of evidences. Now
+consider the IF part of Rule 1 and Rule 2 as the rst two evidences and m1and
+m2as mass functions for them respectively.
+10Now from Rule 1, m1(AP) = 0:6 andm1() = (1 0:6) = 0:4, where,
+m1() represents the degree of belief in the rest of the hypotheses present
+in the hypothesis set. Similarly, from Rule 2, m2(AP) = 0:6 andm2() =
+(1 0:6) = 0:4. Now these two mass functions are combined using Dempster's
+rule of combination (Equation 9) to obtain a new function m3as mentioned in
+Table
+Table 4: Combination of mass considering rst two evidences
+Combining m1andm2 m2(AP) = 0:6 m2() = 0 :4
+m1(AP) = 0:6 AP= 0:36 AP= 0:24
+m1() = 0 :4 AP= 0:24  = 0 :16
+The new mass value m3for the same hypothesis set is calculated as:
+m3(AP) = 0:36 + 0:24 + 0:24 = 0:84
+m3() = 0 :169
+=
+;(12)
+Now consider the IF part of the Rule 3 as the new evidence and m4be
+the new mass function. From Rule 3, m4(HP) = 0:75 andm4() = (1 
+0:75) = 0:25. Now again, m3andm4are combined to generate new mass m5
+as mentioned in Table 5.
+Table 5: Combination of mass considering rst three evidences
+Combining m3andm4 m4(HP) = 0:75 m4() = 0 :25
+m3(AP) = 0:84  = 0 :63 AP= 0:21
+m3() = 0 :16 HP= 0:12  = 0 :04
+New mass values m5for the hypothesis set are calculated as below:
+m5(AP) =0:21
+1 0:63= 0:567
+m5(HP) =0:12
+1 0:63= 0:324
+m5() =0:04
+1 0:63= 0:1089
+>>=
+>>;(13)
+Now if we consider the IF part of the Rule 4 as the last evidence and m6
+as its mass function then we get m6(HP) = 0:6 andm6() = (1 0:6) = 0:4.
+Now nally, m5andm6are combined as mentioned in Table 6 to generate the
+nal mass values mffor the hypothesis set (Equation 14).
+11Table 6: Combination of mass considering all four evidences
+Combining m5andm6 m6(PP) = 0:65 m6() = 0 :35
+m5(AP) = 0:567  = 0 :368 AP= 0:198
+m5(HP) = 0:324  = 0 :21 HP= 0:113
+m5() = 0 :108 PP= 0:07  = 0 :037
+mf(HP) =0:113
+1 0:578= 0:267
+mf(AP) =0:198
+1 0:578= 0:469
+mf(PP) =0:07
+1 0:578= 0:165
+mf() =0:37
+1 0:578= 0:0879
+>>>>>>>=
+>>>>>>>;(14)
+Following the same procedure nal mass values for the rest 80 rules are
+calculated. For the hypothesis High Performance(H P)maximum and minimum
+mass values ( mf) are found to be 0 :9916 and 0 respectively. As mass values for
+any hypothesis can lie between 0 and 1 we have divided the favourability of
+any stock, based on the mf(HP) of the rules, into three categories: Highly
+Favourable (0:76mf(HP)1),Moderately Favourable (0:46mf(HP)
+0:75) and Not Favourable (mf(HP)0:45).
+So the combined version of the four sample rules mentioned earlier is formed
+as:
+\IF P/E is Low AND P/B is Standard AND P/S is High AND LTDER
+isHigh THEN the stock is Not Favourable ".
+In this way total 81 fuzzy rules are formulated using DS evidence theory to
+develop the knowledge base of the proposed DS-fuzzy inference system and the
+above mentioned three selection categories are converted into fuzzy linguistic
+variables with trapezoidal membership values as shown in Table 7 for output of
+the proposed inference system.
+Table 7: Degree of membership of linguistic values for the output variable
+Output Variable Linguistic ValuesFuzzy Trapezoidal
+Membership
+Selection (Range: 0
+to 1)Not Favourable (0 0 0.172 0.448)
+Moderately
+Favourable(0.34 0.46 0.57 0.75)
+Highly Favourable (0.64 0.88 1 1)
+Figure 3 shows the snapshot of the fuzzy rule base and Figure 4 shows the
+sensitive analysis for the same when designed in MATLAB.
+12Figure 3: Fuzzy rule base of the DS-fuzzy system for Stock Selection
+Figure 4: The Sensitive analysis of the DS-fuzzy system for Stock Selection
+133.3.4. Defuzzication
+The process of obtaining a single value that represent the best outcome of the
+fuzzy set evaluation is known as defuzzication [37]. Though there are many
+other popular defuzzication methods namely, Bi-sector, Mean of Maximum
+(MOM), Smallest of Maximum (SOM), Largest of Maximum (LOM), in this
+proposed model `Centroid' is used for the defuzzication purpose due to its
+wide range of acceptability. This method was introduced by Sugeno in 1985
+and it can be expressed as:
+z=R
+C
+e(z)zdz
+R
+C
+e(z)dz(15)
+Wherezis the output variable, zis the defuzzied output value and C
+e(z) is
+the aggregated membership function.
+3.3.5. Ranking of stocks
+The proposed DS-fuzzy system is used to rank all 30 registered stocks under
+BSE based on the defuzzied outputs when the values corresponding to each of
+the four input factors for 2012-13 for each stocks are provided as input to the
+system. Top 10 stocks from this ranking are mentioned in Table 8
+Table 8: Top 10 Stocks based on the input data for FY 2012-13
+Sl. No Name of the StocksDefuzzied
+Values(FY 2012-13)
+1 Hindustan Unilever Ltd. 0.8644
+2 Sun Pharmaceutical Inds. Ltd. 0.8457
+3 I T C Ltd. 0.5369
+4 Coal India Ltd. 0.534
+5 Tata Consultancy Services Ltd. 0.4936
+6 Infosys Ltd. 0.3842
+7 Dr. Reddy'S Laboratories Ltd. 0.3553
+8 Bajaj Auto Ltd. 0.3292
+9 Hero Motocorp Ltd. 0.3002
+10 Cipla Ltd. 0.285
+As the consequent of every rule indicates the favourability of the stocks,
+higher defuzzied value indicate higher favorability. The highest defuzzied
+value of 0:8691 is found for Hindustan Unilever Ltd. among all 30 registered
+stocks and it has topped the ranking. These 10 stocks are used for portfolio
+construction as discussed in the next section.
+4. Portfolio Construction
+The rst phase of stock portfolio selection, i.e. the selection of suitable
+stocks, is achieved in the previous section. In this section a portfolio construction
+14model is discussed to determine optimum investment ratios for the selected
+securities such that the overall return is maximized under a tolerable risk.
+4.1. Objective Function
+The ratio of the dierence of fuzzy portfolio return and the risk free return to
+weighted mean semi-variance of the assets is used as the objective function in this
+work. Certainly, higher value of this ratio will indicate the better investment;
+so the optimization target will be to maximize the ratio.
+The notations used for the construction of this objective function are men-
+tioned below:
+•xi: Fraction of the total investment allotted to the ithasset;
+•~ri: Fuzzy return of the ithasset;
+•rf: Risk free return rate;
+•s: Weighted mean of asset semi-variances;
+•rp: Portfolio return;
+•vp: Variance of the portfolio;
+•sp: Skewness of the portfolio;
+Thus the objective function is formed as:
+MaximizeE(P~rixi) rf
+s(16)
+Where, after descending sort of portfolio, s=Pxisi, i.e.xiis theithweight
+in the descending order and siis the semi-variance of the ithranked asset.
+A fuzzy aggregation is used to calculate the fuzzy returns of the securities
+from the statistical database of past ve years(2008-09 to 2012-13). If timeans
+ithposition of the data, the fuzzy return can be calculated as:
+~ri=
+min(ri);PtiriPti;max (ri)
+(17)
+The constraints included in this model are:
+rp>;vp>;sp>
+nP
+i=1xi= 1;xiM;xi>0;8i9
+>=
+>;(18)
+Values for,,,Mandmare decided based on the investor's preferences.
+15Thus the nal portfolio optimization model can be summarized as below:
+MaximizeE(P~rixi) rf
+s
+Subject to,
+rp>;vp>;sp>
+nP
+i=1xi= 1;xiM;xi>0;8i9
+>>>>>>>>>=
+>>>>>>>>>;(19)
+4.2. Optimization of the proposed model using ACO
+An algorithm using Ant Colony Optimization (ACO) is proposed and imple-
+mented in this section to solve the optimization model as mentioned in Equation
+(19). ACO is a very popular meta-heuristic optimization technique inspired by
+the foraging behaviour of biological ants [38, 39]. Pseudo code of the proposed
+algorithm is given as below:
+Algorithm 1 ACO algorithm for portfolio optimization
+1:procedure ACO-Portfolio
+2: Generate N random solution nodes based on Equation (19);
+3: Initialization of the ACO;
+4: forITERATION=1 to I do
+5: forANT=1 to   do
+6: Select the start node randomly;
+7: forLIFETIME=2 to L do
+8: Select the next node based on the heuristic information and
+pheromone concentration in the path. Move to the next node
+only if it is better than the current node;
+9: Update pheromone on the selected path;
+10: end for
+11: Store the details of the nal node reached by each ants;
+12: end for
+13: Identify the solution node where maximum number of ants reached
+and consider that to be the optimum solution for the current solution;
+14: Update the pheromone on the path of each ants who have reached
+this optimum solution;
+15: Evaporate the pheromone from all paths.
+16: end for
+17:end procedure
+To execute the above algorithm in this work, initially 2000 random solutions
+are generated for the ant colony of 50 ants. Total 400 iterations are used for the
+optimization purpose while lifetime for each ant is considered as 20.
+16In Equation (19), ~ riis represented as a triangular fuzzy number. The Ex-
+pected Return (E), Variance (Var), Skewness (Skew) and Semi-variances of these
+top 10 securities for past ve years (2008-09 to 2012-13) as used in the above
+algorithm are calculated by the following theorem and are mentioned in Table
+9
+Theorem 4.1. Let~A= (a;b;c )be a triangular fuzzy number. The the weighted
+possibilistic mean, variance and skewness can be calculated as [40]:
+E(~A) =1
+6(a+ 4b+c)
+Var(~A) =1
+18(a2+b2+c2 ab bc ca)
+Skew (~A) =19(a3+c3) 8b3 42b(a2+c2)+12b2(a+c) 15(a2c+ac2)+60abc
+10p
+2(p
+a2+b2+c2 ab bc ca)39
+>>>>=
+>>>>;(20)
+Table 9: Expected Return, Variance, Skewness and Semivariance of stocks
+Rank Name of the Stocks Return Variance Skewness Semivariance
+1Hindustan Unilever
+Ltd.0.1443 0.0001 0.2391 0.00004
+2Sun Pharmaceutical
+Inds. Ltd.0.0529 0.0006 -0.3269 0.00254
+3 I T C Ltd. 0.2801 0.0035 0.7523 0.00314
+4 Coal India Ltd. 0.1275 0.0028 0.6046 0.0373
+5Tata Consultancy
+Services Ltd.0.1228 0.0013 -0.5029 0.00557
+6 Infosys Ltd. 0.0356 0.0003 0.8648 0.0002
+7Dr. Reddy'S
+Laboratories Ltd.0.0484 0.0006 -0.0065 0.00098
+8 Bajaj Auto Ltd. 0.0579 0.001 0.7262 0.0013
+9 Hero Motocorp Ltd. 0.1379 0.0004 0.8057 0.00049
+10 Cipla Ltd. 0.0437 0.0002 0.8258 0.00018
+When the algorithm is executed in MATLAB with the above dataset and
+considering other parameters as rf= 0:01,= 0:5,= 0:05,= 0:001,
+M= 0:8 ands= 0:0016, the maximum return is found as 0 :1317. The
+proposed ratio allocation for this return is given in Table 10 .
+The convergence of the objective values as per the proposed model is depicted
+in Figure 5 and the accumulation of ants to the optimum objective values in
+each iteration is depicted in Figure 6.
+17Table 10: Ratio allocation for the proposed portfolio
+Hindustan
+Unilever
+Ltd.Sun
+Pharma.
+Inds.
+Ltd.ITC
+Ltd.Coal
+India
+Ltd.TCS
+Ltd.Infosys
+Ltd.Dr.
+Reddy's
+Lab.
+Ltd.Bajaj
+Auto
+Ltd.Hero
+Moto-
+corp
+Ltd.Cipla
+Ltd.
+0.2403 0.2235 0.1970 0.0764 0.0574 0.0525 0.0452 0.0413 0.0407 0.0255
+0 100 200 300 400 5002122232425262728
+Figure 5: Convergence of objective values based on proposed ranking
+0 100 200 300 400 50005101520253035404550
+Figure 6: Ant accumulation at optimum solutions
+185. Result Analysis
+To justify the applicability of the proposed model its performance is analyzed
+further in three aspects. First, top 15 companies are ranked based of their S/R
+values for the year of 2013-14 and 2014-15. Details of these rankings along with
+the ranking of the proposed model is given in Table 11.
+Table 11: Top 15 Stocks
+RankStocks Ranking
+based on the
+proposed modelStocks Ranking
+based on the S/R
+values (2013-14)Stocks Ranking
+based on the S/R
+values (2014-15)
+1Hindustan Unilever
+Ltd.Sesa Sterlite Ltd.State Bank Of
+India
+2Sun
+Pharmaceutical
+Inds. LtdNTPC Ltd. Infosys Ltd.
+3 ITC Ltd.Hero Motocorp
+Ltd.ITC Ltd.
+4 Coal India Ltd.Maruti Suzuki
+India Ltd.HDFC Bank Ltd.
+5 TCS Ltd.Hindustan Unilever
+Ltd.Hero Motocorp
+Ltd.
+6 Infosys Ltd. Cipla Ltd.Hindustan Unilever
+Ltd.
+7Dr. Reddy's
+Laboratories Ltd.State Bank Of
+IndiaWipro Ltd.
+8 Bajaj Auto Ltd.Bharat Heavy
+Electricals Ltd.Maruti Suzuki
+India Ltd.
+9Hero Motocorp
+Ltd.Wipro Ltd.Tata Power Co.
+Ltd.
+10 Cipla Ltd. ITC Ltd. Tata Motors Ltd.
+11 HDFC Bank Ltd.Tata Power Co.
+Ltd.TCS Ltd.
+12 Wipro Ltd. Infosys Ltd. Coal India Ltd.
+13Larsen & Toubro
+Ltd.Hindalco Industries
+Ltd.Mahindra &
+Mahindra Ltd.
+14 Bharti Airtel Ltd.Dr. Reddy'S
+Laboratories Ltd.Cipla Ltd.
+15Tata Power Co.
+Ltd.Sun
+Pharmaceutical
+Inds. Ltd.Sun
+Pharmaceutical
+Inds. Ltd.
+From the above table we can nd a match of 9 companies for FY 2013-14 and a
+match of 11 companies for FY 2014-15. As S/R values are eective performance
+indicator of stocks, it can be concluded that the proposed model will give better
+19return in short-term investment period.
+In the second stage by considering top 10 stocks under BSE, based on their
+S/R values for FY 2012-13, a portfolio is constructed using the same ACO
+algorithm and the objective function (Eq. 19). The optimum return is found to
+be 0:0740, which is much less than the expected return (0 :1317) of the proposed
+model.
+In the third stage another portfolio is constructed using the same ACO
+algorithm, where all 30 registered companies were under BSE are considered.
+But the optimum return found to be 0 :0624 which is much lower than the return
+calculated by the proposed model. This again proves that the proposed model is
+more eective in portfolio construction. Figure 7 compares the returns of these
+three portfolios.
+Figure 7: Portfolio returns
+6. Conclusion
+In this research a novel fuzzy expert system model is designed and implemented
+to evaluate and rank the stocks under BSE. DS-evidence theory is used for
+the development of the fuzzy rule base to reduce the overall implementation
+time and cost of the system. A portfolio optimization model is constructed
+by considering the ratio of the dierence of fuzzy portfolio return and risk free
+return to the weighted mean semi-variance of the assets as the objective function.
+ACO is used to obtain the optimum value of this portfolio.
+As the outcome of this model found to be satisfactory, this can be imple-
+mented for any stock exchanges around the world but the selection of critical
+factors may vary over dierent stock exchanges. This fuzzy expert system model
+can be used to rank any set of alternatives based on the factors inuencing them.
+The portfolio optimization model and the related ACO algorithm can be used
+to optimize any rank-preference based portfolios.
+20References
+[1] H. Markowitz, Portfolio selection, Journal of Finance, 7 (1952) 77{91.
+[2] X. Y. Zhou, D. Li, Continuous-time mean-variance portfolio selection: A
+stochastic lq framework, Applied Mathematics Optimization 42 (2000) 19{
+33.
+[3] Y. Fang, S. Wang, An interval semi-absolute deviation model for portfolio
+selection, in: Springer, LNAI 4223, 2006.
+[4] W. Ogryczak, Multiple criteria linear programming model, Annals of Op-
+erations Research 97 (2000) 143{162.
+[5] X. Huang, Risk curve and fuzzy portfolio selection, Computers and Math-
+ematics with Applications 55 (2008) 1102{1112.
+[6] S. J. Grossman, J. E. Stiglitz, On the impossibility of informationally e-
+cient markets, The American economic review 70 (3) (1980) 393{408.
+[7] P. Xidonas, E. Ergazakis, K. Ergazakis, K. Metaxiotis, D. Askounis,
+G. Mavrotas, J. Psarras, On the selection of equity securities: An expert
+systems methodology and an application on the athens stock exchange,
+Expert Systems with Applications 36 (2009) 11966|-11980.
+[8] P. Xidonas, G. Mavrotas, C. Zopounidis, J. Psarras, Ipssis: An integrated
+multicriteria decision support system for equity portfolio construction and
+selection, European Journal of Operational Research 210 (2) (2011) 398{
+409.
+[9] R. D. Edwards, J. Magee, W. Bassetti, Technical analysis of stock trends,
+CRC Press, 2007.
+[10] F. Abdollahzadeh, Investment management and tehran stock exchange
+(2002).
+[11] J. Siskos, D. Despotis, A dss oriented method for multiobjective linear
+programming problems, Decision Support Systems 5 (1) (1989) 47{55.
+[12] A. Adebiyi, C. Ayo, M. O. Adebiyi, S. Otokiti, Stock price prediction using
+neural network with hybridized market indicators, Journal of Emerging
+Trends in Computing and Information Sciences 3 (1) (2012) 1{9.
+[13] A. Fern andez, S. G omez, Portfolio selection using neural networks, Com-
+puters & Operations Research 34 (4) (2007) 1177{1191.
+[14] P.-C. Ko, P.-C. Lin, Resource allocation neural network in portfolio selec-
+tion, Expert Systems with Applications 35 (1) (2008) 330{337.
+21[15] S. O. Olatunji, M. S. Al-Ahmadi, M. Elshafei, Y. A. Fallatah, Saudi arabia
+stock prices forecasting using articial neural networks, in: Applications
+of Digital Information and Web Technologies (ICADIWT), 2011 Fourth
+International Conference on the, IEEE, 2011, pp. 81{86.
+[16] F. A. De Oliveira, L. E. Z arate, M. de Azevedo Reis, C. N. Nobre, The
+use of articial neural networks in the analysis and prediction of stock
+prices, in: Systems, Man, and Cybernetics (SMC), 2011 IEEE International
+Conference on, IEEE, 2011, pp. 2151{2155.
+[17] J.-S. Chen, Y.-T. Lin, A partitioned portfolio insurance strategy by a rela-
+tional genetic algorithm, Expert Systems with Applications 36 (2) (2009)
+2727{2734.
+[18] T.-J. Chang, S.-C. Yang, K.-J. Chang, Portfolio optimization problems
+in dierent risk measures using genetic algorithm, Expert Systems with
+Applications 36 (7) (2009) 10529{10537.
+[19] J.-S. Chen, J.-L. Hou, S.-M. Wu, Y.-W. Chang-Chien, Constructing in-
+vestment strategy portfolios by combination genetic algorithms, Expert
+Systems with Applications 36 (2) (2009) 3824{3828.
+[20] J. R. Jiao, Y. Zhang, Y. Wang, A heuristic genetic algorithm for product
+portfolio planning, Computers & Operations Research 34 (6) (2007) 1777{
+1799.
+[21] Y. Chen, S. Mabu, K. Hirasawa, A model of portfolio optimization us-
+ing time adapting genetic network programming, Computers & operations
+research 37 (10) (2010) 1697{1707.
+[22] J. D. Bermudez, J. V. Segura, E. Vercher, A fuzzy ranking strategy for
+portfolio selection applied to the spanish stock market, in: Fuzzy Systems
+Conference, 2007. FUZZ-IEEE 2007., 2007, pp. 1{4.
+[23] A. Bilbao-Terol, B. M. P er-Gladish, Arenas-Parra, M. V. Rodr guez-Uria,
+Fuzzy compromise programming for portfolio selection, Applied Mathemat-
+ics and Computation 173 (2006) 251{264.
+[24] M. Fasanghari, G. A. Montazer, Design and implementation of fuzzy ex-
+pert system for tehran stock exchange portfolio recommendation, Expert
+Systems with Applications 37 (9).
+[25] X. Huang, Risk curve and fuzzy portfolio selection, Computers & Mathe-
+matics with Applications 55 (6) (2008) 1102{1112.
+[26] F. Tiryaki, M. Ahlatcioglu, Fuzzy stock selection using a new fuzzy rank-
+ing and weighting algorithm, Applied Mathematics and Computation 170
+(2005) 144{157.
+22[27] R. M. Rodr guez, L. Mart nez, F. Herrera, Hesitant fuzzy linguistic term
+sets for decision making, Fuzzy Systems, IEEE Transactions on 20 (1)
+(2012) 109{119.
+[28] A. P. Dempster, Upper and lower probabilities induced by a multivalued
+mapping, The annals of mathematical statistics (1967) 325{339.
+[29] A. P. Dempster, A generalization of bayesian inference, Journal of the Royal
+Statistical Society. Series B (Methodological) (1968) 205{247.
+[30] G. Shafer, et al., A mathematical theory of evidence, Vol. 1, Princeton
+university press Princeton, 1976.
+[31] P. Jackson, Introduction to expert systems, Addison-Wesley Pub. Co.,
+Reading, MA, 1986.
+[32] K. Darlington, The essence of expert systems, Prentice Hall, 2000.
+[33] R. E. Bellman, L. A. Zadeh, Decision-making in a fuzzy environment, Man-
+agement science 17 (4) (1970) B{141.
+[34] A. Kandel, Fuzzy expert systems, CRC press, 1991.
+[35] C. Matthews, A formal specication for a fuzzy expert system, Information
+and Software Technology 45 (7) (2003) 419{429.
+[36] L.-X. Wang, A course in fuzzy systems, Prentice-Hall press, USA, 1999.
+[37] E. W. T. Ngai, F. K. T. Wat, Design and development of a fuzzy expert
+system for hotel selection, Omega 31 (4).
+[38] M. Dorigo, M. Birattari, T. St utzle, Ant colony optimization, Computa-
+tional Intelligence Magazine, IEEE 1 (4) (2006) 28{39.
+[39] J.-L. Deneubourg, S. Aron, S. Goss, J. M. Pasteels, The self-organizing
+exploratory pattern of the argentine ant, Journal of insect behavior 3 (2)
+(1990) 159{168.
+[40] R. Bhattacharyya, Possibilistic sharpe ratio based novice portfolio selec-
+tion models, in: National Conference on Advancement of Computing in
+Engineering Research (ACER 13) Krishnagar, West Bengal, India, 2013,
+pp. 33{45.
+23
