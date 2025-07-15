@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategy Performance Report - {{ strategy_name }}</title>
+    <style>
+        /* Inspired by IBKR - Clean & Professional */
+        :root {
+            --ibkr-blue-dark: #0d2e51;
+            --ibkr-blue-medium: #1d4f8a;
+            --ibkr-blue-light: #eaf3ff; /* Lighter blue for backgrounds */
+            --ibkr-grey-dark: #333333;
+            --ibkr-grey-medium: #666666;
+            --ibkr-grey-light: #f0f0f0; /* Lighter grey for borders/backgrounds */
+            --ibkr-border-color: #cccccc;
+            --positive-color: #008000; /* Green */
+            --negative-color: #dc3545; /* Red */
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--ibkr-grey-dark);
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .report-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border: 1px solid var(--ibkr-border-color);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header */
+        .report-header {
+            background-color: var(--ibkr-blue-dark);
+            color: #ffffff;
+            padding: 15px 25px;
+            border-bottom: 3px solid var(--ibkr-blue-medium);
+        }
+        .report-header h1 { margin: 0; font-size: 22px; font-weight: 600; }
+        .report-header p { margin: 5px 0 0 0; font-size: 14px; opacity: 0.9; }
+
+        /* Metadata Section */
+        .report-meta {
+            padding: 15px 25px;
+            background-color: #fdfdfd;
+            border-bottom: 1px solid var(--ibkr-grey-light);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px 20px;
+            font-size: 12px;
+        }
+        .report-meta div { padding: 5px 0; }
+        .report-meta strong { font-weight: 600; color: var(--ibkr-grey-medium); display: inline-block; min-width: 120px; }
+        .report-meta span { color: var(--ibkr-grey-dark); }
+
+        /* Main Content Area */
+        .report-main {
+            padding: 25px;
+            display: grid;
+            grid-template-columns: 1fr; /* Start single column */
+            gap: 30px;
+        }
+
+        /* --- MODIFIED SECTION START (Larger Charts Layout) --- */
+        @media (min-width: 992px) { /* Apply 2-column layout for KPI/Holdings, full width for charts */
+            .report-main {
+                 /* Define two equal columns for the top sections (KPI/Holdings) */
+                grid-template-columns: 1fr 1fr;
+                /* Keep the overall gap */
+                gap: 30px;
+             }
+
+            /* Explicitly place KPI and Holdings into the two columns */
+            .kpi-column {
+                grid-column: 1 / 2; /* First column */
+                grid-row: 1; /* Ensure it's in the first row */
+            }
+            .holdings-column {
+                grid-column: 2 / 3; /* Second column */
+                grid-row: 1; /* Ensure it's in the first row */
+                /* Add visual separator */
+                border-left: 1px solid var(--ibkr-grey-light);
+                padding-left: 30px;
+            }
+
+            /* Make Charts span full width below the others */
+            .charts-column {
+                grid-column: 1 / -1; /* Span from first to last column line */
+                grid-row: 2; /* Place it in the second row */
+                margin-top: 15px; /* Add some space above the charts section */
+                 /* Reset border/padding inherited from old rules if any */
+                 border-left: none;
+                 padding-left: 0;
+            }
+        }
+        /* Remove the 1200px rule as the 992px rule now handles wide screens well */
+        /* --- MODIFIED SECTION END --- */
+
+
+        /* Section Headers */
+        .section-header {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--ibkr-blue-dark);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--ibkr-blue-light);
+        }
+        .subsection-header {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ibkr-blue-medium);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+
+        /* Tables (KPI & Holdings) */
+        .kpi-table, .holdings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .kpi-table th, .kpi-table td,
+        .holdings-table th, .holdings-table td {
+            padding: 8px 10px;
+            text-align: left;
+            border: 1px solid var(--ibkr-grey-light);
+            vertical-align: middle;
+        }
+        .kpi-table th, .holdings-table th {
+            background-color: var(--ibkr-blue-light);
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--ibkr-blue-dark);
+        }
+        .kpi-table td, .holdings-table td {
+            font-size: 12px;
+            background-color: #fff;
+        }
+        /* Right-align numeric data in tables */
+        .kpi-table th:nth-child(n+2),
+        .kpi-table td:nth-child(n+2),
+        .holdings-table th:nth-child(n+2), /* Exclude first col (Rank/StockID) */
+        .holdings-table td:nth-child(n+2) {
+            text-align: right;
+        }
+        .kpi-table td:first-child, /* Metric name */
+        .holdings-table td:nth-child(2) { /* StockID */
+             font-weight: 500;
+             background-color: #fcfcfc;
+             text-align: left; /* Ensure StockID is left aligned */
+        }
+         .holdings-table td:first-child { /* Rank / Category */
+              background-color: #fcfcfc;
+              text-align: left;
+         }
+
+
+        /* Charts Section */
+        .chart-item {
+            margin-bottom: 25px;
+            border: 1px solid var(--ibkr-grey-light);
+            padding: 15px;
+            background-color: #fff;
+        }
+        /* Keep this rule - it makes images responsive within their container */
+        .chart-item img {
+            max-width: 100%; /* Crucial for scaling */
+            height: auto;    /* Maintain aspect ratio */
+            display: block;
+            margin: 0 auto 10px auto; /* Center image horizontally if container is wider */
+        }
+        .chart-item figcaption { text-align: center; font-size: 11px; color: var(--ibkr-grey-medium); font-style: italic; }
+
+        /* Disclaimer */
+        .report-footer { padding: 15px 25px; border-top: 1px solid var(--ibkr-border-color); background-color: #fdfdfd; margin-top: 20px; }
+        .disclaimer { font-size: 10px; color: var(--ibkr-grey-medium); line-height: 1.4; font-style: italic; }
+
+        /* Utility classes */
+        .percentage:after { content: "%"; font-size: 0.9em; padding-left: 2px;}
+        .positive { color: var(--positive-color); font-weight: 600; }
+        .negative { color: var(--negative-color); font-weight: 600; }
+        .na { color: var(--ibkr-grey-medium); font-style: italic; }
+
+    </style>
+</head>
+<body>
+    <div class="report-container">
+
+        <header class="report-header">
+            <h1>{{ strategy_name | default('Strategy Performance Report') }}</h1>
+            <p>Performance Analysis</p>
+        </header>
+
+        <section class="report-meta">
+            <div><strong>Strategy Name:</strong> <span>{{ strategy_name | default('N/A') }}</span></div>
+            <div><strong>Analysis Period:</strong> <span>{{ analysis_start_date | default('N/A') }} to {{ analysis_end_date | default('N/A') }}</span></div>
+            <div><strong>Benchmark:</strong> <span>{{ benchmark_ticker | default('N/A') }}</span></div>
+            <div><strong>Tracker Fund:</strong> <span>{{ tracker_fund_ticker | default('N/A') }}</span></div>
+            <div><strong>Parameters (k/n):</strong> <span>{{ strategy_k | default('N/A') }} / {{ strategy_n | default('N/A') }}</span></div>
+            <div><strong>Generated:</strong> <span>{{ generation_timestamp }}</span></div>
+        </section>
+
+        <main class="report-main">
+            <!-- Column 1 (on wider screens) -->
+            <section class="kpi-column">
+                <h2 class="section-header">Key Performance Indicators</h2>
+                <table class="kpi-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Strategy</th>
+                            <th>Benchmark</th>
+                            <th>Tracker</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for metric in kpi_metrics %}
+                        <tr>
+                            <td>{{ metric.name }}</td>
+                            <td class="{{ metric.strat_class }}">{{ metric.strat_value }}</td>
+                            <td class="{{ metric.bench_class }}">{{ metric.bench_value }}</td>
+                            <td class="{{ metric.tracker_class }}">{{ metric.tracker_value }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="4">KPI data not available.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Column 2 (on wider screens) -->
+            <section class="holdings-column">
+                <h2 class="section-header">Portfolio Snapshot ({{ snapshot_date | default('N/A') }})</h2>
+
+                {% if top_movers %}
+                <h3 class="subsection-header">Top Movers (Held at Start, Cumul. Return)</h3>
+                <table class="holdings-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Type</th>
+                            <th>StockID</th>
+                            <th>Cumul. Return</th>
+                            <th>Daily Return</th>
+                            <th>Price</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mover in top_movers %}
+                        <tr>
+                            <td>{{ mover.Rank }}</td>
+                            <td>{{ mover.Category }}</td> <!-- Gainer/Loser -->
+                            <td>{{ mover.StockID }}</td>
+                            <td class="{{ mover.cumul_ret_class }}">{{ mover.cumul_ret_fmtd }}</td>
+                            <td class="{{ mover.daily_ret_class }}">{{ mover.daily_ret_fmtd }}</td>
+                            <td>{{ mover.price_fmtd }}</td>
+                            <td>{{ mover.score_fmtd }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                 <p>Top Movers data not available or not calculated.</p>
+                {% endif %}
+
+                {% if current_holdings %}
+                 <h3 class="subsection-header">Current Holdings (End of Day)</h3>
+                 <table class="holdings-table">
+                     <thead>
+                         <tr>
+                             <th>StockID</th>
+                             <th>Cumul. Return</th>
+                             <th>Daily Return</th>
+                             <th>Price</th>
+                             <th>Score</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         {% for holding in current_holdings %}
+                         <tr>
+                             <td>{{ holding.StockID }}</td>
+                             <td class="{{ holding.cumul_ret_class }}">{{ holding.cumul_ret_fmtd }}</td>
+                             <td class="{{ holding.daily_ret_class }}">{{ holding.daily_ret_fmtd }}</td>
+                             <td>{{ holding.price_fmtd }}</td>
+                             <td>{{ holding.score_fmtd }}</td>
+                         </tr>
+                         {% endfor %}
+                     </tbody>
+                 </table>
+                {% else %}
+                 <p>Current Holdings data not available.</p>
+                {% endif %}
+
+            </section>
+
+             <!-- Full Width Charts Section (below KPI/Holdings on wider screens) -->
+            <section class="charts-column">
+                 <h2 class="section-header">Performance Charts</h2>
+
+                 {% if equity_curve_plot_path %}
+                 <div class="chart-item">
+                      <img src="{{ equity_curve_plot_path }}" alt="Strategy Dollar Equity Curve">
+                      <figcaption>Strategy Dollar Equity Curve</figcaption>
+                 </div>
+                 {% endif %}
+
+                 {% if cumulative_return_plot_path %}
+                 <div class="chart-item">
+                      <img src="{{ cumulative_return_plot_path }}" alt="Strategy Cumulative Return vs Comparisons">
+                      <figcaption>Cumulative Return vs Comparisons (Log Scale)</figcaption>
+                 </div>
+                 {% endif %}
+
+                  {% if test_set_plot_path %}
+                 <div class="chart-item">
+                      <img src="{{ test_set_plot_path }}" alt="Test Set Performance vs Comparisons">
+                      <figcaption>Test Period Cumulative Return vs Comparisons (Log Scale)</figcaption>
+                 </div>
+                 {% endif %}
+
+                 {% if training_history_plot_path %}
+                 <div class="chart-item">
+                      <img src="{{ training_history_plot_path }}" alt="Model Training History">
+                      <figcaption>Model Training History (Loss & MAE)</figcaption>
+                 </div>
+                 {% endif %}
+
+            </section>
+        </main>
+
+        <footer class="report-footer">
+            <p class="disclaimer">
+                <strong>Disclaimer:</strong> Performance metrics are based on simulated trading results from the provided CSV and may not perfectly align with other reports if calculation methods differ. Past performance is not indicative of future results. Simulations do not account for real-world factors such as transaction costs, slippage, taxes, or liquidity constraints. All investment decisions involve risk. This report is for informational purposes only.
+            </p>
+        </footer>
+
+    </div> <!-- /report-container -->
+</body>
+</html>
