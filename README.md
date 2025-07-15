@@ -53,7 +53,7 @@ The final strategy is not a single, arbitrary result but the outcome of a rigoro
 Our chosen parameters (`k=56, n=4`) were selected for providing the best-balanced performance across return, Sharpe ratio, and drawdown. The chart below shows the performance of other top-performing candidates. While some (`k=46, n=4`) achieved higher raw returns, they came with deeper drawdowns. This confirms our selection process successfully prioritized risk-adjusted performance.
 
 <p align="center">
-  <img src="images/equity_curves_k46_n4.png" alt="Equity Curves of Alternative Top-Performing Candidates" width="850">
+  <img src="images/equity_curve_k46_n4.png" alt="Equity Curves of Alternative Top-Performing Candidates" width="850">
   <em>(Performance of alternative high-performing candidates from the validation grid search)</em>
 </p>
 
