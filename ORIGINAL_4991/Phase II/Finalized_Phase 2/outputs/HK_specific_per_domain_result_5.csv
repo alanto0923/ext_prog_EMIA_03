@@ -1,0 +1,68 @@
+domain,name,code
+Momentum,Price Momentum,"(CLOSE - DELAY(CLOSE, 14))"
+Momentum,Volume Momentum,"(VOLUME - DELAY(VOLUME, 14))"
+Momentum,RSI Momentum,"(RSI - DELAY(RSI, 14))"
+Momentum,Rate of Change Momentum,(CLOSE - PREVIOUS_CLOSE)
+Momentum,Directional Movement Index (DMI) Momentum,(HILL - VALLEY)
+Momentum,Stochastic Oscillator Momentum,"(RSI - DELAY(RSI, 14))"
+Momentum,Average Directional Index (ADI) Momentum,(HILL + VALLEY)/2
+Mean Reversion,Mean Reversion (20 days),"(MEAN(CLOSE, 20) - CLOSE)"
+Mean Reversion,Z-score Mean Reversion,"(CLOSE - MEAN(CLOSE, 20)) / STD(CLOSE, 20)"
+Mean Reversion,Bollinger Bands,(CLOSE - LOWER_BAND) / (UPPER_BAND - LOWER_BAND)
+Mean Reversion,Exponential Moving Average,"(CLOSE * EXP(MIN(14, 20)))"
+Mean Reversion,Simple Moving Average,(CLOSE * (20 - CLOSE) / 20)
+Mean Reversion,Momentum Index,((CLOSE - PREV_CLOSE) / PREV_CLOSE) * 100
+Mean Reversion,Rate of Change,(CLOSE - PREV_CLOSE) / PREV_CLOSE
+Volatility,Standard Deviation,"STD(CLOSE, 20)"
+Volatility,Average True Range (ATR),ATR(14)
+Volatility,Bollinger Band Width,"(UPPER_BAND - LOWER_BAND) / SMA(CLOSE, 20)"
+Volatility,Relative Strength Index (RSI),RSI(14)
+Volatility,Stochastic Oscillator,(FAST - SLOW) / 2
+Volatility,Bollinger Band Breakout,IF(CLOSE > UPPER_BAND AND CLOSE < LOWER_BAND)
+Volatility,Volume Weighted Average Price (VWAP),"SMA(VOLUME, 20)"
+Volatility,Rate of Change (ROC),(CLOSE - LAG(1)) / CLOSE * 100
+Volatility, Momentum Index,"SMA(CLOSE, 5) / SMA(CLOSE, 20)"
+Fundamental,Price-to-Earnings Ratio (P/E),(CLOSE / EPS)
+Fundamental,Price-to-Book Ratio (P/B),(CLOSE / BOOK_VALUE)
+Fundamental,Dividend Yield,(DIVIDENDS / CLOSE)
+Fundamental,Price-to-Book Ratio Variance,(P/B - BOOK_VALUE / CLOSE)^2
+Fundamental,Dividend Payout Ratio,(DIVIDENDS / Earnings Before Interest and Taxes (EBIT)) * 100
+Fundamental,Enterprise Value to Earnings Ratio,"( Enterprise Value / Earnings Before Interest, Taxes, Depreciation, and Amortization (EBITDA))"
+Fundamental,Return on Equity (ROE),(Net Income / Total Shareholders' Equity)
+Liquidity,Trading Volume (Normalized),"(VOLUME - DELAY(VOLUME, 14)) / DELAY(VOLUME, 14)"
+Liquidity,Average Trading Volume (ATV),(HIGH + LOW) / 2
+Liquidity,Volume Percentage Change,"(VOLUME - DELAY(VOLUME, 14)) / DELAY(VOLUME, 14) * 100"
+Liquidity,Relative Strength Index (RSI),"100 - (100 / (1 + DELAY(ADJ CLOSE, 14)))"
+Liquidity,Moving Average Convergence Divergence (MACD),(20-DMA - 9-DMA) / (20-DMA + 9-DMA)
+Quality,(GROSS_PROFIT / REVENUE),(Gross Profit Margin)
+Quality,(OPERATING_INCOME / REVENUE),(Operating Profit Margin)
+Quality,(NET_INCOME / REVENUE),(Net Profit Margin)
+Quality,(EBITDA / REVENUE),"(Earnings Before Interest, Taxes, Depreciation, and Amortization)"
+Quality,(FREE_CASH_FLOW / REVENUE),(Free Cash Flow)
+Quality,(RETURN_ON_EQUITY),(Return on Equity)
+Quality,(NET_INCOME_ABOUT_RETURNED_EQUITY),(Net Income About Returned Equity)
+Quality,( OPERATING_CASH_FLOW / REVENUE ),(Operating Cash Flow)
+Growth,Earnings Growth Rate,"(EPS / DELAY(EPS,1) - 1)"
+Growth,Revenue Growth Rate,"(REVENUE / DELAY(REVENUE, 1) - 1)"
+Growth,EBITDA Growth Rate,"(EBITDA / DELAY(EBITDA, 1) - 1)"
+Growth,Price Growth Rate,(CLOSE / PREVIOUS_CLOSE - 1)
+Growth,Dividend Yield Growth Rate,"(DIVIDEND_YIELD / DELAY(DIVIDEND_YIELD, 1) - 1)"
+Growth,Return on Equity (ROE) Growth Rate,"(ROE / DELAY(ROE, 1) - 1)"
+Growth,Net Profit Margin Growth Rate,"(NET_PROFIT_MARGIN / DELAY(NET_PROFIT_MARGIN, 1) - 1)"
+Growth,Operating Cash Flow Growth Rate,"(OPERATING_CASH_FLOW / DELAY(OPERATING_CASH_FLOW, 1) - 1)"
+Technical,Moving Average (MA),"SMA(CLOSE, 20)"
+Technical,Exponential Moving Average (EMA),"EMA(CLOSE, 20)"
+Technical,Relative Strength Index (RSI),RSI(14)
+Technical,Bollinger Bands (BB),"BB(CLOSE, 20, 2)"
+Technical,Stochastic Oscillator (SO),"SO(CLOSE, 14, 3, 3)"
+Technical,On Balance Volume (OBV),"OBV(CLOSE, VOLUME)"
+Technical,MACD,"MACD(CLOSE, 12, 26)"
+Technical,Momentum (MM),"MM(CLOSE, 14)"
+Macro Economics,GDP Growth Rate,"GDP_GROWTH_RATE - DELAY (GDP, n)"
+Macro Economics,Inflation Rate,"CPI_INFLATION_RATE - DELAY (GDP, n)"
+Macro Economics,Unemployment Rate,"UNEMPLOYMENT_RATE_HK - DELAY (UNEMPLOYMENT_RATE, n)"
+Macro Economics,Interest Rate,"HONG_KONG_interest_RATE - DELAY (Interest Rates, n)"
+Macro Economics,Currency Exchange Rate,"HKD_EXCHANGE_RATE - DELAY (Currency Exchange Rates, n)"
+Macro Economics,Consumer Price Index,"CPI_CONSUMER_PRICE_INDEX - DELAY (CPI, n)"
+Macro Economics,Government Debt to GDP Ratio,"GOVERNMENT_DEBT_TO_GDP_Ratio_HK - DELAY (Government Debt, n)"
+Macro Economics,Monetary Policy Interest Rate,"MONEY MARKET_INTEREST_RATE_HK - DELAY (Money Market, n)"

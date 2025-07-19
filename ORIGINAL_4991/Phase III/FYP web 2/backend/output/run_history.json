@@ -1,0 +1,20 @@
+[
+  {
+    "run_id": "20250430_103338_DNN_Alpha_Yield_Strategy_(HSI)",
+    "start_time": "2025-04-30T10:33:38.352006+00:00",
+    "status": "SUCCESS",
+    "message": "Workflow completed successfully.",
+    "end_time": "2025-04-30T10:36:21.460589+00:00",
+    "best_k": 55,
+    "best_n": 1
+  },
+  {
+    "run_id": "20250430_103033_DNN_Alpha_Yield_Strategy_(HSI)",
+    "start_time": "2025-04-30T10:30:34.063228+00:00",
+    "status": "SUCCESS",
+    "message": "Workflow completed successfully.",
+    "end_time": "2025-04-30T10:33:14.931269+00:00",
+    "best_k": 55,
+    "best_n": 1
+  }
+]

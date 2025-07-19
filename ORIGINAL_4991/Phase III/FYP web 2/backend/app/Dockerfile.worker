@@ -1,0 +1,21 @@
+# backend/Dockerfile.worker
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Command to run the Celery worker
+# Points to the celery_app instance defined in app/celery_app.py
+# Adjust concurrency based on your machine's resources
+CMD ["celery", "-A", "app.celery_app:celery_app", "worker", "--loglevel=info", "--concurrency=2"]

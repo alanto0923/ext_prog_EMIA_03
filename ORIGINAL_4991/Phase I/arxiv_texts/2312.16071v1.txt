@@ -1,0 +1,1029 @@
+Event-based Shape from Polarization with Spiking
+Neural Networks
+Peng Kang1,∗, Srutarshi Banerjee2, Henry Chopp3, Aggelos
+Katsaggelos3, and Oliver Cossairt1
+1Department of Computer Science, Northwestern, Evanston, IL, USA
+2Argonne National Laboratory, Lemont, IL, USA
+3Department of Electrical and Computer Engineering, Northwestern, Evanston, IL,
+USA
+E-mail: pengkang2022@u.northwestern.edu
+Dec. 2023
+Abstract. Recent advances in event-based shape determination from polarization
+offer a transformative approach that tackles the trade-off between speed and accuracy
+in capturing surface geometries. In this paper, we investigate event-based shape
+from polarization using Spiking Neural Networks (SNNs), introducing the Single-
+Timestep and Multi-Timestep Spiking UNets for effective and efficient surface normal
+estimation. Specificially, the Single-Timestep model processes event-based shape as
+a non-temporal task, updating the membrane potential of each spiking neuron only
+once, thereby reducing computational and energy demands. In contrast, the Multi-
+Timestep model exploits temporal dynamics for enhanced data extraction. Extensive
+evaluations on synthetic and real-world datasets demonstrate that our models match
+the performance of state-of-the-art Artifical Neural Networks (ANNs) in estimating
+surface normals, with the added advantage of superior energy efficiency. Our work not
+only contributes to the advancement of SNNs in event-based sensing but also sets the
+stage for future explorations in optimizing SNN architectures, integrating multi-modal
+data, and scaling for applications on neuromorphic hardware.
+1. Introduction
+Precise surface normal estimation can provide valuable information about a scene’s
+geometry and is useful for many computer vision tasks, including 3D Reconstruction [1],
+Augmented Reality (AR) and Virtual Reality (VR) [2, 3], Material Classification [4], and
+Robotics Navigation [5]. Depending upon the requirements of the application, surface
+normal estimation can be carried out using a variety of methods [6, 7, 8, 9, 10, 11]. In this
+work, we are interested in estimating surface normal from polarization images – shape
+from polarization [12, 13, 14, 15, 16, 17]. In particular, shape from polarization leverages
+the polarization state of light to infer the shape of objects. When light reflects off
+surfaces, it becomes partially polarized. This method uses this property to estimate the
+surface normals of objects, which are then used to reconstruct their 3D shape. ComparedarXiv:2312.16071v1  [cs.NE]  26 Dec 2023Event-based Shape from Polarization with Spiking Neural Networks 2
+to other 3D sensing methods, shape from polarization has many advantages [13, 18], such
+as its suitability for capturing fine details on a variety of surface materials, including
+reflective and transparent ones, and its reliance on passive sensing, which eliminates the
+need for external light sources or emitters. Additionally, shape from polarization can
+provide high-precision data with relatively low-cost and low-energy equipment, making
+it an efficient and versatile option for 3D imaging in various applications.
+Typically, a polarizing filter is used in conjunction with a camera to capture the
+polarization images and infer the polarization information. Generally, there are two
+ways to capture the polarization images and estimate the surface normals from them,
+one is Division of Time (DoT) [13, 19, 20] and the other one is Division of Focal Plane
+(DoFP) [16, 17, 21]. The DoT approaches add a rotatable linear polarizer in front of
+the lens of an ordinary camera. The filter is rotated to different orientations, and full-
+resolution polarization images are captured for each orientation at different times. By
+analyzing the changes in the polarization state of light across these images, the surface
+normals of objects can be estimated. The DoT methods use the full resolution of the
+sensor but trade-off against acquisition time. On the other hand, the DoFP methods
+place an array of micro-polarizers in front of the camera [21]. This allows the camera to
+capture polarization information at different orientations in a single shot. Despite the
+reduced latency, this system is limited by the low resolution of polarization images, as
+each pixel only captures polarization at a specific orientation. This can result in lower
+accuracy compared to the DoT methods.
+To bridge the accuracy of DoT with the speed of DoFP, researchers propose event-
+based shape from polarization following the DoT design scheme [22]. Specifically, a
+polarizer is rotating in front of an event camera [23] and this creates sinosoidal changes
+in brightness intensity. Unlike traditional DoT methods utilize standard cameras
+to capture full-resolution polarization images at fixed rates, event-based shape from
+polarization employs event cameras to asynchronously measure changes in brightness
+intensity for each pixel within the full-resolution scene and trigger the events with
+microsecond resolution if the difference in brightness exceeds a threshold. The proposed
+event-based method uses the continuous event stream to reconstruct relative intensities
+at multiple polarizer angles. These reconstructed polarized images are then utilized to
+estimate surface normals using physics-based and learning-based methods [22]. Due to
+the DoT-driven characteristic and low latency event cameras provide, the event-based
+shape from polarization mitigates the accuracy-speed trade-off in the traditional shape
+from polarization field.
+Although the event-based shape from polarization brings many advantages, we
+still need to carefully choose models that process the data from event cameras. With
+the prevalence of Artifical Neural Networks (ANNs), one recent method [22] employs
+ANNs to process event data and demonstrates the better surface normal estimation
+performance compared to physics-based methods. However, ANNs are not compatiable
+with the working mechanism of event cameras and incur the high energy consumption.
+To be more compatiable with event cameras and maintain the high energy efficiency,Event-based Shape from Polarization with Spiking Neural Networks 3
+research on Spiking Neural Networks (SNNs) [24] starts to gain momentum. Similar
+to event cameras that mimic the human retina’s way of responding to changes in light
+intensity, SNNs are also bio-inspired and designed to emulate the neural dynamics of
+human brains. Unlike ANNs employing artificial neurons [25, 26, 27] and conducting
+real-valued computation, SNNs adopt spiking neurons [28, 29, 30] and utilize binary 0-
+1 spikes to process information. This difference reduces the mathematical dot-product
+operations in ANNs to less computationally summation operations in SNNs [24]. Due to
+such the advantage, SNNs are always energy-efficient and suitable for power-constrained
+devices. Although SNNs demonstrate the higher energy efficiency and much dedication
+has been devoted to SNN research, ANNs still present the better performance and
+dominate in a wide range of learning applications [31].
+Recently, more research efforts have been invested to shrink the performance gap
+between ANNs and SNNs. And SNNs have achieved comparable performance in various
+tasks, including image classification [32], object detection [33], graph prediction [34],
+natural language processing [35], etc. Nevertheless, we have not yet witnessed the
+establishment of SNN in the accurate surface normal estimation with an advanced
+performance. To this end, this naturally raises an issue: could bio-inspired Spiking
+Neural Networks estimate surface normals from event-based polarization data with an
+advanced quality at low energy consumption?
+In this paper, we investigate the event-based shape from polarization with a spiking
+approach to answer the above question. Specifically, inspired by the feed-forward
+UNet [36] for event-based shape from polarization [22], we propose the Single-Timestep
+Spiking UNet, which treats the event-based shape from polarization as a non-temporal
+task. This model processes event-based inputs in a feed-forward manner, where each
+spiking neuron in the model updates its membrane potential only once. Although this
+approach may not maximize the temporal processing capabilities of SNNs, it significantly
+reduces the computational and energy requirements. To further exploit the rich temporal
+information from event-based data and enhance model performance in the task of event-
+based shape from polarization, we propose the Multi-Timestep Spiking UNet. This
+model processes inputs in a sequential, timestep-by-timestep fashion, allowing each
+spiking neuron to utilize its temporal recurrent neuronal dynamics to more effectively
+extract information from event data. We extensively evaluate the proposed models on
+the synthetic dataset and the real-world dataset for event-based shape from polarization.
+The results of these experiments, both quantitatively and qualitatively, indicate that
+our models are capable of estimating dense surface normals from polarization events
+with performance comparable to current state-of-the-art ANN models. Additionally, we
+perform ablation studies to assess the impact of various design components within our
+models, further validating their effectiveness. Furthermore, our models exhibit superior
+energy efficiency compared to their ANN counterparts, which highlights their potential
+for application on neuromorphic hardware and energy-constrained edge devices.
+The remainder of this paper is structured as follows: Section II provides a
+comprehensive review of existing literature on shape from polarization and SNNs. InEvent-based Shape from Polarization with Spiking Neural Networks 4
+Section III, we detail our proposed SNN models for event-based shape from polarization,
+including their structures, training protocols, and implementation details. Section IV
+showcases the effectiveness and energy efficiency of our proposed models on different
+benchmark datasets. The paper concludes with Section V, where we summarize our
+findings and outline potential avenues for future research.
+2. Related Work
+In the following, we will first give an overview of the related work on shape from
+polarization, including the traditional shape from polarization and event-based shape
+from polarization. Then, we will give a comprehensive review of SNNs and their
+applications in 3D scenes.
+2.1. Shape from Polarization
+Shurcliff proposed the method of shape recovery by polarization information in 1962 [37].
+Essentially, when unpolarized light reflects off a surface point, it becomes partially
+polarized. And the observed scene radiance varies with changing the polarizer angle,
+which encodes some relationship with surface normals. Therefore, by analyzing such
+relationship at each surface point through Fresnel equations [38], shape from polarization
+methods can measure the azimuthal and zenithal angles at each pixel and recover the
+per-pixel surface normal with high resolution. Generally, two schemes are utilized to
+collect polarization images. One is Division of Time (DoT) [13, 19, 20] that provides
+full-resolution polarization images but increases the acquisition time significantly, while
+the other one is Division of Focal Plane (DoFP) [16, 17, 21] that trade-offs spatial
+resolution for low latency. After collecting the polarization images, various physical-
+based or learning-based methods [39] can be utilized to estimate the surface normals.
+However, since a linear polarizer cannot distinguish between polarized light that is
+rotated by πradians, this results in two confounding estimates for azimuth angle at each
+pixel [16, 40]. To solve such the ambiguity, we have to carefully design the estimation
+methods by exploring additional constraints from various aspects, such as geometric
+cues [41, 42, 43], spectral cues [14, 44, 45], photometric cues [15, 46, 47], or priors
+learned from deep learning techniques [16, 17].
+Recently, with the prevalence of bio-inspired neuromorphic engineering, researchers
+begin to shift their focus to high-speed energy-efficient event cameras and propose
+solutions that combine polarization information with event cameras. Specifically,
+inspired by the polarization vision in the mantis shrimp eye [48], [49] proposed the
+PDAVIS polarization event camera. The researchers employed the DoFP scheme to
+design such the camera. This involved fabricating an array of pixelated polarization
+filters and strategically positioning them atop the sensor of an event camera. While this
+camera is adept at capturing high dynamic range polarization scenes with high speeds,
+it still faces challenges with low spatial resolution, a common issue inherent in theEvent-based Shape from Polarization with Spiking Neural Networks 5
+DoFP methods. To bridge the high resolution of DoT with the low latency of DoFP,
+[22] adopted the DoT scheme and collected polarization events by placing a rotating
+polarizing filter in front of an event camera. Due to the high resolution of DoT and the
+low latency of event cameras, this method facilitates shape from polarization at both
+high speeds and with high spatial resolution. Typically, the captured polarization events
+are transformed into frame-like event representations [50], which are then processed
+using ANN models [22] to estimate surface normals. While these learning-based
+methods demonstrate superior performance over traditional physics-based methods,
+they significantly increase the energy consumption of the overall system, primarily due
+to the lower energy efficiency of ANNs. Through processing event polarization data
+collected by the promising DoT scheme, this paper aims to address this challenge by
+conducting event-based shape from polarization using SNNs, presenting a more energy-
+efficient alternative in this domain.
+2.2. Spiking Neural Networks
+With the development of ANNs, artificial intelligene models today have demonstrated
+extraordinary abilities in many tasks, such as computer vision, natural language
+processing, and robotics. Nevertheless, ANNs only mimic the brain’s architecture in
+a few aspects, including vast connectivity and structural and functional organizational
+hierarchy [24]. The brain has more information processing mechanisms like the
+neuronal and synaptic functionality [51, 52]. Moreover, ANNs are much more energy-
+consuming compared to human brains. To integrate more brain-like characteristics
+and make artificial intelligence models more energy-efficient, researchers propose SNNs,
+which can be executed on power-efficient neuromorphic processors like TrueNorth [53]
+and Loihi [54]. Like ANNs, SNNs are capable of implementing common network
+architectures, such as convolutional and fully-connected layers, yet they distinguish
+themselves by utilizing spiking neuron models [30], such as the Leaky Integrate-and-
+Fire (LIF) model [29] and the Spike Response Model (SRM) [28]. Due to the non-
+differentiability of these spiking neuron models, training SNNs can be challenging.
+However, progress has been made through innovative approaches such as converting pre-
+trained ANNs to SNNs [55, 56] and developing methods to approximate the derivative of
+the spike function [57, 58]. Thanks to the developement of these optimization techniques,
+several models have been proposed recently to tackle the complex tasks in 3D scenes.
+Notably, StereoSpike [59] and MSS-DepthNet [60] have pioneered the development of
+deep SNNs for depth estimation, achieving performance on par with the state-of-the-
+art ANN models. Additionally, SpikingNeRF [61] has successfully adapted SNNs for
+radiance field reconstruction, yielding synthesis quality comparable to ANN baselines
+while maintaining high energy efficiency. In this paper, our emphasis is on employing
+SNNs to tackle event-based shape from polarization, aiming to establish a method that
+is not only effective but also more efficient for event-based surface normal estimation.Event-based Shape from Polarization with Spiking Neural Networks 6
+3. Methods
+In this paper, we focus on building SNNs to estimate surface normals through the use
+of a polarizer paired with an event camera. In this setup, the polarizer is mounted in
+front of the event camera and rotates at a constant high speed driven by a motor. This
+rotation changes the illumination of the incoming light. Event cameras generate an
+asynchronous event ei= (xi, yi, ti, pi) when the illumination variation at a given pixel
+reaches a given contrast threshold C:
+L(xi, yi, ti)−L(xi, yi, ti−∆ti) =piC, (1)
+where L.=log(I) is the log photocurrent (”brightness”), pi∈ {− 1,+1}is the sign of
+the brightness change, and ∆ tiis the time since the last event at the pixel ( xi, yi). The
+surface normal vector can be represented by its azimuth angle αand zenith angle θin
+a spherical coordinate system. And the proposed models predict the surface normal N
+as a 3-channel tensor N= (sin θcosα,sinθsinα,cosθ) through the event steam.
+3.1. Input Event Representation
+To ensure a fair comparison between our proposed methods and those utilizing ANNs for
+event-based shape from polarization, we transform the sparse event stream into frame-
+like event representations, which serve as the input for our methods. Specifically, similar
+to [22], we take the CVGR-I representation due to its superior performance. The CVGR-
+I representation combines the Cumulative Voxel Grid Representation (CVGR) with a
+single polarization image (I) taken at a polarizer angle of 0 degrees. The CVGR is a
+variation of the voxel grid [50]. Similar to previous works on learning with events [62, 63],
+the CVGR first encodes the events in a spatio-temporal voxel grid V. Specifically, the
+time domain of the event stream is equally discretized into Btemporal bins indexed by
+integers in the range of [0 , B−1]. Each event ei= (xi, yi, ti, pi) distributes its sign value
+pito the two closest spatio-temporal voxels as follows:
+V(x, y, t ) =X
+xi=x,yi=ypimax(0 ,1− |t−t∗
+i|), t∗
+i=B−1
+∆T(ti−t0), (2)
+where ( x, y, t ) is a specific location of the spatio-temporal voxel grid V, ∆Tis the time
+domain of the event stream, and t0is the timestep of the initial event in the event
+stream. Then, the CVGR calculates the cumulative sum across the bins and multiplies
+this total by the contrast threshold:
+E(x, y, b ) =CbX
+i=0V(x, y, i ), b={0,1,2,3, ..., B −1}, (3)
+Finally, to enhance surface normal estimation in areas with insufficient event
+information, a single polarization image of 0 polarizer degree is incorporated, resulting in
+E=I[0] +E, thereby providing additional context. This resulting event representation
+Ewill serve as the input of our models. Its dimensions are B×H×W, where HandW
+represent the height and width of the event camera, respectively. We present a concrete
+input example of “cup” in Fig. 1.Event-based Shape from Polarization with Spiking Neural Networks 7
+Figure 1. The CVGR-I input representation comprises CVGR frames spanning B
+temporal bins, along with a single polarization image captured at a polarizer angle of
+0 degrees. In this example, we set B= 8.
+3.2. Spiking Neuron Models
+Spiking neuron models are mathematical descriptions of specific cells in the nervous
+system. They are the basic building blocks of SNNs. In this paper, we primarily
+concentrate on using the Integrate-and-Fire (IF) model [29] to develop our proposed
+SNNs. The IF model is one of the earliest and simplest spiking neuron models. The
+dynamics of the IF neuron iis defined as:
+ui(t) =ui(t−1) +X
+jwijxj(t), (4)
+where ui(t) represents the internal membrane potential of the neuron iat time t,ui(t−1)
+is the membrane potential of the neuron iat the previous timestep t−1, andP
+jwijxj(t)
+is the weighted summation of the inputs from pre-neurons at the current time step t.
+When ui(t) exceeds a certain threshold uth, the neuron emits a spike, resets its membrane
+potential to ureset, and then accumulates ui(t) again in subsequent time steps.
+In addition to the IF model, we also build our proposed models with the Leaky
+Integrate-and-Fire (LIF) model [29]. Compared to the IF model, LIF model contains a
+leaky term to mimic the diffusion of ions through the membrane. The dynamics of the
+LIF neuron ican be expressed as:
+ui(t) =αui(t−1) +X
+jwijxj(t), (5)
+where αis a leaky factor that decays the membrane potential over time. Drawing
+inspiration from previous work [64], we also construct models using the Parametric
+Leaky Integrate-and-Fire (PLIF) model, which enables automatic learning of the leaky
+factor. In our experiments, we demonstrate that the IF model can offer better
+performance as it retains more information by not incorporating the leaky factor, thus
+striking a balance between high performance and biological plausibility.Event-based Shape from Polarization with Spiking Neural Networks 8
+Figure 2. The network structure of Single-Timestep Spiking UNet: The network
+is designed according to the UNet architecture in a fully convolutional manner.
+Specifically, it consists of an event encoding module (gray), an encoder (orange and
+blue), a decoder (yellow and green), and a final prediction layer (purple). The size
+of CVGR-I input representation is (8 ×512×512). Conv2D( a,b)-IF represents the
+spiking convolutional layer with ainput channels and boutput channels. Each max
+pooling layer downsamples the feature map by a factor of 2. And the spatial resolution
+is doubled after each upsamling layer.
+3.3. SNNs for Event-based Shape from Polarization
+In this section, we propose two SNNs that take the CVGR-I event representation as the
+input and estimate the surface normals N. Both of them can process the information
+through the spiking neuron models mentioned above. Due to the potential of IF neurons
+in event-based shape from polarization, we will present the proposed models based on
+the dynamics of IF neurons.Event-based Shape from Polarization with Spiking Neural Networks 9
+Figure 3. The network structure of Multi-Timestep Spiking UNet: The network
+is designed according to the UNet architecture in a fully convolutional manner.
+Specifically, it consists of an event encoding module (gray), an encoder (orange and
+blue), a decoder (yellow and green), and a final prediction layer (purple). Unlike
+the Single-Timestep Spiking UNet processing the CVGR-I representation as a whole
+and updating the membrane potential of its spiking neurons only once, the Multi-
+Timestep Spiking UNet processes the B×H×WCVGR-I representation along its
+temporal dimension B. The settings for Conv2D( a,b)-IF layers, max pooling layers,
+and upsampling layers are the same as those for the Single-Timestep Spiking UNet.
+3.3.1. Single-Timestep Spiking UNet In this work, we have chosen a UNet [36], a
+commonly utilized architecture in semantic segmentation, as the backbone for surface
+normal estimation. Specifically, we propose the Single-Timestep Spiking UNet as shown
+in Fig. 2. This model is composed of several key components: an event encoding
+module, an encoder, a decoder, and a final layer dedicated to making surface normal
+predictions. As a Single-Timestep feed-forward SNN, this model processes the entire
+B×H×WCVGR-I representation as its input and updates the membrane potential of itsEvent-based Shape from Polarization with Spiking Neural Networks 10
+spiking neurons once per data sample. The event encoding module utilizes two spiking
+convolutional layers to transform the real-valued B×H×WCVGR-I representation
+to the binary spiking representation with the size of Nc×H×W. Based on Eq. 4,
+the membrane potential uiand output spiking state oiof IF neuron iin the spiking
+convolutional layer are decided by:
+ui=Conv (X),
+oi=
+
+1 for ui≥uth
+0 for otherwise,(6)
+where Conv (X) is the weighted convolutional summation of the inputs from previous
+layers and tin Eq. 4 is ignored since the model only updates once. After spiking
+feature extraction, there are Neencoder blocks to encode the spiking representation.
+Each encoder employs a max pooling layer and multiple spiking convolutional layers
+to capture surface normal features. The neuronal dynamics of IF neurons in these
+layers are still controlled by Eq. 6. The encoded features are subsequently decoded
+using Nddecoder blocks, where Nd=Ne. Since transposed convolutions are often
+associated with the creation of checkerboard artifacts [65], each decoder consists of
+an upsampling layer followed by multiple spiking convolutional layers, where the IF
+neurons are governed by Eq. 6. For the upsampling operations, we have two options:
+nearest neighbor upsampling and bilinear upsampling. Through our experiments, we will
+show that nearest neighbor upsampling can achieve performance comparable to bilinear
+upsampling in event-based surface normal estimation while preserving the fully spiking
+nature of our proposed model. As suggested in the UNet architecture, to address the
+challenge of information loss during down-sampling and up-sampling, skip connections
+are utilized between corresponding encoder and decoder blocks at the same hierarchical
+levels. To preserve the spiking nature and avoid introducing non-binary values, the
+proposed model utilizes concatenations as skip connections. Lastly, the final prediction
+layer employs the potential-assisted IF neurons [66, 67] to estimate the surface normals.
+Unlike traditional IF neurons generate spikes based on Eq. 6, the potential-assisted IF
+neurons are non-spiking neurons which output membrane potential driven by:
+ui=Conv (X),
+oi=ui,(7)
+where oidenotes the real-valued output of the neuron i. These potential-assisted
+dynamics can be extended to both LIF and PLIF neurons, facilitating the construction
+of a Single-Timestep Spiking UNet using these types of neurons. By producing real-
+valued membrane potential outputs, potential-assisted neurons retain rich information
+that enhances surface normal estimation and boosts the expressivity of SNNs, especially
+for large-scale regression tasks.
+3.3.2. Multi-Timestep Spiking UNet To take the advantage of temporal neuronal
+dynamics of spiking neurons and extract rich temporal information from event-
+based data, we propose the Multi-Timestep Spiking UNet for event-based shape fromEvent-based Shape from Polarization with Spiking Neural Networks 11
+polarization. Figure 3 shows the network structure of the Multi-Timestep Spiking UNet.
+Similar to the Single-Timestep Spiking UNet, the Multi-Timestep Spiking UNet also
+consists of an event encoding module, an encoder, a decoder, and a final surface normal
+prediction layer. However, unlike the Single-Timestep Spiking UNet processing the
+CVGR-I representation as a whole and updating the membrane potential of its spiking
+neurons only once per data sample, the Multi-Timestep Spiking UNet processes the
+B×H×WCVGR-I representation for each data sample along its temporal dimension
+B. At each time step, a 1 ×H×WCVGR-I representation is fed in to the event encoding
+module and transformed as the size of Nc×H×W, followed by Neencoder blocks, Nd
+decoder blocks, and a final prediciton layer. Based on Eq. 4, the membrane potential
+ui(t) and output spiking state oi(t) of IF neuron iin the spiking convolutional layers of
+the Multi-Timestep Spiking UNet are decided by:
+ui(t) =ui(t−1)(1−oi(t−1)) + Conv (X(t)),
+oi(t) =
+
+1 for ui(t)≥uth
+0 for otherwise,(8)
+where Conv (X(t)) is the weighted convolutional summation of the inputs from previous
+layers at the time step t. The final prediction layer continues to use potential-assisted
+IF neurons, but with temporal dynamics as outlined below:
+ui(t) =ui(t−1) +Conv (X(t)),
+oi(t) =ui(t),(9)
+where the potential-assisted IF neuron iaccumulates its membrane potential to maintain
+the rich temporal information, oi(t) is the output of the neuron iat time step t, and we
+usethe outputs at the last time step as the final surface normal predictions.
+3.4. Training and Implementation Details
+We normalize outputs from spiking neurons into unit-length surface normal vectors ˆN
+and then apply the cosine similarity loss function:
+L=1
+H×WHX
+iWX
+j(1−DˆNi,j,Ni,jE
+), (10)
+where ⟨·,·⟩indicates the dot product, ˆNi,jrefers to the estimated surface normal at the
+pixel location ( i, j), while Ni,jdenotes the ground truth surface normal at the same
+location. The objective is to minimize this loss, which is achieved when the orientations
+ofˆNi,jandNi,jalign perfectly.
+To optimize the Single-Timestep Spiking UNet, we utilize the backpropagation
+method [68] to calculate the weight updates:
+∆wl=∂L
+∂wl=∂L
+∂ol∂ol
+∂ul∂ul
+∂wl, (11)
+where wlis the weight for layer l,olis the output of spiking neurons in layer l, and ulis
+the membrane potential of spiking neurons in layer l. Similarly, to optimize the Multi-
+Timestep Spiking UNet, we utilize the BackPropagation Through Time (BPTT) [69]Event-based Shape from Polarization with Spiking Neural Networks 12
+to calculate the weight updates. In BPTT, the model is unrolled for all discrete time
+steps, and the weight update is computed as the sum of gradients from each time step
+as follows:
+∆wl=B−1X
+t=0∂L
+∂ol
+t∂ol
+t
+∂ul
+t∂ul
+t
+∂wl, (12)
+where wlis the weight for layer l,ol
+tis the output of spiking neurons in layer lat the
+time step t, and ul
+tis the membrane potential of spiking neurons in layer lat the time
+stept. Based on the Heaviside step functions in Eq. 6 and Eq. 8, we can see that both
+∂ol
+∂uland∂ol
+t
+∂ul
+tcannot be differentiable in spiking convolutional layers. To overcome the
+non-differentiability, we use the differentiable ArcTan function g(x) =1
+πarctan (πx) +1
+2
+as the surrogate funciton of the Heaviside step function [70]. For the final prediction
+layer with potential-assisted spiking neurons, since they output membrane potential
+instead of spikes, we have∂ol
+∂ul= 1 and∂ol
+t
+∂ul
+t= 1 for these layers’ weight updates.
+4. Experiments and Results
+In this section, we evaluate the effectiveness and efficiency of our proposed SNN models
+on event-based shape from polarization. We begin by introducing the experimental
+setup, datasets, baselines, and performance metrics for event-based shape from
+polarization. Then, extensive experiments on these datasets showcase the capabilities of
+our models, both in quantitative and qualitative terms, across synthetic and real-world
+scenarios. Lastly, we analyze the computational costs of our models to highlight their
+enhanced energy efficiency compared to the counterpart ANN models.
+4.1. Experimental Setup
+Our models are implemented with SpikingJelly [71], an open-source deep learning
+framework for SNNs based on PyTorch [72]. To fairly compare with the counterpart
+ANN models, we ensure our models have the similar settings like the ANN models
+in [22]. Specifically, we set B= 8 for the input event representation. In addition, our
+models have Ne= 4 encoder blocks and Nd= 4 decoder blocks. And the event encoding
+module outputs the binary spiking representation with the channel size of Nc= 64. For
+the spiking-related settings, all the spiking neurons in the spiking convolutional layers
+are set with a reset value ( ureset) of 0 and a threshold value ( uth) of 1. Following [64, 73],
+normalization techniques are applied after each convolution (Conv) operation for faster
+convergence. We train our models for 1000 epochs with a batch size of 2 on Quadro
+RTX 8000. We use the Adam [74] with a learning rate of 1 e−4 to optimize our models.
+4.2. Datasets
+We evaluate our proposed models on two latest large-scale datasets for event-based
+shape from polarization, including the ESfP-Synthetic Dataset and ESfP-Real Dataset.Event-based Shape from Polarization with Spiking Neural Networks 13
+The ESfP-Synthetic Dataset was generated using the Mitsuba renderer [75], which
+created scenes with textured meshes illuminated by a point light source. For each scene,
+a polarizer lens, positioned in front of the camera, was rotated through angles ranging
+from 0 to 180 degrees with 15 degrees intervals, producing a total of 12 polarization
+images. With these images, events were simulated using ESIM [76] with a 5% contrast
+threshold. Therefore, each scene in the dataset is accompanied by rendered polarization
+images, simulated events, and groundtruth surface normals provided by the renderer.
+The ESfP-Real Dataset is the first large-scale real-world dataset for event-based
+shape from polarization. It contains various scenes with different objects, textures,
+shapes, illuminations, and scene depths. The dataset was collected using a Prophesee
+Gen 4 event camera [77], a Breakthrough Photography X4 CPL linear polarizer [78],
+a Lucid Polarisens camera [21], and a laser point projector. Specificially, the polarizer
+rotated in front of the event camera that captured the events for each scene in the
+dataset. The Lucid Polarisens camera was used to collect polarization images of the
+same scene at 4 polarization angles {0, 45, 90, 135 }. And the groundtruth surface
+normals were generated using Event-based Structured Light [79], a technique that
+involves integrating the laser point projector with the event camera.
+4.3. Baselines and Performance Metrics
+We evaluate our models against the state-of-the-art physics-based and learning-based
+methods in the field of shape from polarization. Smith et al. [47] combine the physics-
+based shape from polarization with the photometric image formation model. The
+method directly estimates lighting information and calculates the surface height using
+a single polarization image under unknown illumination. Mahmoud et al. [80] present
+a physics-based method to conduct shape recovery using both polarization and shading
+information. Recently, Muglikar et al. [22] are pioneers in addressing event-based shape
+from polarization, employing both physics-based and learning-based approaches. Their
+models are notable for directly using event data as inputs. In this paper, our focus is on
+comparing our proposed models with the learning-based model developed by Muglikar
+et al. We aim to demonstrate that our SNN-based models can match their performance
+while offering greater energy efficiency.
+To evaluate the accuracy of the predicted surface normals, we employ four metrics:
+Mean Angular Error (MAE), % Angular Error under 11.25 degrees (AE <11.25), %
+Angular Error under 22.5 degrees (AE <22.5), and % Angular Error under 30 degrees
+(AE<30). MAE is a commonly used metric that quantifies the angular error of the
+predicted surface normal, where a lower value indicates better performance [16, 17]. The
+latter three metrics, collectively referred to as angular accuracy, assess the proportion
+of pixels with angular errors less than 11.25, 22.5, and 30 degrees, respectively, with
+higher percentages indicating better accuracy [22].Event-based Shape from Polarization with Spiking Neural Networks 14
+Table 1. Shape from polarization performance on the ESfP-Synthetic Dataset in terms
+of Mean Angular Error (MAE) and the percentage of pixels under specific angular
+errors (AE <·). The “Input” column specifies whether the method utilizes events (E)
+or polarization images (I). E+I[0] means the CVGR-I representation. “Single” is for
+the Single-Timestep Spiking UNet. “Multi” is for the Multi-Timestep Spiking UNet.
+“Bilinear” and “Nearest” represent the bilinear upsampling and nearest neighbor
+upsampling, respectively. We highlight the top performance in bold, and underline
+the second-best results.
+Method Input Task MAE↓AE<11.25↑AE<22.5↑AE<30↑
+Mahmoud et al. [80] I Physics 80.923 0.034 0.065 0.085
+Smith et al. [47] I Physics 67.684 0.010 0.047 0.106
+Muglikar et al. [22] E Physics 58.196 0.007 0.046 0.095
+Muglikar et al. [22] E+I[0] Learning 27.953 0.263 0.527 0.655
+Single Bilinear E+I[0] Learning 36.432 0.181 0.403 0.525
+Single Nearest E+I[0] Learning 36.824 0.141 0.370 0.491
+Multi Bilinear E+I[0] Learning 31.296 0.200 0.438 0.578
+Multi Nearest E+I[0] Learning 31.724 0.193 0.425 0.562
+Table 2. Ablation study on various spiking neurons.
+Method Input Task MAE↓AE<11.25↑AE<22.5↑AE<30↑
+Multi Nearest IF E+I[0] Learning 31.724 0.193 0.425 0.562
+Multi Nearest LIF E+I[0] Learning 35.250 0.154 0.384 0.523
+Multi Nearest PLIF E+I[0] Learning 35.086 0.154 0.393 0.530
+4.4. Performance on ESfP-Synthetic
+We thoroughly evaluate our proposed models on the ESfP-Synthetic Dataset, using
+both quantitative metrics and qualitative analysis. Specifically, Table 1 presents the
+performance of both baselines and our methods in surface normal estimation on the
+ESfP-Synthetic Dataset. In addition, Figure 4 showcases the qualitative results of our
+models and the ANN counterpart on the ESfP-Synthetic Dataset.
+From Table 1, we can see that our proposed models significantly outperform the
+physics-based methods. The reason why our model can achieve the better performance
+is that our models benefit from the large-scale dataset and utilize the spiking neurons
+to extract useful information for event-based shape from polarization. Despite this
+success, our models do not quite match the overall performance of their ANN
+counterpart on this dataset, likely due to the limited representation capacity of spiking
+neurons. However, as Fig. 4 illustrates, our Multi-Timestep Spiking UNets still manage
+toachieve comparable, and in some cases superior, results in shape recovery
+across various objects in the test set , compared to the ANN models.
+Table 1 clearly demonstrates that the temporal dynamics inherent in spiking
+neurons enable the Multi-Timestep Spiking UNets to surpass the Single-TimestepEvent-based Shape from Polarization with Spiking Neural Networks 15
+Table 3. Shape from polarization performance on the ESfP-Real Dataset in terms
+of Mean Angular Error (MAE) and the percentage of pixels under specific angular
+errors (AE <·). The ”Input” column specifies whether the method utilizes events (E)
+or polarization images (I). E+I[0] means the CVGR-I representation. “Single” is for
+the Single-Timestep Spiking UNet. “Multi” is for the Multi-Timestep Spiking UNet.
+“Bilinear” and “Nearest” represent the bilinear upsampling and nearest neighbor
+upsampling, respectively. We highlight the top performance in bold, and underline
+the second-best results.
+Method Input Task MAE↓AE<11.25↑AE<22.5↑AE<30↑
+Mahmoud et al. [80] I Physics 56.278 0.032 0.091 0.163
+Smith et al. [47] I Physics 72.525 0.009 0.034 0.058
+Muglikar et al. [22] E Physics 38.786 0.087 0.220 0.452
+Muglikar et al. [22] E+I[0] Learning 26.851 0.099 0.449 0.691
+Single Bilinear E+I[0] Learning 27.134 0.109 0.458 0.685
+Single Nearest E+I[0] Learning 27.391 0.106 0.450 0.684
+Multi Bilinear E+I[0] Learning 26.886 0.093 0.439 0.689
+Multi Nearest E+I[0] Learning 26.781 0.089 0.450 0.688
+versions in surface normal estimation. Additionally, nearest neighbor sampling, as
+compared to bilinear upsampling, shows comparable performance while preserving the
+binary nature and compatibility with SNNs.
+Recognizing the effectiveness of Multi-Timestep Spiking UNets, we undertook an
+ablation study aimed at identifying the ideal spiking neurons to fully leverage their
+temporal dynamic capabilities. The results, detailed in Table 2, indicate that IF neurons
+offer superior performance. This is largely due to their ability to retain more extensive
+temporal information, as they operate without the influence of a leaky factor.
+4.5. Performance on ESfP-Real
+We also compare these methods on the ESfP-Real Dataset. Specifically, we show the
+quantitative performance in Table 3 and illustrate the qualitative results in Fig. 5.
+Similar to the results on the ESfP-Synthetic Dataset, our models demonstrate superior
+performance compared to physics-based methods on the real-world dataset. Moreover,
+as indicated by Table 3 and Fig. 5, our models not only match the overall performance
+of the ANN counterpart but also excel in qualitative results across diverse scenes in the
+test dataset. This enhanced performance on the ESfP-Real Dataset can be attributed
+to the sparser nature of this real-world dataset [22]. In addition, compared to the ANN
+counterpart, our model is more compatible with the sparse events and better maintains
+the sparsity to prevent overfitting on this dataset.
+Mirroring the outcomes observed on the ESfP-Synthetic Dataset, results from
+Table 3 and Fig. 5 also show that the Multi-Timestep Spiking UNet slightly outperforms
+the Single-Timestep Spiking UNet. Additionally, nearest neighbor upsampling is on par
+with bilinear upsampling in terms of surface normal estimation performance.Event-based Shape from Polarization with Spiking Neural Networks 16
+Scene
+(a)
+22.93
+19.21
+19.28
+19.06
+18.08
+28.12
+31.63
+30.13
+ANNs [22]
+(b)
+25.68
+25.23
+20.25
+31.81
+30.58
+37.82
+34.71
+46.01
+Single B
+(c)
+23.08
+23.63
+28.12
+30.67
+48.09
+44.53
+34.17
+45.21
+Single N
+(d)
+25.11
+29.00
+24.90
+20.98
+15.89
+27.30
+32.36
+23.77
+Multi B
+(e)
+26.52
+29.19
+25.44
+25.38
+17.80
+25.27
+30.18
+25.30
+Multi N
+(f)
+GT
+(g)
+Figure 4. Qualitative results on the ESfP-Synthetic Dataset. Column (a) shows
+the scene photographs for context. Column (b) is for the counterpart ANN models.
+Columns (c-d) are for the Single-Timestep Spiking UNets with bilinear upsampling and
+nearest neighbor upsampling, respectively. Columns (e-f) are for the Multi-Timestep
+Spiking UNets with bilinear upsampling and nearest neighbor upsampling, respectively.
+Column (g) presents the ground truth normals. The MAE for the reconstructions is
+shown on the top left of each cell in Columns (b-f). For each scene, we highlight the
+best result using the green colorbox.Event-based Shape from Polarization with Spiking Neural Networks 17
+Scene
+(a)
+28.36
+24.02
+28.09
+27.00
+31.50
+29.42
+27.66
+29.49
+ANNs [22]
+(b)
+27.77
+24.11
+33.17
+26.84
+28.94
+31.41
+27.73
+29.57
+Single B
+(c)
+27.65
+24.12
+38.20
+27.46
+27.88
+33.94
+29.07
+30.03
+Single N
+(d)
+30.27
+23.76
+26.79
+26.72
+27.71
+28.76
+26.05
+28.60
+Multi B
+(e)
+26.67
+23.36
+26.65
+26.19
+27.13
+28.73
+26.35
+29.34
+Multi N
+(f)
+GT
+(g)
+Figure 5. Qualitative results on the ESfP-Real Dataset. Column (a) shows the
+scene photographs for context. Column (b) is for the counterpart ANN models.
+Columns (c-d) are for the Single-Timestep Spiking UNets with bilinear upsampling and
+nearest neighbor upsampling, respectively. Columns (e-f) are for the Multi-Timestep
+Spiking UNets with bilinear upsampling and nearest neighbor upsampling, respectively.
+Column (g) presents the ground truth normals. The MAE for the reconstructions is
+shown on the top left of each cell in Columns (b-f). For each scene, we highlight the
+best result using the red colorbox.Event-based Shape from Polarization with Spiking Neural Networks 18
+4.6. Energy Analysis
+In earlier sections, we demonstrated that our models, employing nearest neighbor
+upsampling, can achieve performance comparable to those using bilinear upsampling in
+event-based shape from polarization. To delve deeper into the advantages of these fully
+spiking models, we will now estimate the computational cost savings they offer compared
+to their fully ANN counterpart [22] on the ESfP-Real Dataset. Commonly, the number
+of synaptic operations serves as a benchmark for assessing the computational energy of
+SNN models, as referenced in studies like [81] and [82]. Moreover, we can approximate
+the total energy consumption of a model using principles based on CMOS technology,
+as outlined in [83].
+Unlike ANNs, which consistently perform real-valued matrix-vector multiplication
+operations regardless of input sparsity, SNNs execute computations based on events,
+triggered only upon receiving input spikes. Therefore, we initially assess the mean
+spiking rate of layer lin our proposed model. In particular, the mean spiking rate for
+layer lin an SNN is calculated as follows:
+F(l)=1
+TX
+t∈TS(l)
+t
+K(l)(13)
+where Tis the total time length, S(l)
+tis the number of spikes of layer lat time t,
+andK(l)is the number of neurons of layer l. Table 4 shows the mean spiking rates
+for all layers in our fully spiking models, including the Single-Timestep Spiking UNet
+and Multi-Timestep Spiking UNet. Notice that we do not consider the components
+without trainable weights, such as max pooling and nearest neighbor upsampling layers.
+From the table, we can see that the Multi-Timestep Spiking UNet exhibits a higher
+average spiking rate across all its layers compared to the Single-Timestep Spiking UNet.
+This increased spiking rate aids in preserving more information, thereby enhancing the
+accuracy of surface normal estimation.
+With the mean spiking rates, we can estimate the number of synaptic operations in
+the SNNs. Given Mis the number of neurons, Cis the number of synaptic connections
+per neuron, and Findicates the mean spiking rate, the number of synaptic operations
+at each time in layer lis calculated as M(l)×C(l)×F(l). Thus, the total number of
+synaptic operations in an SNN is calculated by:
+#OP=X
+lM(l)×C(l)×F(l)×T. (14)
+In contrast, the total number of synaptic operations in the ANNs isP
+lM(l)×C(l).
+Due to the binary nature of spikes, SNNs perform only accumulation (AC) per synaptic
+operation, while ANNs perform the multiply-accumulate (MAC) computations since
+the operations are real-valued. Based on these, we estimate the number of synaptic
+operations in the our proposed models and their ANN counterpart. Table 5 illustrates
+that, in comparison to ANNs, our models primarily perform AC operations with
+significantly fewer MAC operations that transform real-valued event inputs into binaryEvent-based Shape from Polarization with Spiking Neural Networks 19
+Table 4. Mean spiking rates for all layers in the Single-Timestep Spiking UNet and
+Multi-Timestep Spiking UNet, both utilizing nearest neighbor upsampling and being
+fully spiking. Layers 1 to 19 correspond to the spiking convolutional layers depicted
+in Fig. 2 and Fig. 3. Given that the CVGR-I inputs are real-valued, the first layer in
+both models does not involve spike calculation.
+Single-Timestep Spiking UNet Nearest Multi-Timestep Spiking UNet Nearest
+Spiking rates Spikes Spiking rates Spikes
+Layer 1 0.3070 No 0.3070 No
+Layer 2 0.0901 Yes 0.2484 Yes
+Layer 3 0.1342 Yes 0.2304 Yes
+Layer 4 0.1057 Yes 0.1626 Yes
+Layer 5 0.1467 Yes 0.2482 Yes
+Layer 6 0.1174 Yes 0.1719 Yes
+Layer 7 0.1485 Yes 0.2733 Yes
+Layer 8 0.1153 Yes 0.1870 Yes
+Layer 9 0.1717 Yes 0.3607 Yes
+Layer 10 0.1691 Yes 0.2149 Yes
+Layer 11 0.1278 Yes 0.1991 Yes
+Layer 12 0.1513 Yes 0.2075 Yes
+Layer 13 0.1175 Yes 0.1840 Yes
+Layer 14 0.1540 Yes 0.1923 Yes
+Layer 15 0.1391 Yes 0.1810 Yes
+Layer 16 0.1937 Yes 0.1867 Yes
+Layer 17 0.1624 Yes 0.1881 Yes
+Layer 18 0.2323 Yes 0.2058 Yes
+Layer 19 0.2080 Yes 0.2099 Yes
+Average 0.1575 - 0.2189 -
+spiking representations. Furthermore, the Multi-Timestep Spiking UNet executes more
+AC operations than the Single-Timestep Spiking UNet due to its higher average spiking
+rate and the utilization of temporal dynamics across multiple timesteps.
+In general, AC operation is considered to be significantly more energy-efficient than
+MAC. For example, an AC is reported to be 5.1×more energy-efficient than a MAC in
+the case of 32-bit floating-point numbers (0.9pJ vs. 4.6pJ, 45nm CMOS process) [83].
+Based on this principle, we obtain the computational energy benefits of SNNs over ANNs
+in Table 5. From the table, we can see that the SNN models are 3.14×to28.80×more
+energy-efficient than ANNs on the ESfP-Real Dataset.
+These results are consistent with the fact that the sparse spike communication and
+event-driven computation underlie the efficiency advantage of SNNs and demonstrate
+the potential of our models on neuromorphic hardware and energy-constrained devices.Event-based Shape from Polarization with Spiking Neural Networks 20
+Table 5. Energy comparison of our models and their ANN counterpart on the ESfP-
+Real Dataset. The energy benefit is equal to Energy ANNs /Energy SNNs .
+ANNs [22] Single Nearest Multi Nearest
+Average Spiking Rate - 0.1575 0.2189
+#OP MAC ( ×109) 161.11 1.21 1.21
+#OP AC (×109) 0 22.36 255.35
+Energy (10−3J, 45nm CMOS process) 741.11 25.69 235.38
+Energy Benefit ( ×) 1.0 28.80 3.14
+5. Conclusion and Future Work
+In this work, we explore the domain of event-based shape from polarization with SNNs.
+Drawing inspiration from the feed-forward UNet, we introduce the Single-Timestep
+Spiking UNet, which processes event-based shape from polarization as a non-temporal
+task, updating the membrane potential of each spiking neuron only once. This method,
+while not fully leveraging the temporal capabilities of SNNs, significantly cuts down on
+computational and energy demands. To better harness the rich temporal data in event-
+based information, we also propose the Multi-Timestep Spiking UNet. This model
+operates sequentially across multiple timesteps, enabling spiking neurons to employ
+their temporal recurrent neuronal dynamics for more effective data extraction. Through
+extensive evaluation on both synthetic and real-world datasets, our models demonstrate
+their ability to estimate dense surface normals from polarization events, achieving results
+comparable to those of state-of-the-art ANN models. Moreover, our models present
+enhanced energy efficiency over their ANN counterparts, underscoring their suitability
+for neuromorphic hardware and energy-sensitive edge devices. This research not only
+advances the field of spiking neural networks but also opens up new possibilities for
+efficient and effective event-based shape recovery in various applications.
+Building on this foundation, future work could focus on several promising directions.
+One key area is the further optimization of SNN architectures to enhance their ability to
+process complex, dynamic scenes, potentially by integrating more sophisticated temporal
+dynamics or learning algorithms. Additionally, exploring the integration of our models
+with other sensory data types, like depth information, could lead to more robust and
+versatile systems. Moreover, adapting these models for real-time applications in various
+fields, from autonomous vehicles to augmented reality, presents an exciting challenge.
+Finally, there is significant potential in further reducing the energy consumption of these
+networks, making them even more suitable for deployment in low-power, edge computing
+scenarios. Through these explorations, we can continue to push the boundaries of what’s
+possible with SNNs in event-based sensing and beyond.Event-based Shape from Polarization with Spiking Neural Networks 21
+Acknowledgement
+We are grateful to Chenghong Lin for her proofreading and advice on the paper writing.
+References
+[1] Michael Kazhdan, Matthew Bolitho, and Hugues Hoppe. Poisson surface reconstruction. In
+Proceedings of the fourth Eurographics symposium on Geometry processing , volume 7, page 0,
+2006.
+[2] Jundan Luo, Zhaoyang Huang, Yijin Li, Xiaowei Zhou, Guofeng Zhang, and Hujun Bao. Niid-net:
+adapting surface normal knowledge for intrinsic image decomposition in indoor scenes. IEEE
+Transactions on Visualization and Computer Graphics , 26(12):3434–3445, 2020.
+[3] Yakun Ju, Junyu Dong, and Sheng Chen. Recovering surface normal and arbitrary images: A dual
+regression network for photometric stereo. IEEE Transactions on Image Processing , 30:3676–
+3690, 2021.
+[4] Matti Strese, Clemens Schuwerk, Albert Iepure, and Eckehard Steinbach. Multimodal feature-
+based surface material classification. IEEE transactions on haptics , 10(2):226–239, 2016.
+[5] Hernan Badino, Daniel Huber, Yongwoon Park, and Takeo Kanade. Fast and accurate
+computation of surface normals from range images. In 2011 IEEE International Conference
+on Robotics and Automation , pages 3084–3091. IEEE, 2011.
+[6] Jason Geng. Structured-light 3d surface imaging: a tutorial. Advances in optics and photonics ,
+3(2):128–160, 2011.
+[7] Berthold KP Horn. Shape from shading: A method for obtaining the shape of a smooth opaque
+object from one view. 1970.
+[8] Steven A Shafer and Takeo Kanade. Using shadows in finding surface orientations. Computer
+Vision, Graphics, and Image Processing , 22(1):145–176, 1983.
+[9] Andrew P Witkin. Recovering surface shape and orientation from texture. Artificial intelligence ,
+17(1-3):17–45, 1981.
+[10] Carlos Hern´ andez. Stereo and silhouette fusion for 3d object modeling from uncalibrated images
+under circular motion. These de doctorat, ´Ecole Nationale Sup´ erieure des T´ el´ ecommunications ,
+2, 2004.
+[11] Robert J Woodham. Photometric method for determining surface orientation from multiple
+images. Optical engineering , 19(1):139–144, 1980.
+[12] Stefan Rahmann and Nikos Canterakis. Reconstruction of specular surfaces using polarization
+imaging. In Proceedings of the 2001 IEEE Computer Society Conference on Computer Vision
+and Pattern Recognition. CVPR 2001 , volume 1, pages I–I. IEEE, 2001.
+[13] Achuta Kadambi, Vage Taamazyan, Boxin Shi, and Ramesh Raskar. Polarized 3d: High-quality
+depth sensing with polarization cues. In Proceedings of the IEEE International Conference on
+Computer Vision , pages 3370–3378, 2015.
+[14] Lawrence B Wolff and Terrance E Boult. Constraining object features using a polarization
+reflectance model. Phys. Based Vis. Princ. Pract. Radiom , 1:167, 1993.
+[15] Silvia Tozza, William AP Smith, Dizhong Zhu, Ravi Ramamoorthi, and Edwin R Hancock. Linear
+differential constraints for photo-polarimetric height estimation. In Proceedings of the IEEE
+international conference on computer vision , pages 2279–2287, 2017.
+[16] Yunhao Ba, Alex Gilbert, Franklin Wang, Jinfa Yang, Rui Chen, Yiqin Wang, Lei Yan, Boxin Shi,
+and Achuta Kadambi. Deep shape from polarization. In Computer Vision–ECCV 2020: 16th
+European Conference, Glasgow, UK, August 23–28, 2020, Proceedings, Part XXIV 16 , pages
+554–571. Springer, 2020.
+[17] Chenyang Lei, Chenyang Qi, Jiaxin Xie, Na Fan, Vladlen Koltun, and Qifeng Chen. Shape from
+polarization for complex scenes in the wild. In Proceedings of the IEEE/CVF Conference on
+Computer Vision and Pattern Recognition , pages 12632–12641, 2022.Event-based Shape from Polarization with Spiking Neural Networks 22
+[18] Achuta Kadambi, Vage Taamazyan, Boxin Shi, and Ramesh Raskar. Depth sensing using
+geometrically constrained polarization normals. International Journal of Computer Vision ,
+125:34–51, 2017.
+[19] Gary A Atkinson and J¨ urgen D Ernst. High-sensitivity analysis of polarization by surface
+reflection. Machine Vision and Applications , 29:1171–1189, 2018.
+[20] Lawrence B Wolff. Polarization vision: a new sensory approach to image understanding. Image
+and Vision computing , 15(2):81–93, 1997.
+[21] Lucid vision phoenix polarization camera. https://thinklucid.com/product/
+phoenix-5-0-mp-polarized-model/ . 2018.
+[22] Manasi Muglikar, Leonard Bauersfeld, Diederik Paul Moeys, and Davide Scaramuzza. Event-based
+shape from polarization. In Proceedings of the IEEE/CVF Conference on Computer Vision and
+Pattern Recognition , pages 1547–1556, 2023.
+[23] Guillermo Gallego, Tobi Delbruck, Garrick Michael Orchard, Chiara Bartolozzi, Brian Taba,
+Andrea Censi, Stefan Leutenegger, Andrew Davison, Jorg Conradt, Kostas Daniilidis, et al.
+Event-based vision: A survey. IEEE transactions on pattern analysis and machine intelligence ,
+2020.
+[24] Kaushik Roy, Akhilesh Jaiswal, and Priyadarshini Panda. Towards spike-based machine
+intelligence with neuromorphic computing. Nature , 575(7784):607–617, 2019.
+[25] Andrew L Maas, Awni Y Hannun, Andrew Y Ng, et al. Rectifier nonlinearities improve neural
+network acoustic models. In Proc. icml , volume 30, page 3. Citeseer, 2013.
+[26] Bing Xu, Naiyan Wang, Tianqi Chen, and Mu Li. Empirical evaluation of rectified activations in
+convolutional network. arXiv preprint arXiv:1505.00853 , 2015.
+[27] Djork-Arn´ e Clevert, Thomas Unterthiner, and Sepp Hochreiter. Fast and accurate deep network
+learning by exponential linear units (elus). arXiv preprint arXiv:1511.07289 , 2015.
+[28] Wulfram Gerstner. Time structure of the activity in neural network models. Physical review E ,
+51(1):738, 1995.
+[29] Larry F Abbott. Lapicque’s introduction of the integrate-and-fire model neuron (1907). Brain
+research bulletin , 50(5-6):303–304, 1999.
+[30] Wulfram Gerstner and Werner M Kistler. Spiking neuron models: Single neurons, populations,
+plasticity . Cambridge university press, 2002.
+[31] Yann LeCun, Yoshua Bengio, and Geoffrey Hinton. Deep learning. nature , 521(7553):436–444,
+2015.
+[32] Zhaokun Zhou, Yuesheng Zhu, Chao He, Yaowei Wang, Shuicheng Yan, Yonghong Tian, and
+Li Yuan. Spikformer: When spiking neural network meets transformer. arXiv preprint
+arXiv:2209.15425 , 2022.
+[33] Jiqing Zhang, Bo Dong, Haiwei Zhang, Jianchuan Ding, Felix Heide, Baocai Yin, and Xin Yang.
+Spiking transformers for event-based single object tracking. In Proceedings of the IEEE/CVF
+conference on Computer Vision and Pattern Recognition , pages 8801–8810, 2022.
+[34] Zulun Zhu, Jiaying Peng, Jintang Li, Liang Chen, Qi Yu, and Siqiang Luo. Spiking graph
+convolutional networks. arXiv preprint arXiv:2205.02767 , 2022.
+[35] Rui-Jie Zhu, Qihang Zhao, and Jason K Eshraghian. Spikegpt: Generative pre-trained language
+model with spiking neural networks. arXiv preprint arXiv:2302.13939 , 2023.
+[36] Olaf Ronneberger, Philipp Fischer, and Thomas Brox. U-net: Convolutional networks
+for biomedical image segmentation. In Medical Image Computing and Computer-Assisted
+Intervention–MICCAI 2015: 18th International Conference, Munich, Germany, October 5-9,
+2015, Proceedings, Part III 18 , pages 234–241. Springer, 2015.
+[37] William A Shurcliff. Polarized light: production and use . Harvard University Press, 1962.
+[38] Edward Collett. Field guide to polarization. Spie Bellingham, WA, 2005.
+[39] Boxin Shi, Jinfa Yang, Jinwei Chen, Ruihua Zhang, and Rui Chen. Recent progress in shape from
+polarization. Advances in Photometric 3D-Reconstruction , pages 177–203, 2020.
+[40] Miyazaki, Kagesawa, and Ikeuchi. Polarization-based transparent surface modeling from twoEvent-based Shape from Polarization with Spiking Neural Networks 23
+views. In Proceedings Ninth IEEE International Conference on Computer Vision , pages 1381–
+1386. IEEE, 2003.
+[41] Daisuke Miyazaki, Takuya Shigetomi, Masashi Baba, Ryo Furukawa, Shinsaku Hiura, and Naoki
+Asada. Surface normal estimation of black specular objects from multiview polarization images.
+Optical Engineering , 56(4):041303–041303, 2017.
+[42] Luwei Yang, Feitong Tan, Ao Li, Zhaopeng Cui, Yasutaka Furukawa, and Ping Tan. Polarimetric
+dense monocular slam. In Proceedings of the IEEE conference on computer vision and pattern
+recognition , pages 3857–3866, 2018.
+[43] Dizhong Zhu and William AP Smith. Depth from a polarisation+ rgb stereo pair. In Proceedings
+of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 7586–7595,
+2019.
+[44] Christophe Stolz, Mathias Ferraton, and Fabrice Meriaudeau. Shape from polarization: a method
+for solving zenithal angle ambiguity. Optics letters , 37(20):4218–4220, 2012.
+[45] Lawrence B Wolff, Shree K Nayar, and Michael Oren. Improved diffuse reflection models for
+computer vision. International Journal of Computer Vision , 30:55–71, 1998.
+[46] Ye Yu, Dizhong Zhu, and William AP Smith. Shape-from-polarisation: a nonlinear least squares
+approach. In Proceedings of the IEEE International Conference on Computer Vision Workshops ,
+pages 2969–2976, 2017.
+[47] William AP Smith, Ravi Ramamoorthi, and Silvia Tozza. Height-from-polarisation with unknown
+lighting or albedo. IEEE transactions on pattern analysis and machine intelligence , 41(12):2875–
+2888, 2018.
+[48] N Justin Marshall. A unique colour and polarization vision system in mantis shrimps. Nature ,
+333(6173):557–560, 1988.
+[49] Germain Haessig, Damien Joubert, Justin Haque, Moritz B Milde, Tobi Delbruck, and Viktor
+Gruev. Pdavis: Bio-inspired polarization event camera. In Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition , pages 3962–3971, 2023.
+[50] Alex Zihao Zhu, Liangzhe Yuan, Kenneth Chaney, and Kostas Daniilidis. Unsupervised event-
+based learning of optical flow, depth, and egomotion. In Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition , pages 989–997, 2019.
+[51] Ed Bullmore and Olaf Sporns. The economy of brain network organization. Nature Reviews
+Neuroscience , 13(5):336–349, 2012.
+[52] Daniel J Felleman and David C Van Essen. Distributed hierarchical processing in the primate
+cerebral cortex. In Cereb cortex . Citeseer, 1991.
+[53] Paul A Merolla, John V Arthur, Rodrigo Alvarez-Icaza, Andrew S Cassidy, Jun Sawada, Filipp
+Akopyan, Bryan L Jackson, Nabil Imam, Chen Guo, Yutaka Nakamura, et al. A million
+spiking-neuron integrated circuit with a scalable communication network and interface. Science ,
+345(6197):668–673, 2014.
+[54] Mike Davies, Andreas Wild, Garrick Orchard, Yulia Sandamirskaya, Gabriel A Fonseca Guerra,
+Prasad Joshi, Philipp Plank, and Sumedh R Risbud. Advancing neuromorphic computing with
+loihi: A survey of results and outlook. Proceedings of the IEEE , 109(5):911–934, 2021.
+[55] Yongqiang Cao, Yang Chen, and Deepak Khosla. Spiking deep convolutional neural networks for
+energy-efficient object recognition. International Journal of Computer Vision , 113(1):54–66,
+2015.
+[56] Abhronil Sengupta, Yuting Ye, Robert Wang, Chiao Liu, and Kaushik Roy. Going deeper in
+spiking neural networks: Vgg and residual architectures. Frontiers in neuroscience , 13:95, 2019.
+[57] Yujie Wu, Lei Deng, Guoqi Li, Jun Zhu, and Luping Shi. Spatio-temporal backpropagation for
+training high-performance spiking neural networks. Frontiers in neuroscience , 12:331, 2018.
+[58] Xiang Cheng, Yunzhe Hao, Jiaming Xu, and Bo Xu. Lisnn: Improving spiking neural networks
+with lateral interactions for robust object recognition. In Christian Bessiere, editor, Proceedings
+of the Twenty-Ninth International Joint Conference on Artificial Intelligence, IJCAI-20 , pages
+1519–1525. International Joint Conferences on Artificial Intelligence Organization, 7 2020. MainEvent-based Shape from Polarization with Spiking Neural Networks 24
+track.
+[59] Ulysse Ran¸ con, Javier Cuadrado-Anibarro, Benoit R Cottereau, and Timoth´ ee Masquelier.
+Stereospike: Depth learning with a spiking neural network. IEEE Access , 10:127428–127439,
+2022.
+[60] Xiaoshan Wu, Weihua He, Man Yao, Ziyang Zhang, Yaoyuan Wang, and Guoqi Li. Mss-depthnet:
+Depth prediction with multi-step spiking neural network. arXiv preprint arXiv:2211.12156 ,
+2022.
+[61] Xingting Yao, Qinghao Hu, Tielong Liu, Zitao Mo, Zeyu Zhu, Zhengyang Zhuge, and Jian Cheng.
+Spiking nerf: Making bio-inspired neural networks see through the real world. arXiv preprint
+arXiv:2309.10987 , 2023.
+[62] Henri Rebecq, Ren´ e Ranftl, Vladlen Koltun, and Davide Scaramuzza. High speed and high
+dynamic range video with an event camera. IEEE transactions on pattern analysis and machine
+intelligence , 43(6):1964–1980, 2019.
+[63] Stepan Tulyakov, Alfredo Bochicchio, Daniel Gehrig, Stamatios Georgoulis, Yuanyou Li, and
+Davide Scaramuzza. Time lens++: Event-based frame interpolation with parametric non-linear
+flow and multi-scale fusion. In Proceedings of the IEEE/CVF Conference on Computer Vision
+and Pattern Recognition , pages 17755–17764, 2022.
+[64] Wei Fang, Zhaofei Yu, Yanqi Chen, Timoth´ ee Masquelier, Tiejun Huang, and Yonghong Tian.
+Incorporating learnable membrane time constant to enhance learning of spiking neural networks.
+InProceedings of the IEEE/CVF international conference on computer vision , pages 2661–2671,
+2021.
+[65] Augustus Odena, Vincent Dumoulin, and Chris Olah. Deconvolution and checkerboard artifacts.
+Distill , 1(10):e3, 2016.
+[66] Beck Strohmer, Rasmus Karnøe Stagsted, Poramate Manoonpong, and Leon Bonde Larsen.
+Integrating non-spiking interneurons in spiking neural networks. Frontiers in neuroscience ,
+15:633945, 2021.
+[67] Zhenzhi Wu, Hehui Zhang, Yihan Lin, Guoqi Li, Meng Wang, and Ye Tang. Liaf-net: Leaky
+integrate and analog fire network for lightweight and efficient spatiotemporal information
+processing. IEEE Transactions on Neural Networks and Learning Systems , 33(11):6249–6262,
+2021.
+[68] Robert Hecht-Nielsen. Theory of the backpropagation neural network. In Neural networks for
+perception , pages 65–93. Elsevier, 1992.
+[69] Paul J Werbos. Backpropagation through time: what it does and how to do it. Proceedings of
+the IEEE , 78(10):1550–1560, 1990.
+[70] Emre O Neftci, Hesham Mostafa, and Friedemann Zenke. Surrogate gradient learning in spiking
+neural networks: Bringing the power of gradient-based optimization to spiking neural networks.
+IEEE Signal Processing Magazine , 36(6):51–63, 2019.
+[71] Wei Fang, Yanqi Chen, Jianhao Ding, Zhaofei Yu, Timoth´ ee Masquelier, Ding Chen, Liwei Huang,
+Huihui Zhou, Guoqi Li, and Yonghong Tian. Spikingjelly: An open-source machine learning
+infrastructure platform for spike-based intelligence. Science Advances , 9(40):eadi1480, 2023.
+[72] Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan,
+Trevor Killeen, Zeming Lin, Natalia Gimelshein, Luca Antiga, et al. Pytorch: An imperative
+style, high-performance deep learning library. Advances in neural information processing
+systems , 32, 2019.
+[73] Eimantas Ledinauskas, Julius Ruseckas, Alfonsas Jurˇ s˙ enas, and Giedrius Buraˇ cas. Training deep
+spiking neural networks. arXiv preprint arXiv:2006.04436 , 2020.
+[74] Diederik P Kingma and Jimmy Ba. Adam: A method for stochastic optimization. arXiv preprint
+arXiv:1412.6980 , 2014.
+[75] Wenzel Jakob, S´ ebastien Speierer, Nicolas Roussel, Merlin Nimier-David, Delio Vicini, Tizian
+Zeltner, Baptiste Nicolet, Miguel Crespo, Vincent Leroy, and Ziyi Zhang. Mitsuba 3 renderer,
+2022. https://mitsuba-renderer.org.Event-based Shape from Polarization with Spiking Neural Networks 25
+[76] Henri Rebecq, Daniel Gehrig, and Davide Scaramuzza. Esim: an open event camera simulator.
+InConference on robot learning , pages 969–982. PMLR, 2018.
+[77] T Finateu, A Niwa, D Matolin, K Tsuchimoto, A Mascheroni, E Reynaud, P Mostafalu, F Brady,
+L Chotard, F LeGoff, et al. A 1280x720 back-illuminated stacked temporal contrast event-based
+vision sensor with 4.86 um pixels, 1.066 geps readout, programmable event-rate controller and
+compressive data-formatting pipeline. In IEEE International Solid-State Circuits Conference ,
+2020.
+[78] Breakthrough photography x4 polarizer. https://breakthrough.photography/products/
+x4-circular-polarizer .
+[79] Manasi Muglikar, Guillermo Gallego, and Davide Scaramuzza. Esl: Event-based structured light.
+In2021 International Conference on 3D Vision (3DV) , pages 1165–1174. IEEE, 2021.
+[80] Ali H Mahmoud, Moumen T El-Melegy, and Aly A Farag. Direct method for shape recovery from
+polarization and shading. In 2012 19th IEEE International Conference on Image Processing ,
+pages 1769–1772. IEEE, 2012.
+[81] Mingkun Xu, Yujie Wu, Lei Deng, Faqiang Liu, Guoqi Li, and Jing Pei. Exploiting
+spiking dynamics with spatial-temporal feature normalization in graph learning. In Zhi-
+Hua Zhou, editor, Proceedings of the Thirtieth International Joint Conference on Artificial
+Intelligence, IJCAI-21 , pages 3207–3213. International Joint Conferences on Artificial
+Intelligence Organization, 8 2021. Main Track.
+[82] Chankyu Lee, Adarsh Kumar Kosta, Alex Zihao Zhu, Kenneth Chaney, Kostas Daniilidis, and
+Kaushik Roy. Spike-flownet: event-based optical flow estimation with energy-efficient hybrid
+neural networks. In European Conference on Computer Vision , pages 366–382. Springer, 2020.
+[83] Mark Horowitz. 1.1 computing’s energy problem (and what we can do about it). In 2014 IEEE
+International Solid-State Circuits Conference Digest of Technical Papers (ISSCC) , pages 10–14.
+IEEE, 2014.

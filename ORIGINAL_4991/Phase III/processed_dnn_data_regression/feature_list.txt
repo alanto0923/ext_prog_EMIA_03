@@ -1,0 +1,6 @@
+ATR_14d
+MA_Crossover_10_50
+Normalized_BBW_20d_2std
+Stochastic_Oscillator_14d
+Volume_Momentum_50d
+Mean_Reversion_20d

@@ -1,0 +1,19 @@
+domain,name,code
+Momentum,Price Momentum (14 days),"((CLOSE - DELAY(CLOSE, 14)) / DELAY(CLOSE, 14))"
+Mean Reversion,Mean Reversion (20 days),"(MEAN(CLOSE, 20) - CLOSE)"
+Volatility,20-Day Volatility,"STD(CLOSE, 20)"
+Fundamental,Price-to-Earnings Ratio (P/E),(CLOSE / EPS)
+Liquidity,Trading Volume,VOLUME
+Quality,Gross Profit Margin,(GROSS_PROFIT / REVENUE)
+GROWTH,Earnings Growth Rate,"(EPS / DELAY(EPS,1) - 1)"
+Technical,Moving Average (MA),"SMA(CLOSE, 20)"
+Macro Economics,GDP Growth Rate,"GDP - DELAY(GDP, n)"
+Momentum,Relative Strength Index (RSI) - 14 days,"(100 - ((100 / (1 + RSI(CLOSE, 14))) * RS(CLOSE, 14)))"
+Mean Reversion,Average True Range (ATR) - 20 days,"ATR(CLOSE, 20)"
+Volatility,Bollinger Bands - 20 days,"(CLOSE - L + (1.96 * STD(CLOSE, 20))) / (0.16 * SMA(CLOSE, 20)) and (CLOSE - L - (1.96 * STD(CLOSE, 20))) / (0.16 * SMA(CLOSE, 20))"
+Fundamental,Dividend Yield,(DIVIDENDS / SHARE PRICE)
+Liquidity,Order Flow Index (OFI) - 14 days,"OFI(CLOSE, 14)"
+Quality,Return on Equity (ROE),(NET INCOME / SHARE PRICE)
+GROWTH,Price-to-Book Ratio (P/B),(SHARE PRICE / BOOK VALUE)
+Technical,Stochastic Oscillator - 14 days,"STOCH(CLOSE, 14)"
+Macro Economics,Interest Rate Spread,(LIBOR / TED SPREAD)

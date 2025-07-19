@@ -1,0 +1,791 @@
+Domain Specific Pruning of Large Mixture-of-Experts
+Models with Few-shot Demonstrations
+Zican Dong1∗, Han Peng1∗, Peiyu Liu2, Wayne Xin Zhao1,
+Dong Wu3,Feng Xiao4,Zhifeng Wang4
+1Gaoling School of Artificial Intelligence, Renmin University of China
+2University of International Business and Economics
+3YanTron Technology Co. Ltd4EBTech Co. Ltd
+{dongzican, panospeng}@ruc.edu.cn
+liupeiyustu@163.com, batmanfly@gmail.com,
+wudong@yantronic.com, {fengx, zhifengw}@ebtech.com
+Abstract
+Mixture-of-Experts (MoE) models achieve a favorable trade-off between perfor-
+mance and inference efficiency by activating only a subset of experts. However,
+the memory overhead of storing all experts remains a major limitation, especially
+in large-scale MoE models such as DeepSeek-R1 (671B). In this study, we investi-
+gate domain specialization and expert redundancy in large-scale MoE models and
+uncover a consistent behavior we term few-shot expert localization , with only a
+few demonstrations, the model consistently activates a sparse and stable subset
+of experts. Building on this observation, we propose a simple yet effective prun-
+ing framework, EASY-EP , that leverages a few domain-specific demonstrations
+to identify and retain only the most relevant experts. EASY-EP comprises two
+key components: output-aware expert importance assessment andexpert-level
+token contribution estimation . The former evaluates the importance of each
+expert for the current token by considering the gating scores and magnitudes of
+the outputs of activated experts, while the latter assesses the contribution of tokens
+based on representation similarities after and before routed experts. Experiments
+show that our method can achieve comparable performances and 2.99×throughput
+under the same memory budget with full DeepSeek-R1 with only half the experts.
+Our code is available at https://github.com/RUCAIBox/EASYEP .
+1 Introduction
+Mixture-of-Experts (MoE) architectures have been widely adopted as the backbones of various
+large language models (LLMs) due to their efficiency of scaling parameters without proportional
+computational overhead [ 1–4]. However, the deployment of large MoE models imposes substantial
+memory requirements. Taking DeepSeek-R1 (671B) [ 1] as an example, it takes about 1500 GB
+under BF16 precision and 750 GB under FP8 precision, necessitating 4 ×8 A800 or 2 ×8 H800 GPU
+configurations, respectively. This underscores the critical need to explore lite deployment strategies
+for large-scale MoE models like DeepSeek-R1.
+Various training-free approaches have been proposed to alleviate the inference memory demands
+of MoE models. Router-based pruning methods leverage statistical information from router ac-
+tivation and gating values to estimate expert importance [ 5], while perturbation-based strategies
+search for the optimal subsets of experts to minimize the distribution drift of hidden states [ 6,7].
+∗Equal Contribution.
+Preprint. Under review.arXiv:2504.06792v1  [cs.CL]  9 Apr 2025/uni00000016/uni00000015 /uni00000019/uni00000017 /uni0000001c/uni00000019 /uni00000014/uni00000015/uni0000001b /uni00000014/uni00000019/uni00000013 /uni00000014/uni0000001c/uni00000015 /uni00000015/uni00000015/uni00000017 /uni00000015/uni00000018/uni00000019
+/uni00000031/uni00000058/uni00000050/uni00000045/uni00000048/uni00000055/uni00000003/uni00000052/uni00000049/uni00000003/uni00000028/uni0000005b/uni00000053/uni00000048/uni00000055/uni00000057/uni00000056/uni00000013/uni00000015/uni00000018/uni00000013/uni00000018/uni00000013/uni00000013/uni0000001a/uni00000018/uni00000013/uni00000014/uni00000013/uni00000013/uni00000013/uni00000014/uni00000015/uni00000018/uni00000013/uni00000014/uni00000018/uni00000013/uni00000013/uni00000014/uni0000001a/uni00000018/uni00000013/uni00000037/uni0000004b/uni00000055/uni00000052/uni00000058/uni0000004a/uni0000004b/uni00000053/uni00000058/uni00000057/uni00000003/uni0000000b/uni00000057/uni00000052/uni0000004e/uni00000048/uni00000051/uni00000012/uni00000056/uni0000000c/uni00000014/uni0000000d/uni0000001b/uni0000000d/uni0000002b/uni0000001b/uni00000013/uni00000013 /uni00000015/uni0000000d/uni0000001b/uni0000000d/uni0000002b/uni0000001b/uni00000013/uni00000013
+/uni00000017/uni00000013/uni00000018/uni00000013/uni00000019/uni00000013/uni0000001a/uni00000013/uni0000001b/uni00000013
+/uni00000033/uni00000048/uni00000055/uni00000049/uni00000052/uni00000055/uni00000050/uni00000044/uni00000051/uni00000046/uni00000048/uni00000003/uni00000052/uni00000051/uni00000003/uni00000024/uni0000002c/uni00000030/uni00000028/uni00000015/uni00000013/uni00000015/uni00000017
+/uni00000037/uni0000004b/uni00000055/uni00000052/uni00000058/uni0000004a/uni0000004b/uni00000053/uni00000058/uni00000057/uni00000003/uni00000059/uni00000056/uni00000003/uni00000033/uni00000048/uni00000055/uni00000049/uni00000052/uni00000055/uni00000050/uni00000044/uni00000051/uni00000046/uni00000048/uni00000003/uni0000005a/uni0000004c/uni00000057/uni0000004b/uni00000003/uni00000027/uni0000004c/uni00000049/uni00000049/uni00000048/uni00000055/uni00000048/uni00000051/uni00000057/uni00000003/uni00000028/uni0000005b/uni00000053/uni00000048/uni00000055/uni00000057/uni00000056
+/uni00000037/uni0000004b/uni00000055/uni00000052/uni00000058/uni0000004a/uni0000004b/uni00000053/uni00000058/uni00000057
+/uni00000033/uni00000048/uni00000055/uni00000049/uni00000052/uni00000055/uni00000050/uni00000044/uni00000051/uni00000046/uni00000048Figure 1: Throughput and Performance Comparison of DeepSeek-R1 on AIME2024 with Varying
+Expert Counts Using EASY-Prune. We deploy R1 with two 8 ×H800 for 224 and 256 experts while
+one8×H800 is employed for others. The throughputs of latter configurations are multiplied by 2.
+Despite these advancements, achieving an optimal trade-off between efficiency and performance
+remains a challenge. Router-based methods often fail to accurately identify critical experts, whereas
+perturbation-based approaches become computationally prohibitive as the number of experts scales
+up. Moreover, existing methods are primarily designed for MoEs with a few experts per layer ( e.g.,
+Mixtral 8 ×7B [2]) [6]. This highlights the need for more scalable and accurate pruning strategies
+tailored to large-scale MoE models. While such a scale poses challenges for current approaches,
+it also brings new opportunities: the increased granularity and domain specialization of experts in
+models like DeepSeek-R1 [ 8,9] make them especially amenable to domain-specific pruning at high
+compression ratios [10].
+In this study, we analyze how expert activations in a large MoE model vary across domains and
+respond to a small number of demonstration samples. We observe a consistent behavior: given
+just a few domain-specific examples, the model tends to activate a stable and sparse subset of
+experts that are highly relevant to that domain. We refer to this phenomenon as few-shot expert
+identification . To better understand this behavior, we first examine domain-level differences in expert
+activation distributions and the role of high gating-value experts. We then analyze how the number of
+demonstrations and the similarity across datasets within the same domain affect expert identification.
+Our key findings are as follows: (1) High gating-value experts are strongly domain-specific, which
+play a critical role in their respective domains but have minimal or no influence on unrelated tasks;
+(2) A small number of demonstrations is sufficient to identify these experts reliably, and the identified
+experts generalize well to other datasets within the same domain.
+Based on our observations, we introduce a domain-specific pruning framework that leverages few-shot
+demonstrations to address memory constraints in large-scale MoE models. Our approach begins by
+sampling a small number of task demonstrations from a specific domain and generating responses
+with the original model, serving as a calibration set. We then introduce a pruning method, Expert
+Assessment with Simple Yet-effective scoring for Expert Pruning, a.k.a., EASY-EP . It aims to
+quantify expert importance and retain a fixed-size subset of top-scoring experts. This proposed
+metric consists of two complementary components: output-aware expert importance assessment
+andexpert-level token contribution estimation . The former component jointly considers gating
+values and L2 Norm of expert outputs to evaluate per-token expert importance, while the latter
+component uses similarity between input and residual-connected output of routed experts to measure
+the contribution of individual tokens to the overall expert score. Thus, a single forward pass is
+sufficient to identify target domain-specific experts without the need for backpropagation or repeated
+forward evaluations.
+To evaluate the efficacy of our approach, we conducted systematic experiments on DeepSeek-R1 using
+six benchmark datasets spanning math, coding, science, and agent execution capabilities. Specifically,
+our method achieves 100.38% and95.10% performance compared to the full model while retaining
+2only50% of experts on domain-specific and mixed-domain pruning settings, respectively. As the
+compression ratio increases, the performances degrade slowly, indicating robustness to pruning.
+Additionally, under identical memory constraints, pruning 50% of the experts leads to a 2.99 ×
+increase in inference throughput under the setting of 1K input and 1K output lengths, highlighting
+the practical utility of our framework for real-world deployments.
+2 Background
+Recently, Mixture-of-Experts (MoE) architectures have been widely adopted as the backbone of
+LLMs due to their ability to scale parameters efficiently without incurring additional computational
+costs [ 2,10]. This architecture introduces MoE modules where parameters are dynamically activated
+to replace traditional feedforward networks (FFNs) In the l-th layer, a MoE module consists of a
+router G(·),Nrouted experts {El
+1(·), . . . , El
+N(·)}, and an optional shared expert El
+s(·)2at layer l.
+Given an input representation sequence Hl={hl
+1, . . . , hl
+T},∀hl
+t∈RD, the router computes the
+logits of each routed expert for the t-th token and applies a gating function on the Top- Klogits to
+obtain the gating values:
+gl
+i,t=Gl
+i(hl
+t),Gl
+i(hl
+t)∈Top-K(Gl
+1(hl
+t), . . . , Gl
+N(hl
+t)),
+0, otherwise .(1)
+Subsequently, the Top- Kselected experts are activated, and their outputs are aggregated via weighted
+summation. The final output is obtained by summing the input hidden states and the output of routed
+experts as follows:
+˜hl
+t=hl
+t+NX
+i=1gl
+i,t·El
+i(hl
+t) (2)
+With the gating values of the router, we define two metrics to assess the importance of each expert,
+i.e., frequency andgating scores [5]. For all tokens in a calibration set and an expert El
+i, we define
+frequency fl
+ias the number of times each expert is activated, while gating scores rl
+iis defined as the
+total sum of the gating values when each expert is activated.
+fl
+i=MX
+n=1TnX
+t=1(gl
+i,n,t>0), rl
+i=MX
+n=1TnX
+t=1gl
+i,n,t, (3)
+where Mis the number of demonstrations in the calibration set, and Tndenotes the number of tokens
+per demonstration.
+3 Empirical Analysis of Experts
+Previous work has demonstrated that the expert distributions of MoEs with few experts ( e.g., Mixtral
+8×7B) mainly depend on the syntax structures instead of tasks and domains of input data [ 2].
+However, the large-size MoE models are equipped with various fine-grained experts, e.g., DeepSeek-
+R1 has 256 experts in each layer. Thus, the experts may be more specialized and store distinct
+knowledge and capacities in their parameters. To investigate this, we empirically investigate what
+we refer to as few-shot expert identification , a phenomenon in which domain-specific experts can be
+reliably identified using only a small number of demonstrations.
+3.1 Expert Specialization Across Domains
+To investigate whether experts in large MoE models exhibit domain-specific specialization, we select
+AIME-20233, GPQA-main [ 13], and LiveCodeBench-V3 [ 14] as representative datasets for the
+2Shared experts were introduced by the DeepSeekMoE series [ 1,10–12], but are not considered in our
+analysis and method.
+3https://huggingface.co/datasets/di-zhang-fdu/AIME_1983_2024
+3/uni00000050/uni00000044/uni00000057/uni0000004b /uni00000056/uni00000046/uni0000004c/uni00000048/uni00000051/uni00000046/uni00000048 /uni00000046/uni00000052/uni00000047/uni0000004c/uni00000051/uni0000004a/uni00000050/uni00000044/uni00000057/uni0000004b
+/uni00000056/uni00000046/uni0000004c/uni00000048/uni00000051/uni00000046/uni00000048
+/uni00000046/uni00000052/uni00000047/uni0000004c/uni00000051/uni0000004a/uni00000014/uni00000011/uni00000013/uni00000013 /uni00000013/uni00000011/uni00000014/uni00000015 /uni00000013/uni00000011/uni00000015/uni00000013
+/uni00000013/uni00000011/uni00000014/uni00000015 /uni00000014/uni00000011/uni00000013/uni00000013 /uni00000013/uni00000011/uni00000014/uni00000017
+/uni00000013/uni00000011/uni00000015/uni00000013 /uni00000013/uni00000011/uni00000014/uni00000017 /uni00000014/uni00000011/uni00000013/uni00000013/uni00000037/uni00000052/uni00000053/uni00000003/uni00000028/uni0000005b/uni00000053/uni00000048/uni00000055/uni00000057/uni00000003/uni00000031/uni00000058/uni00000050/uni00000045/uni00000048/uni00000055/uni00000003/uni00000020/uni00000003/uni00000015
+/uni00000050/uni00000044/uni00000057/uni0000004b /uni00000056/uni00000046/uni0000004c/uni00000048/uni00000051/uni00000046/uni00000048 /uni00000046/uni00000052/uni00000047/uni0000004c/uni00000051/uni0000004a/uni00000014/uni00000011/uni00000013/uni00000013 /uni00000013/uni00000011/uni00000016/uni00000016 /uni00000013/uni00000011/uni00000017/uni00000013
+/uni00000013/uni00000011/uni00000016/uni00000016 /uni00000014/uni00000011/uni00000013/uni00000013 /uni00000013/uni00000011/uni00000016/uni0000001b
+/uni00000013/uni00000011/uni00000017/uni00000013 /uni00000013/uni00000011/uni00000016/uni0000001b /uni00000014/uni00000011/uni00000013/uni00000013/uni00000037/uni00000052/uni00000053/uni00000003/uni00000028/uni0000005b/uni00000053/uni00000048/uni00000055/uni00000057/uni00000003/uni00000031/uni00000058/uni00000050/uni00000045/uni00000048/uni00000055/uni00000003/uni00000020/uni00000003/uni00000014/uni00000019
+/uni00000050/uni00000044/uni00000057/uni0000004b /uni00000056/uni00000046/uni0000004c/uni00000048/uni00000051/uni00000046/uni00000048 /uni00000046/uni00000052/uni00000047/uni0000004c/uni00000051/uni0000004a/uni00000014/uni00000011/uni00000013/uni00000013 /uni00000013/uni00000011/uni0000001a/uni00000013 /uni00000013/uni00000011/uni0000001a/uni00000013
+/uni00000013/uni00000011/uni0000001a/uni00000013 /uni00000014/uni00000011/uni00000013/uni00000013 /uni00000013/uni00000011/uni0000001a/uni00000017
+/uni00000013/uni00000011/uni0000001a/uni00000013 /uni00000013/uni00000011/uni0000001a/uni00000017 /uni00000014/uni00000011/uni00000013/uni00000013/uni00000037/uni00000052/uni00000053/uni00000003/uni00000028/uni0000005b/uni00000053/uni00000048/uni00000055/uni00000057/uni00000003/uni00000031/uni00000058/uni00000050/uni00000045/uni00000048/uni00000055/uni00000003/uni00000020/uni00000003/uni00000014/uni00000015/uni0000001b
+/uni00000013/uni00000011/uni00000015/uni00000013/uni00000011/uni00000016/uni00000013/uni00000011/uni00000017/uni00000013/uni00000011/uni00000018/uni00000013/uni00000011/uni00000019/uni00000013/uni00000011/uni0000001a/uni00000013/uni00000011/uni0000001b/uni00000013/uni00000011/uni0000001c/uni00000014/uni00000011/uni00000013Figure 2: Overlap ratios of experts with top gating scores on different datasets.
+domains of math, science, and coding, respectively. We conduct experiments using the representative
+model DeepSeek-R1 on these datasets and extract the gating scores across different domains (as
+described in Section 2). By analyzing the expert activation distributions across these domains, we
+aim to reveal how expert utilization varies and assess the degree of specialization.
+Distinct Expert Distribution Across Domains. We first rank all experts at each layer by their gating
+scores and select the top- Mexperts for each dataset, where M∈ {2,16,128}. We then measure the
+overlap of top-ranked experts across different domains and visualize how this overlap varies with
+Min Figure 2. We observe that the top-2 experts are completely disjoint across datasets, and even
+asMincreases, a substantial number of non-overlapping experts remain. This indicates that large
+MoE models contain domain-specialized experts that are predominantly activated in their respective
+domains .
+Table 1: Results of removing domain-specific experts.
+Domain AIME24 GPQA LiveCodeBench
+Full 78.00 70.91 63.32
+Math 67.33 ( -10.67 ) 69.19 (-1.72) 65.27 (+1.95)
+Code 78.67 (+0.67) 71.72 (+0.81) 55.68 ( -6.64 )
+Science 79.33 (+1.33) 59.09 ( -11.82 ) 61.07 (-2.25)
+Impact of Removing Domain-Specific Experts. In order to explore the importance of domain-
+specific experts, we remove those that appear among the top-128 by gating score in one domain
+but not in the top-128 of any other domain. We then evaluate each pruned model on tasks from the
+same domain as the calibration data ( i.e.,in-domain), as well as on tasks from other domains ( i.e.,
+out-of-domain), to assess the generalizability of the retained experts. As shown in Table 1, pruning
+these experts leads to significant performance degradation on in-domain tasks while having minimal
+impact on out-of-domain tasks. From these findings, we can conclude that domain-specific experts
+play a critical role in relevant domain but are redundant for other domains.
+3.2 Expert Locality Within One Domain
+Beyond examining the expert specialization across different domains, we further investigate the distri-
+bution of experts within the same domain. Specifically, we study how the number of demonstrations
+affects pruning and whether the identified critical experts remain highly activated on other datasets
+within the same domain.
+Effect of Calibration Set Size. Given the presence of domain-specific experts in DeepSeek-R1, a
+fundamental question arises: How many demonstrations are necessary to accurately identify these
+key experts? To investigate this, we sample varying numbers of demonstrations ( i.e.,1,3,5,10,25,100)
+from LiveCodeBench-v3 [ 14]. For each setting, we compute the average gating scores and retain the
+top 128 experts. Based on these selections, we then calculate the pairwise overlap ratios between
+expert sets derived from different demonstration sizes. As illustrated in Figure 3 (Left), even with
+4/uni00000014 /uni00000016 /uni00000018 /uni00000014/uni00000013 /uni00000015/uni00000018 /uni00000014/uni00000013/uni00000013
+/uni00000006/uni00000003/uni00000036/uni0000004b/uni00000052/uni00000057/uni00000056/uni00000014
+/uni00000016
+/uni00000018
+/uni00000014/uni00000013
+/uni00000015/uni00000018
+/uni00000014/uni00000013/uni00000013/uni00000006/uni00000003/uni00000036/uni0000004b/uni00000052/uni00000057/uni00000056/uni00000014/uni00000011/uni00000013/uni00000013 /uni00000013/uni00000011/uni0000001a/uni00000019 /uni00000013/uni00000011/uni0000001a/uni00000019 /uni00000013/uni00000011/uni0000001a/uni00000019 /uni00000013/uni00000011/uni0000001a/uni00000018 /uni00000013/uni00000011/uni0000001a/uni00000018
+/uni00000013/uni00000011/uni0000001a/uni00000019 /uni00000014/uni00000011/uni00000013/uni00000013 /uni00000013/uni00000011/uni0000001c/uni00000014 /uni00000013/uni00000011/uni0000001b/uni0000001b /uni00000013/uni00000011/uni0000001b/uni0000001a /uni00000013/uni00000011/uni0000001b/uni0000001a
+/uni00000013/uni00000011/uni0000001a/uni00000019 /uni00000013/uni00000011/uni0000001c/uni00000014 /uni00000014/uni00000011/uni00000013/uni00000013 /uni00000013/uni00000011/uni0000001c/uni00000015 /uni00000013/uni00000011/uni0000001c/uni00000013 /uni00000013/uni00000011/uni0000001c/uni00000013
+/uni00000013/uni00000011/uni0000001a/uni00000019 /uni00000013/uni00000011/uni0000001b/uni0000001b /uni00000013/uni00000011/uni0000001c/uni00000015 /uni00000014/uni00000011/uni00000013/uni00000013 /uni00000013/uni00000011/uni0000001c/uni00000016 /uni00000013/uni00000011/uni0000001c/uni00000017
+/uni00000013/uni00000011/uni0000001a/uni00000018 /uni00000013/uni00000011/uni0000001b/uni0000001a /uni00000013/uni00000011/uni0000001c/uni00000013 /uni00000013/uni00000011/uni0000001c/uni00000016 /uni00000014/uni00000011/uni00000013/uni00000013 /uni00000013/uni00000011/uni0000001c/uni0000001c
+/uni00000013/uni00000011/uni0000001a/uni00000018 /uni00000013/uni00000011/uni0000001b/uni0000001a /uni00000013/uni00000011/uni0000001c/uni00000013 /uni00000013/uni00000011/uni0000001c/uni00000017 /uni00000013/uni00000011/uni0000001c/uni0000001c /uni00000014/uni00000011/uni00000013/uni00000013/uni00000032/uni00000059/uni00000048/uni00000055/uni0000004f/uni00000044/uni00000053/uni00000003/uni00000052/uni00000049/uni00000003/uni00000037/uni00000052/uni00000053/uni00000010/uni00000014/uni00000015/uni0000001b/uni00000003/uni00000028/uni0000005b/uni00000053/uni00000048/uni00000055/uni00000057/uni00000056/uni00000003/uni0000005a/uni0000004c/uni00000057/uni0000004b/uni00000003/uni00000027/uni0000004c/uni00000049/uni00000049/uni00000048/uni00000055/uni00000051/uni00000057/uni00000003/uni00000031/uni00000058/uni00000050/uni00000045/uni00000048/uni00000055/uni00000003/uni00000052/uni00000049/uni00000003/uni00000036/uni0000004b/uni00000052/uni00000057/uni00000056
+/uni00000024/uni0000002c/uni00000030/uni00000028/uni00000015/uni00000016 /uni00000024/uni0000002c/uni00000030/uni00000028/uni00000015/uni00000017 /uni00000024/uni0000002c/uni00000030/uni00000028/uni00000015/uni00000018 /uni0000002b/uni00000030/uni00000030/uni00000037/uni00000010/uni00000015/uni00000018
+/uni00000006/uni00000003/uni00000027/uni00000044/uni00000057/uni00000044/uni00000056/uni00000048/uni00000057/uni00000024/uni0000002c/uni00000030/uni00000028/uni00000015/uni00000016 /uni00000024/uni0000002c/uni00000030/uni00000028/uni00000015/uni00000017 /uni00000024/uni0000002c/uni00000030/uni00000028/uni00000015/uni00000018 /uni0000002b/uni00000030/uni00000030/uni00000037/uni00000010/uni00000015/uni00000018/uni00000006/uni00000003/uni00000027/uni00000044/uni00000057/uni00000044/uni00000056/uni00000048/uni00000057/uni00000014/uni00000011/uni00000013/uni00000013 /uni00000013/uni00000011/uni0000001b/uni0000001b /uni00000013/uni00000011/uni0000001b/uni0000001a /uni00000013/uni00000011/uni0000001b/uni0000001c
+/uni00000013/uni00000011/uni0000001b/uni0000001b /uni00000014/uni00000011/uni00000013/uni00000013 /uni00000013/uni00000011/uni0000001b/uni0000001a /uni00000013/uni00000011/uni0000001b/uni00000017
+/uni00000013/uni00000011/uni0000001b/uni0000001a /uni00000013/uni00000011/uni0000001b/uni0000001a /uni00000014/uni00000011/uni00000013/uni00000013 /uni00000013/uni00000011/uni0000001b/uni00000018
+/uni00000013/uni00000011/uni0000001b/uni0000001c /uni00000013/uni00000011/uni0000001b/uni00000017 /uni00000013/uni00000011/uni0000001b/uni00000018 /uni00000014/uni00000011/uni00000013/uni00000013/uni00000032/uni00000059/uni00000048/uni00000055/uni0000004f/uni00000044/uni00000053/uni00000003/uni00000052/uni00000049/uni00000003/uni00000037/uni00000052/uni00000053/uni00000010/uni00000014/uni00000015/uni0000001b/uni00000003/uni00000028/uni0000005b/uni00000053/uni00000048/uni00000055/uni00000057/uni00000056/uni00000003/uni00000052/uni00000051/uni00000003/uni00000027/uni0000004c/uni00000049/uni00000049/uni00000048/uni00000055/uni00000048/uni00000051/uni00000057/uni00000003/uni00000027/uni00000044/uni00000057/uni00000044/uni00000056/uni00000048/uni00000057/uni00000056
+/uni00000013/uni00000011/uni00000019/uni00000018/uni00000013/uni00000011/uni0000001a/uni00000013/uni00000013/uni00000011/uni0000001a/uni00000018/uni00000013/uni00000011/uni0000001b/uni00000013/uni00000013/uni00000011/uni0000001b/uni00000018/uni00000013/uni00000011/uni0000001c/uni00000013/uni00000013/uni00000011/uni0000001c/uni00000018/uni00000014/uni00000011/uni00000013/uni00000013Figure 3: Left: Overlap ratio of top-128 experts with different number of demonstrations. Right:
+Overlap ratio of top-128 experts pruned with different math datasets.
+just five demonstrations, over 90% of the critical experts can be effectively identified. Furthermore,
+25 demonstrations are sufficient to capture all domain-specific experts ( 99%), with additional demon-
+strations yielding only marginal improvements. These results underscore the feasibility of few-shot
+domain-specific expert pruning .
+Consistency of Expert Activation Across Datasets. To investigate the consistency of domain-
+specific expert activation across datasets within the same domain, we conducted experiments with
+DeepSeek-R1 on four math datasets: AIME-2023, AIME-2024, AIME-2025, and HMMT-Feb 2025.
+Specifically, we perform expert pruning under the 25-shot setting for each dataset and retain the
+top 128 experts based on their average gating scores. We then compute the pairwise overlap ratios
+between each pair of datasets. As shown in Figure 3 (Right), the overlaps exceed 84% across all
+math datasets, revealing a high degree of consistency in domain-specific expert activation. This
+indicates that domain-specific expert activation patterns are largely transferable within the same
+domain. Despite some dataset-specific differences, the overall expert overlap remains strong and
+stable.
+4 Method
+4.1 Overview
+Motivated by our earlier observation of few-shot expert identification phenomena in Section 3, we
+propose an expert pruning framework to reduce memory costs. Given a small set of demonstrations
+from the target domain, we run them through the MoE model and collect statistics on expert activation,
+considering both the inputs and outputs of each expert for pruning purposes. To effectively identify
+domain-specific experts in large MoE models, we introduce a simple yet effective expert pruning
+method, EASY-EP . Specifically, we first compute the output-aware expert importance cl
+i,tas the
+product of the expert output L2 norm and its corresponding gating value. Next, we determine the
+expert-level token contribution sl
+tbased on representation similarity between before and after expert
+computation. The final expert score I(El
+i)is obtained by multiplying these two terms:
+I(El
+i) =TX
+t=1cl
+i,t·sl
+t. (4)
+Our method also supports mixed-domain pruning by averaging the normalized expert scores of all
+target domains. Thus, we can prune a single model to handle tasks across multiple domains:
+Imix(El
+i) =X
+τ∈T(Iτ(El
+i)/NX
+j=1Iτ(El
+j)). (5)
+5𝑬𝟎𝒍𝑬𝟏𝒍
+What  is the expected  frequency  range  of 
+gravitational  waves  from  binary  neutron  star  
+mergers… <think>  find  the expected … <\think>… 
+\\boxed{ 10,\\text {Hz}  \\text{  to }1, \\text{kHz}}Given  an integer  array  hours  … <think>  Okay,  
+let's  see. The problem  is to find  the number  of 
+pairs  (i,j)…<\think>…``python \nclass  Solution :\n    
+def countCompleteDayPairs   …  return  count \n```𝑬𝟎𝟑𝑬𝟏𝟑𝑬𝟐𝟑𝑬𝟐𝟓𝟑𝟑𝑬𝟐𝟓𝟒𝟑𝑬𝟐𝟓𝟓𝟑𝑬𝟎𝟔𝟏𝑬𝟏𝟔𝟏𝑬𝟐𝟔𝟏𝑬𝟐𝟓𝟑𝟔𝟏𝑬𝟐𝟓𝟒𝟔𝟏𝑬𝟐𝟓𝟓𝟔𝟏
+… L3… L61
+… …
+𝑬𝟐𝒍𝑬𝟐𝟓𝟒𝒍𝑬𝟐𝟓𝟓𝒍
+Router
+Input Hidden 𝐡𝑡𝑙𝑬𝒔𝒍𝑬𝟐𝟓𝟐𝒍
+…Middle  Hidden ҧ𝐡𝑡𝑙Output  Hidden
+⋯ 𝑬𝟐𝟓𝟑𝒍𝑔253 ,𝑡𝑙𝑔255 ,𝑡𝑙𝑔0,𝑡𝑙𝑒253 ,𝑡𝑙𝑒255 ,𝑡𝑙𝑒0,𝑡𝑙𝑬𝟎𝟑𝑬𝟏𝟑𝑬𝟐𝟑𝑬𝟐𝟓𝟑𝟑𝑬𝟐𝟓𝟒𝟑𝑬𝟐𝟓𝟓𝟑𝑬𝟎𝟔𝟏𝑬𝟏𝟔𝟏𝑬𝟐𝟔𝟏𝑬𝟐𝟓𝟑𝟔𝟏𝑬𝟐𝟓𝟒𝟔𝟏𝑬𝟐𝟓𝟓𝟔𝟏
+… L3… L61
+… …
+𝑬𝟎𝟑𝑬𝟏𝟑𝑬𝟐𝟑𝑬𝟐𝟓𝟑𝟑𝑬𝟐𝟓𝟒𝟑𝑬𝟐𝟓𝟓𝟑𝑬𝟎𝟔𝟏𝑬𝟏𝟔𝟏𝑬𝟐𝟔𝟏𝑬𝟐𝟓𝟑𝟔𝟏𝑬𝟐𝟓𝟒𝟔𝟏𝑬𝟐𝟓𝟓𝟔𝟏
+… L3… L61
+… …
+⋯
+⋯⋯⋯⋯⋯⋯
+0.6 0.9 0.1 0.3
+Input Hidden 𝐡𝑡𝑙Middle  Hidden ҧ𝐡𝑡𝑙
+Expert -Level  
+Token Contribution𝑬𝟎𝒍𝑬𝟏𝒍𝑬𝟐𝟓𝟐𝒍𝑬𝟐𝟓𝟑𝒍𝑔0,𝑡𝑙=0.6
+⋯||𝑒0,𝑡𝑙||=20
+𝑬𝟐𝟓𝟑𝒍𝑬𝟐𝟓𝟑𝒍
+RouterOutput -Aware 
+Expert Importance
+…𝑐0,𝑡𝑙 = 𝑔0,𝑡𝑙||𝑒0,𝑡𝑙||
+Calibration Set
+Example 1
+Example 2
+Example 3Response 1
+Response 2
+Response 3DeepSeek R1Select Top 128 Experts 
+Parameter s: 344B
+Memory: 350GB𝐼𝐸𝑖𝑙= ෍
+𝑖=1𝑇
+𝑐𝑖,𝑡𝑙⋅𝑠𝑡𝑙Expert Score
+𝑠𝑡𝑙=1− 𝑆𝑖𝑚 (𝐡𝑡𝑙,ҧ𝐡𝑡𝑙)
+Five  men  and nine  women  stand  equally  spaced  
+around  a circle  in random  order . … <think> \nOkay , 
+so I have  this problem  here : … <\think>  … the final  
+answer  is \\(\\boxed{ 191 }\\).Science Coding MathFigure 4: Overall framework of EASY-EP. Given a calibration set consisting of input and responses
+by the model, EASY-EP leverages output-aware expert importance assessment and expert-level token
+contribution estimation to compute the expert score on the domain and returns the pruned expert sets.
+Based on the expert scores computed from a small subset of data, we can efficiently select the Top- M
+experts with the highest scores as retained experts while pruning other experts to reduce memory
+costs. The overall framework of our method is illustrated in Figure 4.
+4.2 Output-Aware Expert Importance Assessment
+To assess the importance of each expert, prior router-based expert pruning methods [ 5] assume
+activated expert gating scores can reflect their importance. However, this assumption has not been
+thoroughly examined. To analyze this, we begin by examining the aggregated output ¯hl
+tfrom all
+routed experts for a given token:
+¯hl
+t=NX
+i=1gl
+i,t·el
+i,t=NX
+i=1gl
+i,t∥el
+i,t∥ ·el
+i,t
+∥el
+i,t∥, (6)
+where ∥·∥denotes the L2 Norm of vectors, el
+i,t= El
+i(hl
+t)denotes the output of expert, andel
+i,t
+∥el
+i,t∥
+denotes the unit vectors in the direction of expert output. Further, we can compute the upper bound
+of the L2 Norm of the expert outputs as follows:
+∥¯hl
+t∥ ≤NX
+i=1gl
+i,t∥el
+i,t∥ ·el
+i,t
+∥el
+i,t∥=NX
+i=1gl
+i,t∥el
+i,t∥. (7)
+This indicates that the each expert’s contribution to the final output is bounded by the product of
+its gating value and the L2 norm of its output, gl
+i,t∥el
+i,t∥. To empirically validate this insight, we
+visualize in Figure 5 (Left) the relationship between gating scores gl
+i,tand the product gl
+i,t∥el
+i,t∥.
+We can observe an expert with a large gating score may still produce outputs with low L2 Norm,
+ultimately resulting in a limited influence on the final output. Therefore, instead of using only the
+gating value, we define the importance of an expert for a given token as the product of its gating value
+and L2 Norm of output, as formalized in the following equation:
+cl
+i,t=gl
+i,t∥el
+i,t∥,∀gl
+i,t>0. (8)
+60.0000.0050.0100.0150.020gli,t0.0000.0050.0100.0150.0200.025cli,t=gli,t|eli,t|Top-128 (cli,t)Relationship Between DiÆerent Metrics of Experts
+01020304050Token3132333435360LayerSimilarity between Input and Output of Routed Experts
+0.360.480.590.690.770.840.900.940.970.991.00
+Figure 5: Left: Gating scores and averaged product of gating value and L2 Norm of expert outputs.
+Blue/red dots indicate experts in top-128 gating scores gl
+i,t; blue/yellow dots denote experts in top-128
+expert importance cl
+i,t; black dots indicate neither. Right: Consine similarity between representations
+before and after incorporating the outputs of the routed expert. The red box and green box indicate
+high similarity and low similarity, respectively.
+4.3 Expert-Level Token Contribution Estimation
+When calculating the statistical metrics for evaluating the importance of experts, prior work often
+directly averages the scores across all tokens [ 5,6]. However, in practice, the influence of routed
+experts’ outputs on the residual stream varies across tokens. As illustrated in Figure 5 (Right), the
+similarity between representations before and after incorporating the outputs of routed experts differs
+significantly across tokens for DeepSeek-R1. For some tokens at specific layers, skipping the expert
+module results in minimal changes to the hidden states, with over 99% similarity between the input
+and output representations ( e.g., the 15th layer of the first tokens). In contrast, for certain tokens
+and layers ( e.g., the 12th layer of the first tokens), the hidden states show substantial differences
+after expert routing. Intuitively, for the latter type of tokens, modifying their routed experts could
+introduce a considerable distribution drift in representations [ 15]. This observation further suggests
+that such tokens should be given greater weight when assessing the importance of experts.
+Inspired by these observations, we propose a similarity-based token importance assessment method.
+Given the representations before and after the routed expert modules hl
+tand˜hl
+t, we compute the
+cosine similarity between these representations. The token importance score sl
+tis then defined as one
+minus this similarity, capturing the extent of change induced by the routed expert module:
+sl
+t= 1−Sim(hl
+t,˜hl
+t). (9)
+5 Experiments
+5.1 Experimental Settings
+Evaluated Benchmark. To systematically assess the effectiveness of our proposed method, we
+conduct experiments across six benchmark datasets: AIME-2024, AIME-2025, HMMT-Feb 2025,
+LiveCodeBench [ 14], GPQA-Diamond [ 13], and AgentBench-OS [ 16]. These benchmarks encom-
+pass four fundamental domains and tasks of LLMs: math, coding, science, and agent-based task
+execution. We set the maximum context length to 32K, the temperature to 0.6, and the top-p sampling
+value to 0.95. To ensure statistical reliability, each benchmark is evaluated independently five times,
+and we report the average performances of pass@1.
+Pruning Settings. To demonstrate the domain specialization among DeepSeek-R1’s experts, we
+perform domain-specific pruning and utilize distinct calibration sets for different domains. For each
+7Table 2: Comparison of performances of different expert pruning methods. HMMT denotes HMMT-
+Feb 2025, GPQA denotes GPQA-Diamond, and A-OS denotes AgentBench-OS.
+Method Mix Experts AIME-24 AIME-25 HMMT LiveCode GPQA A-OS Average Ratio( %)
+Full - 256 78.00 65.33 45.33 63.32 70.91 40.51 60.57 -
+Random × 64 0.00 0.00 0.00 0.00 26.09 0.00 4.35 7.18
+Frequency × 64 0.00 0.00 0.00 0.00 17.68 2.78 3.41 5.63
+Gating Score × 64 2.67 1.33 2.67 0.00 20.20 0.69 4.59 7.58
+EASY-EP × 64 72.67 55.33 36.00 42.51 67.47 27.26 50.20 82.88
+Random × 128 8.33 6.67 3.33 20.96 41.41 7.64 14.72 24.30
+Frequency × 128 19.33 13.33 7.33 16.17 60.01 29.16 24.22 39.99
+Gating Score × 128 69.33 58.67 37.33 46.71 62.63 31.94 51.10 84.37
+EASY-EP × 128 80.67 66.67 48.33 61.11 70.12 37.92 60.80 100.38
+Frequency ✓ 128 18.00 13.33 8.00 9.58 30.30 13.19 15.40 25.42
+Gating Score ✓ 128 18.67 8.67 8.67 53.29 37.37 25.00 25.28 41.73
+EASY-EP ✓ 128 80.67 62.00 39.33 58.38 70.51 34.72 57.60 95.10
+domain, we randomly sample 25 instances and construct a calibration set by concatenating their
+inputs with the corresponding outputs generated by DeepSeek-R1. We then evaluate the experts’
+scores on the calibration data with our method and select the top 64 and 128 experts with the highest
+scores at each layer, respectively. We also average the normalized expert scores on different domains
+to evaluate the mixed-domain pruning performances. Details regarding the candidate sets for each
+domain are provided in Appendix A.
+Baselines. In our experiments, we employ three baseline methods for comparison: (1) Random :
+A fixed number of experts are randomly selected, while the remaining experts are pruned. (2)
+Frequency : The Top- Mexperts with the highest activation frequencies are retained. (3) Gating Score :
+The Top- Mexperts with the highest gating scores are retained. The definitions of frequency and
+gating scores metrics are provided in Equation 3. We do not include perturbation-based methods in
+our comparison [ 6,7], as they require evaluating changes in representations before and after pruning,
+which is computationally prohibitive for DeepSeek-R1 with 256 experts (the detailed analysis is
+shown in Appendix B).
+5.2 Main Results
+Table 2 shows the performance comparison of our method with baselines on different pruning settings.
+Firstly, our method outperforms other baselines and even surpasses the full DeepSeek-R1 model with
+only half of the experts on certain datasets for domain-specific pruning. Across all benchmarks and
+pruning settings, our approach consistently achieves significantly better results than all baselines.
+Moreover, under domain-specific pruning settings, our method maintains performance comparable to
+full DeepSeek-R1 and even exceeds it on math-related benchmarks. We hypothesize that removing
+irrelevant experts allows the model to rely more on domain-specific knowledge, leading to improved
+performance.
+Secondly, our method can maintain performance even with a large compression ratio, as shown in
+Figure 1. When the compression ratio is large ( e.g.,75%), most pruning methods can hardly correctly
+complete the query at all, manifested as 0scores on many datasets. Additionally, they even fail to
+follow instructions correctly and produce nonsensical speech, e.g., failing to generate option letters
+for GPQA. On the contrary, our method can preserve 82.88% averaged performances across all
+datasets and even 95.15% performances on GPQA.
+Finally, our method can also preserve performances under mixed-domain pruning. By leveraging
+mixed-domain pruning, our approach effectively preserves performance across multiple target do-
+mains, retaining 95.09% of the original performance, which even surpasses domain-specific pruning
+methods via gating score metric. In contrast, other expert pruning techniques struggle to maintain a
+balanced performance across different domains. This result highlights that the overlapped experts
+identified by our method, which are associated with general reasoning abilities, can effectively
+contribute to a wide range of downstream domains.
+85.3 Detailed Analysis
+In this section, we conduct further ablation studies and detailed analyses to investigate the effective-
+ness of our approach and few-shot expert identification phenomena of DeepSeek-R1.
+5.3.1 Ablation Study
+We conduct ablation studies to analyze the impact of each component in our method. Specifically, we
+evaluate two variants with 64 remaining experts: (1) removing the token-level contribution estimation
+and (2) replacing the product of gating values and L2 Norm of expert outputs with only the gating
+scores. As shown in Table 3, both incorporating token-level contribution estimation and considering
+the L2 Norm of expert outputs lead to improved performance compared to using only the gating score.
+Furthermore, combining both components results in the best overall performance. These findings
+highlight the importance of both components in our method.
+Table 3: Results of ablation study. Norm denotes whether considering L2 Norm of expert output and
+Token denotes whether considering token contribution scores.
+Method Metric Experts AIME-24 AIME-25 HMMT LiveCode GPQA A-OS
+Ours gl
+i,t∥el
+i,t∥ ·sl
+t 64 72.67 55.33 36.00 42.51 67.47 27.26
+w/o Token gl
+i,t∥el
+i,t∥ 64 65.33 49.33 31.33 27.54 56.57 21.53
+w/o Norm gl
+i,t·sl
+t 64 70.00 40.00 23.33 19.76 61.11 18.75
+w/o both gl
+i,t 64 2.67 1.33 2.67 0.00 20.20 0.69
+5.3.2 Effect of Pruning Data
+We also explore the effect of pruning data. Instead of the input and output of full DeepSeek-R1, we
+consider full different data: (1) Inp: only input data; (2) R1: only generation data by DeepSeek-R1;
+(3)Inp+Ans : input data and golden answer; and (4) PT: pre-training data within the same domain.
+The experiment results are displayed in Table 4. Compared to using the concatenation of input and
+DeepSeek-R1’s output, the model’s performance under other settings suffered degradation in both
+math and coding tasks. This indicates that even within the same domain, distinct differences of expert
+distributions exist between the input data, golden answer, the model’s reasoning processes, and the
+pretraining data.
+5.3.3 Generalization Capacity
+In addition to evaluating performance on tasks within the same domain as the pruning data, we
+also assess tasks from unrelated domains ( e.g., pruning DeepSeek-R1 with AIME2023 data while
+evaluating on LiveCodeBench). As presented in Table 5, out-of-domain performance declines
+compared to in-domain results but still retains a notable level of generalization capability. We
+hypothesize that although some experts associated with specific domain knowledge were pruned,
+experts related to core reasoning abilities were preserved. Specifically, the model demonstrates
+better generalization performance between math and science domains, which may be attributed to the
+inherent conceptual similarities between these fields.
+Table 4: Comparison of performances with dif-
+ferent pruning data.
+Data AIME24 LiveCodebench GPQA
+Inp+R1 80.67 61.11 70.12
+Inp+Ans 75.33 53.89 67.98
+Inp 66.00 50.90 70.81
+R1 77.33 59.28 70.10
+PT 29.33 38.32 66.16Table 5: Results of generalization capacities of
+pruned models. Domain denotes the domain of
+pruning data.
+Domain AIME24 LiveCodebench GPQA
+Math 80.67 46.11 46.91
+Coding 38.00 61.11 39.90
+Science 64.64 53.59 70.12
+9/uni00000013 /uni00000018 /uni00000014/uni00000013 /uni00000014/uni00000018 /uni00000015/uni00000013 /uni00000015/uni00000018
+/uni00000006/uni00000003/uni00000036/uni0000004b/uni00000052/uni00000057/uni00000056/uni00000017/uni00000018/uni00000018/uni00000013/uni00000018/uni00000018/uni00000019/uni00000013/uni00000019/uni00000018/uni0000001a/uni00000013/uni0000001a/uni00000018/uni0000001b/uni00000013/uni00000033/uni00000048/uni00000055/uni00000049/uni00000052/uni00000055/uni00000050/uni00000044/uni00000051/uni00000046/uni00000048
+/uni00000033/uni00000058/uni00000055/uni00000051/uni0000004c/uni00000051/uni0000004a/uni00000003/uni00000033/uni00000048/uni00000055/uni00000049/uni00000052/uni00000055/uni00000050/uni00000044/uni00000051/uni00000046/uni00000048/uni00000003/uni0000005a/uni0000004c/uni00000057/uni0000004b/uni00000003/uni00000027/uni0000004c/uni00000049/uni00000049/uni00000048/uni00000055/uni00000048/uni00000051/uni00000057/uni00000003/uni00000031/uni00000058/uni00000050/uni00000045/uni00000048/uni00000055/uni00000003/uni00000052/uni00000049/uni00000003/uni00000036/uni0000004b/uni00000052/uni00000057/uni00000056
+/uni0000002f/uni0000004c/uni00000059/uni00000048/uni00000026/uni00000052/uni00000047/uni00000048/uni00000025/uni00000048/uni00000051/uni00000046/uni0000004b/uni0000000b/uni00000014/uni00000015/uni0000001b/uni00000003/uni00000048/uni0000005b/uni00000053/uni00000048/uni00000055/uni00000057/uni00000056/uni0000000c
+/uni00000024/uni0000002c/uni00000030/uni00000028/uni00000010/uni00000015/uni00000013/uni00000015/uni00000017/uni0000000b/uni00000014/uni00000015/uni0000001b/uni00000003/uni00000048/uni0000005b/uni00000053/uni00000048/uni00000055/uni00000057/uni00000056/uni0000000c
+/uni0000002f/uni0000004c/uni00000059/uni00000048/uni00000026/uni00000052/uni00000047/uni00000048/uni00000025/uni00000048/uni00000051/uni00000046/uni0000004b/uni0000000b/uni00000049/uni00000058/uni0000004f/uni0000004f/uni0000000c
+/uni00000024/uni0000002c/uni00000030/uni00000028/uni00000010/uni00000015/uni00000013/uni00000015/uni00000017/uni0000000b/uni00000049/uni00000058/uni0000004f/uni0000004f/uni0000000c
+/uni00000014/uni0000002e/uni0000000f/uni00000017/uni0000002e /uni00000017/uni0000002e/uni0000000f/uni00000014/uni0000002e /uni00000017/uni0000002e/uni0000000f/uni00000017/uni0000002e
+/uni0000002f/uni00000048/uni00000051/uni0000004a/uni00000057/uni0000004b/uni00000003/uni00000036/uni00000048/uni00000057/uni00000057/uni0000004c/uni00000051/uni0000004a/uni00000056/uni00000013/uni00000014/uni00000013/uni00000013/uni00000013/uni00000015/uni00000013/uni00000013/uni00000013/uni00000016/uni00000013/uni00000013/uni00000013/uni00000017/uni00000013/uni00000013/uni00000013/uni00000018/uni00000013/uni00000013/uni00000013/uni00000037/uni00000052/uni00000057/uni00000044/uni0000004f/uni00000003/uni00000037/uni0000004b/uni00000052/uni00000058/uni0000004a/uni0000004b/uni00000053/uni00000058/uni00000057/uni00000003/uni0000000b/uni00000037/uni00000052/uni0000004e/uni00000048/uni00000051/uni00000012/uni00000056/uni0000000c/uni00000014/uni0000001b/uni00000016/uni00000013/uni00000017/uni0000001c/uni00000019/uni00000013
+/uni00000015/uni00000017/uni0000001c/uni00000016
+/uni00000014/uni00000018/uni00000015/uni00000019/uni00000017/uni00000016/uni0000001a/uni00000017
+/uni00000015/uni00000014/uni00000014/uni00000013
+/uni00000019/uni00000015/uni0000001c/uni00000014/uni0000001c/uni00000019/uni0000001c
+/uni0000001b/uni00000017/uni00000014/uni00000037/uni0000004b/uni00000055/uni00000052/uni00000058/uni0000004a/uni0000004b/uni00000053/uni00000058/uni00000057/uni00000003/uni0000005a/uni0000004c/uni00000057/uni0000004b/uni00000003/uni00000027/uni0000004c/uni00000049/uni00000049/uni00000048/uni00000055/uni00000048/uni00000051/uni00000057/uni00000003/uni00000031/uni00000058/uni00000050/uni00000045/uni00000048/uni00000055/uni00000003/uni00000052/uni00000049/uni00000003/uni00000028/uni0000005b/uni00000053/uni00000048/uni00000055/uni00000057/uni00000056
+/uni00000019/uni00000017
+/uni00000014/uni00000015/uni0000001b
+/uni00000015/uni00000018/uni00000019Figure 6: Left: Comparison of performances with different number of shots for pruning. Right: Total
+Throughput across different numbers of experts.
+5.3.4 Effect of Number of Pruning Demonstrations
+In Section 3.2, we demonstrated that domain-relevant experts can be effectively identified using only a
+few demonstrations. Here, we further investigate the impact of the number of demonstrations on final
+performance. To do so, we sample varying numbers of demonstrations from the same distribution and
+prune half of the experts in each layer. The performance variations on AIME24 and LiveCodeBench
+are presented in Figure 6 (Left). When we utilize only a single sample for pruning, the selected
+experts are often influenced by the characteristics of that individual sample, thus resulting in lower
+performance. As we further increase the number of demonstrations, the performance rapidly rises,
+achieving comparable performances with the full model.
+5.4 Analysis of Throughout
+To evaluate the throughput of pruned models with different numbers of experts, we use the
+SGLang [ 17] package and measure performance under a maximum request concurrency of 32.
+We consider four settings: (1) 1K+1K : 1K input length and 1K output length; (2) 1K+4K : 1K input
+length and 4K output length; (3) 4K+1K : 4K input length and 1K output length; and (4) 4K+4K : 4K
+input length and 4K output length. For configurations with no more than 192 experts, we use a single
+8×H800 GPU and double the measured throughput. For configurations with more than 192 experts,
+two 8×H800 GPUs are used. Figure 1 shows the scaling throughput for the 1K+1K setting, while
+Figure 6 (Right) presents results for the other settings.
+We observe that reducing the number of experts significantly improves throughput, particularly when
+the model can be deployed on a single node. Compared to the full DeepSeek-R1 model, configurations
+with 128 and 64 experts achieve 2.99 ×and 4.33 ×higher throughput, respectively, under the 1K+1K
+setting. Under the 4K+4K setting, they reach 2.51 ×and 2.97 ×improvements. Furthermore, in long
+output scenarios with an equivalent total sequence length, the 128-expert configuration achieves a
+significantly higher acceleration ratio (2.91 ×under the 1K+4K setting, compared to 2.52 ×under the
+4K+1K setting).
+6 Related Work
+6.1 Sparse MoE Architectures
+Sparse MoE architectures aim to improve computational efficiency by activating only a small
+subset of experts for each input [ 4,18,19]. These methods focus on designing inherently efficient
+MoE architectures, leveraging conditional computation to scale up model capacity without linearly
+increasing inference cost. Driven by scaling laws, the parameter size of dense models has grown
+dramatically, leading to the emergence of even larger MoE models [ 2,20,21]. To further enhance the
+10efficiency of MoE, DeepSpeed-MoE [ 22] proposes a pyramid-like architecture where the lower layers
+contain more experts. Similarly, DeepSeek-MoE [ 10] adopts a fine-grained expert design that reduces
+the parameter size per expert while increasing the total number of experts. In addition, another line
+of research focuses on transforming dense models into MoE architectures to reduce computational
+costs [ 23,24]. By introducing sparsity into existing dense architectures, these methods aim to retain
+the performance of large models while benefiting from the conditional computation property of MoE.
+These studies primarily concentrate on architectural design. In contrast, another line of research aims
+to compress already-trained MoE models using post-hoc methods such as pruning and quantization,
+which we discuss in the next section.
+6.2 MoE Compression Methods
+While sparse MoE architectures improve computational efficiency by activating only a small subset of
+experts, they still incur significant memory overhead due to the need to store all expert parameters [ 25],
+posing a different set of challenges from existing dense LLM compression [ 26,27]. The prior
+study [ 28] has observed that many experts contain redundant information, motivating efforts to
+further reduce memory usage by eliminating unnecessary experts. A common approach is to apply
+sparsification techniques to retain only the most important experts, based on carefully curated
+importance metrics. These metrics include the frequency [ 5] with which experts are selected during
+routing ( i.e., “heavy hitter counts”), as well as analyses of expert gating scores and activation
+patterns [5, 29]. In addition to selection-based strategies, parameter sharing among experts can also
+be employed to alleviate the overall memory overhead [ 28,30]. Some studies further assess expert
+importance by evaluating their impact on the overall model output, aiming to search for the optimal
+combination of experts [ 6,7]. However, such methods involve exploring a large combinatorial
+search space, which leads to significant computational overhead and makes them impractical for
+large-scale MoE models. Additionally, another line of research leverages expert representations
+and router logits to merge similar experts into a single expert, thereby reducing the total number
+of experts [ 31,32]. However, these methods introduce additional parameters and incur significant
+memory costs, particularly when performing multiple task-specific pruning. Different from them, our
+approach enables efficient pruning with just a single forward pass and eliminates the need for extra
+memory to store new models.
+7 Conclusion
+In this work, we investigated the domain specialization of experts in DeepSeek-R1. Our observations
+indicate that domain-specific experts play a crucial role in their respective domains and can be
+effectively identified with a few demonstrations. Building on these insights, we proposed a pruning
+strategy that leverages demonstrations from tasks within the same domain. Specifically, we introduced
+EASY-EP, a simple yet effective pruning method that combines output-aware expert importance
+assessment with expert-level token contribution estimation. Experimental results showed that our
+approach maintained comparable performance while utilizing only half of the experts in domain-
+specific settings and retains approximately 95% of the original performance in mixed-domain pruning.
+We believe that our method can facilitate the deployment of large MoE models, particularly for
+efficiently handling a high volume of samples within the same domain.
+References
+[1]DeepSeek-AI, Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin
+Xu, Qihao Zhu, Shirong Ma, Peiyi Wang, Xiao Bi, Xiaokang Zhang, Xingkai Yu, Yu Wu,
+Z. F. Wu, Zhibin Gou, Zhihong Shao, Zhuoshu Li, Ziyi Gao, Aixin Liu, Bing Xue, Bingxuan
+Wang, Bochao Wu, Bei Feng, Chengda Lu, Chenggang Zhao, Chengqi Deng, Chenyu Zhang,
+Chong Ruan, Damai Dai, Deli Chen, Dongjie Ji, Erhang Li, Fangyun Lin, Fucong Dai, Fuli
+Luo, Guangbo Hao, Guanting Chen, Guowei Li, H. Zhang, Han Bao, Hanwei Xu, Haocheng
+Wang, Honghui Ding, Huajian Xin, Huazuo Gao, Hui Qu, Hui Li, Jianzhong Guo, Jiashi Li,
+Jiawei Wang, Jingchang Chen, Jingyang Yuan, Junjie Qiu, Junlong Li, J. L. Cai, Jiaqi Ni, Jian
+Liang, Jin Chen, Kai Dong, Kai Hu, Kaige Gao, Kang Guan, Kexin Huang, Kuai Yu, Lean
+Wang, Lecong Zhang, Liang Zhao, Litong Wang, Liyue Zhang, Lei Xu, Leyi Xia, Mingchuan
+Zhang, Minghua Zhang, Minghui Tang, Meng Li, Miaojun Wang, Mingming Li, Ning Tian,
+11Panpan Huang, Peng Zhang, Qiancheng Wang, Qinyu Chen, Qiushi Du, Ruiqi Ge, Ruisong
+Zhang, Ruizhe Pan, Runji Wang, R. J. Chen, R. L. Jin, Ruyi Chen, Shanghao Lu, Shangyan
+Zhou, Shanhuang Chen, Shengfeng Ye, Shiyu Wang, Shuiping Yu, Shunfeng Zhou, Shuting
+Pan, and S. S. Li. Deepseek-r1: Incentivizing reasoning capability in llms via reinforcement
+learning. CoRR , abs/2501.12948, 2025.
+[2]Albert Q. Jiang, Alexandre Sablayrolles, Antoine Roux, Arthur Mensch, Blanche Savary, Chris
+Bamford, Devendra Singh Chaplot, Diego de Las Casas, Emma Bou Hanna, Florian Bressand,
+Gianna Lengyel, Guillaume Bour, Guillaume Lample, Lélio Renard Lavaud, Lucile Saulnier,
+Marie-Anne Lachaux, Pierre Stock, Sandeep Subramanian, Sophia Yang, Szymon Antoniak,
+Teven Le Scao, Théophile Gervet, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and
+William El Sayed. Mixtral of experts. CoRR , abs/2401.04088, 2024.
+[3]Wayne Xin Zhao, Kun Zhou, Junyi Li, Tianyi Tang, Xiaolei Wang, Yupeng Hou, Yingqian Min,
+Beichen Zhang, Junjie Zhang, Zican Dong, Yifan Du, Chen Yang, Yushuo Chen, Zhipeng Chen,
+Jinhao Jiang, Ruiyang Ren, Yifan Li, Xinyu Tang, Zikang Liu, Peiyu Liu, Jian-Yun Nie, and
+Ji-Rong Wen. A survey of large language models. CoRR , abs/2303.18223, 2023.
+[4]Weilin Cai, Juyong Jiang, Fan Wang, Jing Tang, Sunghun Kim, and Jiayi Huang. A survey on
+mixture of experts. CoRR , abs/2407.06204, 2024.
+[5]Alexandre Muzio, Alex Sun, and Churan He. Seer-moe: Sparse expert efficiency through
+regularization for mixture-of-experts. CoRR , abs/2404.05089, 2024.
+[6]Xudong Lu, Qi Liu, Yuhui Xu, Aojun Zhou, Siyuan Huang, Bo Zhang, Junchi Yan, and
+Hongsheng Li. Not all experts are equal: Efficient expert pruning and skipping for mixture-of-
+experts large language models. In Proceedings of the 62nd Annual Meeting of the Association
+for Computational Linguistics (Volume 1: Long Papers), ACL 2024, Bangkok, Thailand, August
+11-16, 2024 , pages 6159–6172. Association for Computational Linguistics, 2024.
+[7]Mingyu Cao, Gen Li, Jie Ji, Jiaqi Zhang, Xiaolong Ma, Shiwei Liu, and Lu Yin. Condense, don’t
+just prune: Enhancing efficiency and performance in moe layer pruning. CoRR , abs/2412.00069,
+2024.
+[8]Matthew Lyle Olson, Neale Ratzlaff, Musashi Hinck, Man Luo, Sungduk Yu, Chendi Xue, and
+Vasudev Lal. Semantic specialization in moe appears with scale: A study of deepseek R1 expert
+specialization. CoRR , abs/2502.10928, 2025.
+[9]Robert Dahlke, Henrik Klagges, Dan Zecha, Benjamin Merkel, Sven Rohr, and Fabian Klemm.
+Mixture of tunable experts–behavior modification of deepseek-r1 at inference time. arXiv
+preprint arXiv:2502.11096 , 2025.
+[10] Damai Dai, Chengqi Deng, Chenggang Zhao, R. X. Xu, Huazuo Gao, Deli Chen, Jiashi Li,
+Wangding Zeng, Xingkai Yu, Y . Wu, Zhenda Xie, Y . K. Li, Panpan Huang, Fuli Luo, Chong
+Ruan, Zhifang Sui, and Wenfeng Liang. Deepseekmoe: Towards ultimate expert specialization
+in mixture-of-experts language models. In Proceedings of the 62nd Annual Meeting of the
+Association for Computational Linguistics (Volume 1: Long Papers), ACL 2024, Bangkok,
+Thailand, August 11-16, 2024 , pages 1280–1297. Association for Computational Linguistics,
+2024.
+[11] DeepSeek-AI, Aixin Liu, Bei Feng, Bing Xue, Bingxuan Wang, Bochao Wu, Chengda Lu,
+Chenggang Zhao, Chengqi Deng, Chenyu Zhang, Chong Ruan, Damai Dai, Daya Guo, Dejian
+Yang, Deli Chen, Dongjie Ji, Erhang Li, Fangyun Lin, Fucong Dai, Fuli Luo, Guangbo Hao,
+Guanting Chen, Guowei Li, H. Zhang, Han Bao, Hanwei Xu, Haocheng Wang, Haowei Zhang,
+Honghui Ding, Huajian Xin, Huazuo Gao, Hui Li, Hui Qu, J. L. Cai, Jian Liang, Jianzhong Guo,
+Jiaqi Ni, Jiashi Li, Jiawei Wang, Jin Chen, Jingchang Chen, Jingyang Yuan, Junjie Qiu, Junlong
+Li, Junxiao Song, Kai Dong, Kai Hu, Kaige Gao, Kang Guan, Kexin Huang, Kuai Yu, Lean
+Wang, Lecong Zhang, Lei Xu, Leyi Xia, Liang Zhao, Litong Wang, Liyue Zhang, Meng Li,
+Miaojun Wang, Mingchuan Zhang, Minghua Zhang, Minghui Tang, Mingming Li, Ning Tian,
+Panpan Huang, Peiyi Wang, Peng Zhang, Qiancheng Wang, Qihao Zhu, Qinyu Chen, Qiushi Du,
+R. J. Chen, R. L. Jin, Ruiqi Ge, Ruisong Zhang, Ruizhe Pan, Runji Wang, Runxin Xu, Ruoyu
+Zhang, Ruyi Chen, S. S. Li, Shanghao Lu, Shangyan Zhou, Shanhuang Chen, Shaoqing Wu,
+12Shengfeng Ye, Shengfeng Ye, Shirong Ma, Shiyu Wang, Shuang Zhou, Shuiping Yu, Shunfeng
+Zhou, Shuting Pan, T. Wang, Tao Yun, Tian Pei, Tianyu Sun, W. L. Xiao, and Wangding Zeng.
+Deepseek-v3 technical report. CoRR , abs/2412.19437, 2024.
+[12] DeepSeek-AI, Aixin Liu, Bei Feng, Bin Wang, Bingxuan Wang, Bo Liu, Chenggang Zhao,
+Chengqi Deng, Chong Ruan, Damai Dai, Daya Guo, Dejian Yang, Deli Chen, Dongjie Ji,
+Erhang Li, Fangyun Lin, Fuli Luo, Guangbo Hao, Guanting Chen, Guowei Li, Hao Zhang,
+Hanwei Xu, Hao Yang, Haowei Zhang, Honghui Ding, Huajian Xin, Huazuo Gao, Hui Li, Hui
+Qu, J. L. Cai, Jian Liang, Jianzhong Guo, Jiaqi Ni, Jiashi Li, Jin Chen, Jingyang Yuan, Junjie
+Qiu, Junxiao Song, Kai Dong, Kaige Gao, Kang Guan, Lean Wang, Lecong Zhang, Lei Xu, Leyi
+Xia, Liang Zhao, Liyue Zhang, Meng Li, Miaojun Wang, Mingchuan Zhang, Minghua Zhang,
+Minghui Tang, Mingming Li, Ning Tian, Panpan Huang, Peiyi Wang, Peng Zhang, Qihao Zhu,
+Qinyu Chen, Qiushi Du, R. J. Chen, R. L. Jin, Ruiqi Ge, Ruizhe Pan, Runxin Xu, Ruyi Chen,
+S. S. Li, Shanghao Lu, Shangyan Zhou, Shanhuang Chen, Shaoqing Wu, Shengfeng Ye, Shirong
+Ma, Shiyu Wang, Shuang Zhou, Shuiping Yu, Shunfeng Zhou, Size Zheng, Tao Wang, Tian
+Pei, Tian Yuan, Tianyu Sun, W. L. Xiao, Wangding Zeng, Wei An, Wen Liu, Wenfeng Liang,
+Wenjun Gao, Wentao Zhang, X. Q. Li, Xiangyue Jin, Xianzu Wang, Xiao Bi, Xiaodong Liu,
+Xiaohan Wang, Xiaojin Shen, Xiaokang Chen, Xiaosha Chen, Xiaotao Nie, and Xiaowen Sun.
+Deepseek-v2: A strong, economical, and efficient mixture-of-experts language model. CoRR ,
+abs/2405.04434, 2024.
+[13] David Rein, Betty Li Hou, Asa Cooper Stickland, Jackson Petty, Richard Yuanzhe Pang, Julien
+Dirani, Julian Michael, and Samuel R. Bowman. GPQA: A graduate-level google-proof q&a
+benchmark. CoRR , abs/2311.12022, 2023.
+[14] Naman Jain, King Han, Alex Gu, Wen-Ding Li, Fanjia Yan, Tianjun Zhang, Sida Wang, Ar-
+mando Solar-Lezama, Koushik Sen, and Ion Stoica. Livecodebench: Holistic and contamination
+free evaluation of large language models for code. CoRR , abs/2403.07974, 2024.
+[15] Xin Men, Mingyu Xu, Qingyu Zhang, Bingning Wang, Hongyu Lin, Yaojie Lu, Xianpei Han,
+and Weipeng Chen. Shortgpt: Layers in large language models are more redundant than you
+expect. CoRR , abs/2403.03853, 2024.
+[16] Xiao Liu, Hao Yu, Hanchen Zhang, Yifan Xu, Xuanyu Lei, Hanyu Lai, Yu Gu, Hangliang
+Ding, Kaiwen Men, Kejuan Yang, Shudan Zhang, Xiang Deng, Aohan Zeng, Zhengxiao Du,
+Chenhui Zhang, Sheng Shen, Tianjun Zhang, Yu Su, Huan Sun, Minlie Huang, Yuxiao Dong,
+and Jie Tang. Agentbench: Evaluating llms as agents. In The Twelfth International Conference
+on Learning Representations, ICLR 2024, Vienna, Austria, May 7-11, 2024 . OpenReview.net,
+2024.
+[17] Lianmin Zheng, Liangsheng Yin, Zhiqiang Xie, Chuyue Livia Sun, Jeff Huang, Cody Hao Yu,
+Shiyi Cao, Christos Kozyrakis, Ion Stoica, Joseph E Gonzalez, et al. Sglang: Efficient execution
+of structured language model programs. Advances in Neural Information Processing Systems ,
+37:62557–62583, 2024.
+[18] Noam Shazeer, Azalia Mirhoseini, Krzysztof Maziarz, Andy Davis, Quoc V . Le, Geoffrey E.
+Hinton, and Jeff Dean. Outrageously large neural networks: The sparsely-gated mixture-of-
+experts layer. In ICLR (Poster) . OpenReview.net, 2017.
+[19] William Fedus, Barret Zoph, and Noam Shazeer. Switch transformers: Scaling to trillion
+parameter models with simple and efficient sparsity. J. Mach. Learn. Res. , 23:120:1–120:39,
+2022.
+[20] Qwen Team. Qwen1.5-moe: Matching 7b model performance with 1/3 activated parameters",
+February 2024.
+[21] Tianwen Wei, Bo Zhu, Liang Zhao, Cheng Cheng, Biye Li, Weiwei Lü, Peng Cheng, Jianhao
+Zhang, Xiaoyu Zhang, Liang Zeng, Xiaokun Wang, Yutuan Ma, Rui Hu, Shuicheng Yan, Han
+Fang, and Yahui Zhou. Skywork-moe: A deep dive into training techniques for mixture-of-
+experts language models. CoRR , abs/2406.06563, 2024.
+13[22] Samyam Rajbhandari, Conglong Li, Zhewei Yao, Minjia Zhang, Reza Yazdani Aminabadi,
+Ammar Ahmad Awan, Jeff Rasley, and Yuxiong He. Deepspeed-moe: Advancing mixture-of-
+experts inference and training to power next-generation AI scale. In ICML , volume 162 of
+Proceedings of Machine Learning Research , pages 18332–18346. PMLR, 2022.
+[23] Zhengyan Zhang, Yankai Lin, Zhiyuan Liu, Peng Li, Maosong Sun, and Jie Zhou. Moefication:
+Transformer feed-forward layers are mixtures of experts. In Findings of the Association for
+Computational Linguistics: ACL 2022, Dublin, Ireland, May 22-27, 2022 , pages 877–890.
+Association for Computational Linguistics, 2022.
+[24] Hongyu Wang, Shuming Ma, Ruiping Wang, and Furu Wei. Q-sparse: All large language
+models can be fully sparsely-activated. CoRR , abs/2407.10969, 2024.
+[25] Jiacheng Liu, Peng Tang, Wenfeng Wang, Yuhang Ren, Xiaofeng Hou, Pheng-Ann Heng, Minyi
+Guo, and Chao Li. A survey on inference optimization techniques for mixture of experts models.
+CoRR , abs/2412.14219, 2024.
+[26] Mengzhou Xia, Tianyu Gao, Zhiyuan Zeng, and Danqi Chen. Sheared llama: Accelerating
+language model pre-training via structured pruning. In The Twelfth International Conference
+on Learning Representations, ICLR 2024, Vienna, Austria, May 7-11, 2024 . OpenReview.net,
+2024.
+[27] Peiyu Liu, Zikang Liu, Ze-Feng Gao, Dawei Gao, Wayne Xin Zhao, Yaliang Li, Bolin Ding,
+and Ji-Rong Wen. Do emergent abilities exist in quantized large language models: An empirical
+study. In LREC/COLING , pages 5174–5190. ELRA and ICCL, 2024.
+[28] Ze-Feng Gao, Peiyu Liu, Wayne Xin Zhao, Zhong-Yi Lu, and Ji-Rong Wen. Parameter-efficient
+mixture-of-experts architecture for pre-trained language models. In COLING , pages 3263–3273.
+International Committee on Computational Linguistics, 2022.
+[29] Mingjie Sun, Zhuang Liu, Anna Bair, and J. Zico Kolter. A simple and effective pruning
+approach for large language models. In ICLR . OpenReview.net, 2024.
+[30] Peiyu Liu, Ze-Feng Gao, Wayne Xin Zhao, Zhi-Yuan Xie, Zhong-Yi Lu, and Ji-Rong Wen.
+Enabling lightweight fine-tuning for pre-trained language model compression based on matrix
+product operators. In ACL/IJCNLP (1) , pages 5388–5398. Association for Computational
+Linguistics, 2021.
+[31] Pingzhi Li, Zhenyu Zhang, Prateek Yadav, Yi-Lin Sung, Yu Cheng, Mohit Bansal, and Tianlong
+Chen. Merge, then compress: Demystify efficient smoe with hints from its routing policy. In
+The Twelfth International Conference on Learning Representations, ICLR 2024, Vienna, Austria,
+May 7-11, 2024 . OpenReview.net, 2024.
+[32] I-Chun Chen, Hsu-Shen Liu, Wei-Fang Sun, Chen-Hao Chao, Yen-Chang Hsu, and Chun-Yi
+Lee. Retraining-free merging of sparse mixture-of-experts via hierarchical clustering. CoRR ,
+abs/2410.08589, 2024.
+14A Experiment Details
+As shown in the previous analysis in Section 3.2, datasets within the same domain can identify the
+important experts on other datasets. Thus, for different domains and tasks, we select one dataset
+as a calibration set, which are shown in Table 6. For mixed-domain pruning, we select the scores
+calculated on each 25-shot calibration set and average the normalized scores as the final scores of
+experts. Additionally, all the experiments are conducted in one 8×H200 GPU.
+Table 6: Calibration Set of Each Domain
+Domain Calibration Set
+Math AIME 2023
+Coding LiveCodeBench-V3
+Science GPQA-Main
+Agent Dev Set of AgentBench-OS
+B Analysis of Perturbation-based Pruning Method
+Previous studies [ 6,7] have proposed methods that utilize representation perturbation after expert
+pruning to determine which experts should be removed. In NAEE [ 6], identifying the optimal subset
+of experts requires CN′
+Nevaluations, where NandN′represent the original and target numbers
+of experts, respectively. In CD-MoE [ 7], a greedy search algorithm selects the expert to retain
+based on minimal representation perturbation through a rolling mechanism, requiring N(N+N′)/2
+evaluations. For DeepSeek-R1, which has 256 experts and a target expert count of 128, these methods
+require over 1075and24768 evaluations per layer, respectively. Thus, the perturbation-based methods
+are not affordable for MoE models with a large number of experts. Conversely, our method only
+requires one forward operation to identify critical experts, which is cheaper and more suitable for
+large MoE models.
+15

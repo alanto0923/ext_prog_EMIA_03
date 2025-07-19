@@ -1,0 +1,1843 @@
+Mechanics of good trade execution in the framework of linear
+temporary market impact
+Claudio Bellani∗, Damiano Brigo∗
+Wednesday 8 July 2020
+Abstract. We deﬁne the concept of good trade execution and we construct explicit adapted good
+trade execution strategies in the framework of linear temporary market impact. Good trade execution
+strategies are dynamic, in the sense that they react to the actual realisation of the traded asset price
+path over the trading period; this is paramount in volatile regimes, where price trajectories can
+considerably deviate from their expected value. Remarkably however, the implementation of our
+strategies does not require the full speciﬁcation of an SDE evolution for the traded asset price,
+making them robust across diﬀerent models. Moreover, rather than minimising the expected trading
+cost, good trade execution strategies minimise trading costs in a pathwise sense, a point of view not
+yet considered in the literature. The mathematical apparatus for such a pathwise minimisation hinges
+on certain random Young diﬀerential equations that correspond to the Euler-Lagrange equations of
+the classical Calculus of Variations. These Young diﬀerential equations characterise our good trade
+execution strategies in terms of an initial value problem that allows for easy implementations.
+1 Introduction
+Executions of large trades can aﬀect the price of the traded asset, a phenomenon known as market impact .
+The price is aﬀected in the direction unfavourable to the trade: while selling, the market impact decreases
+the price; while buying, the market impact increases the price. Therefore, a trader who wishes to minimise
+her trading costs has to split her order into a sequence of smaller sub-orders which are executed over a
+ﬁnite time horizon. How to optimally split a large order is a question that naturally arises.
+Academically, the literature discussing such an optimal split was initiated by the seminal papers by
+Almgren and Chriss (2001) and by Bertsimas and Lo (1998). Both papers deal with the trading process of
+one large market participant who would like to buy or sell a large amount of shares or contracts during a
+speciﬁed duration. The optimisation problem is formulated as a trade-oﬀ between two pressures. On the
+one hand, market impact demands to trade slowly in order to minimise the unfavourable impact that the
+execution itself has on the price. On the other hand, traders have an incentive to trade rapidly, because
+they do not want to carry the risk of adverse price movements away from their decision price. Such a
+trade-oﬀ between market impact and market risk is usually translated into a stochastic control problem
+where the trader’s strategy (i.e. the control) is the trading speed. The class of admissible strategies
+deﬁnes the set over which the risk-cost functional is optimised.
+In the design of mathematical models for optimal trade execution we identify two phases. The ﬁrst
+phase is the description of trading costs. This refers to the choice of a function Fthat depends on time,
+asset price, quantity to execute and trading speed, and models the instantaneous cost of trading. The
+overall cost during the time window [0 ,T] is then expressed as the time integral
+J(q) =T
+0F(t,xt,qt,˙qt)dt,
+∗Dept. of Mathematics, Imperial College London.
+1arXiv:1909.10464v2  [q-fin.TR]  8 Jul 2020where the path t/mapsto→xtis the evolution of the asset price during the trading period. The letter qstands
+for quantity of the asset and the trajectory t/mapsto→q(t), [0,T]→R, is referred to as inventory trajectory. Its
+time derivative ˙ qis the rate of execution and it represents the control variable that a trader modulates
+while executing the trade.
+The minimisation of the trading cost Jfaces the challenge that the price path t/mapsto→xtis not known at
+the beginning of the trading period. Hence, in order to gain some predictive power, a stochastic model
+for the evolution of the asset price is introduced. This is the second phase in the design of mathematical
+models for trade execution. Concretely, it means that a stochastic process {St: 0≤t≤T}is introduced
+and the actual price trajectory ( xt) is thought of as a realisation of this stochastic process. Then, the
+mathematical optimisation focuses on the expected trading cost
+E/bracketleftBiggT
+0F(t,St,qt,˙qt)dt/bracketrightBigg
+. (1.1)
+Notice that this entails a considerable degree of model dependency, in that the optimisation is based on
+the distributional assumptions on the price process.
+Two alternatives exist for the minimisations of the expected trading cost in equation (1.1). These
+alternatives are static minimisation (giving rise to static trading strategies) and dynamic minimisation
+(giving rise to dynamic trading strategies).
+Static strategies are completely decided at the beginning of the trading period; they are based only on
+the information available at the initial time of the trade. Mathematically, this is formulated by considering
+qas a deterministic path. In this case it is often observed that, by interchanging expectation and time
+integral in equation (1.1), the actual realisation of the price process disappears from the formulae, replaced
+by its expected trajectory. When the expected price path is the only feature of the price process that
+enters the formulae (as in Almgren and Chriss (2001)), the static strategy does not take into account the
+volatility of asset prices, whose role however is paramount in ﬁnancial markets. A visual representation
+of the relevance of volatility in the context of trade execution is provided by Figure 1.
+In Figure 1 Almgren and Chriss’s framework is adopted. The price process is a standard one-
+dimensional Brownian motion and two price paths are considered, one with low volatility and the other
+with high volatility. Notwithstanding the remarkable diﬀerence between the two, they have the same ex-
+pected path (dashed blue line in the ﬁrst quadrant) and, as a consequence, the static liquidation strategy
+is the same for both price paths (dashed blue line in the second quadrant). The simplicity of the model is
+such that it compromises on the possibility to distinguish rather diﬀerent market regimes. This is made
+clear by comparing the static optimal solution with the a-posteriori one.
+The a-posteriori solution is the minimiser qof the cost functional Jgiven the actual price trajectory
+x. This is not implementable in real trading because it is anticipative, in that it assumes that the entire
+price trajectory is known at the beginning of the trading period. However, since it is independent of
+the choice of the price process, the a-posteriori solution constitutes a useful term of comparison for the
+stochastic model. In the example of Figure 1, we observe how diﬀerent the two a-posteriori solutions
+corresponding to the two market regimes are. In the case of low volatility, the a-posteriori solution is
+close to the static one, because the price path does not depart signiﬁcantly from its expected trajectory.
+Instead, in the case of high volatility, the a-posteriori solution deviates from the static one: the inventory
+trajectory is considerably steeper where the price is above its expected value, and it is almost ﬂat when
+the price is below its expected value.
+In order to take into account more features of the price process (such as its volatility), the literature
+on optimal trade execution has utilised the mathematical techniques of stochastic optimal control. This
+has produced the second alternative the minimisation of the expected cost in equation (1.1), and dynamic
+trading strategies proliferated since Bertsimas and Lo (1998) (in discrete time) and Gatheral and Schied
+(2011) (in continuous time). An excellent presentation of the techniques of stochastic optimal control
+applied to trade execution is contained in the textbook by Cartea et al. (2015).
+Dynamic trading strategies take fully into account the distributional features of the price process
+because they are obtained via the Hamilton-Jacobi-Bellman equation, in which the generator of the
+diﬀusion that models the price enters.1Furthermore, dynamic strategies are random when seen from the
+1In the case of linear temporary market impact and quadratic inventory cost, a recent work by Belak et al. (2018)
+actually discusses techniques that can be more generally applied to the case of general semimartingales. In this case there
+is no HJB equation; instead the authors rely on forward-backward stochastic diﬀerential equations. In Section 2, we will
+review this general solution.
+2Figure 1: A-posteriori optimal and static optimal inventories in two diﬀerent volatility regimes
+initial time, in that they depend on the information that is revealed to the trader during the trading period.
+Mathematically, this means that dynamic strategies are stochastic processes adapted to the relevant
+market information ﬁltration. Since deterministic strategies are in particular adapted stochastic processes,
+the class of static strategies is a subset of the class of dynamic strategies. Therefore, the minimisation
+over the class of dynamic strategies is expected to improve the result obtained when minimising over the
+smaller class of static strategies.
+This however is not always conﬁrmed in the models. Indeed, despite the mathematical sophistication,
+cases exist in which optimal trading strategies, although sought among dynamic ones, are in fact static.
+One of such cases is for example the “Liquidation without penalties only temporary impact” in (Cartea
+et al. 2015, Section 6.3), an other is the “Optimal acquisition with terminal penalty and temporary
+impact” in (Cartea et al. 2015, Section 6.4). This reduction to static optimal solutions clashes with the
+intuition for which trading strategies should take into account actual realisations of price paths, as the
+a-posteriori solutions in Figure 1 suggest.
+A second drawback of applying the technique of HJB equation to the problem of optimal trade
+execution is the heavy model dependence. Optimality of the trading strategies holds under the assumption
+that the price follows some speciﬁed dynamics, and this invests of considerable importance the second
+phase in the design of mathematical models.
+In this paper, we propose a new alternative for the minimisation of trading costs. This new alternative
+considers the pathwise optimisation of the cost functional Jwithout taking expectation. We observe that
+the reason for the anticipativeness of a-posteriori solutions is the imposition of the constraint that the
+liquidation terminates exactly at the (arbitrarily ﬁxed) trading horizon. Relaxing this constraint enables
+to produce adapted pathwise solutions that display two remarkable features. On the one hand, they
+avoid the degeneracy to static trajectories even in the cases where the techniques of HJB equation do
+not produce genuinely dynamic strategies; on the other hand, their model dependence is moderate and
+conﬁned to the expected trajectory of the price path, as was the case for static strategies, rather than to
+the full law of the price process.
+3Our trading strategies give rise to inventory trajectories that are obtained in closed-form formulae.
+Moreover, we can characterise these trajectories as solutions to certain random Young diﬀerential equa-
+tions, inspired by the second-order Euler-Lagrange equations in the classical Calculus of Variations. Such
+a characterisation allows to implement the inventory trajectories via an easily-simulated initial value
+problem.
+The rest of the paper is organised as follows. Section 2 describes in detail the mathematical framework
+in which the problem of optimal trade execution is formulated. Our descriptions examines in particular
+two aspects of the mathematical models. The ﬁrst aspect (Section 2.1) is the reduction to static optimal
+inventories that happens in the context of stochastic optimal control of the expected quantity in equation
+(1.1). Proposition 2.2 examines such a reduction, listing its causes. This is novel in the literature and
+answers the questions raised in Brigo and Di Graziano (2014), Brigo and Piat (2018) and Bellani et al.
+(2018) about the comparison between static and dynamic solutions to the problem of optimal trade
+execution. The second aspect is the unbiasedness of liquidation errors (Section 2.2).
+Section 3 presents the concept of good trade execution. Section 3.1 specialises good trade executions
+in the case of linear temporary market impact and quadratic inventory cost. In particular, Section 3.1.1
+derives a closed-form formula for good trade executions, and Section 3.1.2 characterises it in terms of
+a Cauchy problem with random Young diﬀerential equations. Uniqueness of the good trade execution
+follows from this characterisation.
+Section 3.2 presents good trade executions with risk criteria other than the quadratic inventory cost.
+More precisely, Section 3.2.1 considers a time-dependent variant of the quadratic inventory cost, whereas
+Section 3.2.2 presents good trade executions when the risk criterion is inspired by the value-at-risk adopted
+in Gatheral and Schied (2011).
+Finally, two applications are given in Section 4, and Section 5 concludes the paper. Appendix A
+presents the mathematical apparatus on which the characterisation of good trade executions is based.
+2 Framework
+We adopt the perspective of liquidation; the case of acquisition is mutatis mutandis the same. Let x0
+denote initial inventory, and let xT= 0 be the liquidation target. The letter qstands for quantity of
+the asset and the trajectory t/mapsto→q(t), [0,T]→R, shall be referred to as inventory trajectory. Its time
+derivative ˙qis the rate of execution and it represents the control variable that a trader modulates while
+executing the trade. Without yet referring to any probabilistic structure, let us introduce the space of
+such inventory trajectories:
+Q0,x0
+pw:=/braceleftBig
+q: [0,T]→R, q absolutely continuous , q(0) = x0, q(T) =xT/bracerightBig
+.
+The subscript “pw” stands for “pathwise” and emphasises the non-probabilistic perspective.
+Deﬁnition 2.1. Let/parenleftbig
+Ω,F,P/parenrightbig
+be a probability space, and let {St: 0≤t≤T}be a stochastic process
+deﬁned on it. We say that Sis a price process if: 1. for all 0 ≤t≤Tthe second moment of Stis ﬁnite;
+2. the maps t/mapsto→E[St] andt/mapsto→E[S2
+t] are inL1[0,T]; 3. there exists some p≥1 such that all the paths
+ofSare of ﬁnite p-variation, i.e. for all ωin Ω,
+/bardblS·(ω)/bardblp-var,[0,T]<∞.
+Notice that the paths of the price process are not necessarily assumed to be continuous.
+Given a price process {St: 0≤t≤T}, we let{Ft: 0≤t≤T}be the minimal P-completed
+right-continuous ﬁltration generated by S. It is always assumed that F0is trivial.
+If the price process is a semimartingale, we additionally introduce the following terminology. We
+say that the semimartingale Sis a totally square integrable special semimartingale if the following two
+conditions hold:
+1. the semimartingale Sis a special semimartingale, i.e. it admits a canonical decomposition
+St=S0+At+Mt, 0≤t≤T,
+whereAis a predictable bounded variation process, Mis a local martingale, and A0=M0= 0;
+42. the following integrability holds:
+E/bracketleftBig
+/angbracketleftM/angbracketrightT/bracketrightBig
++E/bracketleftBig
+/bardblA/bardbl2
+2,[0,T]/bracketrightBig
+<∞,
+where/angbracketleftM/angbracketrightdenotes the quadratic variation of the local martingale M, and/bardblA/bardbl2,[0,T]denotes the
+2-variation of the path Aon the time interval [0 ,T].2
+Execution rates are progressively measurable square-integrable processes; more precisely, we deﬁne
+the space of execution rates as
+R:=/braceleftBig
+r∈L2/parenleftBig
+[0,T]×Ω,B[0,T]⊗FT, dt⊗P/parenrightBig
+:
+ris (Ft)t-progressively measurable/bracerightBig
+.(2.1)
+Notice that the measurability depends on the ﬁltration of the price process.
+Admissible inventory trajectories are ﬁrst integrals of execution rates with initial value x0. More
+precisely, we deﬁne the space Q0,x0of admissible inventory trajectories as
+Q0,x0:=/braceleftbigg
+(qt)t∈[0,T]:∃r∈R, qt=x0+t
+0rudu∀0≤t≤T/bracerightbigg
+. (2.2)
+Among admissible inventory trajectories we distinguish those that are fuel-constrained, namely such that
+their terminal value is xT= 0. Thus, a fuel-constrained admissible inventory trajectory is an ( Ft)t-adapted
+process with absolutely continuous paths, with deterministic initial value x0, terminal value xT= 0, and
+such that its derivative is in R. More precisely, we deﬁne the space Q0,x0
+fuelof fuel-constrained admissible
+inventory trajectories as
+Q0,x0
+fuel:=/braceleftbig
+(qt)t∈[0,T]∈Q0,x0:qT=xTP-a.s./bracerightbig
+.
+Notice that every realisation of a generic qinQ0,x0
+fuelis a path inQ0,x0pw, namely for all qinQ0,x0
+fueland allω
+in Ω it holds
+(qt(ω))0≤t≤T∈Q0,x0
+pw.
+In the space of fuel-constrained inventory trajectories we isolate the subspace of static trajectories, given
+by
+Q0,x0
+static =/braceleftBig
+q∈Q0,x0
+fuel:qtisF0-measurable for all t≥0/bracerightBig
+.
+These are the execution strategies whose entire trajectories are F0-measurable, namely deterministic. We
+say that the admissible inventory trajectories not in Q0,x0
+static are non-static (or dynamic): therefore, the
+admissible inventory trajectory qis non-static if qis inQ0,x0\Q0,x0
+static.
+It is convenient to extend the deﬁnitions of the spaces of inventory trajectories to the case where
+the initial time is not zero. The symbols Qt,xtpw,Qt,xt,Qt,xt
+fuelandQt,xt
+static will denote the straightforward
+generalisations of the deﬁnitions above to the case where the initial time is tin [0,T) and the trajectories
+are pinned to the value xtat timet.
+With the notation introduced so far, we now formulate the classical stochastic optimisation problem
+associated with optimal trade execution.
+LetX= (S,q) denote the state variable, which keeps track of the fundamental price Sand of the
+inventoryq. The dynamics of Xis controlled by an execution rate ˙ qinR. In order to emphasise this
+dependence, we can write X=Xr, whereris the control in the space Rof execution rates. With this
+notation, we express the objective function H=H˙qof the classical stochastic optimisation problem as
+H˙q(t,x1,x2) :=Et,St=x1,qt=x2/bracketleftBiggT
+tF(s,X˙q
+s,˙qs)ds/bracketrightBigg
+, (2.3)
+2Recall that the 2-variation /bardblx/bardbl2,[0,T]of a pathx:t/mapsto→xt∈Rdis deﬁned as
+/bardblx/bardbl2,[0,T]:= sup
+
+/parenleftBigg/summationdisplay
+ti/vextendsingle/vextendsinglexti+1−xti/vextendsingle/vextendsingle2/parenrightBigg1/2
+: 0 =t0<t1<···<tn=T
+
+,
+where the supremum is taken over all the partitions of the interval [0 ,T].
+5whereqis inQ0,x0
+fuel, and where F=F(t,X,r ) =F(t,S,q,r ) is a Lagrangian that describes risk-adjusted
+execution-impacted costs from trade. The stochastic optimisation problem for fuel-constrained inventory
+trajectories is therefore written as
+inf/braceleftBig
+H˙q(0,S0,x0) :q∈Q0,x0
+fuel/bracerightBig
+. (2.4)
+An important aspect in the deﬁnition of the Lagrangian Fin equation (2.3) is the description of how
+the trade execution impacts the price, i.e. the market impact. In this work we focus on the so-called
+temporary market impact.
+LetStdenote the price process at time t. We say that the liquidator exerts a temporary market
+impact onStif for some function ginC(R2) the execution price of her order at time tis
+g(St,˙qt),
+wheret/mapsto→qtis the liquidator’s inventory trajectory, and ˙ qtdenotes its time derivative at time t. A
+well-known example of temporary market impact is given by g(S,r) =S+c2
+1r, for some coeﬃcient c1>0
+of market impact. In this case, the execution cost is a linear function of the rate of execution ˙ q; since in
+a liquidation qis decreasing, the steepest the inventory trajectory is at time t, the smaller the execution
+price is at time t. The classical formulation in Almgren and Chriss (2001) utilises this linear temporary
+market impact.
+In the following two paragraphs 2.1 and 2.2, we introduce the concepts of reduction to static optimal
+strategies and the concept of liquidation error. We show that, in the context of linear temporary market
+impact with quadratic inventory cost, fuel-constrained optimal liquidation strategies are bound to be
+static, and non-fuel constrained optimal liquidation strategies commit biased errors of liquidation. This
+motivates the search for a formulation of the problem of optimal execution that is alternative to the
+classical one of equation (2.4). A possible alternative will then be presented in Section 3; under this
+alternative, optimal liquidation strategies will be non-static, and – despite being non-fuel constrained –
+they will have unbiased liquidation errors.
+2.1 Reduction to static optimal strategies
+In a temporary market impact model, trade revenues gained in the inﬁnitesimal time dtare−g(St,˙qt) ˙qtdt.
+When the temporary market impact is linear, this becomes
+/parenleftbig
+−St˙qt−c2
+1˙q2
+t/parenrightbig
+dt,
+where revenues decompose in a ﬁrst summand St˙qtwhere the price process appears, and a second sum-
+mandc2
+1˙q2
+tthat does not comprise the price process. Clearly, such a decomposition holds in more general
+situations than the one of linear market impact. If this decomposition holds for the whole Lagrangian F
+and if the bounded variation component Aof the price process Sis deterministic, then we observe the
+reduction of optimal dynamic solutions to optimal static ones. This happens in some cases studied in
+the literature (see (Cartea et al. 2015, Sections 6.3 and 6.4)), where the optimal inventory trajectory,
+although sought dynamic, is eventually found to be static. It means that the optimiser of (2.4) is in
+the spaceQ0,x0
+static of static inventory trajectories. The following proposition explains this phenomenon,
+pointing out those aspects of the model that cause the reduction to static trade executions.
+Proposition 2.2 (“Reduction to static optimal trade executions”) .Assume that
+F(t,X,r ) =rS+L(t,q,r ), (2.5)
+for some Caratheodory function3Lthat does not depend on S. Assume that there exist an integrable
+functionαon[0,T]and a constant β≥0such that
+|L(t,q,r )|≤α(t) +β/parenleftbig
+q2+r2/parenrightbig
+.
+3See Deﬁnition A.2 in Appendix A for the deﬁnition of Caratheodory function. The function Lin the statement of
+Proposition 2.2 is assumed to be a Caratheodory function with the choices: 1. the open interval (0 ,T) as the subset Uof
+Rnin Deﬁnition A.2; 2. the two-dimensional variable ( q,r) as the variable ξin Deﬁnition A.2.
+6Let the price process Sbe a totally square integrable continuous canonical semimartingale with canonical
+decomposition
+St=S0+At+Mt, 0≤t≤T. (2.6)
+Assume that AisF0-measurable, namely that the drift of the price process is deterministic. Then, for all
+0≤t≤Tit holds
+inf/braceleftBig
+H˙q(t,St,xt) :q∈Qt,xt
+static/bracerightBig
+= inf/braceleftBig
+H˙q(t,St,xt) :q∈Qt,xt
+fuel/bracerightBig
+.
+Proof. We give ﬁrst the proof in the case where Min the canonical decomposition of Sis a martingale.
+Letqbe inQt,xt
+fuel. LetXbe the state variable X= (S,q) and letYbe the two dimensional path
+Y= (q,A). LetϕinC∞(R2) be the function ϕ(x,y) =xy. Notice that
+ϕ(X˙q
+r)−ϕ(X˙q
+t)−r
+tX˙q
+sdYs, t≤r,
+is a centred martingale. Hence,
+H˙q(t,St,xt) =Et/bracketleftBigT
+tF(s,X˙q
+s,˙qs)ds
++ϕ(X˙q
+T)−ϕ(X˙q
+t)−T
+tX˙q
+rdYr/bracketrightBig
+=−xtSt+Et/bracketleftBigT
+t(−qrdAs+L(r,qr,˙qr)dr)./bracketrightBig
+It holds
+inf
+q∈Qt,xt
+fuelH˙q(t,St,xt)
+≥− xtSt+Et/bracketleftBig
+inf
+q∈Qt,xtpwT
+t(−qrdAs+L(s,qs,˙qs)ds)/bracketrightBig
+,
+where the inﬁmum on the right hand side is taken in a pathwise sense for each realisation of the price S.
+In fact, the integrand does not depend on such a realisation (i.e. it does not depend on ωin Ω) because
+Ais non-random. Therefore, any minimising sequence for the inﬁmum inside the expectation is actually
+independent of ωand we have
+inf
+q∈Qt,xt
+fuelH˙q(t,St,xt)
+≥− xtSt+ inf
+q∈Qt,xt
+staticEt/bracketleftBigT
+t(−qrdAs+L(s,qs,˙qs)ds)/bracketrightBig
+= inf
+q∈Qt,xt
+staticH˙q(t,St,xt).
+This yields the stated equality in the case where Mis a martingale. If instead Mis only a local martingale,
+a standard localisation argument concludes the proof.
+Remark 2.3. The classical optimal trade execution proposed by Almgren and Chriss (2001) was orig-
+inally formulated with optimality claimed over the set of static inventory trajectories and under the
+assumption that the price process is an arithmetic Brownian motion. However, it is easy to show that
+the same solution of the static optimisation is obtained if the Brownian motion is replaced by any square-
+integrable martingale. In this sense, the static optimal solution of Almgren and Chriss is robust. In view
+of Proposition 2.2, this robustness actually extends to the case where the liquidation strategy is regarded
+as the optimiser over the class of fuel-constrained inventory trajectories.
+Remark 2.4. A simple case where the optimal trading strategy is non-static is discussed by Gatheral
+and Schied (2011). This means that the optimal inventory trajectory obtained from the stochastic control
+problem is in the space Q0,x0
+fuel\Q0,x0
+static. In view of Proposition 2.2, we understand the dynamism of their
+7solution by noticing the following. The risk measure adopted by those authors (see (Gatheral and Schied
+2011, Section 2.1)) is the value-at-risk of the position qtSt, and this has the consequence of disrupting
+the assumption that the Lagrangian Fcan be decomposed as in equation (2.5). Indeed, Gatheral and
+Schied consider the optimisation
+inf/braceleftBigg
+E/bracketleftBigT
+0/parenleftbig
+˙q2
+t+λqtSt/parenrightbig
+dt/bracketrightBig
+:q∈Q0,x0
+fuel/bracerightBigg
+, (2.7)
+where the price process St= exp(σWt−σ2t/2) is the exponential martingale of σW, whereWdenotes
+the standard one-dimensional Brownian motion, and where λandσare positive coeﬃcients. Equation
+(2.7) is (Gatheral and Schied 2011, Equation (2.7)). Alternatively, it can be noticed that the same
+minimisation as in equation (2.7) is produced by choosing F(t,X,r ) =rS+r2anddS=λSdt +σSdW .
+Indeed, the expected cost
+E/bracketleftBigT
+0/parenleftbig
+˙q2
+t+ ˙qtSt/parenrightbig
+dt/bracketrightBig
+,
+withdSt=λStdt+σSdWt,(2.8)
+diﬀers from the expected cost in equation (2.7) (where the price process is the exponential martingale)
+only by a constant. With the modelling choices in equation (2.8), the Lagrangian Fdoes not incorporate
+any risk criterion and thus it satisﬁes the assumptions of Proposition 2.2, but the price process Shas a
+position dependent drift coeﬃcient, violating the assumption that Ain equation (2.6) is deterministic.
+Remark 2.5. In view of Proposition 2.2, we understand why incorporating signals (i.e. short-term price
+predictors) in the framework of optimal trade execution leads to dynamic optimal strategies (see Cartea
+and Jaimungal (2016) and Lehalle and Neuman (2019)). Indeed, signals are incorporated by modelling
+the price evolution as
+dSt=Itdt+σ(t,St)dWt,
+whereItis a Markov process that represents the signal. The stochasticity of Idisrupts the assumption
+on the drift Ain Proposition 2.2.
+Corollary 2.6. Assume the setting of Proposition 2.2. Assume that the price process is modelled as the
+diﬀusion
+dSt=µ(t)dt+σ(t,St)dWt, (2.9)
+for some measurable Lipschitz coeﬃcients µandσ. Assume that the drift coeﬃcient µis a deterministic
+function of time only. Assume that
+1. for alltthe map (q,r)/mapsto→−µ(t)q+L(t,q,r )is strictly convex;
+2. there exist exponents p>m≥1and coeﬃcients α1>0,α2,α3∈Rsuch that
+−µ(t)q+L(t,q,r )≥α1|r|p+α2|q|m+α3,
+for allt,qandr.
+Then, the inﬁmum in equation (2.4) is attained for some optimal deterministic qinQ0,x0
+static∩W1,p(0,T),
+whereW1,p(0,T)denotes the Sobolev space of absolutely continuous function such that their p-th power
+and thep-th power of their derivative are integrable on the time interval (0,T).
+Remark 2.7. The assumptions on Fin Corollary 2.6 are satisﬁed in particular by the classical choice
+F(t,S,q,r ) =rS+c2
+1r2+c2
+2q2, (2.10)
+wherec1>0 is a coeﬃcient of temporary market impact and c2≥0 is a coeﬃcient of risk aversion (or of
+inventory cost). Therefore, Corollary 2.6 explains why in (Cartea et al. 2015, Section 6.3) the optimal
+solution is sought dynamic and eventually found to be static. This also says that, although in Almgren
+and Chriss (2001) the optimal trade execution was sought only over the class Qstatic for tractability, this
+was in fact without loss of generality (Remark 2.3).
+Proof of Corollary 2.6. The fact that the inﬁmum over Q0,x0
+fuelis actually the same as the inﬁmum over
+Q0,x0
+static follows from Proposition 2.2. Existence, uniqueness and p-integrability of the minimiser follow
+from the two assumptions on the function ( t,q,r )/mapsto→−µ(t)q+L(t,q,r ); see (Dacorogna 2008, Theorem
+4.1).
+82.2 Errors of liquidation
+The spaceQ0,x0
+fuelof fuel-constrained admissible inventory trajectories has been isolated from the space
+Q0,x0of ﬁrst integrals of execution rates. An inventory trajectory qinQ0,x0\Q0,x0
+fuelis said to commit
+a liquidation error, because with positive probability qT/negationslash=xT. Liquidation errors are common among
+dynamic solutions to optimal trade execution problems. This is because the mathematical techniques
+used for dynamic solutions are not well-suited to simultaneously impose the two constraints q0=x0and
+qT=xT. Clearly, the constraint q0=x0has the priority and hence the constraint qT=xTis relaxed. The
+usual relaxation entails to introduce a terminal penalisation for the outstanding inventory at ﬁnal time.
+Hence, ifFis the Lagrangian describing risk-adjusted cost of trade, it is custom to relax the minimisation
+in equation (2.4) and consider instead the problem
+inf/braceleftBigg
+E/bracketleftBigT
+0F(t,X˙q
+t,˙qt)dt+c2
+5/parenleftBig
+qT−xT/parenrightBig2/bracketrightBig
+:q∈Q0,x0/bracerightBigg
+, (2.11)
+wherec5≥0 is a coeﬃcient of penalisation for outstanding terminal inventory. Notice that the minimi-
+sation is performed over the broad class Q0,x0of ﬁrst integrals of execution rates. Notice also that the
+objective function in equation (2.11) can be expressed in the general form discussed so far because
+E/bracketleftBigT
+0F(t,X˙q
+t,˙qt)dt+c2
+5/parenleftBig
+qT−xT/parenrightBig2/bracketrightBig
+=E/bracketleftBigT
+0G(t,X˙q
+t,˙qt)dt/bracketrightBig
+,
+whereG(t,X˙q
+t,˙qt) =F(t,X˙q
+t,˙qt) + 2c2
+5˙qtqt.
+We isolate liquidation errors whose expected value is null from those that on average either ﬁnish the
+liquidation before the time horizon T(negative liquidation error) or after it (positive liquidation error).
+Deﬁnition 2.8. We say that the admissible inventory trajectory qinQ0,x0has an unbiased liquidation
+error if E[qT] =xT. We say that qhas a biased liquidation error if instead E[qT]/negationslash=xT.
+By extension we say that a liquidation strategy is unbiased if its inventory trajectory has unbiased
+liquidation error, and we say that it is biased if it is not unbiased.
+The next proposition shows that the classical optimisation problem corresponding to linear temporary
+market impact with quadratic inventory cost produces in general optimal liquidation strategies with
+biased liquidation error. In other words, if the optimal inventory trajectory in this framework happens to
+have unbiased liquidation error, this unbiasedness is not robust with respect to the values of the model
+parameters c1,c2andc5: independently changing these values will disrupt the expected value of the
+inventory at T, turning it into a biased termination.
+The solution to the optimisation problem is derived from Belak et al. (2018). Notice that the statement
+is general with respect to the distributional assumption of the price process, which is only assumed to be
+a totally square integrable semimartingale.
+Proposition 2.9. Let the price process Sbe a totally square integrable special semimartingale. Consider
+the minimisation problem
+inf/braceleftBigg
+E/bracketleftBigT
+0F(t,St,qt,˙qt)dt+c2
+5/parenleftBig
+qT−xT/parenrightBig2
+−qTST/bracketrightBig
+:q∈Q0,x0/bracerightBigg
+, (2.12)
+where the Lagrangian FisF(t,St,qt,˙qt) = ˙qtSt+c2
+1˙q2
+t+c2
+2q2
+t. Let ˆqbe the minimiser for (2.12) , and let
+M:={(c1,c2,c5)∈R3
++:E[ˆqT] =xT}. Then,Mis included in a manifold of dimension 2.
+Proof. Letc3be the ratio c3=c2/c1between the coeﬃcient c2of risk aversion and the coeﬃcient c1of
+linear temporary market impact. Let c6be the ratio c6=c5/c1between the coeﬃcient c5of penalisation
+of outstanding inventory at time Tand the coeﬃcient c1of linear temporary market impact. Deﬁne the
+functionsϕand Φ as follows:
+ϕ(t) :=c3cosh(c3t) +c2
+6sinh(c3t), t≥0,
+Φ(s,t) :=ϕ(T−t)
+ϕ(T−s), 0≤s≤t≤T.(2.13)
+9Letv(t) be the following conditional expectation at time t:
+v(t) :=Et/bracketleftBig1
+2c2
+1T
+tΦ(t,r)dSr/bracketrightBig
+=Et/bracketleftBig1
+2c2
+1T
+tΦ(t,r)dAr/bracketrightBig
+, (2.14)
+whereSis the price process with canonical decomposition St=S0+At+Mt. Then, (Belak et al.
+2018, Theorem 3.1) proves that the optimal inventory trajectory that solves the minimisation problem in
+equation (2.12) is
+ˆqt= Φ(0,t)x0+t
+0Φ(s,t)v(s)ds. (2.15)
+This minimiser produces unbiased liquidation errors only if
+ϕ(0)
+ϕ(T)x0=1
+2c2
+1T
+0Φ(t,T)E/bracketleftBigT
+tΦ(t,r)dAr/bracketrightBig
+dt.
+Considerϕand Φ as functions of ( c1,c2,c5). Letf:R3
++→Rbe deﬁned as
+f(c1,c2,c5) =ϕ(0)
+ϕ(T)x0−1
+2c2
+1T
+0Φ(t,T)E/bracketleftBigT
+tΦ(t,r)dAr/bracketrightBig
+dt.
+Then, 0 is a regular value of fandM⊂f−1(0).
+Remark 2.10. In the spirit of Proposition 2.2, we remark that the solution ˆ qto the minimisation
+problem in equation (2.12) is static if the drift of the price process is deterministic, in particular if the
+price process is a martingale.
+Remark 2.11. When the price process is a martingale, the optimal inventory trajectory of equation
+(2.15) is such that the terminal value is
+qT=c3x0
+c3cosh(c3T) +c2
+6sinh(c3T).
+In this case then, the optimal inventory trajectory will always ﬁnish with a positive inventory left to
+liquidate after the initially ﬁxed time horizon Tof the liquidation.
+Remark 2.12. A liquidation strategy that is unbiased for any choice of c1andc2is obtained from
+equation (2.15) only in the limit as c5↑∞, which yields the fuel-constrained solution
+qt=R(0,t)x0−1
+2c2
+1t
+0R(s,t)Ssds
+−1
+2c2
+1t
+0R(s,t)T
+sEs[Sr]∂rR(s,r)drds,
+whereR(s,t) = sinh(c3(T−t))/sinh(c3(T−s)). This says that the inventory trajectory in equation
+(2.15) has unbiased liquidation error only in the degenerate case of deterministic terminal inventory.
+3 Good trade executions
+LetSbe a price process as deﬁned in Deﬁnition 2.1. Let the class Rof inventory rates and the class
+Q0,x0of admissible inventory trajectories be as deﬁned in equations (2.1) and (2.2) respectively.
+From the classQ0,x0of admissible inventory trajectories we isolate the class of unbiased admissible
+inventory trajectories. An unbiased admissible inventory trajectory is deﬁned as an ( Ft)t-adapted process
+with absolutely continuous paths, with deterministic initial value x0, expected terminal value xT, and such
+that its derivative is in R. More precisely, we deﬁne the space U0,x0of unbiased admissible inventory
+trajectories as
+U0,x0:=/braceleftbig
+(qt)t∈[0,T]∈Q0,x0:E[qT] =xT/bracerightbig
+.
+10The constraint E[qT] =xTrelaxes the fuel constraint qT=xTused in the deﬁnition of Q0,x0
+fuel. Recall that,
+without loss of generality, the liquidation target xTis set equal to 0; nonetheless, we do not suppress it
+from our equations because this makes the formulae easier to interpret (see Remarks 3.13 and 3.15).
+We consider the following minimisation problem over the class of unbiased admissible inventory tra-
+jectories:
+inf/braceleftBiggT
+0F(t,St,qt,˙qt)dt:q∈U0,x0/bracerightBigg
+, (3.1)
+whereF=F(t,x1,x2,x3) : (0,T)×R3→Ris a space-diﬀerentiable Caratheodory function.4We use
+the symbol Jto denote the map q/mapsto→T
+0F(t,St,qt,˙qt)dt, forqinU0,x0.
+Assumption 3.1. LetF=F(t,x1,x2,x3) : (0,T)×R3→Rbe the Lagrangian in the minimisation
+problem (3.1). It is assumed that Fis a space-diﬀerentiable Caratheodory function, and that the function
+L=L(t,x1,x2,x3) :=F(t,x1,x2,x3)−x1x3is such that: 1. Lis in the Sobolev space W1,4((0,T)×K) for
+all compact subsets KofR3; 2. for almost every tin (0,T), (∂x2L)2(t,0,x,0)+(∂x3L)2(t,0,0,x) = 0 only
+ifx= 0; 3. the functions t/mapsto→1/L(t,0,1,0) andt/mapsto→1/L(t,0,0,1) are non-negative and square-integrable
+over (0,T).
+Assumption 3.1 is used to associate the Lagrangian Fin equation (3.1) with a weight function on the
+Sobolev space W1,2(0,T) and with a weight function on U0,x0.
+Deﬁnition 3.2. LetF=F(t,x1,x2,x3) : (0,T)×R3→Rbe a space-diﬀerentiable Caratheodory
+function. Let Fsatisfy Assumption 3.1. Let ηbe inW1,2(0,T). Then, the pathwise F-weight|η|Fofη
+is deﬁned by the equation
+|η|2
+F=T
+0/parenleftbig
+/lscript2
+2(t,ηt) +/lscript2
+3(t,˙ηt)/parenrightbig
+dt, (3.2)
+where
+/lscript2(t,x) :=∂x2L(t,0,x,0)
+2/radicalbig
+L(t,0,1,0), /lscript 3(t,x) :=∂x3L(t,0,0,x)
+2/radicalbig
+L(t,0,0,1).
+Remark 3.3. LetF: (0,T)×R3→Rbe a space-diﬀerentiable Caratheodory function, and deﬁne
+L(t,x) :=F(t,x)−x1x3. Assume that Lsatisﬁes points 1. and 2. in Assumption 3.1. Assume that
+t/mapsto→1/L(t,0,0,1) is non-negative and square-integrable. If ∂x2L(t,0,x,0) = 0 for all tand allx, then we
+drop the requirement that t/mapsto→1/L(t,0,1,0) is non-negative and square-integrable and we understand
+equation (3.2) with the convention that /lscript2≡0.
+Deﬁnition 3.4. LetFbe as in Deﬁnition 3.2. Let ηbe inU0,x0. Then, the F-weight/bardblη/bardblFofηis deﬁned
+by the following equation
+/bardblη/bardbl2
+F=E/bracketleftbig
+|η|2
+F/bracketrightbig
+, (3.3)
+where|η|Fis the random variable ω/mapsto→|η(ω)|F, where{η(ω) :ω∈Ω}are the paths of ηand, for every
+ωin Ω,|η(ω)|Fis the pathwise F-weight oft/mapsto→ηt(ω).
+Every square-integrable random variable ξwithE[ξ] =xTidentiﬁes a subclass of trajectories in U0,x0
+with speciﬁed terminal (random) variable. More precisely, for every ξinL2/parenleftbig
+Ω,F,P/parenrightbig
+withE[ξ] =xTwe
+deﬁne
+U0,x0(ξ) :=/braceleftbig
+q∈U0,x0:P(qT=ξ) = 1/bracerightbig
+.
+The classU0,x0(ξ) withξ≡xTis the class of inventory trajectories that commit no liquidation error,
+namelyU0,x0(xT) =Q0,x0
+fuel.
+Deﬁnition 3.5 (“Optimal execution of terminal variable ξ”).Letξbe inL2/parenleftbig
+Ω,F,P/parenrightbig
+withE[ξ] =xT. We
+say thatqinU0,x0is the optimal execution of terminal variable ξifqminimisesη/mapsto→J(η) overU0,x0(ξ),
+namely if P(qT=ξ) = 1 and for all η∈U0,x0(ξ) it holds
+T
+0F(t,St,ηt,˙ηt)dt≥T
+0F(t,St,qt,˙qt)dt
+with probability one.
+4See Deﬁnitions A.2 and A.3.
+11For everyq∈U0,x0we trivially have that q∈U0,x0(qT). We can deﬁne a “tubular” neighbourhood of
+U0,x0(qT) by looking at those trajectories ηinU0,x0such that the L2(P)-norm of the diﬀerence ηT−qT
+between terminal values is controlled by the F-weight of the diﬀerence η−q. More precisely, for qin
+U0,x0andC≥0 we set
+U0,x0(q,C) :=/braceleftBig
+η∈U0,x0:/bardblηT−qT/bardblL2(P)≤C/bardblη−q/bardbl2
+F/bracerightBig
+. (3.4)
+This captures the idea of ηTnot being too far from the terminal value qTgiven that the trajectory ηhas
+kept close to qin the time window 0 ≤t<T .
+Also, we deﬁne a pathwise analogous to the tubular neighbourhood of equation (3.4). Given a non-
+negativeξinL2(P) we deﬁne
+U0,x0
+pw(q,ξ) :=/braceleftBig
+η∈U0,x0:|ηT−qT|≤ξ|η−q|2
+F/bracerightBig
+, (3.5)
+where|ηT−qT|is the absolute value of the diﬀerence between the values of ηand ofqat timeT, and
+|η−q|Fis the pathwise F-weight of the diﬀerence η−q.
+Remark 3.6. Notice that both U0,x0(q,C) andU0,x0pw(q,ξ) depend on the Lagrangian F. Nonetheless, we
+omit this dependence from the notation, and the symbols for these tubular neighbourhoods do not carry
+reference to F.
+Deﬁnition 3.7 (“Good trade execution”) .We say that qinU0,x0is a (C,ξ)-good trade execution for
+the minimisation in equation (3.1) if there exist ξ∈L2
++(P) andC≥0 such that
+1. for allηinU0,x0(q,C) it holds
+E/bracketleftBiggT
+0F(t,St,ηt,˙ηt)dt/bracketrightBigg
+≥E/bracketleftBiggT
+0F(t,St,qt,˙qt)dt/bracketrightBigg
+;
+2. for allηinU0,x0pw(q,ξ) it holds
+T
+0F(t,St,ηt,˙ηt)dt≥T
+0F(t,St,qt,˙qt)dt,
+with probability one.
+When we emphasise the path t/mapsto→qtof a good trade execution, we use interchangeably the term good
+inventory trajectory .
+Remark 3.8. A good trade execution is in particular an optimal execution of its own terminal variable:
+ifqis as in Deﬁnition 3.7, then qis an optimal execution of terminal variable qTas deﬁned in Deﬁnition
+3.5. In other words, a ( C,ξ)-good trade execution is in particular a (0 ,0)-good trade execution.
+3.1 Quadratic inventory cost
+In this section (Section 3.1), we consider the following Lagrangian F:
+F(t,S,q,r ) :=rS+c2
+1r2+c2
+2q2, (3.6)
+wherec1>0 is a coeﬃcient of market impact, and c2≥0 is a coeﬃcient of risk aversion. For future
+reference, we set c3:=c2/c1. Notice that in fact Fdoes not depend on t. We study the problem in (3.1)
+withFas in equation (3.6).
+Remark 3.9. The Lagrangian Fin equation (3.6) represents risk-adjusted revenues from trade where
+the market impact is temporary and linear, and the risk criterion is quadratic inventory cost. This
+aligns to common modelling choices such as those in Lehalle and Neuman (2019) and in Belak et al.
+(2018). However, our relaxation of the fuel constraint entails that the inventory is sought in U0,x0: we
+do not modify the objective function as is instead common in the studies of optimal dynamic liquidation
+strategies, where the terms of terminal asset position qTSTand of terminal inventory cost c2
+5(qT−xT)2
+are usually added to the function that describes revenues from trade (see beginning of Section 2.2).
+12Remark 3.10. The Lagrangian Fin equation (3.6) is the same as the Lagrangian in equation (2.10).
+However, the optimisation in equation (3.1) is pathwise and hence it diﬀers from the classical optimisation
+of expected risk-adjusted revenues used in equation (2.4). For this reason, the martingale cancellation
+exploited in the proof of Proposition 2.2 is not applicable to the present case: we will be able to produce
+a non-static solution also in the case where the price process has deterministic drift (in particular, where
+the price process is a martingale).
+Lemma 3.11. LetFbe as in equation (3.6) . Then,Fsatisﬁes Assumption 3.1. Moreover, the pathwise
+F-weight is a seminorm on W1,2(0,T), and theF-weight is a seminorm on U0,x0. Ifc2>0, then these
+seminorms are norms.
+Proof. As for the requirements in Assumption 3.1, we only notice that the case c2= 0 is covered in
+Remark 3.3. As for the second part of the claim, we apply Lemma A.1 from Appendix A to see that the
+pathwiseF-weight is a seminorm. The fact that the F-weight is a seminorm follows from the fact that
+the pathwise F-weight is a seminorm. Finally, c2>0 guarantees that |η−˜η|F>0 ifη/negationslash= ˜η.
+We denote the pathwise seminorm induced by the pathwise F-weight by|·|c1,c2. More precisely, we
+set
+|η|2
+c1,c2:=T
+0/parenleftbig
+c2
+2η2
+t+c2
+1˙η2
+t/parenrightbig
+dt, (3.7)
+forηinW1,2(0,T). Moreover, we denote the seminorm on U0,x0induced by the F-weight by/bardbl·/bardblc1,c2.
+3.1.1 Closed-form formula
+Proposition 3.12. LetFbe as in equation (3.6) . Letc3be the ratio of the coeﬃcients of risk aversion
+and of market impact, namely c3:=c2/c1. Letαbe the function α(t) = 1−sinh(c3(T−t))/sinh(c3T),
+and letKbe the constant
+K=1
+2c2
+1sinh(c3T)T
+0cosh(c3(T−u))E/bracketleftbig
+Su/bracketrightbig
+du.
+For0≤t≤T, deﬁne
+qt:=/parenleftbig
+1−α(t)/parenrightbig
+x0+α(t)xT
+−1
+2c2
+1t
+0cosh/parenleftbig
+c3(t−u)/parenrightbig
+Sudu
++Ksinh(c3t).(3.8)
+Then, (qt)t∈[0,T]is a(C,ξ)-good trade execution. The constant Cis explicitly given by the formula
+C−1=c3T
+0sinh/parenleftbig
+c3(T−u)/parenrightbig
+Var1
+2/parenleftbig
+Su/parenrightbig
+du;
+the random variable ξis explicitly given by the formula
+ξ−1=/vextendsingle/vextendsingle/vextendsingle2c1c2xT−x0
+sinh(c3T)−c3T
+0sinh(c3(T−t))Stdt
++c3cosh(c3T)
+sinh(c3T)T
+0cosh(c3(T−t))E[St]dt/vextendsingle/vextendsingle/vextendsingle.
+Remark 3.13. The structure of the solution qin equation (3.8) is threefold: a time-dependent convex
+combination between initial inventory x0and liquidation target xTappears on the ﬁrst line; a dynamic re-
+sponse to the actual price trajectory appears on the second line; an adjustment for the terminal constraint
+E[qT] =xTappears on the third line.
+If in the integral appearing on the second line of equation (3.8) we replace the fundamental price Su
+with its expected value E[Su], then the inventory trajectory qis turned into the optimal static one, i.e.
+into the minimiser of E[J(η)] over allηinQ0,x0
+static. See Corollary A.7 in Appendix A.
+13Instead, if in the deﬁnition of the constant Kappearing on the third line of equation (3.8) we replace
+E[Su] withSu, then the inventory trajectory qis turned into the optimal a-posteriori one, i.e. into the
+minimiser of J(η) over allηinQ0,x0pw. This is an immediate application of Proposition A.6 in Appendix
+A.
+Proof of Proposition 3.12. Letqbe as in equation (3.8). The fact that qis inU0,x0is apparent. Let
+ft:= 2c2
+1˙qt+Stand notice that fis absolutely continuous with derivative
+˙ft= 2c2
+1qt. (3.9)
+Letηbe inU0,x0. We write efor the diﬀerence e:=η−q, and we observe that e0= 0 and EeT= 0.
+Then, we have
+J(η)−J(q) =T
+0/bracketleftBig
+ft˙et+ 2c2
+1qtet/bracketrightBig
+dt+T
+0/parenleftbig
+c2
+1˙e2+c2
+2e2/parenrightbig
+dt.
+The second integral on the right hand side is |e|2
+c1,c2. Using integration-by-parts we see that in fact
+J(η)−J(q) =fTeT+|e|2
+c1,c2, because of equation (3.9). Therefore, the diﬀerence J(η)−J(q) is non-
+negative if
+|eT|≤|e|2
+c1,c2
+|fT|.
+This givesξ= 1/|fT|.
+Secondly, consider the expected diﬀerence EJ(η)−EJ(q) =E[fTeT] +/bardble/bardbl2
+c1,c2. We can estimate
+E[fTeT]≤Var1
+2(fT)/bardbleT/bardblL2(P),
+because EeT= 0. Moreover,
+Var1
+2(fT)≤c3T
+0sinh(c3(T−t))Var1
+2(St)dt.
+Therefore, the expected diﬀerence EJ(η)−EJ(q) is non-negative if
+/bardbleT/bardblL2(P)≤/bardble/bardbl2
+c1,c2
+c3T
+0sinh(c3(T−t))Var1
+2(St)dt.
+This gives the constant Cin the statement and concludes the proof.
+Remark 3.14. We remark that the good inventory trajectory of equation (3.8) is written without
+assuming a particular SDE dynamics for the price evolution. In particular, Proposition 3.12 applies to
+the case in which the price process is modelled as a fractional Brownian motion, or as the sum of a
+possibly discontinuous semimartingale and a fractional Brownian motion. Moreover, the good inventory
+trajectory is robust, in the sense that it retains its optimality when one price process Sis replaced by
+another price process ˜SwithE[St] =E[˜St] for allt.
+Remark 3.15. Givenqas in equation (3.8), we can compute
+/bardblqT−xT/bardblL2(P)=1
+2c2
+1E1
+2/bracketleftBigg
+/parenleftbigT
+0cosh/parenleftbig
+c3(T−t)/parenrightbig/parenleftBig
+St−E[St]/parenrightBig
+dt/parenrightbig2/bracketrightBigg
+and estimate
+Var(qT)≤T
+4c4
+1T
+0cosh2/parenleftbig
+c3(T−t)/parenrightbig
+Var(St)dt.
+We therefore remark the following two facts. First, the smaller
+Var(St)dtis, the more precise the
+good execution qof Proposition 3.12 is. Second, the square of the coeﬃcient c1of linear market impact
+is inversely proportional to the standard deviation of qT, and thus the precision with which the good
+executionqof equation (3.8) gets to its liquidation target xTincreases when the strategy itself can exert
+more inﬂuence on the execution price.
+14Remark 3.16. Unbiased admissible inventory trajectories qhave been deﬁned as absolutely continuous
+stochastic processes on [0 ,T] such that E[qT] =xT. This has meant that the constant Kin equation (3.8)
+has been chosen to minimise E[(qT−xT)2]. We can give two alternatives to this minimisation:
+1. ChooseKin such a way to minimise
+E/bracketleftBigg T
+t0(qt−xT)2dt/bracketrightBigg
+,
+for some 0≤t0<T. The symbolT
+t0dtstands for the mean1
+T−t0T
+t0dt. This yields
+K=1
+2c2
+1T
+t0sinh2(c3t)dt T
+t0sinh(c3t)ψ(t)dt,
+whereψ(t) =t
+0cosh(c3(t−u))E[Su]du−(1−α(t))(x0−xT). Notice that this tends to the former
+choice when t0↑T.
+2. ChooseKin such a way to minimise
+E/bracketleftBigg/parenleftBig T
+t0qtdt−xT/parenrightBig2/bracketrightBigg
+,
+for some 0≤t0<T. This yields
+K=c3(T−t0)
+2c2
+1(cosh(c3T)−cosh(c3t0)) T
+t0ψ(t)dt,
+withψas above.
+Notice however that the alternative choices for the constant Kmake the corresponding inventory trajec-
+tory fall out of the set U0,x0.
+3.1.2 Characterisation via Euler-Lagrange equation
+The diﬀerential equation in (3.9) is the linchpin on which the derivation of the good inventory trajectory
+is based. This equation is the Euler-Lagrange equation associated with the functional J. Equation (3.9)
+is a random ordinary diﬀerential equation, where diﬀerentiation is possible because the price process is
+cancelled out in the sum 2 c2
+1˙qt+St. Such a cancellation allows to circumvent the need of an integration
+with respect to the price process. However this integration is possible; Appendix A presents the theory
+of the Euler-Lagrange equation in the presence of a (rough) price path. The motivation for this theory
+comes from the fact that equation (3.9) can be rewritten as
+/braceleftBigg
+dqt=rtdt
+drt=c2
+3(qt−xT)dt−dSt/2c2
+1.(3.10)
+We interpret the system in equation (3.10) as a random Young diﬀerential equation. This equation
+is useful in simulations because it avoids the computation of the integrals in equation (3.8) and the
+evaluation of hyperbolic functions. Moreover, since we use Young integration to integrate with respect to
+the price process S, the system in equation (3.10) has a pathwise meaning and thus it also makes sense in
+the practical implementation of the trading strategy, where the price process Sis replaced by the single
+price path observed during the liquidation.
+In this paragraph, we apply the theory of Appendix A in order to characterise the good trade execution
+of Proposition 3.12 in terms of an initial value problem for the dynamics in (3.10).
+We start by noticing that the Lagrangian Fin equation (3.6) satisﬁes Assumption A.4 in Appendix
+A. Equation (3.10) is equation (A.12) with Fgiven by (3.6). Moreover, by casting Deﬁnition A.11 to the
+case of equation (3.10), we have:
+15Deﬁnition 3.17. Letqbe inU0,x0. We say that qsolves equation (3.10) if for all ωin Ω, allηin
+C∞
+0(0,T) and all 0≤s≤t≤Tthe following holds:
+t
+s˙ηudqu(ω) =ηt˙qt(ω)−ηs˙qs(ω)
+−c2
+3t
+sηu/parenleftbig
+qu(ω)−xT/parenrightbig
+du+1
+2c2
+1t
+sηudSu(ω).(3.11)
+We remark that Deﬁnition 3.17 is pathwise: a scenario ωin Ω could be ﬁxed and the deﬁnition would
+still make sense. The integral on the left hand side of equation (3.11) is well deﬁned because for all ωin
+Ω the path ˙ q(ω) is inL2[0,T]. Similarly, the ﬁrst integral on the right hand side has a pathwise meaning
+and it is well deﬁned because q(ω) is inL2[0,T] for allωin Ω. Thirdly, the integral
+ηdSon the right
+hand side of equation (3.11) is the Young integral introduced in Lemma A.10.
+Lemma 3.18. Letqand˜qbe two solutions to equation (3.10) . Ifc3/negationslash= 0, then there exist constants K1
+andK2such that
+qt−˜qt=K1ec3t+K2e−c3t;
+ifc3= 0, then there exist constants K1andK2such that
+qt−˜qt=K1+K2t.
+In particular, in both cases the diﬀerence between qand˜qis deterministic.
+Proof. Letηbe arbitrary in C∞
+0(0,T). By Deﬁnition 3.17 we have that
+t
+0˙ηudqu=ηt˙qt−c2
+3t
+0ηu/parenleftbig
+qu−xT/parenrightbig
+du+1
+2c2
+1t
+0ηudSu;
+t
+0˙ηud˜qu=ηt˙qt−c2
+3t
+0ηu/parenleftbig
+˜qu−xT/parenrightbig
+du+1
+2c2
+1t
+0ηudSu.
+Let/epsilon1t:=qt−˜qt. Subtract one line from the other and obtain that the function
+t/mapsto→t
+0˙ηu˙/epsilon1udu+c2
+3t
+0ηu/epsilon1udu−ηt˙/epsilon1t
+is constantly null. The ﬁrst two summands are diﬀerentiable in tand hence the third summand ηt˙/epsilon1tis
+diﬀerentiable too. Since ηis arbitrary, ˙ /epsilon1is diﬀerentiable in (0 ,T). Diﬀerentiating t/mapsto→ηt˙/epsilon1t, we obtain
+˙ηt˙/epsilon1t+c2
+3ηt/epsilon1t−˙ηt˙/epsilon1t−ηt¨/epsilon1t= 0.
+Hence ¨/epsilon1t=c2
+3/epsilon1t, proving the lemma.
+Lemma 3.19. The solution qto equation (3.10) with constraint
+/braceleftBigg
+q0=x0
+E[qT] =xT(3.12)
+is unique.
+Proof. Letqand ˜qbe two solutions to equation (3.10) satisfying the constraints in (3.12). Assume c3/negationslash= 0.
+Then, by Lemma 3.18 it must be
+qt−˜qt=K1ec3t+K2e−c3t,
+for constants K1andK2. Therefore
+/braceleftBigg
+q0−˜q0=K1+K2= 0
+EqT−E˜qT=K1ec3T+K2e−c3T= 0
+Solving for K1andK2we ﬁndK1=K2= 0.
+The casec3= 0 is analogous.
+16Having established uniqueness of the solution to equation (3.10) with constraint (3.12), we link equa-
+tion (3.10) to the good trade execution of Proposition 3.12. This link is established as an application of
+Lemma A.12 from Appendix A.
+Lemma 3.20. Letqbe inU0,x0. Then, the following are equivalent
+1. the inventory trajectory qsolves the Euler-Lagrange equation (3.10) ;
+2. the function ft:= 2c2
+1˙qt+Stis absolutely continuous with derivative
+˙ft= 2c2
+2qt.
+In particular, the (C,ξ)-good trade execution in Proposition 3.12 solves the Euler-Lagrange equation
+(3.10) .
+We are ﬁnally in the position to prove the main result of this paragraph.
+Proposition 3.21 (“Characterisation of good trade execution via Euler-Lagrange equation”) .The good
+trade execution for the minimisation of (3.1) with the Lagrangian Fas in equation (3.6) is characterised
+as the solution to the Euler-Lagrange equation in (3.10) with initialisation
+/braceleftBigg
+q0=x0
+r0=−S0/(2c2
+1) +c3sinh−1(c3T)/bracketleftBig
+(xT−x0) cosh(c3T) +˜K/bracketrightBig
+,(3.13)
+where
+˜K=cosh(c3T)
+2c2
+1T
+0cosh(c3t)E/bracketleftbig
+St/bracketrightbig
+dt−sinh(c3T)
+2c2
+1T
+0sinh(c3t)E/bracketleftbig
+St/bracketrightbig
+dt.
+In particular, the good trade execution in Proposition 3.12 is the only good trade execution for the
+minimisation (3.1) with the Lagrangian Fas in equation (3.6) .
+Remark 3.22. Proposition 3.12 gives a characterisation of the good trade execution in terms of an
+initial value problem that is easily simulated. This is the practical relevance of the characterisation. We
+will rely on the initial value problem (3.10) with initial conditions (3.13) in our numerical experiments in
+Section 4.
+Proof. First we examine the following two implications.
+1.A good trade execution solves equation (3.10). Let ˜ qbe a good trade execution for the minimisation
+of (3.1) with the Lagrangian Fas in equation (3.6). Then in particular, for every ωin Ω it holds
+˜q(ω) = argmin/braceleftBig
+J(η) :η∈˜q(ω) +W1,2
+0(0,T)/bracerightBig
+.
+Therefore, by Proposition A.13, we have that ˜ q(ω) solves the equation
+/braceleftBigg
+d˜qt(ω) = ˜rt(ω)dt
+d˜rt(ω) =c2
+3˜qt(ω)dt−dSt(ω)/2c2
+1.
+2.A solution to equation (3.10) is a good trade execution . Assume that qsolves the Euler-Lagrange
+equation in (3.10). Then, by Lemma 3.20 we have that ft(ω) := 2c2
+1˙qt(ω) +St(ω) is absolutely
+continuous in tfor allωin Ω and its time derivative is ˙ft(ω) = 2c2
+2qt(ω). Hence, for all ωin Ω and
+allηinq(ω) +W1,2
+0(0,T) we have
+J(η)−J(q(ω)) =T
+0/parenleftbig
+2c2
+2qt(ω)−˙ft(ω)/parenrightbig
+etdt+T
+0/parenleftbig
+c2
+1˙e2
+t+c2
+2e2
+t/parenrightbig
+dt,
+wheree=η−q(ω). The ﬁrst summand on the right hand side is null and thus J(η)≥J(q(ω)).
+This shows that qis a (0,0)-good trade execution.
+17In view of these two implications and of Lemma 3.19, it only remains to show that the initialisations in
+equation (3.13) are equivalent to the constraints in (3.12).
+Consider an equation of the form
+dYt= (AYt+B)dt+DdSt,
+where the unknown Yis inR2, the matrix Ais inR2×2andBandDare two-dimensional real vectors.
+Equation (3.10) is of this form with the choice Y= (q,r)Tand
+A=/parenleftbigg
+0 1
+c2
+30/parenrightbigg
+, B =/parenleftbigg
+0
+−c2
+3xT/parenrightbigg
+= 0, D =/parenleftbigg0
+−1
+2c2
+1/parenrightbigg
+.
+Assume ﬁrst that t/mapsto→E[St] is diﬀerentiable. Then, if we set µt=E[Yt] we have that µsolves the ordinary
+diﬀerential equation
+˙µt=Aµt+ϕtD, (3.14)
+whereϕt=dE[St]/dt. This ordinary diﬀerential equation has a two-dimensional space of solutions; hence
+we can exploit these two degrees of freedom to adjust for the constraints q0=µ0=x0andµT=xT= 0.
+Deﬁne the function e1=e1(t) as
+e1(t) =e1(0) +E[St] sinh(c3t)/(2c1c2)
+−1
+2c2
+1t
+0cosh(c3u)E[Su]du.
+Deﬁne the function e2=e2(t) as
+e2(t) =e2(0) +/parenleftBig
+S0−cosh(c3t)E[St]/parenrightBig
+/(2c1c2)
++1
+2c2
+1t
+0sinh(c3u)E[Su]du.
+The general solution to equation (3.14) is
+/braceleftBigg
+µ(1)
+t=e1(t) cosh(c3t) +e2(t) sinh(c3t)
+µ(2)
+t=c3e1(t) sinh(c3t) +c3e2(t) cosh(c3t).
+The constraints q0=µ0=x0andµT=xT= 0 impose the choices
+/braceleftBigg
+e1(0) = x0
+e2(0) =R+ sinh−1(c3T)/bracketleftBig
+xT−e1(T) cosh(c3T)/bracketrightBig
+,
+where
+R=cosh(c3T)E[ST]−S0
+2c1c2−1
+2c2
+1T
+0sinh(c3u)E[Su]du.
+Hence, the constraints q0=µ0=x0andµT=xT= 0 are translated into the initialisation in the
+statement.
+The case where the map t/mapsto→E[St] is not diﬀerentiable is handled via a standard approximation
+argument.
+3.2 Alternative risk criteria
+We present two alternatives to the risk criterion used in Section 3.1. This means that we modify the
+third summand in the Lagrangian of equation (3.6), and we study the minimisation problem with such
+a modiﬁed Lagrangian. The ﬁrst alternative (Section 3.2.1) preserves the same structure but increases
+the weight of the coeﬃcient c2of risk aversion linearly in time. The second alternative (Section 3.2.2) is
+instead inspired by the value-at-risk for geometric Brownian motion used in Gatheral and Schied (2011).
+183.2.1 Linearly time-dependent coeﬃcient of risk aversion
+The third summand in the Lagrangian Fof equation (3.6) accounts for the risk aversion. So far this term
+has been taken constant in the time variable t. We now propose a linear t-dependence, with higher risk
+aversion for tcloser to the liquidation horizon T. More precisely, we consider the Lagrangian
+F(t,S,q,r ) :=rS+c2
+1r2+c2
+2tq2, (3.15)
+wherec1>0 is a coeﬃcient of market impact and c2≥0 is a coeﬃcient of risk aversion. For future
+reference, we set c3:=c2/c1. We study the minimisation problem in (3.1) with Fas in equation (3.15).
+Lemma 3.23. LetFbe as in equation (3.15) . Then,Fsatisﬁes Assumption 3.1. Moreover, the pathwise
+F-weight is a seminorm on W1,2(0,T), and theF-weight is a seminorm on U0,x0. Ifc2>0, then these
+seminorms are norms.
+We denote the pathwise seminorm induced by the pathwise F-weight by|·|c1,c2√
+t. More precisely, we
+set
+|η|2
+c1,c2√
+t:=T
+0/parenleftbig
+c2
+2tη2
+t+c2
+1˙η2
+t/parenrightbig
+dt, (3.16)
+forηinW1,2(0,T). Moreover, we denote the seminorm on U0,x0induced by the F-weight by/bardbl·/bardblc1,c2√
+t.
+We proceed with statements analogous to those in Sections 3.1.1 and 3.1.2, namely: in Proposition 3.24
+we give a closed-form formula for a good trade execution in the case of the Lagrangian Fof (3.15); then,
+in Proposition 3.25 we show that in fact such a good trade execution is unique, and we characterise it as
+the solution of a random Young diﬀerential equation. All the arguments are straightforward adaptations
+from those presented above, and thus we omit the proofs.
+Proposition 3.24. Let the Lagrangian Fbe as in equation (3.15) . Let Aiand Bibe the ﬁrst and
+the second Airy’s functions, namely the two independent solutions to the second order linear ordinary
+diﬀerential equation u/prime/prime(t)−tu(t) = 0 . Deﬁne the functions α,β,φas follows
+α(t) =Ai(c2/3
+3t),
+β(t) =Bi(c2/3
+3t),
+φ(t) =1
+2c2
+1t
+0α−2(s)s
+0α(u)dSuds,
+where the innermost integral in the deﬁnition of φis the Young integral introduced in Appendix A. Deﬁne
+the constants cAandcBas follows
+cA=β(T)x0−α(T)β(0)Eφ(T)
+α(0)β(T)−α(T)β(0),
+cB=α(T)
+α(0)β(T)−α(T)β(0)/parenleftBig
+α(0)Eφ(T)−x0/parenrightBig
+.
+For0≤t≤T, deﬁne
+qt:=cAα(t) +cBβ(t)−α(t)φ(t). (3.17)
+Then, (qt)t∈[0,T]is a(C,ξ)-good trade execution, where
+C= 1//bardblST−2c2
+1˙αφ(T)/bardblL2(P),
+ξ= 1/|ST+ 2c2
+1cA˙α(T) + 2c2
+1cB˙β(T)−2c2
+1˙αφ(T)|,
+where the symbol ˙αφdenotes the time derivative of the product function t/mapsto→α(t)φ(t).
+The Lagrangian Fin equation (3.15) satisﬁes Assumption A.4 from Appendix A. Equation (A.12) in
+the present case reads/braceleftBigg
+dqt=rtdt
+drt=c2
+3tqtdt−dSt/2c2
+1.(3.18)
+We show that the good trade execution in Proposition 3.24 is characterised as the unique solution to the
+random Young diﬀerential equation (3.18).
+19Proposition 3.25. The good trade execution of Proposition 3.24 is characterised as the unique solution
+to the random Young diﬀerential equation (3.18) with initialisation
+/braceleftBigg
+q0=x0
+r0=eA(0)α0+eB(0)β0,
+whereαandβare as in Proposition 3.24, and
+eA(0) =βTx0−β0˜K
+α0βT−αTβ0, eB(0) =α0˜K−αTx0
+α0βT−αTβ0,
+˜K=S0
+2c2
+1W0(αTβ0−α0βT) +1
+2c2
+1T
+0E[Su]d
+du/parenleftbiggαTβu−βTαu
+Wu/parenrightbigg
+du,
+Wt=αt˙βt−˙αtβt.
+In particular, the good trade execution in Proposition 3.24 is the only good trade execution for the min-
+imisation (3.1) with the Lagrangian Fas in equation (3.15) .
+3.2.2 VaR-inspired risk criterion
+Gatheral and Schied (2011) model the fundamental price Sas a geometric Brownian motion and they
+adopt the value-at-risk as measure of risk aversion. This means penalising instantaneous revenues from
+trade by subtracting a term proportional to qtStat every time t. Inspired by their modelling choices, we
+now consider the Lagrangian
+F(t,S,q,r ) :=rS+c2
+1r2+c2
+2qS, (3.19)
+wherec1>0 is a coeﬃcient of market impact and c2≥0 is a coeﬃcient of risk aversion. Notice that in
+factFdoes not depend on t. We study the minimisation problem in (3.1) with Fas in equation (3.19).
+Lemma 3.26. LetFbe as in equation (3.19) . Then,Fsatisﬁes Assumption 3.1. Moreover, the pathwise
+F-weight is a seminorm on W1,2(0,T), and theF-weight is a seminorm on U0,x0.
+Proof. Assumption 3.1 is understood as per Remark 3.3, namely we drop the requirement on t/mapsto→
+1/L(t,0,1,0) because ∂x3L(·,0,·,0)≡0.
+We denote the pathwise seminorm induced by the pathwise F-weight by|·|c1. More precisely, we set
+|η|2
+c1:=T
+0c2
+1˙η2
+tdt, (3.20)
+forηinW1,2(0,T). Moreover, we denote the seminorm on U0,x0induced by the F-weight by/bardbl·/bardblc1.
+We proceed with statements analogous to those in Sections 3.1.1 and 3.1.2, namely: in Proposition 3.27
+we give a closed-form formula for a good trade execution in the case of the Lagrangian Fin equation (3.19);
+then, in Proposition 3.30 we show that such a good trade execution is unique, and we characterise it as
+the solution of a random Young diﬀerential equation. All the arguments are straightforward adaptations
+from those presented above, and thus we omit the proofs.
+Proposition 3.27. LetFbe as in equation (3.19) . LetKbe the constant
+K=1
+2c2
+1TT
+0/parenleftbigg
+E[Ss]−c2
+2s
+0E[Su]du/parenrightbigg
+ds.
+For0≤t≤T, deﬁne
+qt=/parenleftbigg
+1−t
+T/parenrightbigg
+x0+t
+TxT
+−1
+2c2
+1t
+0/parenleftbigg
+Ss−c2
+2s
+0Sudu/parenrightbigg
+ds
++Kt(3.21)
+20Then, (qt)t∈[0,T]is a(C,ξ)-good trade execution. The random variable ξis explicitly given by the formula
+ξ−1=/vextendsingle/vextendsingle/vextendsingle/vextendsingle/vextendsingle2c2
+1
+T/parenleftbig
+xT−x0/parenrightbig
++ 2c2
+1K+c2
+2T
+0Stdt/vextendsingle/vextendsingle/vextendsingle/vextendsingle/vextendsingle
+and the constant Cis explicitly given by the formula C−1=/bardblξ−1/bardblL2(P).
+Remark 3.28. The good trade execution in equation (3.21) has the same structure of the one in equation
+(3.8), namely: a time-dependent convex combination of x0andxT(ﬁrst line), a dynamic response to the
+realisation of the price path (second line), and an adjustment for the constraint E[qT] =xT(third line).
+Moreover, notice that
+lim
+c2↓0sinh/parenleftBig
+c2
+c1(T−t)/parenrightBig
+sinh/parenleftBig
+c2
+c1T/parenrightBig = 1−lim
+c2↓0sinh/parenleftBig
+c2
+c1t/parenrightBig
+sinh/parenleftBig
+c2
+c1T/parenrightBig= 1−t
+T,
+so that the good trade execution in equation (3.21) and the good trade execution in equation (3.8) agree
+when the risk aversion vanishes, i.e. in the limit as c2↓0.
+Remark 3.29. Of the good trade execution in equation (3.21), we can compute
+/bardblqT−xT/bardblL2(P)=1
+2c2
+1E1
+2/bracketleftBig/parenleftbigT
+0/braceleftBig
+c2
+2t
+0(Su−E[Su])du−(St−E[St])/bracerightBig
+dt/parenrightbig2/bracketrightBig
+and estimate
+Var(qT)≤T
+2c4
+1T
+0/parenleftbigg
+c4
+2tt
+0Var(Su)du+ Var(St)/parenrightbigg
+dt.
+Therefore, the two facts presented in Remark 3.15 also hold for the good trade execution of Proposition
+3.27.
+The Lagrangian Fin equation (3.19) satisﬁes Assumption A.4 from Appendix A. With this F, equation
+(A.12) reads/braceleftBigg
+dqt=rtdt
+drt=c2
+3tStdt/2−dSt/2c2
+1,(3.22)
+wherec3:=c2/c1. We now characterise the good trade execution in Proposition 3.27 as the unique
+solution to the random Young diﬀerential equation (3.22). Observe that equation (3.22) is solved by
+direct integration and this simpliﬁes several calculations compared to the cases of Sections 3.1.2 and
+3.2.1.
+Proposition 3.30. The good trade execution of Proposition 3.27 is characterised as the unique solution
+to the random Young diﬀerential equation (3.22) with initialisation
+/braceleftBigg
+q0=x0
+r0=xT−x0
+T+1
+2c2
+1TT
+0/parenleftBig
+E[St]−S0−c2
+2t
+0E[Su]du/parenrightBig
+dt.
+In particular, the good trade execution in Proposition 3.27 is the only good trade execution for the min-
+imisation (3.1) withFis as in equation (3.19) .
+4 Applications
+In this section we given two applications of the trading schedule proposed in Proposition 3.12.
+Because of the reliance on the expected trajectory t/mapsto→E[St] of the fundamental price, the use case
+of our framework is one where such an expected trajectory can serve as a reliable forecast for the price.
+This means that an implicit mean-reversion is assumed, and we will be choosing our price processes
+accordingly.
+214.1 INTC shares: high-frequency mean-reverting jump diﬀusion
+We consider the liquidation of a large portfolio of shares; the whole liquidation happens during intraday
+trading hours and on a single limit order book. We model the fundamental price Son the mid-price of
+the order book, according to the following high-frequency mean-reverting jump-diﬀusion model:
+St= exp (m(t) +Y(t) +N(t)), (4.1)
+wherem(t) isF0-measurable, continuous and of ﬁnite variation, Y(t) is the Ornstein-Uhlenbeck process
+dY(t) =−αY((t)dt+σdW (t), andN(t) is a compound Poisson process independent from Y(t) and
+with i.i.d marks symmetrically distributed around zero. Therefore, the expected price trajectory is
+E[St] = exp(m(t)), and it represents the reversion target. The liquidator acts adopting this as her price
+forecast during the execution.
+As an example, we calibrate our model to the high-frequency NASDAQ order book data available for
+the trading of INTC on 22 January 2019. The dataset is provided by LOBSTER ( https://lobsterdata.
+com/ ). The calibration procedure is straightforward: we ﬁrst extrapolate the mean-reversion target from
+the raw data, we then estimate the Ornstein-Uhlenbeck factor from the diﬀerence between the log-price
+and the logarithm of the mean-reversion target, and we ﬁnally calibrate the point process on the data
+points{Y(ti) :|Y(ti)−Y(ti−1) exp(−α(ti−ti−1))|>kσ/radicalbig
+1−exp(−2α(ti−ti−1))/α}that are displaced
+beyondkstandard deviations from the expected value. In the interest of conciseness, we omit the details
+of this calibration procedure. The so-calibrated price process is displayed in the upper quadrant of Figure
+2, together with the original data stream.
+The lower quadrant in Figure 2 reports the inventory trajectory and its rate of execution computed
+as a solution to the Cauchy problem of equation (3.10) with initialisation (3.13). We remark two aspects
+observable from the picture. The ﬁrst aspect is that the liquidation terminates after the initially decided
+horizonT= 1.0 for the liquidation. This is because the realisation of the price path dwells for most
+of the time window of the liquidation below its expected value. Consequently, the liquidator decreases
+the rate of liquidation, in order to prevent her own price impact from exacerbating her trading cost even
+further. The trade-oﬀ between a limited exposure to market volatility and a parsimonious rate is resolved
+in favour of the latter. The second aspect is the reaction to the price jump that happens around t= 0.21.
+The jump is upward and hence favourable to the liquidation. Consequently, the liquidator reacts by
+increasing the rate of execution to exploit this.
+4.2 5Y government bonds: Brownian bridge
+As a second application, we consider an entirely diﬀerent time scale from the one of intraday INTC
+stock price, and in fact diﬀerent from the time scale at which models of trade executions are usually
+applied. In this sense, the application is at the boundary between trade execution and dynamic portfolio
+management.
+We consider the sale of 5Y government bonds motivated by market conditions whereby bond yields are
+negative. Historically, this was observed in 2016 for German bunds and such a phenomenon reappeared
+in March 2019. Four examples are reported in the upper quadrant of Figure 3, where we show the prices
+of 5Y German bunds with maturities October 2019, April 2020, October 2020, and April 2021.
+The reason for negative yields was twofold. On the one hand, central banks launched programmes to
+stimulate the economy by cutting interest rates and by injecting liquidity via the so-called quantitative
+easing. On the other hand, in volatile economic regimes risk-adversed investors tend to move their capital
+to safe investments such as government bonds (a phenomenon known as ﬂight-to-quality), and this exerted
+upward pressure on bond prices.
+We consider an investor who wishes to unwind a long position on a negative yielding bond before
+incurring into the sure loss at the bond’s maturity. The sale is done gradually in time, on the one hand
+because the investor does not want to suddenly loose all the liquidity associated with the bonds, and on
+the other hand because the investor is mindful of the market impact that an abrupt sale would incur
+into.
+In the upper quadrant of Figure 3 we observe that, after the period of overprice and as the matu-
+rity approaches, the trajectories converge on a downward slope towards the face value, which pins the
+trajectories at maturity. We base our modelling choices on this observation and, in line with a tradition
+that dates back to the Seventies (Boyce (1970)), we adopt a Brownian bridge as the price process. More
+22precisely, the price process Sis modelled as
+dSt=V−St
+T−tdt+σdWt, (4.2)
+whereVis the face value of the bond, Wis a standard one-dimensional Brownian motion, and σis the
+volatility coeﬃcient. In this model for the price process, the expected price path is the line segment from
+the decision price x0at timet= 0 to the face value at maturity.
+The second quadrant in Figure 3 shows good trade executions in this setting. The inventory trajec-
+tories are simulated following the dynamics in equation (3.10) with initialisation (3.13).
+The way in which the good trade executions react to market scenarios is indicative of the dynamic
+adjustment of inventory trajectories during the liquidation. In particular, in scenarios #1 and #3 the
+liquidation is faster than the static solution; in this way it exploits favourable market conditions. Notice
+that this is advantageous especially in scenario #3, where a faster liquidation means that the liquidator
+concentrates her sale before the price plunges below its expected trend. On the contrary, in scenario
+#4, the good inventory trajectory is less steep than the static solution, because unfavourable market
+conditions recommend to parsimoniously impact the price.
+5 Conclusions
+In this paper, we examined the mathematical models of optimal trade execution with respect to two
+properties: non-static trajectories and unbiased liquidation errors. Non-static trajectories are those that
+react to the actual realisation of the price path during the execution, rather than being based only on
+assumed distributional properties of this price. Secondly, a liquidation error is said to be unbiased if
+its expectation is zero, entailing that the expected value of the terminal inventory coincides with the
+execution target.
+We introduced our proposal for execution strategies, which enjoy both properties. In particular, in
+order to have non-static solutions even when the fundamental price is modelled as a martingale, we
+considered the minimisation of trading costs from a pathwise perspective, rather than the minimisation
+ofexpected trading costs.
+We considered three risk criteria. The ﬁrst criterion is the classical quadratic inventory cost; the
+second is a time-dependent modiﬁcation of the ﬁrst; the third was inspired by the value-at-risk employed
+in Gatheral and Schied (2011). For all of them, we derived explicit closed-form formulae of our inventory
+trajectories. Furthermore, we characterised them through initial value problems that allow to easily im-
+plement our strategies in practice. We demonstrated this through two applications, one on the liquidation
+of INTC shares, the other on the liquidation of German bunds.
+Acknowledgements
+We are grateful to Eyal Neuman for discussion and suggestions that helped us improve the paper. We
+would also like to thank two anonymous referees for their comments and recommendations.
+23initial inventory x0: 10000.0 price process : see equation (4.1)
+liquidation target xT: 0.0 coef market impact c1: 1.35
+time horizon of liquidation T: 1.0 coef risk aversion c2: 1.15
+initial price S0: 485777
+Figure 2: Upper quadrant: Historical intraday mid-price of INTC on 2019-01-22 (10am-3pm) and a
+sample path of the process in equation (4.1). Lower quadrant: Inventory trajectory and rate for the
+liquidation referring to the sampled price path.
+24bond name ISIN borrower issue date maturity cpn red.yield
+BUNDESREPUB.DTL.BO 2015 ZERO 17/04/20 DE0001141711 BCKKE 2015-01-23 2020-04-17 0.00 -0.6459
+BUNDESREPUB.DTL.BO 2015 1/4% 16/10/20 DE0001141729 BCKKE 2015-07-03 2020-10-16 0.25 -0.6955
+BUNDESREPUB.DTL.BO 2014 1/4% 11/10/19 DE0001141703 BCKKE 2014-09-05 2019-10-11 0.25 -0.4781
+BUNDESREPUB.DTL.BO 2016 ZERO 09/01/21 DE0001141737 BCKKE 2016-02-05 2021-04-09 0.00 -0.7484
+initial inventory x0: 1000.0 price process : see equation (4.2)
+liquidation target xT: 0.0 volatilityσ: 1.1642
+time horizon of liquidation T: 1.0 coef market impact c1: 0.05855
+initial price S0: 103.893 coef risk aversion c2: 0.07341
+Figure 3: Upper quadrant: Historical prices of bonds with negative yields. Lower quadrant: Good trade
+executions in the context of a Brownian bridge.
+25References
+Almgren, R. and Chriss, N. (2001). Optimal execution of portfolio transactions. Journal of Risk , 3:5–40.
+Belak, C., Muhle-Karbe, J., and Ou, K. (2018). Liquidation in target zone models. Market Microstructure
+and Liquidity , 04(03n04):1950010.
+Bellani, C., Brigo, D., Done, A., and Neuman, E. (2018). Static vs adaptive strategies for optimal
+execution with signals. International Journal of Financial Engineering (to appear) .
+Bertsimas, D. and Lo, A. W. (1998). Optimal control of execution costs. Journal of Financial Markets ,
+1(1):1–50.
+Boyce, W. M. (1970). Stopping rules for selling bonds. The Bell Journal of Economics and Management
+Science , 1(1):27–53.
+Brigo, D. and Di Graziano, G. (2014). Optimal trade execution under displaced diﬀusions dynamics
+across diﬀerent risk criteria. Journal of Financial Engineering , 1(2):1450018.
+Brigo, D. and Piat, C. (2018). Static vs adapted optimal execution strategies in two benchmark trading
+models.
+Cartea, A., Donnelly, R., and Jaimungal, S. (2017). Algorithmic trading with model uncertainty. SIAM
+J. Financial Math. , 8(1):635–671.
+Cartea, A. and Jaimungal, S. (2016). Incorporating order-ﬂow into optimal execution. Math. Financ.
+Econ. , 10(3):339–364.
+Cartea, A., Jaimungal, S., and Penalva, J. (2015). Algorithmic and high-frequency trading . Cambridge
+University Press, Cambridge, United Kingdom.
+Casgrain, P. and Jaimungal, S. (2019a). Algorithmic trading in competitive markets with mean ﬁeld
+games. SIAM News , 52(2):1–2.
+Casgrain, P. and Jaimungal, S. (2019b). Trading algorithms with learning in latent alpha models. Math.
+Finance , 29(3):735–772.
+Cordoni, F. and Persio, L. D. (2020). A maximum principle for a stochastic control problem with multiple
+random terminal times. Mathematics in engineering , 2(3):557–583.
+Dacorogna, B. (2008). Direct methods in the calculus of variations , volume 78 of Applied Mathematical
+Sciences . Springer, New York, second edition.
+Denny, J. and Suchanek, G. L. (1986). On the use of semimartingales and stochastic integrals to model
+continuous trading. Journal of Mathematical Economics , 15(3):255–266.
+Gatheral, J. and Schied, A. (2011). Optimal Trade Execution Under Geometric Brownian Motion In The
+Almgren And Chriss Framework. International Journal of Theoretical and Applied Finance (IJTAF) ,
+14(03):353–368.
+Huang, X., Jaimungal, S., and Nourian, M. (2019). Mean-ﬁeld game strategies for optimal execution.
+Appl. Math. Finance , 26(2):153–185.
+Kentia, K. and K¨ uhn, C. (2018). Nash equilibria for game contingent claims with utility-based hedging.
+SIAM Journal on Control and Optimization , 56(6):3948–3972.
+Lehalle, C.-A. and Neuman, E. (2019). Incorporating signals into optimal trading. Finance and Stochas-
+tics, 23(2):275–311.
+Mitchell, D. and Chen, J. (2020). Market or limit orders? Quantitative Finance , 20(3):447–461.
+Roux, A. and Zastawniak, T. (2018). Game options with gradual exercise and cancellation under pro-
+portional transaction costs. Stochastics , 90(8):1190–1220.
+Xu, Z. Q. and Zhou, X. Y. (2013). Optimal stopping under probability distortion. The Annals of Applied
+Probability , 23(1):251–282.
+26Appendix A Euler-Lagrange equations with price paths
+All the statements in this appendix are pathwise, hence we leave probability out of the picture. In
+particular, the symbol Swill denote a (possibly discontinuous) single path of ﬁnite p-variation, for some
+p≥1. We consider the following functions spaces. The space C∞
+0(0,T) is the space of smooth functions
+with compact support in the open interval (0 ,T). The Sobolev space W1,2(0,T) is the space of absolutely
+continuous functions uon the closed interval [0 ,T] such that uand its derivative ˙ uare square integrable
+over [0,T]. The Sobolev space W1,2(0,T) is endowed with the norm
+/bardblu/bardbl2
+W1,2=T
+0/parenleftbig
+u2
+t+ ˙u2
+t/parenrightbig
+dt.
+The spaceW1,2
+0(0,T) is deﬁned as the closure of C∞
+0(0,T) inW1,2(0,T).
+Lemma A.1. Letfandgbe non-negative bounded measurable functions deﬁned on (0,T). Then,
+/bardblu/bardbl:=/parenleftBiggT
+0/parenleftbig
+u2(t)f(t) + ˙u2(t)g(t)/parenrightbig
+dt/parenrightBigg1
+2
+is a seminorm on W1,2(0,T).
+Proof. Notice that for uinW1,2(0,T) we can write/bardblu/bardbl2=/bardblu/bardbl2
+f+/bardbl˙u/bardbl2
+g, where/bardbl·/bardblfis theL2norm
+associated with the measure f(t)dt, and/bardbl·/bardblgis theL2norm associated with the measure g(t)dt. Therefore,
+the triangle inequality is proved by the following chain of inequalities:
+/bardblu+v/bardbl≤/parenleftBig
+(/bardblu/bardblf+/bardblv/bardblf)2+ (/bardbl˙u/bardblg+/bardbl˙v/bardblg)2/parenrightBig1
+2
+≤/parenleftBig
+/bardblu/bardbl2
+f+/bardbl˙u/bardbl2
+g/parenrightBig1
+2+/parenleftBig
+/bardblv/bardbl2
+f+/bardbl˙v/bardbl2
+g/parenrightBig1
+2,
+where on the ﬁrst line we used Minkowski inequality in L2
+fandL2
+g, and on the second line we applied
+Minkowski inequality in /lscript2.
+Deﬁnition A.2 (“Caratheodory function”) .LetUbe an open set in Rn. The function F:U×Rd→R
+is called Caratheodory function if: 1. for almost every tinU, the mapx/mapsto→F(t,x) is continuous; 2. for
+everyxinRd, the function t/mapsto→F(t,x) is Lebesgue-measurable.
+Deﬁnition A.3. LetUbe an open subset of R+. LetF:U×Rd→Rbe a Caratheodory function. We
+say thatFis space-diﬀerentiable if for all tinUthe mapx/mapsto→F(t,x) is inC1(Rd).
+In this appendix we consider Lagrangians Ffor which the following assumption holds.
+Assumption A.4. LetF: (0,T)×R3→Rbe a Caratheodory function. It is assumed that
+F(t,x1,x2,x3) =x1x3+L(t,x1,x2,x3), (A.1)
+whereLis a space-diﬀerentiable Caratheodory function on (0 ,T)×R3such that there exist a function α
+inL1(0,T) and a constant β≥0 such that
+|L(t,x1,x2,x3)|,|∂x2L(t,x1,x2,x3)|,|∂x3L(t,x1,x2,x3)|
+≤α(t) +β/parenleftBig
+x2
+1+x2
+2+x2
+3/parenrightBig
+,(A.2)
+for alltin (0,T) and allx1,x2,x3inR.
+The space variables x= (x1,x2,x3) are alternatively labelled as ( x1,x2,x3) = (S,q,r ). Hence, we
+interpretx1as the placeholder for the variable Sdenoting the fundamental price, we interpret x2as
+the placeholder for the variable qdenoting the inventory, and we interpret x3as the placeholder for the
+variablerdenoting the rate of execution. In the following, we adopt these letters for the space variables;
+hence, in particular ∂qLdenotes the derivative of Lwith respect to the variable x2, and∂rLdenotes the
+derivative of Lwith respect to the variable x3.
+27Remark A.5. WhenLdoes not depend on x1, the decomposition in equation (A.1) has the form of the
+decomposition in equation (2.5). However, we do not restrict to that case in this appendix. In particular,
+our treatment encompasses the case of the functional used in Gatheral and Schied (2011), which we
+discuss in Section 3.2.2.
+LetS= (St)0≤t≤Tbe a path on [0 ,T] and assume that Sis of ﬁnitep-variation for some p≥1. Let
+Fbe a Caratheodory function satisfying Assumption A.4. Let Jbe the functional
+J(η) :=T
+0F(t,St,ηt,˙ηt)dt, η∈W1,2(0,T). (A.3)
+Letq0be inW1,2(0,T) and consider the aﬃne space
+q0+W1,2
+0(0,T) =/braceleftBig
+q0+u:u∈W1,2
+0(0,T)/bracerightBig
+.
+We study the minimisation problem
+inf/braceleftBig
+J(η) :η∈q0+W1,2
+0(0,T)/bracerightBig
+. (A.4)
+Proposition A.6 (“Weak form of Euler-Lagrange equation”) .LetFbe as in Assumption A.4. Let
+L(t,x1,x2,x3) :=F(t,x1,x2,x3)−x1x3. Assume that qis a minimiser for (A.4) . Then, for all ψin
+C∞
+0(0,T)it holds
+T
+0/parenleftbig
+St+∂rL(t,St,qt,˙qt)/parenrightbig˙ψtdt=−T
+0ψt∂qL(t,St,qt,˙qt)dt. (A.5)
+Conversely, if (x2,x3)/mapsto→F(t,x1,x2,x3)is convex for all tand allx1, then (A.5) is a suﬃcient
+condition on q∈q0+W1,2
+0(0,T)for being a minimiser for (A.4) .
+Proof. ForψinC∞
+0(0,T) it holds
+lim
+/epsilon1↓01
+/epsilon1T
+0/bracketleftbig
+L(t,St,qt+/epsilon1ψt,˙qt+/epsilon1˙ψt)−L(t,St,qt,˙qt)/bracketrightbig
+dt
+=T
+0/bracketleftbig
+ψt∂qL(t,St,qt,˙qt) +˙ψt∂rL(t,St,qt,˙qt)/bracketrightbig
+dt,
+owing to assumption (A.2) on the growth of Land its space derivatives. For all ψinC∞
+0(0,T) and all
+/epsilon1>0 we have that
+J/parenleftbig
+q+/epsilon1ψ/parenrightbig
+≥J/parenleftbig
+q/parenrightbig
+,
+and thus necessity of (A.5) is established.
+Conversely, assume that ( x2,x3)/mapsto→F(t,x1,x2,x3) is convex for all tand allx1. Assume that qin
+q0+W1,2
+0(0,T) satisﬁes equation (A.5). Let ηbe arbitrary in q0+W1,2
+0(0,T), and lettbe arbitrary in
+[0,T]. By convexity it holds
+F(t,St,ηt,˙ηt)≥F(t,St,qt,˙qt) +∂qL(t,St,qt,˙qt)(ηt−qt)
++ [St+∂rL(t,St,qt,˙qt)] ( ˙ηt−˙qt).
+Notice that η−qis inW1,2
+0(0,T) and thus it is approximated by ψinC∞
+0(0,T). Therefore, if we integrate
+the latter inequality in dtand use (A.5), we concludeT
+0F(t,St,ηt,˙ηt)dt≥T
+0F(t,St,qt,˙qt)dt.
+As an application of the suﬃcient condition for optimality established in Proposition A.6, we derive
+the optimal static inventory trajectory in the case of linear temporary market impact and quadratic
+inventory cost.
+Corollary A.7. LetSbe a price process as deﬁned in Deﬁnition 2.1. Let x0,c1andc2be positive real
+numbers, and let c3:=c2/c1. LetαandKbe as in Proposition 3.12. For 0≤t≤Tdeﬁne
+qt:=/parenleftbig
+1−α(t)/parenrightbig
+x0+α(t)xT−1
+2c2
+1t
+0cosh/parenleftbig
+c3(t−u)/parenrightbig
+E[Su]du+Ksinh(c3t).
+28Then, the function t/mapsto→qtis a minimiser for
+inf/braceleftBigg
+E/bracketleftBiggT
+0/parenleftbig
+St˙ηt+c2
+1˙η2
+t+c2
+2η2
+t/parenrightbig
+dt/bracketrightBigg
+:η∈Q0,x0
+static/bracerightBigg
+.
+Proof. Let
+F(x1,x2,x3) :=x1x3+c2
+1x2
+3+c2
+2x2
+2, (A.6)
+and notice that ( x2,x3)/mapsto→F(x1,x2,x3) is convex for all x1. For allηinQ0,x0
+static it holds
+E/bracketleftBiggT
+0/parenleftbig
+St˙ηt+c2
+1˙η2
+t+c2
+2η2
+t/parenrightbig
+dt/bracketrightBigg
+=T
+0F/parenleftbig
+E[St],ηt,˙ηt/parenrightbig
+dt.
+Letqbe as in the statement. We have that
+d
+dt/parenleftBig
+2c2
+1˙qt+E[St]/parenrightBig
+= 2c2
+2qt.
+Hence, an application of the integration-by-parts formula shows that qsatisﬁes (A.5) with Fas in (A.6)
+andStreplaced by E[St].
+Equation (A.5) is the weak form of the Euler-Lagrange equation. In the next paragraph, we introduce
+the pathwise integration with respect to the path S. This will allow to move from the condition in
+equation (A.5) to the stronger formulation of the Euler-Lagrange equation.
+Young integration and integration-by-parts formula
+Let [0,T] be the closed time interval from time zero to the time horizon T > 0. We consider partitions
+πof [0,T]. A partition πis simultaneously considered as the ﬁnite collection of points and as the ﬁnite
+collection of adjacent subintervals. Given a partition πof [0,T] and a time instant tin [0,T], we adopt
+the following notational convention:
+t/prime:= inf{u∈π:u>t}. (A.7)
+The mesh-size|π|of the partition πis deﬁned as
+|π|:= sup{|u/prime−u|:u∈π}.
+Letfbe a function on [0 ,T]. Ifsandtare in [0,T], we letfs,t:=ft−fsdenote the increment of f
+fromstot. The resulting two-parameter function f=fs,tis additive, in that for all s≤u≤tit holds
+fs,u+fu,t=fs,t. For more general two-parameter functions deﬁned on {(s,t)∈R2: 0≤s≤t≤T}we
+can relax the additivity and consider the following property.
+Deﬁnition A.8. Letf=f(s,t) be a function on {(s,t)∈R2: 0≤s≤t≤T}. We say that fis
+super-additive if for all s≤u≤tit holds
+f(s,u) +f(u,t)≤f(s,t).
+Lemma A.9. Letfbe a super-additive function on {(s,t)∈R2: 0≤s≤t≤T}such that it is null
+and uniformly continuous on the diagonal, i.e. f(t,t)≡0and
+lim
+/epsilon1↓0sup{f(s,t) :|t−s|≤/epsilon1}= 0. (A.8)
+Letgbe a super-additive function on {(s,t)∈R2: 0≤s≤t≤T}. Let 0< a≤1and0< b < 1be
+exponents such that a+b>1. Then,
+lim
+|π|↓0/summationdisplay
+u∈πfagb(u,u/prime) = 0,
+where the limit is taken along arbitrary sequences of partitions of [0,T]with mesh-size tending to zero.
+29Proof. Let 0</epsilon1<a be such that a−/epsilon1+b= 1. Then,
+/summationdisplay
+u∈πfagb(u,u/prime)≤/parenleftbigg
+sup
+u∈πf/epsilon1(u,u/prime)/parenrightbigg
+·/summationdisplay
+u∈πfa−/epsilon1gb(u,u/prime)
+≤/parenleftbigg
+sup
+u∈πf/epsilon1(u,u/prime)/parenrightbigg
+·/parenleftBigg/summationdisplay
+u∈πf(u,u/prime)/parenrightBigga−/epsilon1/parenleftBigg/summationdisplay
+u∈πg(u,u/prime)/parenrightBiggb
+≤/parenleftbigg
+sup
+u∈πf/epsilon1(u,u/prime)/parenrightbigg
+·fa−/epsilon1(0,T)gb(0,T).
+On the second line we have applied H¨ older inequality and on the third line we have used super-additivity.
+We conclude by recalling the uniform continuity of equation (A.8).
+Lemma A.10. Letηbe an absolutely continuous path on the closed interval [0,T]. LetSbe a path on
+[0,T]of ﬁnitep-variation for some p≥1. Then, for all 0≤s≤t≤Tthe limit
+lim
+|π|↓0/summationdisplay
+u∈πηuSu,u/prime
+exists and is the same along any sequence of partitions of [s,t]. Such a limit deﬁnes the Young integral
+t
+sηudSu.
+Moreover, the following integration-by-parts formula holds
+t
+sηudSu+t
+sSudηu=ηtSt−ηsSs,
+where the second integral on the left hand side is the Stieltjes integral of Sagainstη.
+Proof. Letπbe an arbitrary partition of [ s,t]. For alluinπwe have
+ηuSu,u/prime+Suηu,u/prime=ηu/primeSu/prime−ηuSu−ηu,u/primeSu,u/prime. (A.9)
+Consider ﬁrst the right hand side of equation (A.9). Consider the ﬁrst two summands on the right hand
+side of equation (A.9). If we sum over uinπwe have the telescopic sum
+/summationdisplay
+u∈π(ηu/primeSu/prime−ηuSu) =ηtSt−ηsSs,
+and this does not depend on the partition πof [s,t]. The third summand on the right hand side of
+equation (A.9) can be bound as follows:
+|ηu,u/primeSu,u/prime|≤/bardblη/bardbl1-var,[u,u/prime]/bardblS/bardblp-var,[u,u/prime].
+Hence, by Lemma A.9, we have
+lim
+|π|↓0/summationdisplay
+u∈πηu,u/primeSu,u/prime= 0.
+Here, we have applied Lemma A.9 with f(s,t) =/bardblη/bardbl1-var,[s,t],g(s,t) =/bardblS/bardblp
+p-var,[s,t],a= 1, andb= 1/p.
+Therefore, if we apply the operator lim |π|↓0/summationtext
+u∈πto the right hand side of equation (A.9), we obtain
+lim
+|π|↓0/summationdisplay
+u∈π(ηu/primeSu/prime−ηuSu−ηu,u/primeSu,u/prime) =ηtSt−ηsSs.
+Consider now the left hand side of equation (A.9). The limit
+lim
+|π|↓0/summationdisplay
+u∈πSuηu,u/prime
+is the Stieltjes integralt
+sSudηuand thus converges and is the same along any sequence of partitions with
+vanishing meshsize. Therefore, if we apply the operator lim |π|↓0/summationtext
+u∈πto both side of equation (A.9) we
+must have that the limit in equation (A.10) exists and is equal to
+ηtSt−ηsSs−t
+sSudηu.
+This concludes the proof of the lemma.
+30Strong form of Euler-Lagrange equation
+Relying on the Young integral introduced in the previous paragraph, we now formulate the strong form
+of the Euler-Lagrange equation associated with the minimisation problem in equation (A.4).
+Deﬁnition A.11. Letcbe a constant. Let Sbe a path on [0 ,T] and assume that Sis of ﬁnitep-variation
+for somep≥1. Letb=b(t,x) be a Caratheodory function on (0 ,T)×R3such that
+|b(t,x)|≤α(t) +β|x|2,
+for some integrable function αinL1(0,T) and some constant β≥0. We say that the function qin
+W1,2(0,T) solves the equation/braceleftBigg
+dqt=rtdt
+drt=b(t,St,qt,˙qt)dt−cdS,(A.10)
+if for allηinC∞
+0(0,T) and all 0≤s≤t≤Tit holds
+t
+s˙ηudqu=ηt˙qt−ηs˙qs−t
+sηub(u,qu,˙qu)du+ct
+sηudSu, (A.11)
+where the last integral on the right hand side is the Young integral introduced in Lemma A.10.
+Lemma A.12. Assume the setting of Deﬁnition A.11. Then, qsolves equation (A.10) if and only if the
+functionft:= ˙qt+cStis absolutely continuous with derivative
+˙ft=b(t,St,qt,˙qt).
+Proof. Apply the integration-by-parts established in Lemma A.10 to formula (A.11), and observe that –
+for allηinC∞
+0(0,T) – formula (A.11) is equivalent to
+T
+0/parenleftBig
+˙qt+cSt/parenrightBig
+˙ηtdt=−T
+0ηtb(t,St,qt,˙qt)dt.
+Proposition A.13 (“Strong form of Euler-Lagrange equation”) .LetSbe a path on [0,T]and assume
+thatSis of ﬁnite p-variation for some p≥1. Consider a Lagrangian Fsatisfying Assumption A.4.
+Assume that the space-diﬀerentiable Caratheodory function L(t,x) :=F(t,x)−x1x3is inC2([0,T]×R3)
+and such that
+∂x3L(t,x1,x2,x3) =1
+cx3+/lscript(t,x2),
+for some non-zero constant cinRand some function /lscriptinC1([0,T]×R).5Assume that qis a minimiser
+for(A.4) . Then,qsolves the Euler-Lagrange equation
+/braceleftBigg
+dqt=rtdt
+drt=/parenleftBig
+∂qL(t,St,qt,˙qt)−∂2
+t,rL(t,St,qt,˙qt)−˙qt∂2
+q,rL(t,St,qt,˙qt)/parenrightBig
+cdt−cdSt,(A.12)
+in the sense of Deﬁnition A.11.
+Proof. Under the stated assumptions on the form of the partial derivative ∂rL, the condition in equation
+(A.5) readsT
+0/bracketleftBig
+St+1
+c˙qt+/lscript(t,qt)/bracketrightBig
+˙ψtdt=−T
+0ψt∂qL(t,St,qt,˙qt)dt.
+This is equivalent to
+T
+0/bracketleftBig
+cSt+ ˙qt/bracketrightBig
+˙ψtdt=−cT
+0/bracketleftBig
+∂qL(t,St,qt,˙qt)−∂t/lscript(t,qt)−˙qt∂q/lscript(t,qt)/bracketrightBig
+ψtdt.
+Notice that ∂t/lscript=∂2
+t,rLand∂q/lscript=∂2
+q,rL. Hence, Lemma A.12 concludes the proof.
+5This assumption on the form of the partial derivative ∂rLis satisﬁed in all three examples that we consider in the
+paper, namely by the Lagrangians F(t,S,q,r ) =rS+L(t,S,q,r ) in equations (3.6), (3.15) and (3.19).
+31

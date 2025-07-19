@@ -1,0 +1,66 @@
+=====================================================================================
+ Strategy Performance Report: Test 2 
+=====================================================================================
+ Generated: 2025-04-30 18:17:38
+ Base Currency: HKD
+ Full Analysis Period: 2020-03-24 to 2025-04-16
+ Benchmark: ^HSI
+ Tracker Fund: 2800.HK
+ Strategy Parameters (Top Validation): k=54, n=1
+-------------------------------------------------------------------------------------
+ Key Performance Indicators (Full Extended Period)
+-------------------------------------------------------------------------------------
+   Metric                       | Strategy           | Bench (^HSI)       | Tracker (2800.HK) 
+   -----------------------------+--------------------+--------------------+-------------------
+   Cumulative Return            | 122.65%            | -10.50%            | 6.11%             
+   Annualized Return            | 17.60%             | -2.22%             | 1.21%             
+   Annualized Volatility        | 39.06%             | 25.50%             | 25.19%            
+   Sharpe Ratio (Rf=0.0%)       | 0.451              | -0.087             | 0.048             
+   Sortino Ratio                | 0.466              | -0.089             | 0.048             
+   Max Drawdown                 | -56.20%            | -52.75%            | -49.39%           
+   Positive Days %              | 52.17%             | 49.24%             | 48.51%            
+   Trading Days                 | 1244               | 1243               | 1243              
+   -----------------------------+--------------------+--------------------+-------------------
+   Beta (vs Benchmark)          | -0.0218            | 1.0000             | N/A               
+   Alpha (Jensen, ann.)         | 22.65%             | 0.00%              | N/A               
+   Correlation (vs Bench)       | -0.0143            | 1.0000             | N/A               
+   Tracking Error (ann.)        | 46.88%             | 0.00%              | N/A               
+-------------------------------------------------------------------------------------
+ Equity Curve Summary
+-------------------------------------------------------------------------------------
+   Starting Capital (2020-03-24): HKD 1,000,000
+   Ending Equity (2025-04-16):    HKD 2,226,516
+   Total P/L:                 HKD 1,226,516
+   Peak Equity:               HKD 2,773,600
+   Lowest Equity:             HKD 1,000,000
+-------------------------------------------------------------------------------------
+ Lookback Analysis
+-------------------------------------------------------------------------------------
+ Analysis for Date: 2025-04-16
+  Holdings at Start (8 stocks, entering 2025-04-16):
+    Equity (Close 2025-04-15): HKD 2,191,351
+    Tickers: 0285.HK, 0700.HK, 1024.HK, 1211.HK, 2382.HK, 2899.HK, 6098.HK, 9961.HK
+  Planned Sells (1 stocks, on 2025-04-16): 6098.HK
+    Scores (2025-04-15, low->high): 6098.HK:0.00043
+  Planned Buys (0 stocks, on 2025-04-16): None
+  Holdings at End (7 stocks, close 2025-04-16):
+    Equity (Close 2025-04-16): HKD 2,226,516
+    Tickers: 0285.HK, 0700.HK, 1024.HK, 1211.HK, 2382.HK, 2899.HK, 9961.HK
+-------------------------------------------------------------------------------------
+ Next Day Estimation
+-------------------------------------------------------------------------------------
+ Trades for ~2025-04-17, based on 2025-04-16 scores:
+  Holdings at Start (7 stocks, entering ~2025-04-17):
+    Based on Equity (Close 2025-04-16): HKD 2,226,516
+    Tickers: 0285.HK, 0700.HK, 1024.HK, 1211.HK, 2382.HK, 2899.HK, 9961.HK
+  PLANNED Sells for Next Day (0 stocks): None
+  PLANNED Buys for Next Day (1 stocks): 0388.HK
+    Scores (2025-04-16, high->low): 0388.HK:0.00046
+  Estimated Holdings at END of Next Day (8 stocks):
+    Tickers: 0285.HK, 0388.HK, 0700.HK, 1024.HK, 1211.HK, 2382.HK, 2899.HK, 9961.HK
+-------------------------------------------------------------------------------------
+ Disclaimer:
+   Performance metrics based on simulated trading. Past performance is not indicative of future results.
+   Simulations exclude transaction costs, slippage, taxes, and liquidity constraints.
+   This report is for informational purposes only. All investment decisions involve risk.
+=====================================================================================

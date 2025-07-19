@@ -1,0 +1,1596 @@
+1 
+ Why do investors buy shares of actively managed equity mu-
+tual funds? Considering the Correct  Reference P ortfolio  from 
+an Uninformed Investor’s Perspective1, 2 
+ 
+ 
+ 
+Radu BURLACU3 
+Univ. Grenoble Alpes, Grenoble INP*, CERAG, 38000 Grenoble, France  
+*Institute of  Engineering  and Management , Univ. Grenoble Alpes  
+Radu.burlacu@univ -grenoble -alpes.fr  
+Patrice FONTAINE  
+CNRS EUROFIDAI, 38000 Grenoble, France  
+Léonard de Vinci Pôle Universitaire, Research Center, 92000 Paris La Défense, France  
+Patrice.fontaine@eurofidai.or g 
+Sonia JIMENEZ -GARCÈS  
+Univ. Grenoble Alpes, Grenoble INP*, CERAG, 38000 Grenoble, France  
+*Institute of Engineering  and Management , Univ. Grenoble Alpes  
+Sonia.jimenez -garces@univ -grenoble -alpes.fr  
+ 
+ 
+ 
+ 
+                                                           
+1 We would like to express our sincere thanks to the anonymous referees and editors for the considerable 
+time they spent reading  our paper . Their valuable comments and suggestions greatly improved our arti-
+cle.   
+2 This paper has received financial support from the Dauphine Chair in Asset Management, an initia-
+tive of Amundi and the University Paris -Dauphine, under the aegis of the D auphine Foundation.  
+3 Corresponding author. E -mail address: radu.burlacu@univ -grenoble -alpes.fr .  2 
+ ABSTRACT  
+We use the Grossman & Stiglitz  (1980) framewor k to build a reference portfolio  for uninformed  
+investors  and employ  this portfolio to  assess  the performance of actively managed  equity mu-
+tual funds . We propose an empirical methodology to construct this reference portfolio  using  the 
+information on prices  and supply . We  show that mutual funds provide, on average, an insignif-
+icant  alpha of 23 basis points per year when considering this portfolio  as a reference . With the 
+stock market index as a proxy for the market portfolio , the average fund alpha is negati ve and 
+highly significant, −128 basis points per year. The results are robust when considering various 
+subsets of funds based on their characteristics and their degree of selectivity. In line with ra-
+tional expectations equilibrium models considering asymmetrically informed investors  and par-
+tially revealing equilibrium prices , our study supports  that active management adds value for 
+uniformed investors .  
+ 
+JEL Classification : G11, G12, G14  
+Key-words : information asymmetry, reference portfolio , performance, actively managed equity mu-
+tual funds, rational expectations equilibrium models  
+ 
+RESUME  
+Nous utilisons le modèle  de Grossman & Stiglitz (1980) pour construire un portefeuille de ré-
+férence pour les investisseurs non informés et nous utilisons ce portefeuille pour évaluer la 
+performance  des fonds communs d e placement en actions , gérés activement. Nous proposons 
+une méthodologie empirique pour construire ce portefeuille de référence en utilisant des infor-
+mations sur les prix  des actions et l'offre  en titres. Nous montrons alors que les fo nds communs 
+de placement fournissent, en moyenne, un alpha non significatif  de 23 points de base par an 
+lorsqu e l'on considère ce portefeuille comme référence. Avec l'indice du marché comme proxy 
+du portefeuille de marché, l e alpha moyen des fonds est néga tif et hautement significatif  (-128 
+points de base par an ). Les résultats sont identiques  lorsque l'on considère différents sous -en-
+sembles de fonds en fonction de leurs caractéristiques et de leur degré de sélectivité. En accord 
+avec les modèles d'équilibr e à anticipations  rationnelles  considérant  des investisseurs différem-
+ment  informés et des prix d'équilibre partiellement révélateurs , nos résultats indiquent que la 
+gestion active des fonds mutuels est performante du point des investisseurs non informés .  
+ 
+Classification  JEL: G11, G12, G14  
+Mots clés : asymétrie d’ information, portefeuille de référence , performance, fonds communs de place-
+ment en actions gérés activement , modèles d'équilibre à anticipations rationnelles    3 
+ The mutual fund industry has shown r apid growth over the last decades, and this growth is 
+particularly spectacular for actively managed equity mutual funds. Using data from the CRSP 
+Survivor -Bias-Free US Mutual Fund  from  1968  to 2020 , we document  a 12.67%  average an-
+nual growth rate of total net assets for US -domestic actively managed equity mutual funds . 
+Whether active mutual fund management adds value for investors is of considerable interest to  
+academics and practitioners.  
+Many  academic studies analy ze the performance of actively managed e quity mutual funds and 
+find pessimistic results4. In most empirical specifications, these studies use the market index as 
+the main reference portfolio  for measuring mutual funds’ performance. Funds appear to deliver, 
+on average, a negative and significant market -risk-adjusted return (alpha). The conventional 
+view is that the performance of active mutual fund management is negative . An important and 
+long-debated question remains unanswered: Why do investors continue to buy shares of actively 
+managed mutual f unds knowing that their performance is negative ?  
+Our study answers  this question by mobilizing rational expectations equilibrium (REE) models5 
+considering asymmetrically informed investors and partially revealing assets’ prices. These 
+models  provide  a relevant theoretical framework for analy zing mutual fund performance. In 
+particular, the Grossman and Stiglitz (1980) model, hereafter GS, considers the existence of 
+two groups of investors on the market: informed investors and uninformed ones. Mutual fund 
+managers can be thought of as representing the group of informed investors in the GS model 
+while their clients can be considered as the group of uninformed investors.  
+In this paper, we claim that the market portfolio is not the correct reference portfolio  for as-
+sessing portfolio performance, neither from the perspective of informed investors (mutual fund 
+managers) nor from the perspective of uninformed ones (mutual fund clients). In a market with 
+informational asymmetries between groups of investors, each gr oup has its own efficient fron-
+tier, asset -pricing model, and optimal portfolio condition al on the available information . This 
+is a well -known result of REE models. In particular, the optimal portfolio of uninformed inves-
+                                                           
+4 We can cite, among others, Jensen  (1968), Henriksson  (1984), Chang & Lewellen  (1984), Grinblatt &  
+Titman (1993), Malkiel  (1995), Gruber  (1996), Grinblatt  et al.  (1995), Carhart  (1997), Wermers  (1997), 
+as well as Chen  et al.  (2000).  
+5 Grossman  (1976), Grossman & Stiglitz (1980) and Hellwig  (1980) develop these types of models in 
+one-risky -asset framewo rks. Admati  (1985), O'Hara  (2003), and Easley & O'Hara (2004), among others , 
+extend these models in multi -risky -asset frameworks . 4 
+ tors under -weighs (respectively over weighs) assets with high (respectively low) degrees of in-
+formation asymmetry. The performance of any asset, and in particular that of mutual funds, 
+must be measured relative to this reference portfolio  if one takes the perspective of an unin-
+formed inves tor. Using  the stock market  index as a proxy for the market portfolio in empirical 
+studies would  translate into a biased  performance (alpha). In particular, t his may explain the 
+pessimistic results about mutual funds’ performance obtained in the literature.  
+Our objective in this paper is to use the reference portfolio of uninformed investors to assess 
+the performance of actively managed mutual funds from the perspective of these investors , 
+considered clients . As far as we know, our paper is the first that uses such a  portfolio  derived 
+from REE models to assess mutual fund performance. We designate this portfolio  “UIRP” for 
+"Uninformed Investor’s Reference Portfolio ".  
+Specifically, our paper brings two major contributions to the literature. The first is theore tical; 
+we build on existing multi -asset generalizations of the GS model (Jimenez -Garcès, 2004) to 
+build  “UIRP ”. To achieve this goal, we proceed in three steps. First, we explicitly derive the 
+asset -pricing model from the uninformed  investor s' perspective.  From their perspective, the ex-
+pected return of an asset in excess of the risk -free rate equals the asset’s beta with respect to 
+UIRP  multiplied by the expected return of this reference portfolio  in excess of the risk -free rate 
+(UIRP  risk premium). The bet a with respect to the market portfolio and the market risk pre-
+mium, which are derived from the classical CAPM, is irrelevant for pricing assets from the 
+uninformed investor’s perspective; the relevant reference portfolio  is UIRP . The second step is 
+to dete rmine UIRP  based on unobservable  REE parameters. We analy ze particular cases and 
+perform simulation analyses show ing that UIRP  under -weighs  (respectively overweighs) assets 
+with high  (respectively low) levels of information asymmetry. The third step consis ts in deter-
+mining UIRP  based on observable  variables. For measuring the degree of information asym-
+metry, we use the “Proxy E(r)” measure proposed by Burlacu  et al.  (2012). This measure ob-
+tains by projecting individual common stock returns on their prices a nd the prices of relevant 
+industry portfolios. Based on a simulation analysis, we prove the relevancy of this measure for 
+building UIRP .  
+The second contribution of this paper is empirical . It consists in analy zing the performance of 
+domestic U.S. actively  managed equity mutual funds by using UIRP  as a reference portfolio . 
+To achieve this goal, we proceed in three steps. First, we use CRSP common stock data on the 
+U.S. market to compute “Proxy E(r)” for the 53  years  from January 1968 to December 2020. 5 
+ Secon d, we construct UIRP  by following the guidelines from the theory. This portfolio is not 
+investable as it does not use only ex-ante publicly available infor mation  (beginning -of-period 
+prices ) but also information on supply (stock capitalization), which does not represent ex-ante 
+observable information for uninformed investors  in the theoretical framework considered here. 
+Rather than giving a tool for p ortfolio management to these in vestors, our aim in building this 
+portfolio is to provid e a tool allowing them to assess the performance of actively managed 
+portfolio s on an ex-post basis.  Third, we analy ze the performance of 26,407 domestic U.S. ac-
+tively managed equity mutual funds  existing  from January 1968 to December 2020 by using 
+CRSP survivorship -free mutua l fund data. The mutual fund’s performance is estimated with 
+UIRP  and then is compared to the results obtained using alternative portfolios  such as the mar-
+ket index (Jensen, 1968) or other widely used factor -mimicking portfolios ( Carhart , 1997).  
+Our empir ical analysis is deployed for mutual funds overall and categories of mutual funds 
+based on their characteristics such as expenses, turnover, total net assets, or degree of selectiv-
+ity. Using UIRP , we find that actively managed equity mutual funds offer their clients a non -
+significant alpha of 23 basis points per year . Our results are robust when considering specific 
+categories of mutual funds based on their characteristics. In addition, we do not find significant 
+performance for groups of mutual funds based  on their degree of active management (selectiv-
+ity). Using the market index as a reference portfolio  provides a different picture but  close r to 
+that offered by the existing literature. The average actively managed equity fund provide s a 
+negative and highly  significant alpha of -128 basis points per year. We also find negative per-
+formance for categories of mutual funds based on their characteristics and degree of selectivity.  
+Overall, our results are in line with the theory and support the value of active ma nagement. Our 
+study joins a branch of the literature that provides a more optimistic view about mutual fund 
+active management. Some studies argue that the poor performance of actively managed funds , 
+as put forward by the previous literature , can be explain ed by the services that mutual funds 
+bring to investors. For example, Edelen  (1999) considers the costs associated with the liquidity 
+service provided by mutual funds. By controlling for such costs, the abnormal returns obtained 
+by mutual fund clients beco me insignificant. Other empirical studies measure fund performance 
+at the portfolio’s stockholdings level. Wermers  (2000) shows that the portfolio of common 
+stocks held by actively managed equity mutual funds outperforms the stock market. The over -
+performa nce obtained at the fund’s stockholding level just compensates for mutual fund ex-6 
+ penses and transaction costs. Wermers  (2000) concludes that this result is in line with the pre-
+dictions of the GS model. Our study achieves the same conclusion as in Wermers  (2000), but 
+our approach differs . We argue that the poor performance put forward by the literature on ac-
+tively managed funds comes from the fact that this literature uses a reference portfolio  that is 
+unsuitable  if one takes the perspective of REE models wi th asymmetrically informed investors.  
+The paper’s structure is as follows. Section 1 derives the uninformed investor’s asset pricing 
+model and his optimal  portfolio  based on a generalization of the GS model in a multi -asset 
+framework. In section 2, we prop ose an empirical methodology to construct UIRP . Section 3 
+analy zes mutual fund performance using UIRP  as a reference portfolio  together with other 
+widely used reference portfolio s. The last section concludes and offers some avenues for future 
+research.  
+1 BUILDING UIRP : THEORETICAL FRAMEWORK  
+This section starts by justifying our approach. Then, it briefly describes  the multi -asset version 
+of the GS model developed by Jimenez -Garcès (2004) by focusing on the two main issues of 
+interest: What is the asset -pricin g model, and what is the reference portfolio  for an uninformed 
+investor in this model?  This section ends by proposing a methodology to build UIRP  using 
+observable variables. Subsequently, we will use UIRP to measure fund performance from the 
+perspective of  uninformed investors, considered as clients buying shares of funds. This repre-
+sents the main objective of this paper.  
+1.1 JUSTIFICATION FOR THE  USE OF REE  MODELS  
+Consider an “uninformed” investor who envisages the possibility of buying shares of actively 
+managed mutual funds. What is the asset -pricing model from the perspective of this investor? 
+What is his optimal portfolio? The traditional Sharpe –Lintner –Mossin capital asset pricing 
+model (CAPM) assumes that all investors possess homogeneous information abo ut the future 
+returns of market -traded securities. It predict s that the expected return of any asset depends only 
+on its systematic (market) risk and that all investors hold a combination of the risk -free asset 
+and the market portfolio. In this framework, the optimal  portfolio strategy for any investor is to 
+buy-and-hold the market portfolio.  
+The empirical literature does not provide strong support for the frictionless  CAPM 's predictions, 
+neither in terms of asset pricing nor in terms of portfolio manageme nt. Measures of systematic 7 
+ risk do not explain common stocks’ expected returns  well, and the popularity of active portfolio 
+management represents a departure from the predicted passive buy-and-hold strategy . In con-
+trast, theories of financial markets consi dering asymmetrically informed investors seem well 
+supported by existing empirical studies. Measures of information risk put forward by this liter-
+ature seem to perform well in explaining assets’ returns. For example, the “Probability of In-
+formation -Based T rading” (PIN) introduced by Easley  et al. (2002), a measure of “private  in-
+formation " based on a microstructure model, is statistically and economically significant in ex-
+plaining U.S. common stock returns. The predictions of REE models are also supported in  terms 
+of portfolio management (e. g., Biais  et al. , 2010 ).  
+When investors are differently informed, analy zing the performance of mutual funds needs to 
+be consider ed in  a more realistic setting than the traditional CAPM . Active mutual fund man-
+agers spend time, expertise , and resources on acquiring and processing information. Their cli-
+ents, who do not have the managers’ ability to process information, should be considered unin-
+formed investors. Based on their expertise, fund managers should be able to make better port-
+folio allocation decisions than uninformed investors. REE models predict that, at equilibrium, 
+the extra  performance  obtained by mutual funds  just compensate s the informa tion-acquisition 
+costs incurred .  
+The partition of the investors' universe i n these two groups  (informed and uninformed investors) 
+justifies why we  use REE models with asymmetrically informed investors , specifically  the GS 
+model , for our research issue. Our objective is to mobilize the GS model to build a reference 
+portfolio for a ssessing fund performance from the point of view of uninformed investors ex-
+plicitl y6.  
+1.2 THE SETTING  
+GS consider only one risky asset. We use the multi -asset version of this model as proposed by 
+Jimenez -Garcès  (2004), who presents  an exact multi -asset replic ation of the original GS model7. 
+The model is static and considers two types of investors, informed and uninformed, who are 
+                                                           
+6 Other models consider that the information is dispersed across investors rather than detained by just 
+one group of them (Hel lwig, 1980; Admati, 1985; Fontaine et al. , 2018).  Other theories rationalizing  
+optimal portfolios that deviate from the market portfolio include those considering non -standard prefer-
+ences, such as the prospect theory , or theories considering disappointment  aversion (e.g., Dahlquist  et 
+al., 2016; Ang et al. , 2005).  
+7 Kodres & Pritsker  (2002) also propose a multi -asset generalization of the GS model. Their model 
+departs from GS by considering that noise comes from the presence of liquidity traders, not from s upply 
+uncertainty.   8 
+ rational (they maximize the utility of their fin al wealth conditionally on the available  infor-
+mation set). Agents invest at 𝑡=0 and consume at 𝑡=1. There are 𝑛 risky securities and one 
+risk-free asset. For simplicity, the risk -free rate of return is set equal to zero. The percentage of 
+informed investors is denoted by 𝜆. The securities' payoff 𝑃̃1 at 𝑡=1 writes:  
+𝑃̃1=𝜃̃+𝜀̃ (1) 
+where 𝜃̃ is the payoff’s component known only by informed investors, designated "infor-
+mation", and 𝜖̃ is the component unknown to all investors, designated "residual unce rtainty". 
+The expected value of the residu al uncertainty equal s zero. The vectors 𝜃̃ and 𝜀̃ are jointly mul-
+tivariate normal and independent, and their variance -covariance matrices are denoted by 𝑇 and 
+𝑈, respectively8. The information set of the informed investor resides in the observation o f 𝜃̃ 
+and that of the equilibrium price at 𝑡=0. The information set of the uninformed investor con-
+sists only of the observation of the equilibrium price at 𝑡=0. 
+As is common in REE models, per capita asset supply is a random vector 𝑧̃. This vector is 
+independent of 𝜃̃ and 𝜀̃ and joins the normal distribution of the other variables in the model. 
+The assumption that 𝑧̃  is unknown by investors is necessary for making equilibrium prices 
+partially (not perfectly) revealing9. The variance -covariance m atrix of the supply is designated 
+by 𝑍. Matrices 𝑈, 𝑇, and 𝑍 are regular, which is a necessary condition for ensuring the existence 
+and the uniqueness of the equilibrium price. In addition, it is assumed that investors have con-
+stant absolute risk avers ion, implying that their demand is independent of their initial wealth. 
+The risk aversion coefficient 𝑎 is identical for all investors, 𝑎>0.  
+Under the above conditions, following the same line of reasoning as in GS, there is a unique 
+closed -form solutio n for the equilibrium price 𝑃̃0 (at 𝑡=0) within the class of linear functions 
+of 𝜃̃ and 𝑧̃ of the form:   
+𝑃̃0=𝐴0+𝐴1[𝜃̃−𝛼𝑈𝑧̃] (2) 
+where 𝛼=𝑎/𝜆,   
+𝐴0=(𝐼𝑛−𝐴1)𝐸(𝜃̃)+[𝛼𝐴1𝑈−𝑎𝑉𝑚]𝐸(𝑧̃) 
+                                                           
+8 Our theoretical framework comes with all the caveats associated with considering that asset prices are 
+normally distributed, which in particular implies that they can be negative, and with considering constant 
+absolute risk aversion. This may generate anomalies, already studied in Admati (1985).  
+9 See the «  Grossman and Stiglitz paradox  » (Grossman , 1976)  for a discussion on this aspect.  9 
+ 𝐴1=(𝑇+𝑈−𝑉𝑚)𝑇−1 
+𝑉𝑚=[𝜆𝑈−1+(1−𝜆)(𝑁+𝑈)−1]−1 
+ 𝑁=𝑉𝑎𝑟 (𝜃̃|𝑃̃0)=(𝑇−1+𝛼−2𝑈−1𝑍−1𝑈−1)−1 
+Matrix 𝑉𝑚 is the average variance -covariance matrix of assets' payoffs. The latter is the har-
+monic mean of the informed and uninformed investors’ variance -covariance matrices, 
+𝑉𝑎𝑟 (𝑃̃1|𝜃̃)=𝑈 and 𝑉𝑎𝑟 (𝑃̃1|𝑃̃0)=𝑁+𝑈, respectively.   
+Eq. ( 2) shows that the equilibrium price 𝑃̃0 is a linear funct ion of two random variables: infor-
+mation ( 𝜃̃) and supply ( 𝑧̃). Because supply is unknown, uninformed investors are unable to infer 
+the realization of 𝜃̃ by observing asset s prices. Thus, some information remains private, gener-
+ating informational asym metries between investors. The degree of information asymmetry is 
+represented by matrix 𝑁=𝑉𝑎𝑟 (𝜃̃|𝑃̃0). A higher variance  of information conditional  on prices 
+means a higher degree of information asymmetry between informed and uninformed investor s.  
+1.3 THE UNINFORMED INVEST OR’S ASSET PRICING MODEL  
+Uninformed investor s maximize their utility conditional on  public information (i.e., the infor-
+mation provided by equilibrium prices). The number of risky securities in their optimal portfo-
+lio writes:  
+𝑋̃𝑈𝐼=𝑎−1𝑉𝑎𝑟𝑈𝐼−1(𝑃̃1−𝑃̃0)×𝐸𝑈𝐼(𝑃̃1−𝑃̃0) (3) 
+The subscript 𝑈𝐼 indicates that the variables are conditional on the information detained by 
+uninformed investor s. After multiplying the left -hand side of this equation  by 𝑉𝑎𝑟𝑈𝐼(𝑃̃1−𝑃̃0), 
+it follows  
+𝐸𝑈𝐼(𝑃̃1−𝑃̃0)=𝑎𝐶𝑜 𝑣𝑈𝐼(𝑃̃1−𝑃̃0;𝑃̃𝑜𝑝𝑡 ,𝑈𝐼1−𝑃̃𝑜𝑝𝑡 ,𝑈𝐼0) (4) 
+where 𝑃̃𝑜𝑝𝑡 ,𝑈𝐼1 is the payoff of  uninformed investors ' optimal portfolio and 𝑃̃𝑜𝑝𝑡 ,𝑈𝐼0 is the current 
+value of this portfolio. The expected return from these  investors ' perspective for a given asset 𝑖 
+equals the covariance between the return of this asset and the return of their optimal portfolio.  
+In Eq. ( 4), returns are expressed as price differences. A more familiar specification involves 
+returns expressed as the ratio between price differences and beginning -of-period prices. After 
+classical manipulations, we obtain the following asset -pricing model for an asset 𝑖 10 
+ 𝐸𝑈𝐼(𝑟̃𝑖)=𝛽𝑈𝐼,𝑖𝐸𝑈𝐼(𝑟̃𝑜𝑝𝑡 ,𝑈𝐼) (5) 
+where  𝛽𝑈𝐼,𝑖=𝐶𝑜𝑣 𝑈𝐼(𝑟̃𝑖;𝑟̃𝑜𝑝𝑡 ,𝑈𝐼)/𝑉𝑎𝑟 𝑈𝐼(𝑟̃𝑜𝑝𝑡 ,𝑈𝐼) and 𝑟̃𝑜𝑝𝑡 ,𝑈𝐼 is the return of the uninformed in-
+vestor’s optimal portfolio, which we have previously designated UIRP . From the perspective 
+of these investor s, the expected return for an asset 𝑖 depends linearly on its beta relatively to 
+UIRP  and the expected return of UIRP . It is important to emphasize th at the risk premium 
+required by uninformed investor s to hold an asset ( particularly  a share of a mutual fund) is 
+determined by UIRP , not by the market portfolio. As shown in Eq. (5), in a GS world, the alpha 
+obtained by regressing (net of expenses) fund re turns on the returns of the price -contingent 
+portfolio UIRP  has to be indistinguishable from zero. This important result justifies our paper’s 
+approach to assessing the performance of mutual funds.  
+Another aspect that deserves to be  mentioned is that , in the GS framework , the market portfolio 
+performs better than  UIRP . The market portfolio is indeed the weighted average of two portfo-
+lios, UIRP , and the optimal portfolio of informed investor s (which performs better than UIRP  
+because these investor s have an informational advantage ), the weights being  the proportions of 
+the two categories of investors on the market. It follows immediately that , in the GS world, the 
+alpha obtained by regressing (net of expenses) fund returns on the market portfolio returns  
+woul d be negative . Existing studies largely corroborate this prediction , as they  find negative 
+market -risk-adjusted returns for actively managed mutual funds. Yet, this does not mean that 
+the mutual fund is poorly managed; it just comes from the fact that  the reference portfolio  uti-
+lized in assessing performance is not the correct one.  
+1.4 THE UNINFORMED INVEST OR’S OPTIMAL PORTFOLIO  
+We now analyze  the structure of the UIRP  price -contingent portfolio. To simplify the analysis, 
+we focus on the unconditional expectat ion of the portfolio’s composition10. After some simple 
+mathematical manipulations, it follows  
+𝐸(𝑋̃𝑈𝐼)=(𝐼+𝜆𝑈−1𝑁)−1∗𝐸(𝑧̃) (6) 
+The optimal portfolio’s composition depends on the degree of information asymmetr y between 
+investors, assessed by the matrix 𝑁, the residual uncertainty, 𝑈, and the expected value of the 
+                                                           
+10 Considering conditional expectations makes it difficult to analyze asset prices and optimal portf olios. 
+Furthermore, anomalies may arise, which have been studied extensively in the literature ( Admati , 1985; 
+Jimenez -Garcès , 2004).  11 
+ number of assets per capita , 𝐸(𝑧̃).  
+Eq. ( 6) suggests that the number of securities in the price -contingent po rtfolio is negatively 
+related to their degree of information asymmetry, as assessed by the matrix 𝑁. Nevertheless, 
+the equation is difficult to interpret because the portfolio’s composition is expressed with  ma-
+trices. One level of analysis is to consider that all model’s exogenous matrices ( 𝑇, 𝑈 and 𝑍) are 
+diagonal, which means that securities are not correlated. In this case, Eq. ( 6) implies that the 
+number of shares of asset i in the portfolio equals (1+𝜆𝑢𝑖−1𝑛𝑖)−1∗𝐸(𝑧̃𝑖), where 𝑢𝑖 is the 
+residual variance of asset 𝑖 and 𝑛𝑖 is the variance of 𝜃̃𝑖 conditional on prices. It follows imme-
+diately that a  higher information asymmetry for asset 𝑖 implies a lower weight for this stock in 
+the uninformed investor’s optimal portfolio.  
+Building on REE models, Burlacu  et al.  (2012) propose a measure that is positively correlated 
+to the degree of information asymmetry of a stock. This measure, known as “ 𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟)”, is 
+the 𝑅2 from th e regression of stock returns on the beginning -of-period prices. “ 𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟)” 
+can be easily determined using only stock prices and proves to be relevant on both theoretical 
+and empirical grounds as a measure of information asymmetry. Simulation anal yses performed 
+by Jimenez -Garcès (2004), who uses the GS setting, and Burlacu  et al.  (2012), who use Ad-
+mati’s (1985) setting, show that this measure captures information asymmetry effects. Stocks 
+with high (low) information asymmetry levels have high (low)  𝑅2 and exhibit high (low) ex-
+pected returns. This result is robust when considering various levels of correlation between 
+assets’ information, residual uncertainty , or supply uncertainty. On empirical grounds, 
+“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟)” proves to be a statistic ally significant predictor of expected returns and is robust 
+to size and book -to-market ratios, liquidities, and other measures of information asymmetry 
+such as the probabilities of information -based trading11.   
+                                                           
+11 Biais  et al.  (2010) also propose a methodology that uses the information contained in prices to build  
+the optimal portfol io from the perspective of uninformed investor s. The methodology extracts the infor-
+mation contained in prices by projecting stock returns on prices for six portfolios constructed from a 
+double sort of stocks based on the firm’s size and its book -to-market value. The expected returns and 
+variance –covariance matrix from this projection allow constructing the optimal portfolio of the unin-
+formed investor . This approach implicitly considers that  all stocks belonging to a given portfolio among 
+the six portfolios  have the same level of information asymmetry because these portfolios are, by con-
+struction, value -weighted . Our approach rather considers distinctly the level of information asymmetry 
+for each individual stock, not for portfolios of stocks . For this reason , we believe that our approach 
+allows constructing a reference portfolio  that is more adequate for assessing the performance of mutual 
+funds . 
+ 12 
+ We use “ 𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟)” to construct UIRP . As Eq. ( 6) suggests, the weight of a stock in UIRP  
+is negatively related to its level of information asymmetry. Therefore, 1−“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟𝑖)” for 
+stock 𝑖 will be considered as the weight of this stock in UIRP . This weight can be considered 
+as a measure of information precision; a higher precision (i.e., a lower degree of information 
+asymmetry) implies a higher weight of the stock in the UIRP  price -contingent portfolio.  
+1.5 SIMULATION ANALYSIS  
+We now check that the portfolio built using this information asymmetry measure  behaves sim-
+ilarly to the price -contingent portfolio based on the unobservable REE model parameters as in 
+Eq. ( 6). The analysis cannot be performed analytically beca use of the complexities involved by 
+matrix computations. Instead , we will use a simulation analysis. For a given stock 𝑖, 1−
+“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟)” represents the return variance conditional on prices divided by the total (uncon-
+ditional) return variance:  
+1−“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟𝑖)”=𝑉𝑎𝑟 (𝑃̃𝑖1−𝑃̃𝑖0|𝑃̃0)/𝑉𝑎𝑟 (𝑃̃𝑖1−𝑃̃𝑖0) (7) 
+where 𝑃̃𝑖1−𝑃̃𝑖0 represents the return of stock 𝑖 expressed as a price difference. The numerator 
+and the denomin ator in the right -hand side of Eq. ( 7) are the 𝑖-th terms on the main diagonal of 
+matrices 𝑉𝑎𝑟 (𝑃̃1−𝑃̃0|𝑃̃0) and 𝑉𝑎𝑟 (𝑃̃1−𝑃̃0).  
+By replacing the formula of the equilibrium price 𝑃̃0 from Eq. ( 2), we obtain:  
+𝑉𝑎𝑟 (𝑃̃1−𝑃̃0|𝑃̃0)=𝑁 (8) 
+𝑉𝑎𝑟 (𝑃̃1−𝑃̃0)=(𝐼−𝐴1)𝑇(𝐼−𝐴1)+𝛼2𝐴1𝑈𝑍𝑈 𝐴1+𝑈 (9) 
+The terms of the right -hand side of Eq. ( 7) obtain from multiplying the matrices in Eq. ( 8) and 
+Eq. ( 9) at the left and at the right by a vector in which ent ries are all equal to zero except the 𝑖-
+th entry, which equals one.  
+Our simulation analysis considers a market with two risky stocks 𝑖∈{1,2}. The goal is to com-
+pare, for various levels of information asymmetry, the structure of the portfolio based on unob-
+servable REE parameters, as given b y Eq. ( 6), and that of the portfolio assessed with observable 
+variables. The latter uses 1−“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟)” as a weight for each individual stock. We study 
+how information asymmetry impacts the ratio of the two stock h oldings in the price -contingent 
+portfolio determined with unobservable REE parameters, 𝐸(𝑋̃𝑈𝐼1)
+𝐸(𝑋̃𝑈𝐼2), and the ratio of the two stock 13 
+ holdings in the portfolio determined with observable variables, [1−“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟1)”]∗𝐸(𝑧̃1)
+[1−“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟2)”]∗𝐸(𝑧̃2), where 
+𝐸(𝑧̃𝑖) is the expected supply for stock 𝑖. On a perfect market, each investor optimally holds the 
+market portfolio; the ratio of the two stocks equals 𝐸(𝑧̃1)
+𝐸(𝑧̃2) for each investor. On a market with 
+informational asymmetries, the uninformed investor is expected to hold less of the stock with a 
+higher degree of information asymmetry. This aspect is confirmed by our simulation analysis  
+hereafter .  
+We consider a risk -aversion coeff icient 𝑎=0.1 and a proportion of informed (resp . unin-
+formed) investors of 0.4 (resp . 0.6). These choices are arbitrary and have no fundamental con-
+sequences on our results. The information uncertainty is modeled by the matrix 𝑇=(1 𝑡12
+𝑡12 1) 
+and the re sidual uncertainty is modeled by the matrix 𝑈=(1 𝑢12
+𝑢12 1). The parameters 𝑡12 and 
+𝑢12 vary across simulations. S tock s upply uncertainty is modeled by the matrix = (𝑧11 𝑧12
+𝑧12 1).  
+We vary the level of information asymmet ry on stock  1 by changing 𝑧11; the latter takes values 
+from 1 to 10. A higher level of noise (supply uncertainty) for stock  1 implies a higher level of 
+information asymmetry for this stock . The latter is assessed by 𝑛1=𝑉𝑎𝑟 (𝜃̃1|𝑃̃0), and therefore 
+we expect a lower weight of stock 1 in the price -contingent portfolio based on unobservable 
+REE parameters and in the portfolio based on the observable variable 1−“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟)”.  
+ 
+Table  I shows the  results of our simulation analyses for four configurations. The first one con-
+siders that stocks  are not correlated: 𝑡12=𝑢12=𝑧12=0. The other three configurations con-
+sider a correlation coefficient of 0.5 for each one of the thre e parameters, with the other two 
+correlation c oefficients being equal to zero . For 𝑧11=1, the level of information asymmetry is 
+identical for the two stocks , and therefore their weight in the portfolio is the same.  
+The table shows that, whatever the setting, an incr ease in noise implies an increase in the level 
+of information asymmetry of stock  1 relative to stock  2, measured by 𝑛11
+𝑛22, where 𝑛11 and 𝑛22 
+are the diagonal terms of the matrix 𝑁. The table also shows that the ratio of the two stocks'  
+weights in the price -contingent portfolio assessed with unobservable REE parameters and the 
+one assessed with the observable variable 1−“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟)” are coherent. The two ratios de-
+crease in a similar way, confirming that a higher level of informati on asymmetry on stock 1 14 
+ implies a lower holding of this stock  in the price -contingent portfolio, for both specifications.   
+(Insert Table I about here)  
+In unexposed analyses, we have performed various other simulations. In some of them, we have 
+changed the  total level of information for asset 1, 𝑡11=𝑉𝑎𝑟 (𝜃̃1), and have found  similar re-
+sults. As 𝑡11 increases, the information asymmetry for stock  1 decreases relative to stock  2. The 
+explanation is that the amount  of total information increases for a given level of noise, making 
+the pri ce of stock 1 more informative than the price of stock  2. The proportion of stock  1 in the 
+price -contingent portfolio increases, whatever the portfolio specification. Another set of unex-
+posed simulations consist s in varying the level of residual uncertaint y for stock  1, 𝑢11=
+𝑉𝑎𝑟 (𝜖̃1), which is the first entry of the residual uncertainty matrix 𝑈. Again, we find similar 
+results. Residual uncertainty affects all investors in the market. A high residual uncertainty “di-
+lutes” the information asymmetry problem and , therefore , “aligns” the portfolios of all inves-
+tors. The information asymmetry problem becomes less important  for uninformed investors, 
+which results in a higher proportion of stock 1 holding s in their portfolio.  
+Overall, we conclude that the observable v ariable 1−“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟)” performs well in structur-
+ing a portfolio that is close to the one held by uninformed investor s in the GS framework. In 
+what follows, we describe the empirical methodology employed to build this portfolio.   
+2 BUILDING UIRP :  EMPIRICAL METHODOLOGY  
+This section presents our empirical proxy for the degree of information asymmetry affecting a 
+stock. We use this proxy to build our uninformed investor’s reference portfolio  UIRP . As this 
+portfolio uses ex-post information  (assets' supply, which  is proxied by common stocks' capital-
+ization), this portfolio is not investable. Indeed, an uninformed investor does not observe sup-
+ply. However, th ese investors can use this portfolio  to assess  the performance of their shares of 
+funds. The market portfoli o would be irrelevant f or this purpose .  
+2.1 THE EMPIRICAL PROXY F OR THE DEGREE OF INF ORMATION ASYMMETRY  
+We follow the theory and construct the reference portfolio  from an uninformed investor’s per-
+spective by under - (over -) weighing common stocks with high (lo w) information asymmetry. 
+We first estimate 𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟), which is the coefficient of determination12 𝑅2 of the regression 
+                                                           
+12 In what follows, we will use interchangeably 𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟) and 𝑅2. 15 
+ of stock returns on prices. The regression 's specification is, as in Burlacu et al.  (2012),  
+𝑟𝑖,𝑡=𝛼𝑖,0+𝛽𝑖,1𝑃𝑖,𝑡−1+∑𝛽𝑖𝑆𝐼𝐶𝑗𝑃𝑖,𝑡−1𝑆𝐼𝐶𝑗4
+𝑗=1+𝜀𝑖,𝑡 (10) 
+where 𝑟𝑖,𝑡 is the daily return of common stock i on day 𝑡, 𝑃𝑖,𝑡−1 is the closing (adjusted and 
+normalized) price of stock 𝑖 on day 𝑡−1, 𝑃𝑖,𝑡−1𝑆𝐼𝐶𝑗 is the (adjusted and nor malized) price of in-
+dustry portfolios  on day 𝑡−1,  and 𝜀𝑖,𝑡 is the error term.  
+The empirical variables are determined exactly as in Burlacu et al.  (2012). The normalized price 
+𝑃𝑖 of an individual stock 𝑖 is determined in two steps. First, the  price is set to one the first day 
+the stock appears in the CRSP U.S. Daily Stock Database and then increased or decreased by 
+the daily stock return, which is directly extracted from this database. Second, the price thus 
+obtained is normalized , that is, we  divid e it by the price of the market index. We normalize 
+prices to mitigate stationarity issues13. The price of the market index is set to one the first date 
+it appears in the database in January 1967, and then it is increased or decreased by the daily 
+return of the CRSP value -weighted index.  
+The normalized prices of industry portfolios are obtain ed in the same way as for individual 
+stocks. The normalized price of the four -digit industry portfolio, 𝑃𝑖,𝑡𝑆𝐼𝐶4, is calculated using 
+stocks having the s ame four -digit standard industrial classification (SIC) as stock 𝑖 and excludes 
+this stock. This exclusion avoids spurious correlation between variables. The p ortfolio price  is 
+set to one the first day it appears in our data set and then increased or decr eased by the daily 
+weighted -average portfolio's return. The price of industry portfolios represents the value of a 
+buy-and-hold strategy consisting of investing one dollar at the beginning of the estimation pe-
+riod. The dividends are  reinvested each period.  The price is then normalized , that is, we divide 
+it by the (normalized) price of the stock market index. The normalized price of the second 
+portfolio, 𝑃𝑖,𝑡𝑆𝐼𝐶3, is calculated using stocks having the same three -digit SIC code as stock 𝑖 but 
+excludes all stocks having the same four -digit SIC code (which implies that stock 𝑖 is also 
+excluded). The same procedure applies to the two-digit and one -digit industry po rtfolios. For 
+                                                           
+13 Biais  et al.  (2010) analyze statio narity issues for their regressions of stock returns on the prices of 
+Fama & French (1993) size and B/M portfolios. By means of Monte -Carlo simulations, they show that 
+these regressions are not affected by stationarity. In analyses not included here, we ha ve also investi-
+gated stationarity issues for our regressions. Our tests of stationarity and co -integration corroborate the 
+results found by Biais  et al.  (2010).  16 
+ more information on the construction of these portfolios, the reader can refer to Burlacu  et al.  
+(2012).  
+The data cover the period from January 1967 to December 20 20. We estimate stocks' 𝑅2 as the 
+fit from the regression shown in Eq. (10) for all American -listed ordinary common stock s, 
+which CUSIP ends with 10 or 11. 𝑅2 is estimated each month 𝑚 for each individual common 
+stock 𝑖 using past daily returns  and (adjusted and normalized) prices from months 𝑚−12 to 
+𝑚−1. We eliminate observations with zero stock returns to mitigate problems related to non -
+synchronous or "thin" trading14. With this restriction, we require a minimum of 60 daily returns 
+for the computation of 𝑅2. We are thus able to calculate 𝑅2 for e ach stock and each month 
+during the analysis period. 𝑅2 will be considered the degree of information asymmetry affecting 
+the stock during that month.  
+Based on our empirical design, we compute 𝑅2 for 24,596 ordinary common stocks on the 
+period betw een January 1968  and December 2020 , with an average of 4,084 stocks per month. 
+The mean 𝑅2, which gauges the mean level of information asymmetry in the market, equals 
+6.42% , with a standard deviation of 4.93% . Its median value is 5.24% , and the intra -quartile 
+range is [3.35% ,8.04% ].  
+2.2 CONSTRUCTION OF UIRP  
+Since 1−𝑅2 is inversely correlated to the degree of information asymmetry as measured by 
+𝑛𝑖, it will be used to quantify the weight of stock 𝑖 in UIRP . The return of this portfolio is a 
+modif ied version of the market portfolio in which the weight of a given common stock is related 
+to its capitalization and its degree of informational asymmetry, as indicated by the theory:  
+𝑟𝑈𝐼𝑅𝑃 =∑ (1−𝑅𝑖2)𝐾𝑖𝑟𝑖𝑛
+𝑖=1
+∑ (1−𝑅𝑖2)𝐾𝑖𝑛
+𝑖=1(11) 
+In this equation, 𝑟𝑈𝐼𝑅𝑃 represents the return of the uninformed investor’s reference portfolio , 𝐾𝑖 
+is the capitalization of common stock 𝑖, and 𝑅𝑖2 obtains from the regression of stock 𝑖‘s returns 
+on prices as explai ned in the previous subsection.  
+It is important to note that UIRP  is not investable from the perspective of uninformed investors  
+                                                           
+14 We check t he influence of non -synchronous trading by restricting our analysis to securities having 10 
+minimum trading days per month or by eliminating stocks with prices lower than $1. Imposing this 
+restriction does not change qualitatively our conclusions.   17 
+ because it uses ex-post information . The weights used in equation (11) are indeed based on the 
+mark et capitalization of common stocks. In the GS framework, uninformed investors do not 
+observe market supply and , therefore , cannot construct this portfolio on an ex-ante basis. How-
+ever, as affirmed previously, our objective is not to build an investable por tfolio for uninformed 
+investors. Instead , we aim  to construct a reference portfolio allowing these investors to check 
+ex-post that the return generated by an actively managed equit y mutual funds portfolio is suf fi-
+cient to compensate for the risk as perceiv ed by uninformed investors . Ex-post, these investors 
+obtain the information on market supply and are therefore able to construct this portfolio by 
+following the methodology de scribed in this paper. Of course, this portfolio is more difficult to 
+build  than the market portfolio, as it uses weights based on the stock's capitalization and its 
+degree of informational  asymmetry. However, UIRP  is more  relevant to consider as a reference 
+portfolio  because it is closer to the uninformed investor's optimal portfolio as predicted  by the 
+theory . The market port folio is irrelevant as a reference portfolio  in the presence of asymmetry 
+information.          
+Overall, UIRP  is constructed using the universe of stocks belonging to the CRSP value -
+weighted stock index but they ar e weighted differently in comparison to the CRSP index. How-
+ever, the lack of sufficient data implies that we are not able to compute the  𝑅2 for all NYSE, 
+AMEX , and NASDAQ -listed common stocks. We , therefore,  construct UIRP  in the following 
+way. First, we build  the portfolio as in Eq. (11) with NYSE, AMEX , and NASDAQ -listed com-
+mon stocks for which 𝑅2 can be determined. Then, we form a capitalization -averaged portfolio 
+of the remaining common stocks listed on these markets, for which the data is not s ufficient to 
+determine 𝑅2. UIRP  is the weighted average of the two portfolios, the weights being their cap-
+italizations. Our results do not fundamentally change if we consider the portfolio containing 
+only stocks with available 𝑅2. The stocks for wh ich we are not able to determine the 𝑅2 concern 
+small firms, which  weigh little in comparison to other stocks.   
+To assess the deviation between  UIRP  and the CRSP stock market index, we calculate the dif-
+ference between the amount invested in the market index and the amount invested in UIRP , 
+∑ 𝐾𝑖𝑛
+𝑖=1 −∑ (1−𝑅𝑖2)𝐾𝑖=𝑛
+𝑖=1 ∑ 𝑅𝑖2𝐾𝑖𝑛
+𝑖=1, and then we express it as a percentage of the total 
+market capitali zation, ∑ 𝑅𝑖2𝐾𝑖𝑛
+𝑖=1/∑ 𝐾𝑖𝑛
+𝑖=1. This variable, whi ch represents the value -weighted 
+𝑅2 on the market , has a mean of 5.25%  over the entire sample period, with a median of 5.65%  
+and an interquartile range of [3.68,6.20]. Unexposed analyses show  a diminishing trend  of this 
+measure , with values between 5% and 7% during the first years of the sample, and between 18 
+ 3% and 4% during the last years.    
+Table II  provides descriptive statistics for the returns of UIRP , the market index  assessed by 
+the CRSP value -weighted index, and the Fama -French factor -mimicking portfolios. The latter 
+are the “Small Minus Big” capitalization stocks (SMB), “High Minus Low” Book -to-Market 
+stocks (HML), and “Momentum” (UMD for “Up Minus Down” previous returns) portfolios. 
+The returns of these portfolios are extracted from the Kenneth  French website15. Table II  also 
+presents the Pearson correlation coefficients between the returns of these portfolios.  
+(Insert Table II about here)  
+The average annualized return of UIRP  on the sample period is 11.05% , which is lower than 
+the average retur n of the market index, 11.80% . The standard deviation of UIRP , 18.28% , is 
+higher than that of the market’s index16, 15.81% . UIRP  exhibits a strong correlation with the 
+market index, 0.977.   
+3 MUTUAL FUND PERFORMANCE ANALYSIS  
+This section starts by describing  our mutual fund sample and proceeds to analyze  mutual fund 
+performance for both actively and passively managed equity mutual funds. It is important to 
+recall that, a s our analysis considers a framew ork with informational asymmetries between in-
+vestors, the  market portfolio is irrelevant as a reference portfolio for measuring fund perfor-
+mance.  
+3.1 DATA 
+We collect data for U.S. equity mutual funds from the CRSP Survivor -Bias-Free Mutual Fund 
+Database. The analysis period is from January 1968 to December 2020 , and our sample con-
+struction  follows the same guidelines as in previous related empirical studies. We choose mu-
+tual funds that invest in domestic  U. S. equities.  
+CRSP provides information on mutual funds’ investment objective s from several sources: the 
+                                                           
+15 http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html .  
+16 The fact that the portfolio of uninformed investors is riskier than the market portfolio is quite natural. 
+Informed investors tilt their portfolio toward securities with higher private information content. Because 
+of the informational advantage, the risk of the portfolio held by informed investors is, ceteris paribus , 
+lower than the risk of the portfolio held by uninformed investors. The market portfolio is the average of 
+these t wo portfolios. It follows that the portfolio of uninformed investors is, ceteris paribus , riskier than 
+the market portfolio.  19 
+ CRSP “Strategic Insight Objective”, which covers the period between 1993 and 1998 ; Wiesen-
+berger, which covers the period from 1962 to 1993 ; and Lipper, which starts in 1998. The cor-
+responding codes are synthesized by the CRSP “Style Code”, which covers the enti re database 
+period and, therefore, will be used to construct our mutual fund sample. The CRSP mutual fund 
+database guide provides a table of correspondence between the CRSP style code and the three 
+funds’ investment objective s mentioned above .  
+Our investi gations show that the CRSP style code is missing from some observations . At the 
+same time,  the fund’s investment objective is still available at the same period in at least one of 
+the other three classifications. We fill the missing data for such observati ons with the corre-
+sponding available code in the three other classifications . Moreover, suppose an investment 
+objective code is available for a given fund during year 𝑦−1 but not during year 𝑦. In that case, en 
+we replace the missing data during year 𝑦 with the data available during year 𝑦−1. This pro-
+cedure is standard  in existing empirical studies (e. g., Amihud & Goyenko , 2003).  
+The sample comprises funds for which the first level in the CRSP style classification is “Equity” 
+(the corresponding letter i n the database is “E”), with the second level being “Domestic” (t he 
+corresponding letter in the database is “D”). Domestic equity mutual funds are thus determined 
+by the first two letters, “ED”, of the CRSP style classification. At the third level, we reta in three 
+categories as follows: “Sector” (S), “Cap -based” (C) , and “Style” (Y). At the fo urth level, we 
+choose the sub -categories “Large Cap” (L), “Mid Cap” (M) , and “Small Cap” (S) within the 
+“Cap -based” category, and the sub -categories “Growth” (G), “Gro wth & Income” (B) and “In-
+come” (I) within the “Style” category. These categories contain a relatively similar number of 
+funds. We exclude all other funds such as “foreign”, “bond”, “corporate” or “government” 
+funds because they generally invest in minimal quantities of domestic U. S. equities. We ex-
+clude passively managed funds identified in the CRSP database by an index fund flag. We 
+analy ze these funds separately in our paper.  
+By applying all these restrictions, our final sample comprises 26,407 distinct  actively managed 
+U.S. domestic equity mutual funds that existed sometime during the 53 years  from January 
+1968  to December  2020 . Table III presents descriptive statistics for our sample funds.  
+(Insert Table III about here)  
+The majority of our sample funds are open -end funds. The average Total Net Assets (TNA) is 
+395 .29 M$, the average expense ratio (expressed as the percentage of total net assets per year) 20 
+ is 1.32% , and th e average turnover ratio is 89.79% per year.  
+(Insert Figure I about here)  
+Figure I shows the value of one euro invested in UIRP , the CRSP value -weighted stock market 
+index, an equ ally weighted portfolio of all sample  funds , and a TNA -weighted portfolio of these 
+funds, together with the SMB, HML , and UMD factor -mimicking portfolios. The two portfolios 
+of mutual funds have  a similar pattern to UIRP .  
+3.2 MUTUAL FUND PERFORMANCE  
+We measur e fund performance by the alpha, the risk -adjusted return from the classical model 
+proposed by Jensen  (1968). This one -factor model traditionally considers  the stock market in-
+dex as the reference portfolio . According to the theory, we use our UIRP  portfoli o as a reference 
+portfolio . We also employ performance models including factor -mimicking portfolios as pro-
+posed by Fama & French  (1993) and Carhart  (1997): SMB (small minus big size stocks) ; HML 
+(high minus low book -to-market ratio stocks) ; and UMD (winner  minus loser stocks). The gen-
+eral performance model specification is  
+𝑟𝑝𝑡−𝑟𝑓𝑡=𝐴𝑙𝑝ℎ𝑎+∑βj∗𝑟𝑗,𝑡+𝜖𝑡𝑛
+𝑗=1(12) 
+where 𝑟𝑝𝑡 is the monthly net return of the portfolio of mutual funds over month t, 𝐴𝑙𝑝ℎ𝑎 is the 
+regression’s intercept, 𝑟𝑓𝑡 is the risk -free rate of return,  𝑟𝑗,𝑡 is the return of the reference portfolio  
+𝑗 considered in the regression, 𝑛 is the number of reference portfolio s used, and 𝜖𝑡 is the error 
+term. In the p articular case of the market portfolio, the return considered in this equation is in 
+excess of the risk -free rate.  
+In what follows, we use Jensen’s one -factor specification with the stock market index as a ref-
+erence portfolio , and alternatively with UIRP , and Carhart’s specification with the stock market 
+index and alternatively with UIRP  as reference portfolios . We estimate these regressions using 
+OLS.  
+3.2.1 Overall performance  
+Rather than studying individual mutual funds, w e focus on TNA -weighted portfolios of  all sam-
+ple funds. For a given month of a given year, the weight of a fund in the portfolio is the mutual 
+fund’s TNA as of the previous month. This procedure, standard  in the existing literature, avoids 21 
+ eliminating mutual funds that do not survive during t he sample period, for which there is insuf-
+ficient data to determine their performance, thereby  mitigating survivorship biases.  
+(Insert Table IV about here)  
+Table IV presen ts the alpha of the TNA -weighted portfolio of all mutual funds in the sample 
+and the corresponding factor loadings (betas). With the one -factor model considering UIRP as 
+the reference portfolio , mutual funds exhibit a positive but insignificant alpha of 0.23%  per 
+annum. The beta of the UIRP  portfolio is 0.84. The portfolio of mutual funds displays  a positive 
+and insignificant alpha if the performance model includes the other  factor -mimicking portfo-
+lios.  
+The results change dramatically if the stock market i ndex is used as a reference portfolio . The 
+one-factor model specification of Jensen (1968) shows a negative and highly significant alpha 
+of -1.28%. With model specifications including factor -mimicking portfolios, alphas range be-
+tween [−1.31% ,−0.99% ]. Thes e results are in line with those found in the previous empirical  
+literature17 and show that, collectively, actively managed equity mutual funds underperform the 
+market.  
+To conclude, if the performance model uses the appropriate reference portfolio , UIRP , then the 
+average mutual fund's performance  is positive and insignificant. The average mutual fund is 
+negative and significant if the stock market index is used instead . 
+3.2.2 Analysis of different categories of funds  
+The degree of private information of the asset s held by funds may vary with the fund’s invest-
+ment objective. For example, investing in small -capitalization stocks requires stronger expertise 
+than for large -capitali zation stocks because small firms are less well-known by the market. Ta-
+ble III shows that the average expense ratio for small -cap funds (1.45%) is higher than for large -
+cap funds (0.71%). According to the theory, the performance of the assets held by funds with 
+stronger expertise is higher than for ot her funds, but the extra  performance is compensated by 
+                                                           
+17 For comparison with existing results, Wermers (2000) studies a sample of 1,788 actively managed 
+equity mutual funds on the period  between 1975  and 1994 . The sample’s alpha estimated with the 
+Carhart’s performance model is −1.16%  per annum for the TNA -weighted portfolio of funds, and 
+−1.15%  for the equally weighted portfolio of funds, both significant at the 1% level. Kacperczyk et a l. 
+(2005) use a sample of 1,771 U.S. equity mutual funds on the period between 1984  and 1999 . The 
+Carhart’s net alpha is a non -significant −0.07%  per quarter for the equally weighted portfolio of sample 
+mutual funds.  22 
+ the additional information acquisition costs  incurred by the fund . It follows that the funds' alpha 
+net of expenses should be indistinguishable from zero for all catego ries of funds, irrespective 
+of their investment objective.  
+Table V presents the alpha of portfolios of funds by investment objective. The alphas based on 
+UIRP  are either insignificant or positive and weakly  significant for all categories of funds . This 
+result is in line with the theory. On the contrary, the alphas obtained with the stock market index  
+(which is commonly used as a benchmark in the previous literature)  are either insignificant or 
+significantly negative. The market -based alpha is nega tive and significant for the categories 
+Growth, Sector , and “Other”. The r esults obtained with Carhart’s model specification a re rela-
+tively similar , whether one uses UIRP  or the stock market index as a reference portfolio .  
+(Insert Table V about here)  
+Other characteristics that are known to be related to performance are fund expenses, turnover , 
+and size. A puzzling fact about actively managed equity mutual funds resides in the strong 
+negative relationship between pe rformance and expenses. Gil-Bazo & Ruiz -VerdÚ ( 2009) ex-
+plain this result by strategic fee setting when investors have different degrees of sensitivity to 
+performance. According to our previous discussion, performance and expenses should be pos-
+itively relat ed if the performance is assessed with gross returns. A higher informational ad-
+vantage requires higher information acquisition costs and generates higher performance. After 
+subtracting expenses, the relationship between performance and expenses is expected  to vanish .  
+(Insert Table VI about here)  
+Table VI, Panel A, presents the alpha of portfolios of funds by deciles of expense ratio. We 
+rank mutual funds every month in ten groups based on their expense ratio during that month18. 
+Then, we form TNA -value -weighted portfolios for each rank of expense ratio. We then calcu-
+late the alpha of these ten portfolios with several performance model specifications.  
+If we consider UIRP  as a reference portfolio , the results show that mutual funds belonging to 
+low- and medium -expense deciles exhibit either non -significant or significant ly positive alphas. 
+The portfolios corresponding to high -expense deciles exhibit a negative and significant a lpha, 
+especially for deciles 9 and 10. With the market -based portfolio, the alpha is negative for every 
+expense decile and significant for all deciles except decile 1 and decile 2. The r esults obtained 
+                                                           
+18 In some cases, expense ratios are mis sing. In that case, as is common in the literature, we replace the 
+missing observation by the last available expense ratio, if any, for each mutual fund.  23 
+ with the four -factor model specifications  are similar . Overall, the results are similar to the pre-
+vious literature, which shows that funds charging higher expenses tend to have lower perfor-
+mance  if the latter is assessed using the stock market index as a reference portfolio . These re-
+sults hold even if perform ance is assessed with UIRP .  
+Turnover is another variable that is widely considered in studies of mutual fund performance, 
+but there is no consensus in the literature about its impact on fund performance. This variable 
+is likely to be related to performanc e because it determines operating costs and can indicate  of 
+informational advantages. Grinblatt & Titman  (1994) find a positive relationship between fund 
+performance and turnover and argue that this result is explained by the fact that fund managers 
+trade more if they have more informational advantages. On the contrary, Amihud & Goyenko  
+(2013) find that greater selectivity , indicative of superior informational advantages , is not as-
+sociated with more frequent trading.  
+Table VI, Panel B, replicates the analysis by category of fund turnover. The procedure adopted 
+for classifying mutual funds is the same as the one used for expenses. We rank mutual funds 
+every month in ten groups based on their turnover ratio during tha t month. Then, we form TNA -
+value -weighted portfolios for each rank of turnover ratio and calculate the alpha of each of these 
+ten portfolios with the same  performance model specifications. The results show that the UIRP -
+adjusted alpha is insignificant for every category of fund turnover. Higher trading in mutual 
+fund assets does not seem to be associated with higher performance. If the market portfolio  is 
+used instead, all categories of funds exhibit a negative alpha, which is significant for all deciles 
+except deciles 1 and 9. Results are relatively similar by using four -factor specifications. Fur-
+thermore, t here is no discernible pattern in the link between turnover and performance; this 
+result is consistent with the existing literature.  
+The fund’s size (TN A) is another well -known determinant  of fund performance . The existing 
+evidence shows , in general , that performance deteriorates if the fund becomes larger (disecon-
+omies of scale) or older (e. g., Pástor  et al. , 2015). Table VI, Panel C, presents fund alpha for 
+deciles of fund total net assets built in the same way as for expenses and turnover. We rank 
+mutual funds monthly  in ten groups based on their TNA  as of the previous month . Then, we 
+form TNA -value -weighted po rtfolios for each TNA  rank and calculate the alpha of each of 
+these ten portfolios with the same  performance model specifications. Irrespective of the funds’ 
+TNA category, the UIRP -adjusted alpha is insignificant for all portfolios, whether one uses the 
+one- or four -factor specification. If the reference portfolio  is the stock market index, then the 24 
+ alpha is negative and significant for most TNA deciles and performance model specifications. 
+The negative and significant alphas obtained systematically with th e market portfolio as the 
+reference portfolio suggest that this p ortfolio is not efficient.  
+3.2.3 Performance and degree of active management (selectivity)  
+Using a relevant reference portfolio  is not only important to assess overall fund performance; 
+it is also  crucial  for studying the link between performance and the fund’s degree of active 
+management. The degree of active management is sometimes referred to as “selectivity”. 
+Stronger active management generates higher informational advantages and is indicative  of in-
+vestments in stocks with high er degrees of informational asymmetries. A higher selectivity 
+moves the manager’s optimal portfolio  away from the market portfolio to a great er extent. Sym-
+metrically, the reference portfolio  of the uninformed investor wil l also deviate more from the 
+market portfolio. It follows that the irrelevancy of the market portfolio as a reference portfolio  
+for measuring performance increases  as the fund’s degree of active management is stronger.  
+The literature assesses the degree o f active management for mutual funds in various ways.  
+Kacperczyk  et al.  (2005) and Burlacu  et al.  (2006) consider the  level of concentration of ac-
+tively managed equity mutual fund portfolios in economic sectors and find th at it is positively 
+and significa ntly related to the fund's performance. Wermers  (2003) use s the tracking error 
+variance to measure  fund selectivity and finds similar results. Cremers & Petajisto  (2009) de-
+termine fund selectivity by the “active share”, which measures the deviation of the mutual fund 
+portfolios’ weights from those of the market portfolio. Amihud & Goyenko  (2013) measure 
+fund selectivity by the fund’s 𝑅2 obtained with a  multifactor model. The consensus in the em-
+pirical literature in the field is that funds that are more actively managed perform better .  
+We determine a fund’s degree of active management with the mutual fund’s 𝑅2, a measure 
+propose d by Amihud & Goyenko  (2013). Th is measure is simple to calculate and obtains from 
+a regression of fund return s on the returns of the stock market index and factor -mimicking 
+portfolios. A higher 𝑅2 indicates a stronger link with factor portfolios and h ence is associated 
+with lower selectivity (the fund tracks reference portfolios more closely).  
+We calculate 𝑅2 for every fund with sufficient return data in our sample. (This 𝑅2 is not to be 
+confounded with the one we use for constructing UIRP .) Specifically, we decompose each 
+fund's entire period of available data  into three -year nonoverlapping periods . Then, we calculate 
+a given fund’s 𝑅2 by projecting its returns on the corresponding factors for each period. We 25 
+ retain only funds and periods with a minimum number of 30 available monthly returns per 
+period  (among the 36 maximum monthly returns) . 𝑅2 represents the degree of fund active man-
+agement during that period; the measure is updated each period for each fund.  
+As in Amihud & Goyenko  (2013), we use two model specifications  for determining 𝑅2: a one -
+factor specification based on the stock market index and Carhart’s four -factor specification. 
+This procedure allows determining the 𝑅2 for 20,526 mutual funds in our sample. With the 
+classical CAPM specification, the mean 𝑅2 is 0.78 with a median of 0.85 and an intra -quartile 
+range of [0.72,0.92]. With Carhart's specification, the mean 𝑅2 is 0.86 with a median of 0.92 
+and an intra -quartile range of [0.85,0.96]. 
+In a second ste p, we rank 𝑅2 in 10 deciles each month during the sample period , and then we 
+build, for each decile, value -weighted portfolios of all mutual funds with available 𝑅2. This 
+generates 𝑡𝑒𝑛 portfolios of funds, ran king from the one that is the most "selective" (low 𝑅2) to 
+the one that is the most "diversified " (high 𝑅2). The alpha of each portfolio is estimated on the 
+entire period from 1968 to 2020 with the model specifications that are considered throughout 
+our study. Table VII presents the alpha for each 𝑅2 decile and each performance model.  
+(Insert Table VII about here)  
+Alpha is positive and insignificant for all UIRP -based (one - and four -factor)  model sp ecifica-
+tions and most deciles , except for decile 6 with the one -factor specification. The alpha deter-
+mined with model specifications that consider the market index as a reference portfolio  is neg-
+ative and significant in most cases. It is also noteworthy th at mutual funds situated in deciles 1 
+and 2 display  relatively higher alphas. As in previous studies, greater selectivity seems to gen-
+erate higher alphas for funds with very high levels of speciali zation.  
+3.3 THE CASE OF INDEX MUT UAL FUNDS  
+We also separately analyze the case of U.S. domestic equity index mutual funds, which gener-
+ally are considered  “passively ” managed  portfolios . The investment objective of such funds is 
+to track the market portfolio or specific market segments. Previous empirical studies excl ude 
+these types of funds from their performance analyses  or use them as reference portfolio s.  
+In the REE models’ framework, tracking the market portfolio is not a passive type of manage-
+ment because it requires obtaining informational advantages. The marke t portfolio is not acces-
+sible to uninformed investors because it is unobservable. This portfolio is rather accessible to a 26 
+ representative investor possessing an “average” type of information, that is, which  beliefs rep-
+resent the weighted -average beliefs of  all investors on the market ( e.g., Biais  et al. , 2010). This 
+average type of information obtains  at a cost. It follows that, as for actively managed equity 
+mutual funds, the performance of “index” funds has to be judged in relationship with the refer-
+ence portfolio  from the perspective of the uninformed investor, not that of the index that man-
+agers track.  
+The CRSP mutual fund database classifies index funds in to three categories. The first one com-
+prises “index -based funds ” (index flag = “B”),  and utilize s indexes as “the primary filter for the 
+purchase and sale of securities”. The second one comprises “pure index funds ” (index flag =  
+”D”), which  objective is to “match the total investment performance of a publicly recognized 
+securities market index”. The thi rd category comprises “enhanced” index funds , (index flag =  
+”E”), which objective is to “exceed the total investment performa nce of a publicly recognized 
+securities market”.  
+We replicate some of our analyses for 3,286 index funds identified by the CRSP sur vivorship -
+free mutual fund database. We build the sample  of index funds by respecting the same criteria 
+as for actively managed equity funds in our sample. Overall, index funds exhibit an expense 
+ratio of 0.86%, a turnover ratio of 116% , and an average TNA  of 1,164 M$. These figures 
+suggest a high activity level , but this activity is mainly due to the presence of “enhanced” index 
+funds. If the analysis is restricted only to “pure” index funds, the expense ratio equals  0.59%, 
+the turnover ratio equals 60% , and the average TNA equals 2,012 M$.   
+As for actively managed funds, we find that the TNA -weighted portfolio of index  funds ex hibits 
+an insignificant alpha of −9 basis points per year ( t-value of −0.12) with the one -factor model 
+based on our UIRP  portfolio. With the four -factor model considering UIRP  and factor -mimick-
+ing portfolios, we find a positive and insignificant alpha of 9 basis points per year ( t-value o f 
+0.14). Using the stock market index as a reference portfolio  in the one -factor model, the alpha 
+becomes negative and significant, with a value of −145 basis points per year ( t-value of 
+−2.57). The alpha from the Carhart’s (1995) model is negative, −113 basis points per year, 
+and significant ( t-value of −2.17).  
+The previous literature suggests that investors should buy index funds because they perform 
+better  than actively managed funds . Our results show that if the performance is measured using 
+the approp riate reference portfolio , UIRP , uninformed investors would be indifferent between 27 
+ index funds and actively managed funds because the alpha is insignificant for both categories. 
+The negative and significant performance obtained by using the market portfoli o as the refer-
+ence portfolio indicates that this portfolio is not the correct benchmark.  
+3.4 ROBUSTNESS CHECKS  
+In unexposed analyses, we have checked the robustness of our results to various alternative 
+model specifications and found similar results. These an alyses are available at request. First, 
+we have estimat ed each individual fund’s alpha on the entire period of data availability  with the 
+various performance model specifications used in this article rather than constructing a portfolio 
+of all sample mutua l funds. Then, we have averaged these alphas across mutual funds using 
+TNA -based weights (and equal weights ) to analyze fund performance. Our results do not 
+change fundamentally . However, in many cases, we find positive and significant alphas using 
+UIRP . Overall, these results provide a more optimistic picture of mutual fund active manage-
+ment. The problem with this empirical approach  used in some existing studies  is that it may 
+generate a survivorship bias . Indeed, this analysis implicitly consider s only funds with suffi-
+cient data to estimate performance  accurately . Most funds  with enough  data are funds that sur-
+vive and are known to exhibit higher performance. Because this type of analysis implicitly 
+considers funds that perform better, the alphas are impr oved, which is what we observe empir-
+ically.   
+We have also replicated our analyses using equally -weighted portfolios rather than TNA -
+weighted ones. Again, our results do not change fundamentally . Still,  they show a more opti-
+mistic picture of active mutual fun d management in that the alphas calculated with UIRP  are 
+higher  than those calculated with the methodology used in the paper . The better results obtained 
+with equally weighted portfolios may be explained by the fact that this methodology gives more 
+importa nce to small -TNA funds, which tend to exhibit higher performance, as suggested  by our 
+results in Table VI (diseconomies of scale). We also find that the alpha adjusted for market risk 
+is negative and significant wi th most performance model specification s and for most categories 
+of funds.  
+CONCLUSION  
+Our paper proposes a new approach for assess ing the performance of actively managed equity 
+mutual funds. While the related literature stresses some doubt about the exper tise of the funds’ 
+managers and their ability to create value for their clients, one can  still observe a high demand 28 
+ of individual investors for such investment vehicles. The objective of this paper is to bring an 
+explanation for this  by mobilizing the the ory of portfolio choice under asymmetric information. 
+Active management is justified by the existence of informational asymmetries between mutual 
+fund managers (considered informed investors) and their clients (considered uninformed inves-
+tors). When invest ors do not share homogeneous information about the future payoff of risky 
+assets, the traditional CAPM does not hold anymore. The theory of rational expectation equi-
+librium models (in particular , the GS model) teaches us that when there are informed and un in-
+formed investors on the market, none of them hold the traditional market portfolio . Still,  both 
+must consider a portfolio depending on their corresponding available information set.  
+In this paper, we build on this literature and propose a new reference portfolio , as an alternative 
+to the traditional market portfolio, for assessing mutual fund performance from their clients’ 
+perspective , considered uninformed investors . Based on the GS model, we first show that the 
+uninformed investor’s reference portfoli o tilts towards stocks with low levels of information 
+asymmetry (high levels of information precision). The first contribution of this paper is to pro-
+pose a theoretical approach to build ing the uninformed investor 's (i.e., the mutual funds’ client) 
+referen ce portfolio . Then we mobilize  this approach to construct this portfolio  empirically. To 
+achieve  this goal, we use the “Proxy E(R)” measure of Burlacu et al. (2002) and compute its 
+value for each stock and each month of our sample period. The second contri bution is to em-
+pirically analyze  the performance of actively managed U.S. domestic equity mutual funds by 
+using the uninformed investor’s reference portfolio  in Jensen 's (1968) and Carhart 's (1997) per-
+formance model specifications. Following GS, the alpha,  computed with returns net of ex-
+penses, should be insigni ficantly different from zero from the perspective of the uninformed 
+investor on an informationally efficient market , as expenses exactly compensate for the infor-
+mation acquisition costs. We precisely  obtain these results.  
+By using the correct reference portfolio  from the uninformed investor’s perspective ( UIRP ), we 
+rehabilitate to some extent the value of active management: managers of equity mutual funds 
+seem to provide non -negative UIRP -adjusted alp has to their clients. This may explain why un-
+informed economic agents continue to use mutual funds service s and why investment in mutual 
+funds is so important, despite the pessimistic results obtained by a body of the existing empirical 
+literature. To some  extent, our results are in line with those obtained by Wermers  (2000): fund 
+managers perform well enough to compensate for expenses and transaction costs.  
+This study may open some new avenues for research. The literature offers several  measures for 29 
+ asses sing the degree of information asymmetry between investors in the market. Such measures 
+may prove fruitful in constructing  the uninformed investor’s reference portfolio  in alternative 
+ways to that offered in our paper. The UIRP -based performance approach m ay also provide 
+answers to the challenging debate on “l uck versus skill” in cross -sectional studies of mutual 
+fund performance. Fama & French  (2010) put forward the “arithmetic of active management” 
+(Sharpe , 1991), according to which active management is a  zero-sum game. They find that few 
+actively managed funds produce risk -adjusted returns that cover their costs. However, the re-
+sults obtained by the existing literature are far from offering a consensus on this debate (e.g., 
+Kosowski  et al. , 2006).  
+Resear ch on the persistence of mutual fund performance, which does not offer a consensus, 
+could also benefit from using  the correct reference portfolio . The seminal study of Carhart 
+(1997) shows that common factors almost completely explain persistence  in stock returns. Sim-
+ilarly, Fama & French  (2010) and Berk & van Binsbergen  (2015) find little evidence of persis-
+tence in actively managed equity mutual funds. However, Grinblatt & Titman  (1992) find that 
+differences in performance between funds persist over time a nd argue that this persistence 
+shows the ability of fund managers to generate abnormal returns. More recent studies corrobo-
+rate this result at the international level (e. g., Ferreira  et al. , 2019). All these studies have in 
+common that they use the stock market index, among others, as the reference portfolio . We 
+believe that the UIRP -based approach may provide additional insights into these issues . Exist-
+ing studies suggest that fund performance is highly  sensitive to reference portfolio  specifica-
+tions (Grinblatt & Titman , 1994).   30 
+ TABLES AND FIGURES  
+ 
+Table I 
+Simulation Analysis  
+This table considers a GS setting with two risky assets. It presents the relationship between noise (supply uncer-
+tainty 𝑧11 for stock 1) and three related variables: the relative degree of information asymmetry for asset 1, the 
+relative weight of asset 1 in the price -contingent portfolio assessed with unobservable REE parameters, and the 
+relative weight of asset 1 in the  price -contingent portfolio assessed with the observable variable 1−
+“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟)”. The degree of information asymmetry of asset 1 relative to that of asset 2 is measured by 𝑛11
+𝑛22, where 
+𝑛11 and 𝑛22 are the diagonal terms of the ma trix 𝑁. The row heading for this variable is “Information Asymmetry”. 
+The weight of asset 1 relative to asset 2 in the price -contingent portfolio with unobservable REE parameters is 
+measured by 𝐸(𝑋̃𝑈𝐼1)
+𝐸(𝑋̃𝑈𝐼2), where 𝐸(𝑋̃𝑈𝐼1) and 𝐸(𝑋̃𝑈𝐼2) are the number of assets in the portfolio as given by Eq. ( 6). The 
+corresponding row heading for this variable is “Asset Weight in Portfolio 1”. The relative weight of asset 1 in the 
+price -continge nt portfolio based on the observable variable 1−“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟)” is  [1−“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟1)”]∗𝐸(𝑧̃1)
+[1−“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟2)”]∗𝐸(𝑧̃2), where 
+𝐸(𝑧̃𝑖) is the expected supply for asset 𝑖, and 1−“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟𝑖)” is the vari able 1−“𝑃𝑟𝑜𝑥𝑦  𝐸(𝑟)" determined for 
+asset 𝑖. The corresponding row heading for this variable is “Asset weight in portfolio 2”. In all simulations, the 
+proportion of informed investors is 40% , and the risk -aversion coefficient is 0.1.   
+ 
+Noise for st ock 1 ( 𝑧11)  1 2 3 4 5 6 7 8 9 10 
+No correlation between securities  : 𝑡12=𝑢12=𝑧12=0 
+Information Asymmetry  1.00 1.89 2.68 3.40 4.05 4.64 5.17 5.67 6.12 6.54 
+Asset Weight in Portfolio 1  1.00 0.98 0.96 0.95 0.93 0.92 0.91 0.90 0.89 0.89 
+Asset Weight in Portfolio 2  1.00 0.95 0.91 0.88 0.85 0.82 0.79 0.77 0.75 0.74 
+Correlation between information uncertainties  : 𝑡12=0.5, 𝑢12=𝑧12=0 
+Information asymmetry  1.00 1.48 1.81 2.05 2.24 2.38 2.50 2.60 2.68 2.75 
+Asset weight in portfolio 1 1.00 0.97 0.95 0.92 0.91 0.89 0.88 0.86 0.85 0.84 
+Asset weight in portfolio 2  1.00 0.96 0.94 0.91 0.89 0.87 0.85 0.84 0.82 0.81 
+Correlation between residual uncertainties  : 𝑢12=0.5, 𝑡12=𝑧12=0 
+Information asymmetry  1.00 1.86 2.60 3.25 3.82 4.33 4.79 5.20 5.57 5.91 
+Asset weight in portfolio 1  1.00 0.98 0.96 0.95 0.94 0.93 0.92 0.91 0.91 0.90 
+Asset weight in portfolio 2  1.00 0.95 0.91 0.88 0.85 0.83 0.81 0.79 0.77 0.75 
+Correlation between supply uncertainties  : 𝑧12=0.5, 𝑡12=𝑢12=0 
+Information asymmetry  1.00 1.90 2.71 3.43 4.08 4.68 5.22 5.72 6.17 6.59 
+Asset weight in portfolio 1  1.00 0.98 0.96 0.95 0.93 0.92 0.91 0.90 0.89 0.89 
+Asset weight in portfolio 2  1.00 0.95 0.91 0.88 0.85 0.82 0.79 0.77 0.75 0.74 
+ 
+  31 
+ Table II 
+Portfolios’ Summary Statistics and Pearson Correlation Coefficients  
+This table presents percentage average annual returns, annual return standard deviation , and Pearson correlation 
+coefficients for the monthly returns of our “uninformed -invest or” reference portfolio  (UIRP ), the market portfolio 
+proxy considered as the CRSP value -weighted stock index , and three factor -mimicking portfolios. The UIRP  port-
+folio over (under) weighs stocks with low (high) levels of private information content. The le vel of private infor-
+mation content is measured by “Proxy E(r)”, a measure proposed by Burlacu  et al.  (2012). The factor -mimicking 
+portfolios are the “SMB” (for "Small Minus Big" capitalization stocks), "HML" (for "High Minus Low" book -to-
+market stocks) , and “UMD” (for "Up Minus Down" prior stock returns) portfolios. The analysis period is from 
+January 1968 to December 2020. Three, two , and one star indicate a significance level of 0.01, 0.05, and 0.10, 
+respectively.  
+Portfolio  Mean Return  
+(%/year)  Standard Deviation 
+of Return (%/year)  Pearson Correlation Coefficients between Returns   
+UIRP  Stock m arket index  SMB  HML    
+UIRP  11.05  18.28        
+Stock m arket index  11.80  15.81  0.977***      
+SMB  1.67 10.64  0.406*** 0.298***     
+HML  3.07 10.19  -0.277*** -0.225*** -0.174***    
+UMD  7.53 14.95 -0.178** -0.166*** -0.058*** -0.201**   
+ 
+ 
+ 
+ 
+  32 
+ Table III 
+Summary Statistics for Mutual Funds  
+This table presents fund characteristics for 26,407 U.S. actively managed equity mutual funds on the perio d from January 1968 to December 2020. “TNA” (Total Net Assets) 
+is the closing market value of securities owned, plus all assets minus all liabilities. “Turnover” (over the calendar year) i s the minimum of aggregate purchases of securities or 
+aggregate sale s of securities divided by the average TNA of the fund. “Expenses” (over the calendar year) designates the percentage of the total investment shareholders pay for 
+the mutual fund’s operating expenses. Net fund returns are calculated as follows. Each month of each year, we compute the TNA -weighted mean of net returns for all sample 
+funds, where the weights are the TNA at the end of the previous month. Then we average returns across time during the whole p eriod with equal weights. "NA" means that the 
+informat ion is not available in the database.  
+Group of funds  Number of funds  Net returns  
+(%/year)  TNA ($M)  Expense Ratio  
+(%/year)  Turnover Rate  
+(%/year)  
+All funds  26,407      10.31  395.29  1.32 89.79  
+Investment  
+objective  Growth  8,861              10.59  254.76  1.38 100.29  
+Growth & Income  5,772              11.17  426.87  0.95 56.26  
+Income  951              11.03  347.09  1.27 72.56  
+Large -Cap 310              11.15  1,990.92  0.71 16.17  
+Mid-Cap 2,280              14.66  246.26  1.40 103.18  
+Small -Cap 3,416              10.10  188.35  1.45 99.96  
+Sector  3,226                9.99  167.96  1.56 130.42  
+Other  1,591                3.63  107.95  1.70 288.14  
+Open fund  Yes 12,116  11.48  637.27  1.27 130.82  
+No 91 10.63  290.01  0.95 45.07  
+NA 14,200  10.33  308.97  1.31 81.88 
+Retail fund  Yes 11,070  10.63  317.03  1.34 88.26  
+No 12,934  11.32  268.92  1.01 66.55  
+NA 2,403  7.94 190.07  1.29 92.82  
+Institutional fund  Yes 8,143  11.41  289.29  0.90 67.72  
+No 15,861  10.54  296.39  1.32 86.00  
+NA 2,403  7.94 190.0 7 1.29 92.82  
+Dead fund  Yes 12,364  9.33 143.77  1.37 88.19  
+No 12,831  10.77  379.45  1.15 81.52  
+NA 1,212  11.09  335.24  0.77 64.09  33 
+ Table IV 
+Performance models' estimates  
+This table presents coefficient estimates of the regression of monthly returns of the v alue-weighted portfolio of 
+mutual funds on the returns of reference  portfolios on the period between January 1968 and December 2020. The 
+portfolio of funds comprises 26,407 U.S. domestic actively managed equity funds that existed sometime during 
+this perio d. The set of reference portfolio s comprises UIRP , the CRSP value -weighted index considered as the 
+proxy for the market portfolio, the SMB (for "Small Minus Big" capitalization stocks), "HML" (for "High Minus 
+Low" book -to-market stocks), and “UMD” (for "Up  Minus Down" prior stock returns) factor -mimicking portfo-
+lios. Alpha is estimated using various portfolios  in combination. The general performance model specification is  
+𝑟𝑝𝑡−𝑟𝑓𝑡=𝐴𝑙𝑝ℎ𝑎+∑βj∗𝑟𝑗,𝑡+𝜖𝑡𝑛
+𝑗=1 
+where 𝑟𝑝𝑡 is the monthly net return of the portfolio of funds over month t, 𝐴𝑙𝑝ℎ𝑎 is the regression’s intercept, 𝑟𝑓𝑡 
+is the risk -free rate of return, 𝑟𝑗,𝑡 is the return o f the reference portfolio considered in the regression, 𝑛 is the number 
+of reference portfolio s used, and 𝜖𝑡 is the error term. The return of the stock index portfolio is considered in excess 
+of the risk -free rate. The coefficient’s t-statistics are provided between parentheses. Three, two , and one star indi-
+cate a significance level of 0.01, 0.05, and 0.10, respectively.  
+MODEL  ALPHA  
+(%/year)  Beta UIRP  Beta Market  Beta SMB  Beta HML  Beta UMD  𝑅2 
+Models 
+with UIRP  
+as a refer-
+ence port-
+folio  0.23 
+(0.48)  0.84  
+(117.21)*** - - - - 0.956  
+0.23 
+(0.51)  0.85  
+(109.66)***  -0.05  
+(-3.82)***   0.957  
+0.31 
+(0.67)  0.85  
+(96.807)***  -0.05  
+(-3.92)*** -0.02 
+(-1.47)   0.957  
+0.00 
+(0.01)  0.86 
+(105.06)*** - -0.05 
+(-3.96)*** -0.01 
+(-0.54)  0.03 
+(3.36)*** 0.958  
+Models  
+with the 
+stock mar-
+ket index 
+as a refer-
+ence port-
+folio  -1.28 
+(-3.24)*** - 0.98 
+(135.58)*** - - - 0.967  
+-1.31 
+(-3.65)*** - 0.95 
+(139.23)*** 0.12 
+(11.87)***   0.973  
+-0.99 
+(-2.87)** - 0.94 
+(142.17)*** 0.11 
+(11.42)*** -0.08 
+(-8.16)***  0.975  
+-1.06 
+(-3.01)*** - 0.95 
+(139.18)*** 0.11 
+(11.45)*** -0.08 
+(-7.66)*** 0.01 
+(0.97)  0.975  
+ 
+  34 
+ Table V 
+Performance models' estimates by fund self -reported investment objective  
+This table presents coefficient estimates for the regression of monthly ret urns of value -weighted portfolios of mu-
+tual funds on the returns of reference  portfolios on the period between January 1968 and December 2020. The 
+sample comprises 26,407 U.S. domestic actively managed equity funds that existed sometime during this period.  
+For each month during this period, monthly returns are averaged with the previous month 's TNA weights across 
+all funds having the same investment objective during that month. There are eight mutual fund portfolios corre-
+sponding to funds’ investment object ives, as indicated in the table. The set of reference  portfolios comprises UIRP , 
+the CRSP value -weighted index considered as a proxy of the market portfolio, the SMB (for "Small Minus Big" 
+capitalization stocks), "HML" (for "High Minus Low" book -to-market stocks), and “UMD” (for "Up Minus Down" 
+prior stock returns) factor -mimicking portfolios. Alpha is estimated using various reference portfolio s in combi-
+nation. The general performance model specification is  
+𝑟𝑝𝑡−𝑟𝑓𝑡=𝐴𝑙𝑝ℎ𝑎+∑βj∗𝑟𝑗,𝑡+𝜖𝑡𝑛
+𝑗=1 
+where 𝑟𝑝𝑡 is the monthly net return of the portfolio of funds over month t, 𝐴𝑙𝑝ℎ𝑎 is the regression’s intercept, 𝑟𝑓𝑡 
+is the risk -free rate of return, 𝑟𝑗,𝑡 is the return of the reference  portfolio considered in the regr ession, 𝑛 is the number 
+of reference portfolio s used, and 𝜖𝑡 is the error term. The return of the stock index portfolio is considered in excess 
+of the risk -free rate. The coefficient’s t-statistics are provided between parentheses. Three, two , and on e star indi-
+cate a significance level of 0.01, 0.05, and 0.10, respectively.  
+Factors included in 
+performance models  Investment objective  
+Growth  Growth &  
+Income  Income  Large -Cap Mid-Cap Small -Cap Sector  Other  
+UIRP  0.433  
+(0.935)  1.62  
+(1.589)  1.669  
+(1.66)* 1.474  
+(1.669)* 2.206  
+(2.098)** 0.373  
+(0.329)  -1.88  
+(-1.142)  -1.039  
+(-1.079)  
+Market  -1.098  
+(-2.681)*** 0.12  
+(0.138)  -0.407  
+(-0.57)  -0.598  
+(-1.13)  0.012  
+(0.008)  -0.896  
+(-0.765)  -3.553  
+(-1.997)** -1.844  
+(-2.097)** 
+UIRP , SMB, HML, 
+UMD  0.264  
+(0.598)  1.644  
+(1.656)* 0.553  
+(0.776)  0.638  
+(1.014)  1.742  
+(1.842)* 0.18  
+(0.153)  -2.76  
+(-1.898)* -1.265  
+(-1.467)  
+Market, SMB, HML, 
+UMD  -0.801  
+(-2.318)** 0.565  
+(0.613)  -0.694  
+(-1.318)  -0.563  
+(-1.349)  0.276  
+(0.321)  -0.658  
+(-0.574)  -3.981  
+(-2.831)*** -1.844  
+(-2.263)** 
+ 35 
+ Table VI 
+Alphas by deciles of expenses, turnover , and total net assets  
+This table presents the intercept (alpha) from the regression of monthly returns of value -weighted portfolios of mutual funds on the re turns of reference  portfolios in the period 
+between January 1968 and December 2020. The sample comprises 26,407 U.S. domestic actively managed equity funds that existed sometime during this period. For each 
+month during this period, monthly returns are ave raged based on the previous month 's TNA weights across all funds belonging to the same decile of fund characteristics during 
+that month. The characteristics considered are expenses, turnover , and TNA (Total Net Assets). TNA is the closing market value of s ecurities owned, plus all assets minus all 
+liabilities. “Turnover” (over the calendar year) is the minimum of aggregate purchases of securities or aggregate sales of se curities divided by the average TNA of the fund. 
+“Expenses” (over the calendar year) des ignates the percentage of the total investment that shareholders pay for the mutual fund operating expenses. Each month, fund s are 
+ranked in ten deciles according to the corresponding characteristic. Then, each month we form a TNA -weighted portfolio of all  funds during a given decile, which gives us ten 
+portfolios of mutual funds that correspond to the ten deciles considered. The set of reference  portfolios comprises UIRP , the CRSP value -weighted index considered as a proxy 
+for the market portfolio, the SMB  (for "Small Minus Big" capitalization stocks), "HML" (for "High Minus Low" book -to-market stocks), and “UMD” (for "Up Minus Down" 
+prior stock returns) factor -mimicking portfolios. Alpha is estimated using various reference portfolio s in combination. The g eneral performance model specification is  
+𝑟𝑝𝑡−𝑟𝑓𝑡=𝐴𝑙𝑝ℎ𝑎+∑βj∗𝑟𝑗,𝑡+𝜖𝑡𝑛
+𝑗=1 
+where 𝑟𝑝𝑡 is the monthly net return of the portfolio of funds over month t, 𝐴𝑙𝑝ℎ𝑎 is the regression’s intercept, 𝑟𝑓𝑡 is the risk -free rate of return, 𝑟𝑗,𝑡 is the return of the reference 
+portfolio  portfolio considered in the regression, 𝑛 is the number of reference portfolio s used, and 𝜖𝑡 is the error term. The return of the stock index portfolio is considered in 
+excess of th e risk -free rate. The coefficient’s t-statistics are between parentheses. Three, two , and one star indicate a significance level of 0.01, 0.05, and 0.10, respectively.  
+Panel A: Fund alphas (%/year) by deciles of fund expenses.  
+Factors included in  
+perfor mance models  Decile 1  
+(Low Ex-
+penses)  Decile 2  Decile 3  Decile 4  Decile 5  Decile 6  Decile 7  Decile 8  Decile 9  Decile 10  
+(High Ex-
+penses)  
+UIRP  1.158  
+(1.647)  1.401 
+(2.016)** 0.373  
+(0.726)  -0.192  
+(-0.375)  -0.156  
+(-0.272)  -0.67  
+(-1.184)  -1.075  
+(-1.867)* -1.229  
+(-2.034)** -1.679  
+(-2.673)*** -2.959  
+(-3.654)*** 
+Market  -0.216  
+(-0.411)  -0.156  
+(-0.243)  -1.087  
+(-2.187)** -1.667  
+(-3.27)*** -1.667  
+(-2.719)*** -2.186  
+(-3.488)*** -2.55  
+(-4.076)*** -2.62  
+(-3.722)*** -3.052  
+(-4.108)*** -4.189  
+(-4.146)*** 
+UIRP , SMB, HML, UMD  1.292  
+(1.897)* 1.352  
+(1.909)* -0.012  
+(-0.034)  -0.61  
+(-1.215)  -0.872  
+(-1.583)  -1.324  
+(-2.396)** -1.62  
+(-2.836)*** -1.584  
+(-2.681)*** -2.139  
+(-3.424)*** -3.309  
+(-4.552)*** 
+Market, SMB, HML, 
+UMD  0.24  
+(0.463)  0.252  
+(0.398)  -1.039  
+(-2.287)** -1.643  
+(-4.016)*** -1.927  
+(-3.891)*** -2.374  
+(-4.773)*** -2.632  
+(-4.937)*** -2.526  
+(-4.316)*** -3.041  
+(-4.639)*** -4.051  
+(-4.981)*** 
+ 
+ 36 
+ Panel B: Fund alphas (%/year) by deciles of fund turnover.  
+Factors included in  
+performance mode ls Decile 1  
+(Low  
+Turnover)  Decile 2  Decile 3  Decile 4  Decile 5  Decile 6  Decile 7  Decile 8  Decile 9  Decile 10  
+(High  
+Turnover)  
+UIRP  0.674  
+(0.917)  0.445  
+(0.795)  0.373  
+(0.709)  0.324  
+(0.57)  0.529  
+(0.967)  -0.264  
+(-0.45)  -0.156  
+(-0.265)  -0.276  
+(-0.448)  0.433  
+(0.429)  -0.956  
+(-1.296)  
+Market  -0.813  
+(-1.296)  -1.075  
+(-2.39)** -1.146  
+(-2.697)*** -1.205  
+(-2.505)** -0.991  
+(-1.961)* -1.809  
+(-3.351)*** -1.691  
+(-2.639)*** -1.809  
+(-2.69)*** -1.087  
+(-1.035)  -2.268  
+(-2.584)*** 
+UIRP , SMB, HML, UMD  0.553  
+(0.76)  0.529  
+(0.928)  -0.18  
+(-0.361)  0.312  
+(0.558)  0.337  
+(0.603)  -0.598  
+(-1.018)  -0.61  
+(-1.121)  -0.98  
+(-1.708)* 0.108  
+(0.101)  -2.08  
+(-3.362)*** 
+Market, SMB, HML, 
+UMD  -0.503  
+(-0.795)  -0.574  
+(-1.31)  -1.253  
+(-3.004)*** -0.765  
+(-1.675)* -0.73  
+(-1.563)  -1.691  
+(-3.503)*** -1.667  
+(-3.226)*** -2.033  
+(-3.699)*** -0.932  
+(-0.933)  -2.912  
+(-4.308)*** 
+ 
+Panel C: Fund alphas (%/year) by deciles of fund total net assets.  
+Factors included in  
+performance models  Decile 1  
+(Low Total 
+Net Assets)  Decile 2  Decile 3  Decile 4  Decile 5  Decile 6  Decile 7  Decile 8  Decile 9  Decile 10  
+(High Total 
+Net Assets)  
+UIRP  1.049  
+(1.013)  0.602  
+(0.928)  0.276  
+(0.498)  0.409  
+(0.783)  0.638  
+(1.302)  0.445  
+(0.89)  0.457  
+(0.913)  -0.096  
+(-0.189)  -0.144  
+(-0.283)  0.337  
+(0.661)  
+Market  -0.036  
+(-0.034)  -0.658  
+(-0.963)  -1.063  
+(-1.846)* -0.98  
+(-1.782)* -0.801  
+(-1.502)  -1.027  
+(-2.041)** -1.027  
+(-2.06)** -1.608  
+(-3.102)*** -1.643  
+(-3.252)*** -1.193  
+(-2.838)*** 
+UIRP , SMB, HML, UMD  1.037  
+(0.992)  0.337  
+(0.508)  -0.024  
+(-0.049 ) -0.048  
+(-0.093)  0.048  
+(0.092)  -0.132  
+(-0.27)  -0.216  
+(-0.427)  -0.586  
+(-1.115)  -0.658  
+(-1.266)  0.252  
+(0.499)  
+Market, SMB, HML, 
+UMD  0.276  
+(0.273)  -0.527  
+(-0.834)  -0.956  
+(-1.946)* -1.015  
+(-2.202)** -0.956  
+(-2.252)** -1.17  
+(-2.897)*** -1.253  
+(-3.073)*** -1.655  
+(-4.013)*** -1.726  
+(-4.084)*** -0.825  
+(-2.101)** 
+ 
+  37 
+ Table VII 
+Alphas by deciles of fund degree of active management, 𝑹𝟐 
+This table presents the intercept (alpha) from the regression of monthly returns of valu e-weighted portfolios of mutual funds on the returns of reference  portfolios on the period 
+between January 1968 and December 2020. The sample comprises 20,526 U.S. domestic actively managed equity funds that existed sometime during this period and for whic h 
+there is sufficient dat a to calculate the degree of active management. For each month during this period, monthly returns are averaged using  the previous month 's TNA weights 
+across all funds belonging to the same decile of fund degree of active managemen t during that month. We measure active management as follows. We decompose the period of 
+fund data availability  in three -year periods and then calculate a given fund’s 𝑅2 by projecting its monthly returns on the returns of the stock market index (marke t model) or the 
+stock market index together with the factor -mimicking portfolios used in Carhart (1997). We retain only funds with a minimum number of 30 available monthly returns per 
+period. 𝑅2 represents the degree of fund active management for the p eriod during which it is determined and is updated each period. The portfolio of funds in each decile is 
+determined as follows. First, each month funds are ranked in ten deciles according to their 𝑅2. Then, we form a TNA -weighted portfolio of all funds  in a given decile, which 
+gives us ten portfolios of mutual funds that correspond to the ten deciles considered. The set of reference  portfolios comprises UIRP , the CRSP value -weighted index considered 
+as a proxy of the market portfolio, the SMB (for "Smal l Minus Big" capitalization stocks), "HML" (for "High Minus Low" book -to-market stocks), and “UMD” (for "Up Minus 
+Down" prior stock returns) factor -mimicking portfolios. Alpha is estimated using various reference portfolio s in combination. The general perf ormance model specification is  
+𝑟𝑝𝑡−𝑟𝑓𝑡=𝐴𝑙𝑝ℎ𝑎+∑βj∗𝑟𝑗,𝑡+𝜖𝑡𝑛
+𝑗=1 
+where 𝑟𝑝𝑡 is the monthly net return of the portfolio of funds over month t, 𝐴𝑙𝑝ℎ𝑎 is the regression’s intercept, 𝑟𝑓𝑡 is the risk -free rate of re turn, 𝑟𝑗,𝑡 is the return of the reference 
+portfolio s considered in the regression, 𝑛 is the number of reference portfolio s used, and 𝜖𝑡 is the error term. The return of the stock index portfolio is considered in excess of 
+the risk -free rate. The coefficient’s t-statistics are between parentheses. Three, two , and one star indicate a significance level of 0.01, 0.05, and 0.10, respectively.  
+Panel A: Fund alphas (%/year) by deciles of fund degree of active management ( 𝑅2). 𝑅2 is estimated with the market model.  
+Factors included in  
+performance models  Decile 1  
+(Low 𝑅2=high de-
+gree of active 
+management ) Decile 2  Decile 3  Decile 4  Decile 5  Decile 6  Decile 7  Decile 8  Decile 9  Decile 1  
+(High 𝑅2=low de-
+gree of active man-
+agement ) 
+UIRP  2.084  
+(1.423)  1.037  
+(0.863)  -0.395  
+(-0.485)  0.626  
+(0.918)  0  
+(-0.004)  -0.991  
+(-1.718)* -0.204  
+(-0.403)  0.747  
+(1.57)  0.168  
+(0.338)  0.361  
+(0.652)  
+Market  1.11  
+(0.769)  -0.359  
+(-0.301)  -1.903  
+(-2.368)** -0.872  
+(-1.225)  -1.549  
+(-2.304)** -2.55  
+(-4.005)*** -1.773  
+(-3.342)*** -0.825  
+(-1.799)* -1.383  
+(-3.87)*** -1.276  
+(-4.525)*** 
+UIRP , SMB, HML, 
+UMD  1.17  
+(0.788)  0.517  
+(0.422)  -0.991  
+(-1.221)  -0.371  
+(-0.596)  -0.479  
+(-0.846)  -0.825  
+(-1.45)  -0.216  
+(-0.452)  0.433  
+(0.954)  -0.012  
+(-0.021)  0.084  
+(0.174)  
+Market, SMB, HML, 
+UMD  0.469  
+(0.322)  -0.515  
+(-0.441)  -2.092  
+(-2.928)*** -1.442  
+(-2.63)*** -1.561  
+(-3.039)*** -1.915  
+(-3.739)*** -1.3  
+(-2.957)*** -0.646  
+(-1.629)  -1.11  
+(-3.163)*** -1.087  
+(-3.869)*** 
+ 38 
+ Panel A: Fund alphas (%/year) by decil es of fund degree of active management ( 𝑅2). 𝑅2 is estimated with Carhart’s model.  
+Factors included in  
+performance models  Decile 1  
+(Low 𝑅2=high 
+degree of active 
+management ) Decile 2  Decile 3  Decile 4  Decile 5  Decile 6  Decile 7  Decile 8  Decile  9 Decile 1  
+(High 𝑅2=low 
+degree of active 
+management ) 
+UIRP  2.071  
+(1.405)  1.243  
+(1.069)  0.12  
+(0.182)  0.614  
+(1.151)  -0.264  
+(-0.452)  -0.072  
+(-0.169)  -0.204  
+(-0.382)  0.012  
+(0.016)  -0.048  
+(-0.094)  0.578  
+(1.024)  
+Market  1.122  
+(0.769)  -0.12  
+(-0.101) -1.348  
+(-2.064)** -0.884  
+(-1.586)  -1.797  
+(-2.945)*** -1.584  
+(-3.105)*** -1.75  
+(-3.045)*** -1.561  
+(-3.337)*** -1.679  
+(-4.176)*** -1.098  
+(-3.441)*** 
+UIRP , SMB, HML, 
+UMD  1.085  
+(0.721)  0.916  
+(0.766)  -0.658  
+(-0.962)  0.132  
+(0.244)  -0.551  
+(-0.958) -0.479  
+(-1.127)  -0.622  
+(-1.212)  -0.108  
+(-0.211)  -0.108  
+(-0.2) 0.264  
+(0.49)  
+Market, SMB, HML, 
+UMD  0.421  
+(0.279)  -0.048  
+(-0.046)  -1.703  
+(-2.718)*** -0.896  
+(-1.804)* -1.608  
+(-3.033)*** -1.502  
+(-3.625)*** -1.679  
+(-3.608)*** -1.205  
+(-3.036)*** -1.276  
+(-3.391)*** -0.956  
+(-2.983)*** 39 
+  
+Figure I. This figure presents the value of one dollar invested in reference portfolio  portfolios (with dividends reinvested). The portfolios are our uninformed investors ’ reference 
+portfo lio (UIRP ), the CRSP value -weighted  stock  market index, which proxies for the market portfolio, the Fama -French SMB, HML , and UMD factor -mimicking portfolios, 
+together with an equally -weighted and a TNA -weighted portfolio of 26,407 U.S. domestic actively m anaged equity mutual funds that existed sometime during the period from 
+January 1968 to December 2020.  UIRP  under -weighs (overweighs) stocks with high (low) degrees of informational asymmetries. The analysis period is from January 1968 to 
+December 2020.  050100150200250
+1968
+1969
+1970
+1971
+1972
+1973
+1974
+1975
+1976
+1977
+1978
+1979
+1980
+1981
+1982
+1983
+1984
+1985
+1986
+1987
+1988
+1989
+1990
+1991
+1992
+1993
+1994
+1995
+1996
+1997
+1998
+1999
+2000
+2001
+2002
+2003
+2004
+2005
+2006
+2007
+2008
+2009
+2010
+2011
+2012
+2013
+2014
+2015
+2016
+2017
+2018
+2019
+2020
+YearThe value of one dollar invested in portfolios
+UIP Market SMB HML UMD Portfolio of Mutual Funds - TNA weights Portfolio of Mutual Funds - Equal weights40 
+ REFERENCES  
+Admati, A.R., 1985. A Noisy Rational Expectations Equilibrium for Multi -Asset Securities Markets. 
+Econometrica 53, 3,  pp. 629 -658 
+Amihud, Y., Goyenko, R., 2013. Mutual Fund's R2 as Predictor of Performance. The Review of Financial 
+Studies 26, 3 ,  pp. 667 -694 
+Ang, A., Bekaert, G., Liu, J., 2005. Why stocks may disappoint. Journal of Financial Economics 76, 3,  pp. 
+471-508 
+Berk, J.B., van Binsbergen, J.H., 2015. Measuring skill in the mutual fund industry. Journal of Financial 
+Economics 118, 1,  p p. 1-20 
+Biais, B., Bossaerts, P., Spatt, C., 2010. Equilibrium Asset Pricing and Portfolio Choice Under Asymmetric 
+Information. The Review of Financial Studies 23, 4,  pp. 1503 -1543  
+Burlacu, R., Fontaine, P., Jimenez -Garcès, S., 2006. Industry specializati on and performance: A study of 
+mutual funds. Finance 27, 2,  pp. 33 -70 
+Burlacu, R., Fontaine, P., Jimenez -Garcès, S., Seasholes, M.S., 2012. Risk and the cross -section of stock 
+returns. Journal of Financial Economics 105, 3,  pp. 511 -522 
+Carhart, M.M., 199 7. On Persistence in Mutual Funds Performance. The Journal of Finance 52, 1,  pp. 
+57-82 
+Chang, E.C., Lewellen, W.G., 1984. Market Timing and Mutual Fund Investment Performance. The 
+Journal of Business 57, 1,  pp. 57 -72 
+Chen, H. -L., Jegadeesh, N., Wermers, R., 2000. The Value of Active Mutual Fund Management: An 
+Examination of the Stockholdings and Trades of Fund Managers. Journal of Financial and 
+Quantitative Analysis 35, 3,  pp. 343 -368 
+Cremers, K.J.M., Petajisto, A., 2009. How Active Is Your Fund Manager?  A New Measure That Predicts 
+Performance. The Review of Financial Studies 22, 9,  pp. 3329 -3365  
+Dahlquist, M., Farago, A., Tédongap, R., 2016. Asymmetries and Portfolio Choice. The Review of 
+Financial Studies 30, 2,  pp. 667 -702 
+Easley, D., Hvidkjaer, S., O'Hara, M., 2002. Is Information Risk a Determinant of Asset Returns. The 
+Journal of Finance 52, 5,  pp. 2185 -2221  
+Easley, D., O'Hara, M., 2004. Information and the Cost of Capital. Journal of Finance 59, 4,  pp. 1553 -
+1583  
+Edelen, R.M., 1999. Investor Flow s and the Assessed Performance of Open -End Mutual Funds. Journal 
+of Financial Economics 53 pp. 439 -466 
+Fama, E.F., French, K.R., 1993. Common Risk Factors in the Returns of Stocks and Bonds. Journal of 
+Financial Economics 33 pp. 3 -56 
+Fama, E.F., French, K. R., 2010. Luck versus Skill in the Cross -Section of Mutual Fund Returns. The 
+Journal of Finance 65, 5,  pp. 1915 -1947  
+Ferreira, M.A., Keswani, A., Miguel, A.F., Ramos, S.B., 2019. What determines fund performance 
+persistence? International evidence. Financ ial Review 54, 4,  pp. 679 -708 
+Fontaine, P., Jimenez -Garcès, S., Seasholes, M.S., 2018. Common Factors, Infor mation, and Holdings 
+Dispersion . Review of Finance 22, 4,  pp. 1441 -1467  
+Gil-Bazo, J., Ruiz -VerdÚ, P., 2009. The Relation Between Price and Perform ance in the Mutual Fund 
+Industry. Journal of Finance 64 pp. 2153 -2183  
+Grinblatt, M., Titman, S., 1992. The Persistence of Mutual Fund Performance. The Journal of Finance 
+47, 5,  pp. 1977 -1984  
+Grinblatt, M., Titman, S., 1993. Performance Measurement without  Reference portfolio s: An 
+Examination of Quarterly Portfolio Holdings. Journal of Business 62 pp. 394 -415 
+Grinblatt, M., Titman, S., 1994. A Study of Monthly Mutual Fund Returns and Performance Evaluation 
+Techniques. Journal of Financial and Quantitative A nalysis 29, 3,  pp. 419 -444 41 
+ Grinblatt, M., Titman, S., Wermers, R., 1995. Momentum Investment Strategies, Portfolio 
+Performance, and Herding: A Study of Mutual Fund Behaviour. The American Economic Review 
+85 pp. 1088 -1105  
+Grossman, S., 1976. On the Efficie ncy of Competitive Stock Markets Where Trades Have Diverse 
+Information. Journal of Finance 31, 2, Papers and Proceedings of the Thirty -Fourth Annual 
+Meeting of the American Finance Association Dallas, Texas December 28 -30, 1975,  pp. 573 -
+585 
+Grossman, S.J. , Stiglitz, J.E., 1980. On the Impossibility of Informationally Efficient Markets. The 
+American Economic Review 70, 3,  pp. 393 -408 
+Gruber, M.J., 1996. Another Puzzle: The Growth in Actively Managed Mutual Funds. Journal of Finance 
+51, 3, Papers and Procee dings of the Fifty -Sixth Annual Meeting of the American Finance 
+Association, San Francisco, California, January 5 -7, 1996,  pp. 783 -810 
+Hellwig, M.F., 1980. On The Aggregation of Information in Competitive Markets. Journal of Economic 
+Theory 22 pp. 477 -498 
+Henriksson, R.D., 1984. Market Timing and Mutual Funds Performance: An Empirical Investigation. 
+Journal of Business 57 pp. 73 -96 
+Jensen, M., 1968. The Performance of Mutual Funds in the Period 1945 -1964. The Journal of Finance 
+23, 2,  pp. 389 -416 
+Jimenez -Garcès, S., 2004. Information privée sur les marchés financiers: Une étude de la prime de 
+risque dans un cadre général. Ph.D. Di ssertation, Grenoble University, 302 p. 
+Kacperczyk, M., Sialm, C., Zheng, L., 2005. On the Industry Concentration of Actively Ma naged Equity 
+Mutual Funds. Journal of Finance 60, 4,  pp. 1983 -2010  
+Kodres, L.E., Pritsker, M., 2002. A Rational Expectations Model of Financial Contagion. The Journal of 
+Finance 52, 2,  pp. 769 -799 
+Kosowski, R., Timmermann, A., Wermers, R., Hal, W., 2006.  Can Mutual Fund "Stars" Really Pick Stocks? 
+New Evidence from a Bootstrap Analysis. The Journal of Finance 61, 6,  pp. 2551 -2595  
+Malkiel, B., 1995. Returns from Investing in Equity Mutual Funds 1971 to 1991. The Journal of Finance 
+50, 2,  pp. 549 -572 
+O'Ha ra, M., 2003. Presidential Address: Liquidity and Price Discovery. The Journal of Finance 58, 4,  pp. 
+1335 -1354  
+Pástor, Ľ., Stambaugh, R.F., Taylor, L.A., 2015. Scale and skill in active management. Journal of Financial 
+Economics 116, 1,  pp. 23 -45 
+Sharpe,  W.F., 1991. The Arithmetic of Active Management. Financial Analysts Journal 47, 1,  pp. 7 -9 
+Wermers, R., 1997. Momentum Investment Strategies of Mutual Funds, Performance Persistence, and 
+Survivorship Bias. Graduate School of Business and Administration, University of Colorado at 
+Boulder , 47 p.  
+Wermers, R., 2000. Mutual Fund Performance: An Empirical Decomposition into Stock -Picking Talent, 
+Style, Transactions Costs, and Expenses. The Journal of Finance 55, 4,  pp. 1655 -1695  
+Wermers, R., 2003. Are mutual f und shareholders compensate d for active management “bets”? . 
+Working Paper, Cornell Univ ersity, University of Maryland, 28 p.   
+ 
+ 

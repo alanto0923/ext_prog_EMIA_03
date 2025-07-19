@@ -1,0 +1,22 @@
+domain,name,code
+Momentum,Price Momentum (14 days),"((CLOSE - DELAY(CLOSE, 14)) / DELAY(CLOSE, 14))"
+Mean Reversion,Mean Reversion (20 days),"(MEAN(CLOSE, 20) - CLOSE)"
+Volatility,20-Day Volatility,"STD(CLOSE, 20)"
+Fundamental,Price-to-Earnings Ratio (P/E),(CLOSE / EPS)
+Liquidity,Trading Volume,VOLUME
+Quality,Gross Profit Margin,(GROSS_PROFIT / REVENUE)
+GROWTH,Earnings Growth Rate,"(EPS / DELAY(EPS,1) - 1)"
+Technical,Moving Average (MA),"SMA(CLOSE, 20)"
+Macro Economics,GDP Growth Rate,"(GDP - DELAY(GDP,1)) / GDP"
+Momentum,Relative Strength Index (RSI),"(100 - (100 / (1 + DELAY(CLOSE, 14) / DELAY(CLOSE, 14))) * 14)"
+Mean Reversion,Bollinger Band Breakout,"CLOSE > DELAY(HIGH, 20) - (2 * DELAY(STDDEV(CLOSE, 20)))"
+Volatility,VIX Index,VIX
+Fundamental,Dividend Yield,(DIVIDEND / CLOSE)
+Liquidity,Order Flow,ORDER_FLOW
+Quality,Shiller P/E Ratio,"(CLOSE / DELAY(EPS,1))"
+GROWTH,Compound Annual Growth Rate (CAGR),"(EPS / DELAY(EPS,1))^(1/(DELAY(EPS,1) - 1))"
+Technical,Pivot Point,"(2 * DELAY(STDDEV(CLOSE, 20))) + DELAY(MEAN(CLOSE, 20))"
+Macro Economics,Leading Economic Index (LEI),"(LEI - DELAY(GDP,1)) / LEI"
+Momentum,Stochastic Oscillator,"((CLOSE - DELAY(LOW, 14)) / (DELAY(HIGH, 14) - DELAY(LOW, 14))) * 100"
+Mean Reversion,Exponential Moving Average (EMA),"(2 * CLOSE / 1 + DELAY(EPS,1))"
+Volatility,ATR (Average True Range),"((MAX(CLOSE - LOW, ABS(OPEN - HIGH)) - MIN(CLOSE - LOW, ABS(CLOSE - LOW))) / 14)"

@@ -1,0 +1,1009 @@
+1
+c20XX IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any
+current or future media, including reprinting/republishing this material for advertising or promotional purposes, creating new
+collective works, for resale or redistribution to servers or lists, or reuse of any copyrighted component of this work in other
+works.arXiv:1909.12227v1  [cs.LG]  25 Sep 2019JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015 2
+Stock Prices Prediction using Deep Learning
+Models
+Jialin Liu, Fei Chao, Member, IEEE, Yu-Chen Lin, and Chih-Min Lin, Fellow, IEEE,
+Abstract —Financial markets have a vital role in the develop-
+ment of modern society. They allow the deployment of economic
+resources. Changes in stock prices reﬂect changes in the market.
+In this study, we focus on predicting stock prices by deep learning
+model. This is a challenge task, because there is much noise and
+uncertainty in information that is related to stock prices. So this
+work uses sparse autoencoders with one-dimension (1-D) residual
+convolutional networks which is a deep learning model, to de-
+noise the data. Long-short term memory (LSTM) is then used to
+predict the stock price. The prices, indices and macroeconomic
+variables in past are the features used to predict the next day’s
+price. Experiment results show that 1-D residual convolutional
+networks can de-noise data and extract deep features better than
+a model that combines wavelet transforms (WT) and stacked
+autoencoders (SAEs). In addition, we compare the performances
+of model with two different forecast targets of stock price:
+absolute stock price and price rate of change. The results show
+that predicting stock price through price rate of change is better
+than predicting absolute prices directly.
+Index Terms —stock, deep learning, LSTM, SAEs
+I. I NTRODUCTION
+STOCK time series forecast is one of the main challenges
+for machine learning technology because the time series
+analysis is required [1]. Two methods are usually used to
+predict ﬁnancial time series: machine learning models and
+statistical methods [2].
+Statistical methods can be used to predict a ﬁnancial time
+series. The common methods are autoregressive conditional
+heteroscedastic (ARCH) methods [3], and autoregressive mov-
+ing average (ARMA) [4] or an autoregressive integrated mov-
+ing average (ARIMA) methods. However, traditional statistical
+methods generally assume that the stock time series pertains
+to a linear process, and model the generation process for a
+latent time series to forecast future stock prices [5]. However,
+a stock time series is generally a dynamic nonlinear process
+[6].
+Many machine learning models can capture nonlinear char-
+acters in data without prior knowledge [7]. These models
+are always used to model a ﬁnancial time series. The most
+commonly used models for stock forecasts are artiﬁcial neural
+networks (ANN), support vector machines (SVM), and hybrid
+and ensemble methods. Artiﬁcial neural networks have found
+J. Liu and F. Chao are with the Cognitive Science Department, School
+of Information Science and Engineering, Xiamen University, China e-mail:
+(fchao@xmu.edu.cn). Y .-C. Lin is with Department of Accounting, National
+Chung Hsing University, Taiwan, R.O.C e-mail: (yuchenlin08@gmail.com).
+C.-M. Lin is with the Department of Electrical Engineering and Innovation
+Center for Biomedical and Healthcare Technology, Yuan Ze University,
+Chung-Li, Tao-Yuan 320, Taiwan, R.O.C e-mail: (cml@saturn.yzu.edu.tw).
+Corresponding Author: Chih-Min Lin
+Manuscript received April 19, 2005; revised August 26, 2015.many applications in business because they can deal with data
+that is non-linear, non-parametric, discontinuous or chaotic for
+a stock time series [8]. Support vector machine is a statistical
+machine learning model that is widely applied for pattern
+recognition. A SVM model, which learns by minimizing the
+risk function and the empirical error and regularization terms
+has been derived to minimize the structural risk [9]. Box et
+el. presented a revised least squares (LS)-SVM model and
+predicted movements in the Nasdaq Index after training with
+satisfactory results [4].
+Deep learning models, which are an extension of ANNs,
+have seen recent rapid development. Many studies use deep
+learning to predict ﬁnancial time series. For example, Ting et
+al. used a deep convolutional neural network to forecast the
+effect of events on stock price movements [10]. Bengio et al.
+used long-short term memory (LSTM) to predict stock prices
+[11].
+This study addresses the problem of noise in a stock time
+series. Noise and volatile features in a stock price forecast
+are major challenges because they hinder the extraction of
+useful information [12]. A stock time series can be considered
+as waveform data, so the technology from communication
+electronics such as wavelet transform is pertinent. Bao et al.
+used a model that combines wavelet transform and stacked
+autoencoder (SAE) to de-noise a ﬁnancial time series [13].
+This study de-noises data using an autoencoder [14], [15]
+with a convolutional resident neural network (Resnet) [16].
+This is an adaptive method to reduce noise and dimension
+for time sequences. It is different from wavelet transforms
+in that the kernel of the convolutional neural network adapts
+to dataset automatically, so it can more effectively eliminate
+noise and retain useful information. The experiments use the
+CSI 300 index, the Nifty 50 index, the Hang Seng index, the
+Nikkei 225 index, the S&P 500 index and the DJIA index
+are performed and the results are compared with those for
+[13]. The proposed model gives more accurate predictions, as
+measured by mean absolute percent error (MAPE), Theil U
+and the linear correlation between the predicted prices and
+the real prices. We do both the experiments on predicting
+stock price directly and on predicting price rate of change
+and calculating the price indirectly. We found that the latter
+can achieve better accuracy. Predicting future price indirectly
+can be seen as adding prior knowledge to improve model
+performance.
+The remainder of this paper has ﬁve sections. The next
+section draws the background knowledge of market analysis.
+Section III details a little experiment about the property of
+de-noising CNN. Section IV details the structure for the
+proposed model with sparse autoencoders and LSTM. SectionJOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015 3
+V describes the features and data resources for the experiment
+and details the experiment, and analyzes the results of the
+experiment. The last section draws conclusions.
+II. B ACKGROUND
+Understanding the behaviors of the market in order to
+improve the decisions of investors is the main purpose of
+market analysis. Several market attributes and features that
+are related to stock prices time series have been studied.
+Depending on the market factors that are used, market analysis
+can be divided into two categories: fundamental and technical
+analysis [17].
+Technical analysis often only uses historical prices as market
+characters to identity the pattern of price movement. Stud-
+ies assume that the relative factors are incorporated in the
+movement of the market price and that history will repeat
+itself. Some investors used technical approaches to predict
+stock prices with great success [18]. However, the Efﬁcient
+Market Hypothesis [19] assumes that all available factors are
+already incorporated in the prices so only new information
+affects the movement of market prices, but new information
+is unpredictable.
+Fundamental analysis assumes that the related factors are
+the internal and external attributes of a company. These
+attributes include the interest rate, product innovation, the
+number of employees, the management policy and etc [20].
+In order to improve the prediction, other information such as
+the exchange rate, public policy, the Web and ﬁnancial news
+are used as features. Nassirtoussi et al. used news headlines
+as features to predict the market [21]. Twitter sentiment was
+used in [22] to improve predictions.
+In 1995, one study showed that 85% of responders depend
+on fundamental analysis and technical analysis [23]. Technical
+analysis is more useful for short-term forecasting so it is
+pertinent to high frequency trading. Lui et al. showed that
+technical analysis better forecasts turning points than trends,
+but fundamental analysis gives a better prediction of trends
+[23].
+Depending on the prediction target, tasks can be classiﬁed
+as regression task or classiﬁcation tasks. For a regression task
+the prediction target for the model is the future price, and a
+classiﬁcation task model predicts the rise or fall of the stock
+prices. If the predicted price is higher than the current price,
+the recommended strategy is to buy, and vice versa. This is the
+buy-and-sell trading strategy, which is widely used in studies
+[24]. If the task is to identify the rise or fall in the price,
+then the resultant strategy is obvious. Market analysis is also
+used for recommendation systems. Huang et al. used SVR to
+predict the return of each stock and to select stocks with the
+highest proﬁt margins (top 10, 20 and 30) to calculate the
+proﬁt margin [25].
+This study uses technical analysis to predict the stock price
+for the next day. Sparse autoencoders with 1-D convolution
+networks and prior knowledge are used to give a more accurate
+prediction than other techniques.
+0
+25
+50
+75
+100
+125
+150
+175
+200
+Epoch
+0.20
+0.25
+0.30
+0.35
+0.40Loss on training
+Single
+Denoise(a) Training and test loss
+0
+25
+50
+75
+100
+125
+150
+175
+200
+Epoch
+0.00
+0.02
+0.04
+0.06
+0.08
+0.10
+0.12
+0.14Gap between train and test
+Single
+Denoise
+(b) Loss gap
+Fig. 1. Training curve.
+III. D E-NOISING CNN
+To create a 1-D convolutional neural network for sequence
+analysis, a single neural network can be combined with a
+convolutional neural network with LSTM. When the features
+for the input are extracted at a high-level by the convolution
+layer, the price is directly predicted by the LSTM layer. During
+training, the gradient propagates back to convolution through
+the LSTM layer. However, if there is too much noise in the
+data, this model tends to over-ﬁt.
+A notional problem is used to compare the model with a
+single neural network. The model uses the features after de-
+noising. The task is a bias prediction task, in which each data
+point corresponds to a function, y = sin(x + 2 b). The
+target is to predict the value of bin this function, which
+is sampled from a uniform distribution, U( 1;1). Here y
+is the feature vector for the data, where x = [ 2; 2+
+4
+m;; 2+4(m 1)
+m]T,mis the size of sequence. Two
+types of noises are then added to the features. The ﬁrst type is
+Gaussian noise, nGN(;2). The form of another noise is
+written asPn
+iciexp(x bri)2, wherebriis sampled from
+the uniform distribution, U( 1;1),ciis sampled from the
+0-1 distribution B(1;0:5)with possibility p= 0:5andis
+the weight of this noise. This noise has multiple peaks that
+interfere with prediction. Figure 1a shows the training curves
+for both models. The red and green lines are the respective
+training curves for the model that combines CNN with LSTM
+and uses the features after de-noising. The solid and dashed
+lines respectively represent the training loss and the test loss.
+In Figure 1b the dotted curves indicate the loss gap. WhenJOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015 4
+6
+4
+2
+0
+2
+4
+6
+Sequence
+4
+2
+0
+2
+4Feature value (sin)
+real curve
+feature point
+rebuild point
+Fig. 2. Sine curve rebuilding.
+the training loss decreases, the loss gap for the model grows
+slower than that for the single neural network. The minimum
+test loss for the proposed model is less than that for the single
+neural network. It is obvious that de-noising features prevents
+over-ﬁtting for the model.
+The noise for stock forecasting is much more complex than
+the noise for this notional task, so in this study the noise in
+the stock forecast data is reduced ﬁrst using 1-D convolution
+autoencoders. The details of the features of the 1-D CNN
+autoencoders processes are given. In Figure 2, the yellow dots
+denote the rebuilt curve for the sine function. The red curve
+is the global true, which is the sine function curve without
+noise, and the green dots are feature points with noise. The
+ordinate axis represents the speciﬁc feature value. Each point
+represents an element input for the model. It is obvious that
+curve for the yellow dots is smoother than that for the green
+dots and it is close to the real curve.
+The values for the weights in the convolutional kernel are
+shown in Figure 3, which is for the model with minimal test
+loss. The values for the weights in the convolutional kernel
+are also smoother than those for a single neural network (see
+Figure 3). However, the sine function is smoother than the
+noise, so the kernel in the single network is more likely to
+match the noise than the 1-D convolution autoencoders. This
+model tries to establish a relationship between the noise and
+the label. In fact, the noise and the label are irrelevant, so it
+is more prone to over-ﬁtting.
+IV. M ETHODOLOGY
+In order to extract high-level abstract features and predict
+future prices from the stock time series, we apply two models
+in our system, one deep model is used for de-noising and
+another is used for prediction. The prediction process involves
+three steps:(1) data preprocessing that involves calculating
+technical indicators, clipping and normalizing features, (2)
+encoding and decoding features using a 1-D ResNet block to
+minimize the rebuilt loss and (3) using the LSTM to deal with
+high-level abstract features and give a one-step-ahead output.
+Figure 4 shows the overall framework. The input feature
+of data sequence is a ctmatrix, where cis the number
+(a) Kernel in Single
+(b) Kernel in Autoencoders
+Fig. 3. Convolution kernel of model.
+of channels, and tis the length of sequence. Daily trading
+data, technical indicators and macroeconomic variables are the
+matrices of data sequence with size 5t,10tand2t. After
+preprocessing, we merge them into one matrix with size 17t,
+so the inputted data sequence has 17 channels. The prices are
+then predicted by LSTM after the noise and dimension have
+been reduced by the encoder model.
+A. Sparse autoencoders
+Sparse autoencoders are models that can reduce the dimen-
+sion. An autoencoder neural network is used to rebuild the
+input (see Figure 5). The loss function, which is used to train
+autoencoder neural network, is given by [14], [15]
+L=1
+NNX
+n1
+2kx(n) y(n)k2+Lsp (1)
+whereNis the number of data points, x(n)denotes the feature
+vector for the nth sample and y(n)denotes the reconstructed
+feature vector for the nth sample. The last term is the sparse
+penalty term and spis the weight. The sparse penalty, which
+is a kind of regularization, is used to make most units of
+network tend to non-activity state in order to reduce over-
+ﬁtting. This is the difference between sparse autoencoders and
+traditional autoencoders. The sparse penalty is given by [26],
+Lsp=SX
+jKL(k^j)
+=SX
+j
+log
+^j+ (1 ) log1 
+1 ^j(2)
+whereis the sparse parameter, Sis the number of units in the
+hidden layer and ^j=(xj),xjis thejthunit in the hidden
+layer,(x) =1
+1+e x. Weight decay is also used to reduceJOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015 5
+5dim
+10dim
+2dim. . . . . .
+. . . . . .
+. . . . . .Daily Trading Data
+Technical Indicator
+Macroeconomic Variable
+Up/
+DownUp/
+DownUp/
+Down1/-1
+1/-1
+1/-1
+D(1) D(2) D(t-1) D(t) . . . . . .Normalization Data
+f
+f(1)
+LSTM
+Unitf(2)
+LSTM
+Unit...
+LSTM
+Unitf(N)
+LSTM
+UnitLSTM
+Unit
+O(N+2)...
+LSTM
+Unit
+...f(t-1)
+LSTM
+Unit
+O(t)f(t)
+LSTM
+Unit
+O(t+1)
+gh
+fo
+iCell1Dresnet Sparse
+Autoencoder
+long-short term memoryf(N+1)
+Fig. 4. Three steps process of high-level abstract features extraction and prediction.JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015 6
+f
+y
+(n)
+x
+(n)
+SP
+jKL(k^j)
+1
+NNP
+n1
+2kx(n) y(n)k2+Lsp
+Fig. 5. Sparse autoencoders with 1 dimension convolution neural network.
+out-ﬁtting of the model. After training, only the features from
+the middle layer of the network are used (see Figure 5).
+The model for the sparse autoencoders [14], [15] is a 1-
+D CNN. This is used to compare the performance of WT
+and CNN in terms of de-noising stock time series data. A
+convolution network is used as the encoding network, and
+a deconvolution network is the decoded network [27], so
+the model used in SAEs is a fully convolutional network.
+The autoencoder’s function is not only to reduce noise, but
+also to reduce the dimensions of the features, in order to
+allow the latter network structure to use a smaller number
+of weights. The CNN applied here is the ResNet [16], which
+is a type of convolutional neural network used to speed up
+the training by using a “shortcut connections” [16] to back-
+propagate gradient.
+B. Long-short term memory
+LSTM is a type of recurrent neural network (RNN) [28]
+that can be used to transfer information from the past to the
+present. However, the structure of a RNN has a defect that
+can cause the gradient to vanish or explode when the input
+series are too long. The problem of the gradient exploding is
+generally solved by gradient clipping
+^g=8
+<
+:^gthreshold
+k^gk; ifk^gk>threshold ;
+^g ; other;(3)
+where ^grepresents the gradient of a parameter. The problem
+of the gradient vanishing is solved by using the structure of the
+LSTM. A LSTM differs from a conventional RNN in that the
+LSTM has another memory that transfers its state to the next
+state without matrix multiplication and operation of activation
+function, so the gradient is back-propagated smoothly [29].
+The details of the LSTM are shown in Figure 6. The left part
+of ﬁgure is the structure of the LSTM unit. The dotted arrows
+Fig. 6. Long-short term memory unit.
+in the ﬁgure indicate the indirect effects. At each step, all the
+g;i;f andogates receive the last state and the new feature,
+and then the cell state and the hidden state are updated at time
+t, and the input for the unit is the last state vector for the cell
+(ct 1), the hidden last state vector ( ht 1) and the input feature
+(xt). The four vectors are
+gt= tanh(W g[xt;ht 1] +bg) (4)
+it=(Wi[xt;ht 1] +bi) (5)
+ft=(Wf[xt;ht 1] +bf) (6)
+ot=(Wo[xt;ht 1] +bo) (7)
+where(x) =1
+1+e x, andgtis the new information that is
+used to update the cell state, and itandftare respectively
+used to select information that is to be added to cell state or
+be forgotten,
+ct=itgt+ftct 1 (8)
+wheredenotes element-wise multiplication. The term otis
+used to select the output and the hidden state,
+ht=ottanh(ct) (9)
+thenoutput t=ht.
+V. E XPERIMENT
+The experiments compare the accuracy of the proposed
+method with that of a deep learning framework [13] for the
+CSI 300 index, the DJIA index, the Hang Seng index, the
+Nifty 50 index, the Nikkei 225 index and the S&P500 index.
+Similar to a previous study [13], more than one market is
+used. The predictive accuracy is evaluated by MAPE, Theil U
+and the linear correlation between the prediction and the real
+price [30]–[33]. The data is divided into different groups for
+training and testing, in order to reduce the time span.
+Two experiments test the performance of the two methods:
+(1) a 1-D resnet autoencoder is used to predict prices (called
+C1D-LSTM) and (2) a 1-D resnet autoencoder is used to
+predict the rate of change of prices (called C1D-ROC). The
+accuracy of the models is compared and the prediction curve
+for one year is plotted.JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015 7
+TABLE I
+THE PREDICTION TIME INTERVAL OF EACH YEAR .
+Year Time Interval
+1th 2010.10.01 2011.09.30
+2th 2011.10.01 2012.09.30
+3th 2012.10.01 2013.09.30
+4th 2013.10.01 2014.09.30
+5th 2014.10.01 2015.09.30
+6th 2015.10.01 2016.09.30
+A. Data descriptions
+Data resource. The data resource is following a previous
+study [13] from the Figshare website. The data was sampled
+from the WIND(http://www.wind.com.cn) and CSMAR(http:
+//www.gtarsc.com) databases of the Shanghai Wind Informa-
+tion Co., Ltd and the Shenzhen GTA Education Tech. Ltd,
+respectively. The stock time series is from 1stJul. 2008 to
+30thSep. 2016 (see Table I).
+Data features. Following a previous study [13], three sets
+of features are selected as the inputs. The ﬁrst set is the
+trading data for the past, including Opening, Closing, High,
+and Low prices and trading volume. In Table II, Ct,Ltand
+Htrespectively denote the closing price, the low price and
+the high price at time t. The second set includes the technical
+indicators that are widely used for stock analysis. Their
+calculation method is shown in Table II, where DIFF t=
+EMA (12)t EMA (26)t,DsandDhl respectively denote
+the double exponential moving average for C HH+LL
+2and
+HH LL, whereHH andLLrespectively denote the highest
+high price and the lowest low price in the range. The last set
+of features is the macroeconomic information. Stock prices
+are affected by many factors, so using the macroeconomic
+information as features can reduce uncertainty in the stock
+prediction. The US dollar index and the Interbank offered rate
+for each market are the third set of features.
+Data divide. The data is divided to train multiple models.
+Each model is trained using past data, and the training data
+and test data cannot be randomly sampled from the dataset
+because it is irrational. To predict future stock prices, only
+data from the past can be used. The greater the time interval
+between the two stock time series data, the smaller is the
+correlation between them; so using outdated data does not
+improve performance. In order to take into account the above
+reason and to simplify the result, the forecast is divided into 6
+years; and each year is from 1stOct. to 30thSep. (see Table
+I).
+B. Evaluation
+The experiments use MAPE,the linear correlation between
+the predicted price and the real price and Theil U to evaluate
+the model. These are deﬁned as
+MAPE =1
+NNX
+t=1yt y
+t
+yt(10)
+R =PN
+t=1(yt yt)(y
+t y
+t)qPN
+t=1(yt yt)2PN
+t=1(y
+t y
+t)2(11)Theil U =q
+1
+NPN
+t=1(yt y
+t)2
+q
+1
+NPN
+t=1(yt)2+q
+1
+NPN
+t=1(y
+t)2(12)
+whereytandy
+trespectively denote the predictive price for
+the proposed model and the actual price on day t, andyt
+andy
+trespectively denote their average values. MAPE is
+a measure of the relative error in the average values. R is
+the correlation coefﬁcient for two variables and describes the
+linear correlation between them. A large value for R means
+that the forecast is close to the actual value. Theil U is also
+called the uncertainty coefﬁcient and is a type of association
+measure. A smaller value for MAPE and Theil U denotes
+greater accuracy.
+C. Predictive accuracy test
+Tables III-VIII show that a 1-D CNN gives slightly better
+results than WSAEs. This shows that the convolutional net-
+work is effective in processing stock data, which is a model
+that can adaptively de-noise the noisy data and can reduce
+the dimensionality. Markets with higher predicted errors are
+almost the same for both two models. Moreover, the CSI 300
+index, the HangSeng Index and the Nifty 50 index are more
+difﬁcult to be predicted than the DJIA index and the S&P500
+Index.
+In some individual cases, more closer between predicted and
+actual prices does not mean that there is a higher prediction
+accuracy. However, the average for different years shows that
+the prediction accuracy and the linear correlation are positively
+correlated.
+If past prices are used to predict future stock prices, pre-
+dicting the rate of change of the price is also able to get the
+current prices. For most stock price series, the price scale is
+much larger than the rate of change. If the prediction target
+for the model is the absolute price, it is easy to ignore the
+information for price changes because changes in the price
+has a smaller effect on the loss than the absolute price. Tables
+III-VIII show that the model predicts prices indirectly through
+predicting the rate of change can get higher accuracy. This
+demonstrates that predicting the rate of change is a better way
+than to predict prices directly.
+D. Predictive curve
+The predicted results for the ﬁrst year for each market index
+are shown in Figure 7. The curve for C1D-ROC is closer to
+the actual curve than that for C1D-LSTM. The curve for C1D-
+LSTM occasionally deviates far from the actual price curve but
+that for the C1D-ROC does so only rarely. This demonstrates
+that future prices can be derived using the current price and
+price changes. The current input characteristics include the
+current price but it is difﬁcult to fully preserve this feature in
+the input features for an autoencoder. If the change in the price
+is predicted directly and then inferred from the exact current
+value, the model can use the full information for the current
+price.JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015 8
+1 62 123 184 245
+Trading Day30003500PriceCSI300 Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 64 127 190 253
+Trading Day1100012000PriceDJIA index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 62 124 186 248
+Trading Day17500200002250025000PriceHangSeng Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 63 126 188 251
+Trading Day500055006000PriceNifty 50 index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 62 123 184 245
+Trading Day90001000011000PriceNikkei 225 index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 64 127 190 253
+Trading Day12001300PriceS&P500 Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+Fig. 7. The actual and predicted curves for six stock index from 2010.10.01 to 2011.09.30.JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015 9
+TABLE II
+THETECHNICAL INDICATOR USED IN EXPERIMENT FOLLOWING [13].
+Name Deﬁnition Formulas
+MACD Moving Average Convergence MACD (n)t 1+2
+n+1(DIFF t MACD (n)t 1)
+CCI Commodity channel indexMt SMt
+0:015Dt
+ATR Average true range1
+nPn
+i=1TRi
+BOLL Bollinger Band MID MA20
+EMA20 20 day Exponential Moving Average2
+21(Ct EMA t 1) + (1  2
+21)EMA t 1
+MA5/MA10 5/10 day Moving AverageCt+Ct 1++Ct 4
+5=Ct+Ct 1++Ct 9
+10
+MTM6/MTM12 6/12 month Momentum Ct Ct 6=Ct Ct 12
+ROC Price rate of changeCt Ct N
+Ct N100
+SMI Stochastic Momentum IndexDs
+Dhl100
+WV AD Williams’s Variable Accumulation/Distribution ADt 1+(Ct Lt) (Ht Ct)
+Ht Ctvolume
+TABLE III
+THE PREDICTION ACCURACY IN CSI 300 INDEX .
+Year Year1 Year2 Year3 Year4 Year5 Year6 Average
+Panel A.MAPE
+WSAEs-LSTM 0.025 0.014 0.016 0.011 0.033 0.016 0.019
+C1D-LSTM 0.015 0.014 0.017 0.011 0.051 0.015 0.020
+C1D-ROC 0.015 0.011 0.013 0.009 0.025 0.012 0.014
+Panel B.Correlation coefﬁcient
+WSAEs-LSTM 0.861 0.959 0.955 0.957 0.975 0.957 0.944
+C1D-LSTM 0.961 0.960 0.951 0.961 0.976 0.959 0.961
+C1D-ROC 0.957 0.969 0.959 0.974 0.987 0.969 0.969
+Panel C.Theil U
+WSAEs-LSTM 0.017 0.009 0.011 0.007 0.023 0.011 0.013
+C1D-LSTM 0.009 0.009 0.011 0.007 0.031 0.011 0.013
+C1D-ROC 0.010 0.007 0.010 0.006 0.017 0.009 0.010
+TABLE IV
+THE PREDICTION ACCURACY IN DJIA INDEX .
+Year Year1 Year2 Year3 Year4 Year5 Year6 Average
+Panel A.MAPE
+WSAEs-LSTM 0.016 0.013 0.009 0.008 0.008 0.010 0.011
+C1D-LSTM 0.011 0.010 0.010 0.007 0.010 0.011 0.010
+C1D-ROC 0.011 0.008 0.007 0.007 0.009 0.008 0.008
+Panel B.Correlation coefﬁcient
+WSAEs-LSTM 0.922 0.928 0.984 0.952 0.953 0.952 0.949
+C1D-LSTM 0.958 0.964 0.982 0.975 0.939 0.953 0.962
+C1D-ROC 0.953 0.975 0.988 0.969 0.946 0.972 0.967
+Panel C.Theil U
+WSAEs-LSTM 0.010 0.009 0.006 0.005 0.005 0.006 0.007
+C1D-LSTM 0.007 0.006 0.007 0.005 0.006 0.007 0.006
+C1D-ROC 0.008 0.005 0.005 0.004 0.006 0.005 0.005
+VI. C ONCLUSION
+1-D ResNet sparse autoencoders are used to de-noise and
+reduce the dimensionality of data. A notional experiment is
+used to compare the performance of the model that uses
+features after de-noising and that of a single network with
+LSTM. The ﬁrst method reduces over-ﬁtting when there is
+a lot of noise in the data. The results of experiment show
+that the proposed method gives a more accurate prediction
+than WSAEs. This is the ﬁrst contribution of this paper.
+Another contribution is that we add prior knowledge about
+the relationship between prices and the rate of change to the
+model to try to improve the performance, and the results of
+experiment show the conclusion that it is more accurate to useTABLE V
+THE PREDICTION ACCURACY IN HANG SENG INDEX .
+Year Year1 Year2 Year3 Year4 Year5 Year6 Average
+Panel A.MAPE
+WSAEs-LSTM 0.016 0.017 0.012 0.011 0.021 0.013 0.015
+C1D-LSTM 0.017 0.012 0.009 0.010 0.022 0.012 0.014
+C1D-ROC 0.011 0.011 0.008 0.009 0.010 0.011 0.010
+Panel B.Correlation coefﬁcient
+WSAEs-LSTM 0.944 0.924 0.920 0.927 0.904 0.968 0.931
+C1D-LSTM 0.948 0.956 0.955 0.951 0.962 0.975 0.958
+C1D-ROC 0.979 0.964 0.955 0.952 0.985 0.979 0.969
+Panel C.Theil U
+WSAEs-LSTM 0.011 0.010 0.008 0.007 0.018 0.008 0.011
+C1D-LSTM 0.012 0.008 0.006 0.007 0.015 0.008 0.009
+C1D-ROC 0.007 0.007 0.006 0.006 0.007 0.007 0.007
+TABLE VI
+THE PREDICTION ACCURACY IN NIFTY 50INDEX .
+Year Year1 Year2 Year3 Year4 Year5 Year6 Average
+Panel A.MAPE
+WSAEs-LSTM 0.020 0.016 0.017 0.014 0.016 0.018 0.017
+C1D-LSTM 0.014 0.014 0.022 0.015 0.019 0.014 0.016
+C1D-ROC 0.012 0.009 0.010 0.008 0.008 0.007 0.009
+Panel B.Correlation coefﬁcient
+WSAEs-LSTM 0.895 0.927 0.992 0.885 0.974 0.951 0.937
+C1D-LSTM 0.946 0.962 0.992 0.866 0.971 0.969 0.951
+C1D-ROC 0.973 0.968 0.903 0.996 0.960 0.988 0.964
+Panel C.Theil U
+WSAEs-LSTM 0.013 0.010 0.010 0.009 0.010 0.011 0.011
+C1D-LSTM 0.010 0.009 0.014 0.010 0.012 0.009 0.011
+C1D-ROC 0.007 0.006 0.007 0.005 0.005 0.005 0.006
+the rate of change to indirectly predict the price of stocks than
+to directly predict the price of stocks.
+Future study will use an attention model [34] to improve the
+performance. This model assumes that the price for the next
+day is approximately related to the price for previous days.
+The attention model will be applied to express the relationship
+between the price for previous day and next day, which will
+give improved performance and result that are more easily
+interpreted.
+REFERENCES
+[1] F. E. Tay and L. Cao, “Application of support vector machines in
+ﬁnancial time series forecasting,” Omega , vol. 29, no. 4, pp. 309–317,
+2001.JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015 10
+TABLE VII
+THE PREDICTION ACCURACY IN NIKKEI 225 INDEX .
+Year Year1 Year2 Year3 Year4 Year5 Year6 Average
+Panel A.MAPE
+WSAEs-LSTM 0.024 0.019 0.019 0.019 0.018 0.017 0.019
+C1D-LSTM 0.016 0.011 0.010 0.019 0.012 0.010 0.013
+C1D-ROC 0.013 0.010 0.013 0.010 0.013 0.013 0.012
+Panel B.Correlation coefﬁcient
+WSAEs-LSTM 0.878 0.834 0.665 0.972 0.774 0.924 0.841
+C1D-LSTM 0.960 0.949 0.913 0.964 0.905 0.979 0.945
+C1D-ROC 0.957 0.972 0.994 0.943 0.981 0.969 0.969
+Panel C.Theil U
+WSAEs-LSTM 0.016 0.013 0.013 0.013 0.012 0.012 0.013
+C1D-LSTM 0.010 0.007 0.007 0.017 0.008 0.006 0.009
+C1D-ROC 0.009 0.006 0.009 0.007 0.008 0.009 0.008
+TABLE VIII
+THE PREDICTION ACCURACY IN S&P500 I NDEX .
+Year Year1 Year2 Year3 Year4 Year5 Year6 Average
+Panel A.MAPE
+WSAEs-LSTM 0.012 0.014 0.010 0.008 0.011 0.010 0.011
+C1D-LSTM 0.011 0.011 0.009 0.008 0.013 0.011 0.011
+C1D-ROC 0.010 0.009 0.008 0.006 0.008 0.007 0.008
+Panel B.Correlation coefﬁcient
+WSAEs-LSTM 0.944 0.944 0.984 0.973 0.880 0.953 0.946
+C1D-LSTM 0.962 0.973 0.988 0.986 0.860 0.958 0.955
+C1D-ROC 0.965 0.979 0.988 0.982 0.949 0.976 0.973
+Panel C.Theil U
+WSAEs-LSTM 0.009 0.010 0.006 0.005 0.008 0.006 0.007
+C1D-LSTM 0.007 0.007 0.006 0.005 0.008 0.007 0.007
+C1D-ROC 0.007 0.006 0.005 0.004 0.005 0.005 0.005
+[2] J.-Z. Wang, J.-J. Wang, Z.-G. Zhang, and S.-P. Guo, “Forecasting stock
+indices with back propagation neural network,” Expert Systems with
+Applications , vol. 38, no. 11, pp. 14 346–14 355, 2011.
+[3] R. F. Engle, “Autoregressive conditional heteroscedasticity with es-
+timates of the variance of united kingdom inﬂation,” Econometrica:
+Journal of the Econometric Society , pp. 987–1007, 1982.
+[4] G. E. Box, G. M. Jenkins, G. C. Reinsel, and G. M. Ljung, Time Series
+Analysis: Forecasting and Control . John Wiley & Sons, 2015.
+[5] D. A. Kumar and S. Murugan, “Performance analysis of indian stock
+market index using neural network time series model,” in Pattern
+Recognition, Informatics and Mobile Engineering (PRIME), 2013 In-
+ternational Conference on . IEEE, 2013, pp. 72–78.
+[6] Y .-W. Si and J. Yin, “Obst-based segmentation approach to ﬁnancial
+time series,” Engineering Applications of Artiﬁcial Intelligence , vol. 26,
+no. 10, pp. 2581–2596, 2013.
+[7] G. S. Atsalakis and K. P. Valavanis, “Surveying stock market forecast-
+ing techniques–part ii: Soft computing methods,” Expert Systems with
+Applications , vol. 36, no. 3, pp. 5932–5941, 2009.
+[8] F. Liu and J. Wang, “Fluctuation prediction of stock market index by
+legendre neural network with random time strength function,” Neuro-
+computing , vol. 83, pp. 12–21, 2012.
+[9] J. Chen, “Svm application of ﬁnancial time series forecasting using em-
+pirical technical indicators,” in Information Networking and Automation
+(ICINA), 2010 International Conference on , vol. 1. IEEE, 2010, pp.
+V1–77.
+[10] X. Ding, Y . Zhang, T. Liu, and J. Duan, “Deep learning for event-driven
+stock prediction.” in Ijcai, 2015, pp. 2327–2333.
+[11] Y . Baek and H. Y . Kim, “Modaugnet: A new forecasting framework for
+stock market index value with an overﬁtting prevention lstm module and
+a prediction lstm module,” Expert Systems with Applications , vol. 113,
+pp. 457–480, 2018.
+[12] B. Wang, H. Huang, and X. Wang, “A novel text mining approach to
+ﬁnancial time series forecasting,” Neurocomputing , vol. 83, pp. 136–145,
+2012.
+[13] W. Bao, J. Yue, and Y . Rao, “A deep learning framework for ﬁnancial
+time series using stacked autoencoders and long-short term memory,”
+PLOS ONE , vol. 12, no. 7, p. e0180944, 2017.
+[14] G. E. Hinton and R. R. Salakhutdinov, “Reducing the dimensionality of
+data with neural networks,” Science , vol. 313, no. 5786, pp. 504–507,
+2006.[15] Y . Bengio, P. Lamblin, D. Popovici, and H. Larochelle, “Greedy layer-
+wise training of deep networks,” in Advances in neural information
+processing systems , 2007, pp. 153–160.
+[16] K. He, X. Zhang, S. Ren, and J. Sun, “Deep residual learning for image
+recognition,” in Proceedings of the IEEE Conference on Computer Vision
+and Pattern Recognition , 2016, pp. 770–778.
+[17] R. C. Cavalcante, R. C. Brasileiro, V . L. Souza, J. P. Nobrega, and A. L.
+Oliveira, “Computational intelligence and ﬁnancial markets: A survey
+and future directions,” Expert Systems with Applications , vol. 55, pp.
+194–211, 2016.
+[18] A. Rodr ´ıguez-Gonz ´alez, ´A. Garc ´ıa-Crespo, R. Colomo-Palacios, F. G.
+Iglesias, and J. M. G ´omez-Berb ´ıs, “Cast: Using neural networks to
+improve trading systems based on technical analysis by means of the
+rsi ﬁnancial indicator,” Expert Systems with Applications , vol. 38, no. 9,
+pp. 11 489–11 500, 2011.
+[19] E. F. Fama, “The behavior of stock-market prices,” The journal of
+Business , vol. 38, no. 1, pp. 34–105, 1965.
+[20] M. Lam, “Neural network techniques for ﬁnancial performance predic-
+tion: integrating fundamental and technical analysis,” Decision Support
+Systems , vol. 37, no. 4, pp. 567–581, 2004.
+[21] A. K. Nassirtoussi, S. Aghabozorgi, T. Y . Wah, and D. C. L. Ngo, “Text
+mining of news-headlines for forex market prediction: A multi-layer
+dimension reduction algorithm with semantics and sentiment,” Expert
+Systems with Applications , vol. 42, no. 1, pp. 306–324, 2015.
+[22] A. Porshnev, I. Redkin, and A. Shevchenko, “Machine learning in
+prediction of stock market indicators based on historical data and data
+from twitter sentiment analysis,” in Data Mining Workshops (ICDMW),
+2013 IEEE 13th International Conference on . IEEE, 2013, pp. 440–
+444.
+[23] Y .-H. Lui and D. Mole, “The use of fundamental and technical analyses
+by foreign exchange dealers: Hong kong evidence,” Journal of Interna-
+tional Money and Finance , vol. 17, no. 3, pp. 535–545, 1998.
+[24] J. Yao, C. L. Tan, and H.-L. Poh, “Neural networks for technical
+analysis: a study on klci,” International Journal of Theoretical and
+Applied Finance , vol. 2, no. 02, pp. 221–241, 1999.
+[25] C.-F. Huang, “A hybrid stock selection model using genetic algorithms
+and support vector regression,” Applied Soft Computing , vol. 12, no. 2,
+pp. 807–818, 2012.
+[26] A. Ng, “Sparse autoencoder,” CS294A Lecture notes, https://web.
+stanford.edu/class/cs294a/sparseAutoencoder.pdf.
+[27] M. D. Zeiler, D. Krishnan, G. W. Taylor, and R. Fergus, “Deconvolu-
+tional networks,” in Proceedings of the IEEE Conference on Computer
+Vision and Pattern Recognition , 2010.
+[28] D. N. T. How, C. K. Loo, and K. S. M. Sahari, “Behavior recognition for
+humanoid robots using long short-term memory,” International Journal
+of Advanced Robotic Systems , vol. 13, no. 6, p. 1729881416663369,
+2016.
+[29] S. Hochreiter and J. Schmidhuber, “Long short-term memory,” Neural
+Computation , vol. 9, no. 8, pp. 1735–1780, 1997.
+[30] Z. Guo, H. Wang, Q. Liu, and J. Yang, “A feature fusion based
+forecasting model for ﬁnancial time series,” PLOS ONE , vol. 9, no. 6,
+p. e101113, 2014.
+[31] T.-J. Hsieh, H.-F. Hsiao, and W.-C. Yeh, “Forecasting stock markets
+using wavelet transforms and recurrent neural networks: An integrated
+system based on artiﬁcial bee colony algorithm,” Applied Soft Comput-
+ing, vol. 11, no. 2, pp. 2510–2525, 2011.
+[32] E. Altay and M. H. Satman, “Stock market forecasting: artiﬁcial neural
+network and linear regression comparison in an emerging market,”
+Journal of Financial Management & Analysis , vol. 18, no. 2, p. 18,
+2005.
+[33] K. O. Emenike, “Forecasting nigerian stock exchange returns: Evidence
+from autoregressive integrated moving average (arima) model,” Ssrn
+Electronic Journal , 2010.
+[34] Q. Chen, Q. Hu, J. X. Huang, L. He, and W. An, “Enhancing recurrent
+neural networks with positional attention for question answering,” in
+Proceedings of the 40th International ACM SIGIR Conference on
+Research and Development in Information Retrieval . ACM, 2017, pp.
+993–996.JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015 11
+1 61 121 181 242
+Trading Day2200240026002800PriceCSI300 Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 63 126 188 251
+Trading Day110001200013000PriceDJIA index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 62 124 186 248
+Trading Day160001800020000PriceHangSeng Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 63 125 187 250
+Trading Day450050005500PriceNifty 50 index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 62 124 185 247
+Trading Day900010000PriceNikkei 225 index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 63 126 188 251
+Trading Day12001400PriceS&P500 Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+Fig. 8. The actual and predicted curves for six stock index from 2011.10.01 to 2012.09.30.JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015 12
+1 60 119 178 238
+Trading Day2200240026002800PriceCSI300 Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 63 125 187 250
+Trading Day130001400015000PriceDJIA index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 61 122 182 243
+Trading Day200002200024000PriceHangSeng Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 63 125 187 249
+Trading Day55006000PriceNifty 50 index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 62 123 184 245
+Trading Day10000120001400016000PriceNikkei 225 index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 63 125 187 250
+Trading Day14001600PriceS&P500 Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+Fig. 9. The actual and predicted curves for six stock index from 2012.10.01 to 2013.09.30.JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015 13
+1 62 123 184 245
+Trading Day22002400PriceCSI300 Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 63 126 189 252
+Trading Day150001600017000PriceDJIA index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 62 124 185 247
+Trading Day2200024000PriceHangSeng Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 62 124 186 248
+Trading Day600070008000PriceNifty 50 index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 62 123 184 245
+Trading Day140001500016000PriceNikkei 225 index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 63 126 189 252
+Trading Day18002000PriceS&P500 Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+Fig. 10. The actual and predicted curves for six stock index from 2013.10.01 to 2014.09.30.JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015 14
+1 61 122 183 244
+Trading Day300040005000PriceCSI300 Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 63 126 189 252
+Trading Day160001700018000PriceDJIA index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 62 123 184 246
+Trading Day225002500027500PriceHangSeng Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 62 123 184 245
+Trading Day7500800085009000PriceNifty 50 index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 61 122 183 244
+Trading Day160001800020000PriceNikkei 225 index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 63 126 189 252
+Trading Day190020002100PriceS&P500 Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+Fig. 11. The actual and predicted curves for six stock index from 2014.10.01 to 2015.09.30.JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2015 15
+1 62 123 184 245
+Trading Day30003500PriceCSI300 Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 64 127 190 253
+Trading Day160001700018000PriceDJIA index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 62 124 185 247
+Trading Day18000200002200024000PriceHangSeng Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 62 123 184 246
+Trading Day700080009000PriceNifty 50 index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 62 123 184 245
+Trading Day160001800020000PriceNikkei 225 index
+Actual Data
+C1D-ROC
+C1D-LSTM
+1 64 127 190 253
+Trading Day1900200021002200PriceS&P500 Index
+Actual Data
+C1D-ROC
+C1D-LSTM
+Fig. 12. The actual and predicted curves for six stock index from 2015.10.01 to 2016.09.30.

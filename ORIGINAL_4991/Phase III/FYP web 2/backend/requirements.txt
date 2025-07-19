@@ -1,0 +1,17 @@
+# backend/requirements.txt
+fastapi
+uvicorn[standard]
+pydantic
+celery[redis]
+redis
+pandas
+numpy
+ta
+yfinance
+joblib
+tensorflow # Or tensorflow-cpu if you don't have GPU/CUDA setup
+matplotlib
+statsmodels
+python-dotenv
+requests # Often useful, though not strictly required by notebook yet
+python-multipart # For potential file uploads later

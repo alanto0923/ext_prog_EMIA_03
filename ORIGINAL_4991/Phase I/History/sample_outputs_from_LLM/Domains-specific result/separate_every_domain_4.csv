@@ -1,0 +1,72 @@
+domain,name,code
+Momentum,Price Momentum,"(CLOSE - DELAY(CLOSE, 14))"
+Momentum,Volume Momentum,"(VOLUME - DELAY(VOLUME, 14))"
+Momentum,RSI Momentum,"(RSI - DELAY(RSI, 14))"
+Momentum,Moving Average Convergence Divergence (MACD) Momentum,"(MACD - DELAY(MACD, 14))"
+Momentum,Exponential Moving Average (EMA) Momentum,"(EMA - DELAY(EMA, 14))"
+Momentum,Stochastic Oscillator Momentum,"(STOCH - DELAY(STOCH, 14))"
+Momentum,Rate of Change (ROC) Momentum,"(ROC - DELAY(ROC, 14))"
+Momentum,Bollinger Band Momentum,"(BBAND - DELAY(BBAND, 14))"
+Momentum,Ichimoku Cloud Momentum,"(ICLOUD - DELAY(ICLOUD, 14))"
+Mean Reversion,Simple Moving Average Crossover (20 days),"(SMA(CLOSE, 20) > SMA(CLOSE, -20)) ? 1 : 0"
+Mean Reversion,Exponential Moving Average Crossover (50 days),"(EMA(CLOSE, 50) > EMA(CLOSE, -50)) ? 1 : 0"
+Mean Reversion,Bollinger Bands Standard Deviation,"(STD(CLOSE, 20)) < 2 ? 1 : 0"
+Mean Reversion,Z-score Mean Reversion,"(CLOSE - MEAN(CLOSE, 20)) / STD(CLOSE, 20) > 2 || (CLOSE - MEAN(CLOSE, 20)) / STD(CLOSE, 20) < -2 ? 1 : 0"
+Mean Reversion,Stochastic Oscillator Mean Reversion,"(STOCH(CLOSE, 14, 3, 3) > 75 || STOCH(CLOSE, 14, 3, 3) < 25) ? 1 : 0"
+Mean Reversion,Relative Strength Index (RSI) Mean Reversion,"(RSI(CLOSE, 14) > 70 || RSI(CLOSE, 14) < 30) ? 1 : 0"
+Volatility,Standard Deviation,"STD(CLOSE, 20)"
+Volatility,Average True Range (ATR),ATR(14)
+Volatility,Bollinger Band Width,"(UPPER_BAND - LOWER_BAND) / SMA(CLOSE, 20)"
+Volatility,Stochastic Oscillator,(100 - CLOSE) / (HIGH + LOW)
+Volatility,Relative Strength Index (RSI),"RSI(CLOSE, 14)"
+Volatility,Bollinger Bands,"[SMA(CLOSE, 20) - 2*STD(CLOSE, 20), SMA(CLOSE, 20) + 2*STD(CLOSE, 20)]"
+Volatility,Keltner Channels,"[SMA(CLOSE, 20) - 2.0*STD(CLOSE, 20), SMA(CLOSE, 20) + 2.0*STD(CLOSE, 20)]"
+Volatility,Force Index,(CLOSE * VOLUME) / CLOSE
+Volatility,On Balance Volume (OBV),SUM(BOOL(CLOSE > PRICE Previous) * Volume)
+Volatility,Momentum Indicators,"[SMA(CLOSE, 10), SMA(CLOSE, 30)]"
+Fundamental,Price-to-Earnings Ratio (P/E),(CLOSE / EPS)
+Fundamental,Price-to-Book Ratio (P/B),(CLOSE / BOOK_VALUE)
+Fundamental,Dividend Yield,(DIVIDENDS / CLOSE)
+Fundamental,Price-to-Sales Ratio (P/S),(CLOSE / SALES)
+Fundamental,Enterprise Value-to-EBITDA Ratio (EV/EBITDA),(ENTERPRISE_VALUE / EBITDA)
+Fundamental,Price-to-Cash Flow Ratio (P/CF),(CLOSE / CASH_FLOW)
+Fundamental,Debt-to-Equity Ratio,(DEBT / EQUITY)
+Liquidity,Trading Volume,VOLUME
+Liquidity,Average Trading Volume,(HIGH + LOW)/2 / CLOSE
+Liquidity,Volume Rate of Change (VROC),"((VOLUME - DELAY(VOLUME, 14)) / DELAY(VOLUME, 14) * 100)"
+Liquidity,Relative Liquidity,CLOSE / HIGH
+Liquidity,Market Makers Volume,"(ORDER BOOK SIZE - DELAY(ORDER BOOK SIZE, 10)) / DELAY(ORDER BOOK SIZE, 10)"
+Liquidity,Total Order Book Depth,"DELAY(ORDER BOOK SIZE, 10) + DELAY(ORDER BOOK SIZE, 20)"
+Liquidity,Bid-Ask Spread,HIGH - LOW
+Liquidity,Last Trade Volume,"VOLUME / DELAY(VOLUME, 1)"
+Quality,Gross Profit Margin,(GROSS_PROFIT / REVENUE)
+Quality,Operating Profit Margin,(OPERATING_INCOME / REVENUE)
+Quality,Net Profit Margin,(NET_INCOME / REVENUE)
+Quality,Return on Equity (ROE),(NET_INCOME / TOTAL_EQITY)
+Quality,Asset Utilization Ratio,(TOTAL_REVENUE / TOTAL_ASSETS)
+Growth,Price-to-Earnings Ratio Growth Rate,"(P/E / DELAY(P/E,1) - 1)"
+Growth,Dividend Yield Growth Rate,"(Yield / DELAY(Yield,1)) * 100"
+Growth,Return on Equity (ROE) Growth Rate,"(NET INCOME / DELAY(NET INCOME,1) / EQUITY)"
+Growth,Operating Margin Growth Rate,"(OPERATING MARGIN / DELAY(OPERATING MARGIN,1)) * 100"
+Growth,Free Cash Flow Growth Rate,"(FREE CASH FLOW / DELAY(FREE CASH FLOW,1)) - (BOOK VALUE / DELAY(BOOK VALUE,1))"
+Technical,Moving Average (MA),"SMA(CLOSE, 20)"
+Technical,Exponential Moving Average (EMA),"EMA(CLOSE, 20)"
+Technical,Relative Strength Index (RSI),RSI(14)
+Technical,Bollinger Bands,"BBAND(CLOSE, 20, 2)"
+Technical,Stochastic Oscillator,"STOCH(CLOSE, HIGH, LOW)"
+Technical,Momentum Indicator,"MO(MA(CLOSE, 20))"
+Technical,MACD (Moving Average Convergence Divergence),"MACD(CLOSE, 26, 12, 9)"
+Technical,On Balance Volume (OBV),"OBV(CLOSE, VOLUME)"
+Technical,Force Index,"FI(CLOSE, VOLUME)"
+Technical,Ichimoku Cloud,"ICLOUD(CLOSE, 26, 20, 12, 3)"
+Macro Economics,GDP Growth Rate,"GDP - DELAY (GDP, n)"
+Macro Economics,Inflation Rate,"CPI - DELAY (GDP, n)"
+Macro Economics,Unemployment Rate,"UNEMPLOYMENT_RATE - DELAY(UNEMPLOYMENT_RATE, n)"
+Macro Economics,Interest Rate,"INTEREST_RATE - DELAY (INTEREST_RATE, n)"
+Macro Economics,Consumer Price Index,"CPI - DELAY (GDP, n)"
+Macro Economics,Producer Price Index,"PPI - DELAY (GDP, n)"
+Macro Economics,Government Budget Balance,"GOVERNMENT_BUDGET_BALANCE - DELAY(GOVERNMENT_BUDGET_BALANCE, n)"
+Macro Economics,National Debt,"NATIONAL_DEBT - DELAY (GDP, n)"
+Macro Economics,Exchange Rate,"EXCHANGE_RATE - DELAY(EXCHANGE_RATE, n)"
+Macro Economics,Gross Domestic Product per capita,"GDP_per_capita - DELAY(GDP_per_capita, n)"
+Macro Economics,Monetary Aggregates,"MONETARYAggregates - DELAY (MONETARYAggregates, n)"

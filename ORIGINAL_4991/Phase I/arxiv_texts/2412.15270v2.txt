@@ -1,0 +1,605 @@
+BAICHUAN 4-F INANCE TECHNICAL REPORT
+Hanyu Zhang∗, Boyu Qiu∗, Yuhao Feng, Shuqi Li,
+Qian Ma, Xiyuan Zhang†, Qiang Ju, Dong Yan, Jian Xie†
+Baichuan Inc.
+ABSTRACT
+Large language models (LLMs) have demonstrated strong capabilities in language
+understanding, generation, and reasoning, yet their potential in finance remains
+underexplored due to the complexity and specialization of financial knowledge. In
+this work, we report the development of the Baichuan4-Finance series, including
+a comprehensive suite of foundational Baichuan4-Finance-Base and an aligned
+language model Baichuan4-Finance , which are built upon Baichuan4-Turbo base
+model and tailored for finance domain. Firstly, we have dedicated significant effort
+to building a detailed pipeline for improving data quality. Moreover, in the contin-
+ual pre-training phase, we propose a novel domain self-constraint training strategy,
+which enables Baichuan4-Finance-Base to acquire financial knowledge without
+losing general capabilities. After Supervised Fine-tuning and Reinforcement Learn-
+ing from Human Feedback and AI Feedback, the chat model Baichuan4-Finance is
+able to tackle various financial certification questions and real-world scenario ap-
+plications. We evaluate Baichuan4-Finance on many widely used general datasets
+and two holistic financial benchmarks. The evaluation results show that Baichuan4-
+Finance-Base surpasses almost all competitive baselines on financial tasks by
+significant margins without sacrificing performance on general LLM benchmarks.
+At the same time, Baichuan4-Finance demonstrates even more impressive per-
+formance on financial application scenarios, showcasing its potential to foster
+community innovation in the financial LLM field.
+∗These authors contributed equally.
+†Corresponding Author.
+1arXiv:2412.15270v2  [cs.CL]  2 Jan 2025CONTENTS
+1 Introduction 3
+2 Tokenizer & Model Architecture 4
+2.1 Tokenizer . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+2.2 Model Architecture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+3 Continual pre-training 4
+3.1 Pre-training Data Composition . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+3.2 Data Quality Enhancement . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+3.3 Determining the Data Mixture Ratio by Scaling Laws . . . . . . . . . . . . . . . . 5
+3.4 Continual pre-training . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+3.5 Annealing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+4 Alignment 7
+4.1 Supervised Fine-tuning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+4.1.1 Demonstration Data Construction . . . . . . . . . . . . . . . . . . . . . . 7
+4.1.2 Training Strategy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+4.2 Reward Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+4.2.1 Preference Data Construction . . . . . . . . . . . . . . . . . . . . . . . . 8
+4.2.2 Reward Model Training . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+4.3 Reinforcement Learning from Human Feedback and AI Feedback . . . . . . . . . 8
+5 Experiments 9
+5.1 Benchmarks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+5.2 Preliminary Experiments . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+5.2.1 Ablation Study for Domain Self-constraint Continual Pre-training . . . . . 9
+5.2.2 Ablation Study for PPO . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+5.3 Main Results of Baichuan4-Finance . . . . . . . . . . . . . . . . . . . . . . . . . 12
+5.3.1 Baselines . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+5.3.2 Comparison Results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+6 Conclusion 14
+21 I NTRODUCTION
+Since the launch of ChatGPT1, interest in large language models (LLMs) has surged worldwide. The
+release of the Llama series (Touvron et al., 2023) further sparked excitement within the open-source
+community, particularly for GPT-level local LLMs. Recently, Claude-3 Opus2, Gemini-1.5 (Team
+et al., 2023), GPT-4 (Achiam et al., 2023), GPT-4o (omni)3, o1-preview and o1-mini4, the updated
+versions of ChatGPT, quickly rose to the top of the Chatbot Arena (Chiang et al., 2024). Additionally,
+Llama-35has become the leading open-weight model series, closing the performance gap with top
+proprietary models and regarded as on par with GPT-4. An increasing number of competitive LLMs,
+such as Baichuan (Yang et al., 2023a), Qwen (Bai et al., 2023), Mistral (Jiang et al., 2023), and
+Gemma (Team et al., 2024), are reported gradually, following in the footsteps of the GPT series and
+Llama series.
+Applying general LLM to the finance domain presents challenges, as financial documents often
+contain complex numerical data and domain-specific terminology, requiring advanced numerical
+processing and reasoning skills. As a result, financial LLMs must have extensive domain knowledge
+to interpret the subtle implications. Recently, many financial LLMs have also been developed to meet
+the needs of the financial domain, such as (Wu et al., 2023; Yang et al., 2023b; Liu et al., 2021; Xie
+et al., 2023; Yang et al., 2023c; Shah et al., 2022), which have demonstrated superior capabilities over
+general models in many financial-related tasks. These advancements have revealed the potential of
+unstructured data for data-driven financial decision-making and for transforming financial documents
+into actionable insights and market intelligence.
+Over the past two years, Baichuan Inc. has introduced many LLM series, including Baichuan series6,
+Baichuan2 series (Yang et al., 2023a), Baichuan3 series and progressed to the latest Baichuan4
+series7. During the same time, we reported the role play LLMs Baichuan-NPC series8providing
+highly flexible personalized character customization capabilities. In this work, we introduce the
+first financial LLM series of the Baichuan LLM family: Baichuan4-Finance. It is a series of LLMs
+grounded in the Baichuan4-Turbo base model9and specifically tailored for the finance domain.
+This LLM series includes a foundational/base language model Baichuan4-Finance-Base, which
+is pre-trained but not yet aligned with human preferences, as well as an instruction-tuned model
+Baichuan4-Finance, which has been fine-tuned for chat and downstream applications.
+Generally, the development of a domain-specific LLM consists of two main stages:
+•Continual pre-training : aiming to remain an existing general LLM with new domain-
+specific data on an incremental sequence of tasks (Lee et al., 2024).
+•Alignment : aiming to fine-tune models to follow instructions, align with human preferences,
+and improve LLMs’ specific domain capabilities (Dubey et al., 2024).
+Based on past experience, many factors have a significant impact on the performance of the final
+model: data (quality & size & mixture ratio), model (tokenizer & architecture), and training strategy
+(continual pre-training & alignment). In this report, we will introduce how we seek to optimize the
+above factors throughout our development process.
+1https://openai.com/index/chatgpt/
+2https://www-cdn.anthropic.com/de8ba9b01c9ab7cbabf5c33b80b7bbc618857627/
+Model_Card_Claude_3.pdf
+3https://openai.com/index/hello-gpt-4o/
+4https://openai.com/index/learning-to-reason-with-llms/
+5https://github.com/meta-llama/llama3/blob/main/MODEL_CARD.md
+6https://huggingface.co/baichuan-inc/Baichuan-7B,https://huggingface.
+co/baichuan-inc/Baichuan-13B-Chat
+7https://platform.baichuan-ai.com/playground?initialmodel=Baichuan4
+8https://npc.baichuan-ai.com/index
+9https://platform.baichuan-ai.com/playground?initialmodel=Baichuan4-
+Turbo
+32 T OKENIZER & M ODEL ARCHITECTURE
+This section introduces the tokenizer and model architecture of Baichuan4-Finance-Base.
+2.1 T OKENIZER
+We employ the byte-level byte-pair encoding (BBPE) (Wang et al., 2020) as the tokenizer, which
+has been proven to have a high compression rate relative to others (Yang et al., 2024). The resulting
+vocabulary has 141,056 regular tokens.
+2.2 M ODEL ARCHITECTURE
+Pre-normalization with RMSNorm To handle training stability, we employ the RMSNorm (Jiang
+et al., 2024) for pre-normalizing.
+Grouped-Query Attention We leverage the Grouped Query Attention (GQA) (Ainslie et al., 2023)
+instead of the traditional Multi-Head Attention (MHA) (Vaswani, 2017) to improve inference speed
+and to reduce the size of key-value caches during decoding.
+Positional Encoding RoPE (Su et al., 2023) is employed to serve for positional encoding as most
+open-sourced models do.
+3 C ONTINUAL PRE -TRAINING
+In the pre-training of the Baichuan4-Finance-Base, we mainly focused on dataset composition,
+dataset quality enhancement, determining the data mixture ratio with scaling law, and the strategy of
+continuing pre-training. We present each of these components separately below.
+3.1 P RE-TRAINING DATA COMPOSITION
+The Pre-training Data consists of two main parts: general data encapsulating world knowledge and
+financial data containing extensive financial knowledge.
+General Data (400B tokens - 80% of pre-training data) To create a comprehensive global
+knowledge system, we collect diverse data from various sources, such as internet webpages, books,
+research papers, codebases, and more.
+Financial Data (100B tokens - 20% of pre-training data) To teach the model finance-related
+knowledge, we construct a comprehensive dataset comprising a range of financial documents includ-
+ing news, press releases, finance books, finance journals, and social media posts. The composition of
+the financial corpus is shown in Figure 1.
+3.2 D ATA QUALITY ENHANCEMENT
+Generally, datasets that are unfiltered or only lightly filtered tend to have lower quality compared
+to more carefully curated ones. Therefore, we have carefully designed a pipeline to enhance the
+overall quality of the data. We filter and clean the associated texts using rule-based heuristics, such as
+controlling the average sentence length and document length. Then the following processing methods
+are employed to the dataset step by step.
+Data Filtering with Quality Classifier To improve data quality, we first train an automatic quality
+classifier based on logistic regression to remove the low-quality documents. High-quality examples
+are selected from general data, while the raw unfiltered documents are sampled from various sources
+and taken as low-quality examples. We mix these two class data with a 1:1 ratio for classifier training.
+Once the classifier is fitted, we then apply it to score the unfiltered documents and re-sample them by
+giving priority to those predicted to be of higher quality:
+np.random .pareto (α)>1−document score . (1)
+4The meaning of this filtering rule is that a document is retained only if a random sample from the
+Pareto distribution is greater than 1−document score . This setup results in a higher retention
+probability for documents with higher quality scores.
+Data Filtering with Model Scoring After the quality classifier, we perform further data filtering
+from a more fine-grained perspective. At first, by prompting Baichuan4-Turbo, we score millions
+of data samples across multiple dimensions, including readability, coherence, informativeness,
+safety, degree of anonymity, and unattainable references. The scoring system is designed to capture
+both qualitative and quantitative aspects of the data reliably and responsibly. Secondly, the data and
+corresponding labels serve as inputs to train an automatic scoring model grounded on XLM-Roberta10.
+Lastly, after the scoring model is fitted, we leverage the aforementioned pareto re-sampling strategy
+to filter data.
+In this process, we also leverage an abnormal loss detection schema to filter low-quality data.
+Specifically, we obtain the loss of every source of data using a 1B Base model and perform sampling
+analysis on data with abnormal loss values. If the anomalies are due to low-quality data and represent
+common, generalizable issues, we apply rules to identify and remove similar entries. For more
+complex issues that cannot be fully addressed with rules, we collect a sample set and feed them into
+the XLM-RoBERTa model to learn their patterns.
+Code, Math and Markdown Data Due to the significantly different token distributions of code,
+math, and markdown data compared to natural language, we develop specialized filtering models
+tailored to these data types.
+Data De-duplication & Anonymization To prevent redundancy, following (Dubey et al., 2024),
+we perform many rounds of de-duplication processes at the URL level, document level and line level,
+respectively.
+•URL level de-duplication: we retain the latest version of each page corresponding to its
+URL across the entire dataset.
+•Document level de-duplication: we leverage global MinHash (Broder, 1997) across the
+entire dataset to de-duplicate the similar docments. Remarkably, different de-duplication
+thresholds are set for documents of varying difficulty.
+•Line-level de-duplication: following Llama 3 (Dubey et al., 2024) and ccNet (Wenzek et al.,
+2019), we remove lines that occur more than certain times within each bucket.
+Besides, We use regular expressions to anonymize data, including personal names, paper references,
+etc.
+3.3 D ETERMINING THE DATA MIXTURE RATIO BY SCALING LAWS
+Scaling Laws Considering the differences in data distribution between the pre-training and continual
+pre-training stages, careful attention must be given to seeking the optimal mixture ratio of the pre-
+training financial data to develop a high-quality financial LLM. To obtain the Baichuan4-Finance-Base,
+we need to determine the mixture ratio of n= 37 financial data sources, including research reports,
+academic papers, examination questions, and more.
+To identify the optimal data mixture ratio with limited training costs, we conduct a two-stage scaling
+law methodology by training several small models on specific data mixture ratios and using their
+performance to estimate how a larger model would perform with the same mixture ratio:
+•We first establish a correlation between the model size, data mixture ratio, dataset sizes and
+the model validation loss with D-CPT Law (Que et al., 2024). Assuming that Nindicates
+the model size, D= [D1, D2,···, Dn]indicates the dataset size of ndata sources, given a
+specific mixture ratio r= [r1, r2,···, rn]corresponding to these data sources, we could
+leverage the parameterization function L={Li}n
+i=1defined as follows to predict the
+10https://huggingface.co/docs/transformers/model_doc/xlm-roberta
+5Financial NewsFinancial JournalsFinancial Q&AFinancial Research ReportsFinancial BooksFinancial Papers Financial Encyclopedia
+General Financial Data28.0%
+24.0%22.1%15.0%5.9%2.5%2.2%
+0.4%Figure 1: The composition of financial data for Baichuan4-Finance-Base pre-training.
+validation loss for each data source:
+L=Li(N, D i, ri) =Ei+Ai
+Nαi+Bi·rηi
+i
+Dβi
+i+Ci
+r′γ
+i,where r′
+i=ri+ϵ. (2)
+ϵis used to handle the scenarios when riapproaches 0, and {Ei, Ai, Bi, Ci, αi, βi, γi, ηi}n
+i=1
+are parameters need to learn.
+•Then, we correlate the validation loss with the performance of pre-training benchmark tasks,
+i.e. to predict the accuracy on benchmark datasets (Dubey et al., 2024). Specifically, we
+leverage a sigmoid function to model the relation between validation losses and benchmark
+accuracies for all domains.
+With these two scaling laws, we are able to predict the downstream performance of arbitrary data
+mixture ratios, model size, and dataset sizes.
+Scaling Law Results Based on the scaling laws, we could determine the financial pre-training data
+mixture ratio, which is visualized in Figure 1.
+3.4 C ONTINUAL PRE -TRAINING
+We continue training Baichuan4-Turbo base model to develop Baichuan4-Finance-Base. Regular
+continual pre-training involves training on new data using the same training strategy as the pre-
+training phase. Drawing inspiration from the concept of PPO (Schulman et al., 2017), we introduce
+a novel domain-specific continual pre-training strategy, termed domain self-constraint continual
+pre-training . This approach balances two objectives: firstly, maintaining the knowledge of the
+general model, ensuring the retention of general task-solving capabilities; and secondly, enabling
+the training model to acquire domain-specific financial knowledge. To achieve these two goals, we
+design two different objectives, respectively.
+Considering a reference LLM - Baichuan4-Turbo base model parameterized by θref, and the
+Baichuan4-Finance-Base parameterized by θfinand a pre-training document x={xt}T
+t=1, where T
+indicates document length.
+If the document xbelongs to the general data, we formalize the learning objective as:
+L=Lkl=1
+TTX
+t=1KL 
+Pθfin(xt|x<t), Pθref(xt|x<t)
+, (3)
+6which enables Baichuan4-Finance-Base to maintain the general knowledge. To improve the complex-
+ity efficiency, we sample 200 probabilities of the reference model for each token.
+While the document xbelongs to the financial data, the objective consists of two parts formalized as
+follows:
+L=αLkl+Llm, (4)
+in which αis the hyper-parameter to balance the two parts of this objective, and Llmis defined as
+follows,
+Llm=1
+TTX
+t=1−logPθfin(xt|x<t). (5)
+With this objective, Baichuan4-Finance-Base learns financial domain knowledge while maintaining
+general knowledge.
+By minimizing the above objective on the whole pre-training data,
+θ∗
+fin= arg min
+θfinL, (6)
+we could obtain the pre-trained financial model - Baichuan4-Finance-Base.
+3.5 A NNEALING
+During the continual pre-training stage on the final 80M tokens, the learning rate was linearly reduced
+to 0. Additionally, the data mixture ratio was adjusted to prioritize high-quality financial data sources
+(Dubey et al., 2024).
+4 A LIGNMENT
+After the extensive large-scale pre-training phase, we further delve into the alignment phase to refine
+its capabilities across diverse domains such as financial computation, financial logical reasoning,
+and financial instruction following. This phase is crucial for ensuring that the model’s outputs align
+with human values, making them useful, truthful, and safe. Specifically, we focus on collecting
+high-quality demonstration data for alignment training aiming to reduce the reliance on human
+labeling while maximizing data quality and reliability.
+4.1 S UPERVISED FINE-TUNING
+4.1.1 D EMONSTRATION DATA CONSTRUCTION
+The construction process of demonstration data mainly consists of three steps: finance materials
+construction, seed sample repository construction and large-scale demonstration construction.
+Finance Materials Construction Firstly, we collect a large-scale financial corpus, including news
+articles, research papers, books, and other relevant financial documents, to serve as the foundational
+demonstration data source.
+Seed Sample Repository Construction Secondly, we construct a high-quality human-annotated
+seed sample repository for further large-scale automated data construction. From an application per-
+spective, we categorize the problems that Baichuan4-Finance aims to solve along multiple dimensions
+to construct the instructions:
+•By basic capabilities: classification, clustering, generation, summarization, extraction,
+question-answering, coding, mathematics, etc.
+• By problem complexity: simple instructions, normal instructions, complex instructions.
+For these instructions, we manually constructed high-quality data to serve as seeds for generating
+large-scale demonstration datasets.
+7Large-scale demonstration construction For one document sampled from the constructed finance
+materials repository, with an in-context learning strategy, in which the examples are sampled from the
+seed sample repository, we prompt Baichuan4-Turbo to generate the corresponding instruction. Then,
+multiple responses to an instruction are obtained using diverse generation strategies. Lastly, human
+annotators manually review and filter the generated demonstration data and construct a high-quality
+demonstration dataset for further supervised fine-tuning.
+4.1.2 T RAINING STRATEGY
+We have curated a comprehensive instruction dataset containing over 160,000 high-quality demonstra-
+tions, covering tasks such as instruction following, financial classification, clustering, and generation.
+Based on this dataset and the regular supervised fine-tuning process, the supervised fine-tuned model
+is produced.
+4.2 R EWARD MODEL
+4.2.1 P REFERENCE DATA CONSTRUCTION
+Human Feedback Preference Data Construction For scenarios with non-unique answers, such
+as in information understanding and creative tasks, we use human feedback (Ouyang et al., 2022)
+to construct the preference dataset. Specifically, we first collect prompts and perform multiple
+high-temperature samplings for each prompt using Baichuan4-Turbo. Then, human annotators score
+and rank each answer on truthfulness, harmlessness, fluency, and instruction following. Finally, based
+on the ranking results, we could construct many chosen and rejected pairs for each prompt.
+AI Feedback Preference Data Construction For scenarios with unique answers, such as math-
+ematical reasoning, which is particularly important for financial scenarios requiring calculations,
+we use AI feedback (Cui et al., 2024; Li et al., 2024b) to construct the preference dataset. For
+example, given a mathematical dataset, for each math prompt, Baichuan4-Turbo generates answers
+through several inference runs. A verifier then checks each answer against the ground truth label to
+determine its correctness. Samples where all answers are correct and those with all incorrect answers
+are removed. The remaining samples are used to construct the preference dataset.
+By the above two processes, we fulfill the preference dataset construction, which is used for the
+reward model training.
+4.2.2 R EWARD MODEL TRAINING
+The reward model is initialized from the Baichuan4-Turbo base model by replacing the language mod-
+eling head with a value head. For a prompt xwith its corresponding preference data (ychosen, yrejected ),
+following (Ouyang et al., 2022), the loss function of the reward model is formulated as:
+Lrm=−1
+NE(x,y chosen,yrejected)[log (σ(rθ(x, y chosen)−rθ(x, y rejected )))], (7)
+where Ndenotes the number of preference pairs of the prompt x,θdenotes the parameter set of
+reward model and rθ(x, y)indicates the output reward score.
+4.3 R EINFORCEMENT LEARNING FROM HUMAN FEEDBACK AND AI F EEDBACK
+Reinforcement Learning from Human Feedback (RLHF) or from AI feedback is increasingly regarded
+as a crucial approach for LLM alignment. However, alignment methods that depend on the reward
+model present notable challenges due to the inherent instability and imperfections of reward models,
+leading to problems like reward hacking and misalignment with human intentions. Inspired by
+(Yan et al., 2024), we leverage such a PPO-based reward-robust framework to pursue more reliable
+and resilient reinforcement learning. We first initialize the model with the supervised fine-tuned
+Baichuan4-Finance-Base and use it to generate predictions for randomly selected prompts from
+the overall prompts constructed in preference data construction. Then we optimize it with the
+PPO strategy and the above reward-robust framework by maximizing the overall reward. After
+reinforcement learning, the final chat version model is produced, called Baichuan4-Finance.
+85 E XPERIMENTS
+5.1 B ENCHMARKS
+Public General Benchmarks C-Eval (Huang et al., 2024), CMMLU (Hendrycks et al., 2020),
+MMLU (Hendrycks et al., 2020), GSM8k ZH (translated from GSM8k (Cobbe et al., 2021) into
+Chinese), and HumanEval (Chen et al., 2021). Besides, we also leverage 7 math datasets from (Li
+et al., 2024a), including MATH, K-12, Orca-math, AoPS Forum, Olympiads, AMC&AIME and
+Synthetic. We randomly sampled 800 samples from them and manually translated 400 of them into
+Chinese for testing.
+Public Financial Benchmarks We evaluate the financial capabilities by using two benchmarks
+FinanceIQ and FLAME.
+FinanceIQ11is a Chinese evaluation benchmark in the financial domain, covering 10 major financial
+certifications, consisting of CPA (Certified Public Accountant), CCBP (Certification of China Banking
+Professional), FundPQ (Fund Practitioner Qualification), SPQ (Securities Practitioner Qualification),
+CICE, Economist, FuturesPQ (Futures Practitioner Qualification), CTA (Certified Tax Agents), CAA
+(China Actuarial Association) and AFP (Associate Financial Planner), leading to a total of 7,173
+multiple-choice questions.
+FLAME12is a newly proposed Chinese financial benchmark, including the Financial Qualification
+Certification Evaluation System (FLAME-Cer) and the Financial Scenario Application Evaluation
+System (FLAME-Sce).
+•FLAME-Cer consists of 14 financial certifications: AFP (Associate Financial Planner),
+CAA (China Actuarial Association), CFA (Chartered Financial Analyst), CIA (Certified
+Internal Auditor), CISA (Certified Information Systems Auditor), CMA (Certified Man-
+agement Accountant), CPA (Certified Public Accountant), FRM (Financial Risk Manager),
+CLIQ (Chinese Life Insurance Qualification, 8 qualification certificates), FundPQ (Fund
+Practitioner Qualification), FuturesPQ (Futures Practitioner Qualification), Preliminary &
+Intermediate Economist, SPQ (Securities Practitioner Qualification), CCBP (Certification of
+China Banking Professional).
+•FLAME-Sce encompasses 10 financial scenario applications, including Financial Knowl-
+edge and Theory, Financial Compliance, Financial Document Generation, Financial Intelli-
+gent Customer Services, Financial Risk Control, Financial Document Processing, Financial
+Analysis and Research, Financial Investment and Wealth Management, Financial Marketing,
+and Financial Data Processing.
+5.2 P RELIMINARY EXPERIMENTS
+5.2.1 A BLATION STUDY FOR DOMAIN SELF-CONSTRAINT CONTINUAL PRE-TRAINING
+To evaluate the effectiveness of the domain self-constraint strategy, we conducted a preliminary
+experiment using a 1B small Base model, with the results presented in Figure 2. The figure compares
+the model’s performance on multiple datasets using three different training approaches: without
+continual pre-training, with regular continual pre-training, and with the proposed domain self-
+constraint continual pre-training. The results indicate that regular continual pre-training leads to a
+loss of general knowledge as the model learns financial knowledge. In contrast, the proposed domain
+self-constraint strategy enhances the model’s financial performance while preserving its general
+knowledge.
+Furthermore, we compared the performance of Baichuan4-Finance-Base with its backbone,
+Baichuan4-Turbo base model, to showcase the capabilities of Baichuan4-Finance-Base on both
+general tasks and financial-related tasks. The results are shown in Figure 3, from which we can see
+that Baichuan4-Finance-Base surpasses Baichuan4-Turbo base model on financial benchmark by
+significant margins with comparable performance on general datasets.
+11https://huggingface.co/datasets/Duxiaoman-DI/FinanceIQ
+12https://github.com/FLAME-ruc/FLAME/tree/main
+9Figure 2: Here we put a case on a 1B model to explore the validation of the proposed domain
+self-constraint training strategy on public general datasets and public financial benchmark FinanceIQ.
+Figure 3: Performance comparison across Baichuan4-Finance-Base and its backbone Baichuan4-
+Turbo base model on public general datasets, and financial benchmark FinanceIQ.
+5.2.2 A BLATION STUDY FOR PPO
+To investigate the necessity of the reinforcement learning phase, i.e. the effectiveness of PPO, we
+compared the following three models:
+•Baichuan4-Finance: trained Baichuan4-Finance-Base with supervised fine-tuning strategy
+on the SFT demonstration dataset and then aligned it by PPO strategy on the preference
+dataset;
+•Baichuan4-Finance w/o PPO: trained Baichuan4-Finance-Base with supervised fine-tuning
+strategy, on the SFT demonstration dataset and the prompts in preference dataset with
+corresponding ground truth labels;
+•Baichuan4-Finance-Base-SFT: trained Baichuan4-Finance-Base with the supervised fine-
+tuning strategy only on the SFT demonstration dataset.
+10The results are visualized in Figure 4, we could find that under the same training data, using the SFT
+and PPO algorithm for training performs significantly better than using the SFT algorithm alone,
+thereby validating the effectiveness of PPO.
+Furthermore, we explored the underlying mechanism of PPO’s effectiveness by conducting the
+following experiments:
+• Baichuan4-Finance pass@1: we perform a zero-shot inference with Baichuan4-Finance.
+•Baichuan4-Finance w/o PPO pass@1: we perform a single inference with Baichuan4-
+Finance w/o PPO (see Section 5.2.2 for the definition of this model);
+•Baichuan4-Finance w/o PPO pass@5: we perform inference process for 5 runs with
+Baichuan4-Finance w/o PPO. The model is considered to have inferred correctly on this
+sample as long as at least one of the answers is correct.
+0
+0.9
+Figure 4: An experiment to demonstrate the effectiveness of PPO focusing on models’ mathematical
+abilities conducted on eight mathematical datasets.
+0
+0.3
+Figure 5: An experiment to explore the mechanism of how PPO takes effect.
+11It is a well-established fact that the metrics calculated using the Baichuan4-Finance w/o PPO pass@5
+evaluation method are higher than those calculated using the Baichuan4-Finance w/o PPO pass@1
+evaluation method. If there is a noticeable difference between these two evaluation methods, it
+indicates that the model’s hit rate per inference is unstable. If the results of these two methods
+are near, PPO’s potential to enhance the model is limited for its learning from the difference value
+between answers. Based on these analyses, we calculate the minus of Baichuan4-Finance w/o PPO
+pass@1’s performance and Baichuan4-Finance w/o PPO pass@5’s performance on eight datasets to
+explore the potential effectiveness of PPO. The results are shown in the blue line in the radar chart 5.
+Besides, for comparison, we also calculate the minus of Baichuan4-Finance pass@1’s performance
+and Baichuan4-Finance w/o PPO pass@1’s performance, and the results are shown in the orange
+line in Figure 5. By comparing these two lines, their similar shape indicates that the performance of
+Baichuan4-Finance pass@1 and its of Baichuan4-Finance w/o PPO pass@5 are positively correlated,
+which further presents that PPO could enhance the model’s hit rate per inference by transferring the
+potential performance from pass@5.
+5.3 M AINRESULTS OF BAICHUAN 4-F INANCE
+5.3.1 B ASELINES
+Under zero-shot setting, we compare the generation accuracy of Baichuan4-Finance with GPT-
+4o13and two open-source LLMs Qwen2.5-72B-Instruct14and XuanYuan3-70B15on benchmark
+FinanceIQ. For the benchmark FLAME, we present the evaluation results of the official institute,
+which contains 5 competitive chat LLMs including GPT-4o, ERNIE-4.0-Turbo-128K16, GLM-4-
+PLUS17, Qwen2.5-72B-Instruct and XuanYuan3-70B.
+5.3.2 C OMPARISON RESULTS
+The comparison results of Baichuan4-Finance and baselines on the FinanceIQ dataset are shown
+in Table 3, while the results of the FLAME benchmark are shown in Table 1 and Table 2. We can
+see that Baichuan4-Finance has strong capabilities in tackling different financial certifications and
+application scenarios.
+Table 1: The zero-shot accuracy of Baichuan4-Finance and baselines on FLAME-Cer benchmark.
+FLAME-Cer GPT-4oERNIE-4.0-
+Turbo-128KGLM-4-
+PLUSQwen2.5-72B-
+InstructXuanYuan3-70B-
+ChatBaichuan4-Finance
+AFP 74.19 72.93 79.95 79.37 64.09 90.08
+CFA 86.97 74.44 81.45 82.92 63.88 85.59
+CAA 44.65 48.37 43.26 55.81 31.63 66.51
+CIA 84.46 77.94 83.46 86.69 70.53 92.59
+CISA 86.72 77.94 83.96 86.83 70.31 95.76
+CMA 83.21 73.68 76.69 86.10 65.71 86.10
+CPA 68.67 70.18 78.95 85.31 68.64 93.16
+FRM 74.94 67.92 76.69 76.87 55.46 82.87
+CLIQ 81.20 79.95 81.70 86.61 69.10 93.82
+FundPQ 82.96 84.21 84.71 94.61 76.73 97.93
+FuturesPQ 75.94 78.45 82.46 90.23 73.74 96.54
+Ecomonist 80.45 87.97 90.48 93.41 82.35 95.78
+SPQ 76.69 84.21 88.72 94.33 78.74 97.60
+CCBP 78.70 86.97 86.47 92.72 79.26 96.42
+Average 78.23 77.03 81.17 88.24 72.07 93.62
+13https://openai.com/index/hello-gpt-4o/
+14https://huggingface.co/Qwen/Qwen2.5-72B-Instruct
+15https://huggingface.co/Duxiaoman-DI/XuanYuan-70B
+16https://cloud.baidu.com/
+17https://open.bigmodel.cn/
+12Table 2: The performance of Baichuan4-Finance and baselines on FLAME-Sce benchmark.
+FLAME-Sce GPT-4oERNIE-4.0-
+Turbo-128KGLM-4-
+PLUSQwen2.5-72B-
+InstructXuanYuan3-70B-
+ChatBaichuan4-Finance
+Knowledge and Theory 89.14 87.67 87.06 87.75 76.94 91.17
+Compliance 80.27 80.27 86.95 83.61 40.13 87.24
+Document Generation 60.01 58.89 61.11 58.89 41.11 70.03
+Intelligent Consumer
+Services83.52 79.59 79.78 83.18 62.37 86.92
+Risk Control 82.94 75.86 80.3 81.99 63.93 85.36
+Document Processing 83.51 80.22 65.88 80.18 65.91 86.77
+Data Processing 86.43 89.99 79.87 91.61 71.92 91.71
+Analysis and Research 45.45 48.48 42.42 42.42 33.33 45.45
+Marketing 57.58 93.94 75.76 54.55 30.3 78.79
+Investment &
+Wealth Management85.71 71.43 89.29 85.71 67.86 89.29
+Average 79.88 78.01 76.92 79.18 61.34 84.15
+Table 3: The zero-shot accuracy of Baichuan4-Finance and baselines on FinanceIQ benchmark.
+FinanceIQ GPT-4o Qwen2.5-72B-Instruct XuanYuan3-70B-Chat Baichuan4-Finance
+CPA 62.93 74.83 65.45 80.70
+CCBP 74.28 85.85 73.84 88.26
+SPQ 69.13 79.25 71.09 82.40
+FindPQ 72.02 83.14 73.97 83.49
+CICE 73.71 80.03 59.77 82.47
+Economist 82.12 90.19 67.31 93.85
+CTA 49.80 74.59 47.75 75.00
+FuturesPQ 69.52 80.60 73.67 85.91
+AFP 71.53 76.61 67.43 82.71
+CAA 37.50 45.45 37.50 37.50
+Average 66.25 77.06 63.78 79.23
+136 C ONCLUSION
+In this report, we introduce the Baichuan4-Finance series, which includes two models: Baichuan4-
+Finance-Base and the chat model Baichuan4-Finance. There are three key technical highlights in this
+report: (1) For the data side: the continual pre-training data construction pipeline and the data mixture
+ratio determining process using two scaling laws; (2) For the training side, the proposed a novel
+pre-training strategy, called domain self-constraint training, tailored for the domain LLM continual
+pre-training. We evaluate Baichuan4-Finance through extensive experiments and the results indicate
+that Baichuan4-Finance-Base outperforms nearly all competitive baselines on financial tasks by
+substantial margins, without compromising performance on general LLM benchmarks. Additionally,
+Baichuan4-Finance delivers even more remarkable performance in financial application scenarios,
+highlighting its potential to drive innovation within the financial LLM community.
+14REFERENCES
+Josh Achiam, Steven Adler, Sandhini Agarwal, Lama Ahmad, Ilge Akkaya, Florencia Leoni Aleman,
+Diogo Almeida, Janko Altenschmidt, Sam Altman, Shyamal Anadkat, et al. Gpt-4 technical report.
+arXiv preprint arXiv:2303.08774 , 2023.
+Joshua Ainslie, James Lee-Thorp, Michiel de Jong, Yury Zemlyanskiy, Federico Lebr ´on, and Sumit
+Sanghai. Gqa: Training generalized multi-query transformer models from multi-head checkpoints.
+arXiv preprint arXiv:2305.13245 , 2023.
+Jinze Bai, Shuai Bai, Yunfei Chu, Zeyu Cui, Kai Dang, Xiaodong Deng, Yang Fan, Wenbin Ge,
+Yu Han, Fei Huang, et al. Qwen technical report. arXiv preprint arXiv:2309.16609 , 2023.
+Andrei Z Broder. On the resemblance and containment of documents. In Proceedings. Compression
+and Complexity of SEQUENCES 1997 (Cat. No. 97TB100171) , pp. 21–29. IEEE, 1997.
+Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde De Oliveira Pinto, Jared
+Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, et al. Evaluating large
+language models trained on code. arXiv preprint arXiv:2107.03374 , 2021.
+Wei-Lin Chiang, Lianmin Zheng, Ying Sheng, Anastasios Nikolas Angelopoulos, Tianle Li, Dacheng
+Li, Hao Zhang, Banghua Zhu, Michael Jordan, Joseph E Gonzalez, et al. Chatbot arena: An open
+platform for evaluating llms by human preference. arXiv preprint arXiv:2403.04132 , 2024.
+Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser,
+Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, et al. Training verifiers to solve
+math word problems. arXiv preprint arXiv:2110.14168 , 2021.
+Ganqu Cui, Lifan Yuan, Ning Ding, Guanming Yao, Bingxiang He, Wei Zhu, Yuan Ni, Guotong Xie,
+Ruobing Xie, Yankai Lin, et al. Ultrafeedback: Boosting language models with scaled ai feedback.
+InForty-first International Conference on Machine Learning , 2024.
+Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek Kadian, Ahmad Al-Dahle, Aiesha
+Letman, Akhil Mathur, Alan Schelten, Amy Yang, Angela Fan, et al. The llama 3 herd of models.
+arXiv preprint arXiv:2407.21783 , 2024.
+Dan Hendrycks, Collin Burns, Steven Basart, Andy Zou, Mantas Mazeika, Dawn Song, and
+Jacob Steinhardt. Measuring massive multitask language understanding. arXiv preprint
+arXiv:2009.03300 , 2020.
+Yuzhen Huang, Yuzhuo Bai, Zhihao Zhu, Junlei Zhang, Jinghan Zhang, Tangjun Su, Junteng Liu,
+Chuancheng Lv, Yikai Zhang, Yao Fu, et al. C-eval: A multi-level multi-discipline chinese
+evaluation suite for foundation models. Advances in Neural Information Processing Systems , 36,
+2024.
+Albert Q Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot,
+Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, et al.
+Mistral 7b. arXiv preprint arXiv:2310.06825 , 2023.
+Zixuan Jiang, Jiaqi Gu, Hanqing Zhu, and David Pan. Pre-rmsnorm and pre-crmsnorm transformers:
+equivalent and efficient pre-ln transformers. Advances in Neural Information Processing Systems ,
+36, 2024.
+Jean Lee, Nicholas Stevens, Soyeon Caren Han, and Minseok Song. A survey of large language
+models in finance (finllms). arXiv preprint arXiv:2402.02315 , 2024.
+Jia Li, Edward Beeching, Lewis Tunstall, Ben Lipkin, Roman Soletskyi, Shengyi Huang, Kashif
+Rasul, Longhui Yu, Albert Q Jiang, Ziju Shen, et al. Numinamath: The largest public dataset in
+ai4maths with 860k pairs of competition math problems and solutions. Hugging Face repository ,
+2024a.
+Jialian Li, Yipin Zhang, Wei Shen, Yuzi Yan, Jian Xie, and Dong Yan. Boosting deductive reasoning
+with step signals in rlhf. arXiv preprint arXiv:2410.09528 , 2024b.
+15Zhuang Liu, Degen Huang, Kaiyu Huang, Zhuang Li, and Jun Zhao. Finbert: A pre-trained financial
+language representation model for financial text mining. In Proceedings of the twenty-ninth
+international conference on international joint conferences on artificial intelligence , pp. 4513–
+4519, 2021.
+Long Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida, Carroll Wainwright, Pamela Mishkin, Chong
+Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, et al. Training language models to follow
+instructions with human feedback. Advances in neural information processing systems , 35:27730–
+27744, 2022.
+Haoran Que, Jiaheng Liu, Ge Zhang, Chenchen Zhang, Xingwei Qu, Yinghao Ma, Feiyu Duan,
+Zhiqi Bai, Jiakai Wang, Yuanxing Zhang, et al. D-cpt law: Domain-specific continual pre-training
+scaling law for large language models. arXiv preprint arXiv:2406.01375 , 2024.
+John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. Proximal policy
+optimization algorithms. arXiv preprint arXiv:1707.06347 , 2017.
+Raj Sanjay Shah, Kunal Chawla, Dheeraj Eidnani, Agam Shah, Wendi Du, Sudheer Chava, Natraj
+Raman, Charese Smiley, Jiaao Chen, and Diyi Yang. When flue meets flang: Benchmarks and
+large pre-trained language model for financial domain. arXiv preprint arXiv:2211.00083 , 2022.
+J Su, Y Lu, S Pan, A Murtadha, B Wen, and Y Liu Roformer. Enhanced transformer with rotary
+position embedding., 2021. DOI: https://doi. org/10.1016/j. neucom , 2023.
+Gemini Team, Rohan Anil, Sebastian Borgeaud, Jean-Baptiste Alayrac, Jiahui Yu, Radu Soricut,
+Johan Schalkwyk, Andrew M Dai, Anja Hauth, Katie Millican, et al. Gemini: a family of highly
+capable multimodal models. arXiv preprint arXiv:2312.11805 , 2023.
+Gemma Team, Thomas Mesnard, Cassidy Hardin, Robert Dadashi, Surya Bhupatiraju, Shreya Pathak,
+Laurent Sifre, Morgane Rivi `ere, Mihir Sanjay Kale, Juliette Love, et al. Gemma: Open models
+based on gemini research and technology. arXiv preprint arXiv:2403.08295 , 2024.
+Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timoth ´ee
+Lacroix, Baptiste Rozi `ere, Naman Goyal, Eric Hambro, Faisal Azhar, et al. Llama: Open and
+efficient foundation language models. arXiv preprint arXiv:2302.13971 , 2023.
+A Vaswani. Attention is all you need. Advances in Neural Information Processing Systems , 2017.
+Changhan Wang, Kyunghyun Cho, and Jiatao Gu. Neural machine translation with byte-level
+subwords. In Proceedings of the AAAI conference on artificial intelligence , volume 34, pp.
+9154–9160, 2020.
+Guillaume Wenzek, Marie-Anne Lachaux, Alexis Conneau, Vishrav Chaudhary, Francisco Guzm ´an,
+Armand Joulin, and Edouard Grave. Ccnet: Extracting high quality monolingual datasets from
+web crawl data. arXiv preprint arXiv:1911.00359 , 2019.
+Shijie Wu, Ozan Irsoy, Steven Lu, Vadim Dabravolski, Mark Dredze, Sebastian Gehrmann, Prabhan-
+jan Kambadur, David Rosenberg, and Gideon Mann. Bloomberggpt: A large language model for
+finance. arXiv preprint arXiv:2303.17564 , 2023.
+Qianqian Xie, Weiguang Han, Xiao Zhang, Yanzhao Lai, Min Peng, Alejandro Lopez-Lira, and Jimin
+Huang. Pixiu: A large language model, instruction data and evaluation benchmark for finance.
+arXiv preprint arXiv:2306.05443 , 2023.
+Yuzi Yan, Xingzhou Lou, Jialian Li, Yiping Zhang, Jian Xie, Chao Yu, Yu Wang, Dong Yan, and
+Yuan Shen. Reward-robust rlhf in llms. arXiv preprint arXiv:2409.15360 , 2024.
+Aiyuan Yang, Bin Xiao, Bingning Wang, Borong Zhang, Ce Bian, Chao Yin, Chenxu Lv, Da Pan,
+Dian Wang, Dong Yan, et al. Baichuan 2: Open large-scale language models. arXiv preprint
+arXiv:2309.10305 , 2023a.
+An Yang, Baosong Yang, Binyuan Hui, Bo Zheng, Bowen Yu, Chang Zhou, Chengpeng Li,
+Chengyuan Li, Dayiheng Liu, Fei Huang, et al. Qwen2 technical report. arXiv preprint
+arXiv:2407.10671 , 2024.
+16Hongyang Yang, Xiao-Yang Liu, and Christina Dan Wang. Fingpt: Open-source financial large
+language models. arXiv preprint arXiv:2306.06031 , 2023b.
+Yi Yang, Yixuan Tang, and Kar Yan Tam. Investlm: A large language model for investment using
+financial domain instruction tuning. arXiv preprint arXiv:2309.13064 , 2023c.
+17

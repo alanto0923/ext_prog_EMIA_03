@@ -1,0 +1,19 @@
+domain,name,code
+Momentum,Price Momentum (14 days),"((CLOSE - DELAY(CLOSE, 14)) / DELAY(CLOSE, 14))"
+Mean Reversion,Mean Reversion (20 days),"(MEAN(CLOSE, 20) - CLOSE)"
+Volatility,20-Day Volatility,"STD(CLOSE, 20)"
+Fundamental,Price-to-Earnings Ratio (P/E),(CLOSE / EPS)
+Liquidity,Trading Volume,VOLUME
+Quality,Gross Profit Margin,(GROSS_PROFIT / REVENUE)
+GROWTH,Earnings Growth Rate,"(EPS / DELAY(EPS,1) - 1)"
+Technical,Moving Average (MA),"SMA(CLOSE, 20)"
+Macro Economics,GDP Growth Rate,"GDP - DELAY(GDP, n)"
+Momentum,Relative Strength Index (RSI) 14 days,"(100 - (100 / (1 + RSI(CLOSE, 14)))) * 0.01"
+Mean Reversion,Bollinger Band Squeeze,"STD(CLOSE, n) <= (2 * DELAY(BOLLINGER_BANDS, n)[1]) / DELAY(BOLLINGER_BANDS, n)[0]"
+Volatility,Bollinger Band Width,"(DELAY(BOLLINGER_BANDS, n)[2] - DELAY(BOLLINGER_BANDS, n)[1]) / DELAY(BOLLINGER_BANDS, n)[0]"
+Fundamental,Price-to-Book Ratio (P/B),(CLOSE / BOOK_VALUE)
+Liquidity,Average Trade Volume,(SUM(VOLUME) / COUNT(DAY))
+Quality,Debt-to-Equity Ratio,(DEBT / EQUITY)
+GROWTH,Price Growth Rate,(CLOSE / PREVIOUS_CLOSE) - 1
+Technical,Momentum Momentum (20 days),"((CLOSE - DELAY(CLOSE, 20)) / DELAY(CLOSE, 20))"
+Macro Economics,Interest Rate Spread,(10Y TONIGHTS + 2Y TONIGHTS) - (3MO TONIGHTS)

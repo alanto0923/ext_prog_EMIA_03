@@ -1,0 +1,517 @@
+arXiv:1911.02194v1  [q-fin.MF]  6 Nov 2019A Rational Finance Explanation of the Stock
+Predictability Puzzle
+Abootaleb Shirvania, Svetlozar T. Rachevb, and Frank J. Fabozzic
+aDepartment of Mathematics and Statistics, Texas Tech Unive rsity,abootaleb.shirvani@ttu.edu
+bDepartment of Mathematics and Statistics, Texas Tech Unive rsity,zari.rachev@ttu.edu
+cEDHEC Business School, frank.fabozzi@edhec.edu
+Abstract In this paper, we address one of the main puzzles in ﬁnance obs erved in the
+stock market by proponents of behavioral ﬁnance: the stock p redictability puzzle. We oﬀer a
+statistical model within the context of rational ﬁnance whi ch can be used without relying on
+behavioral ﬁnance assumptions to model the predictability of stock returns. We incorporate
+the predictability of stock returns into the well-known Bla ck-Scholes option pricing formula.
+Empirically, we analyze the option and spot trader’s market predictability of stock prices by
+deﬁning a forward-looking measure which we call “implied ex cess predictability”. The em-
+pirical results indicate the eﬀect of option trader’s predi ctability of stock returns on the price
+of stock options is an increasing function of moneyness, whi le this eﬀect is decreasing for spot
+traders. These empirical results indicate potential asymm etric predictability of stock prices
+by spot and option traders. We show in pricing options with th e strike price signiﬁcantly
+higher or lower than the stock price, the predictability of t he underlying stock’s return should
+be incorporated into the option pricing formula. In pricing options that have moneyness close
+to one, stock return predictability is not incorporated int o the option pricing model because
+stock return predictability is the same for both types of tra ders. In other words, spot traders
+and option traders are equally informed about the future val ue of the stock market in this
+case. Comparing diﬀerent volatility measures, we ﬁnd that t he diﬀerence between implied and
+realized variances or variance risk premium can potentiall y be used as a stock return predictor.
+Keywords Predictability of stock returns; behavioral ﬁnance; ratio nal dynamic stock
+pricing theory; option pricing; Stratonovich integral.
+11 Introduction
+In an eﬃcient market, price discovery should be instantaneo us and contemporaneous. 1
+Empirical evidence suggests that the excess aggregate stoc k market returns are predictable.
+Using monthly, real, equal-weighted New York Stock Exchang e returns from 1941–1986,
+Fama and French (1988) found that the dividend–price ratio c an explain 27% of the variation
+of cumulative stock returns over the subsequent four years. Campbell and Shiller (1988)
+specify econometric models of dividend discounting that im ply that price dividend ratios
+predict stock returns. These two studies were among the ﬁrst to identify this as the “stock
+predictability puzzle.”
+There are a good number of more recent empirical studies that have investigated the
+predictability of stock returns. Some believe stock return predictability is attribute to changes
+in business conditions, while others attribute it to market ineﬃciency.
+The majority of work on the predictability of stock returns i s based on statistical, macro,
+and fundamental factor analyses models. 2Recently, a good numbers of studies in behavioral
+ﬁnance have examined behavioral factors that could lead to t he predictability of stock returns.
+The behavioral factors that proponents of behavioral ﬁnanc e have suggested that can lead to
+stock return predictability are (1) sentiment, (2) overcon ﬁdence, (3) optimism and wishful
+thinking, (4) conservatism, euphoria and gloom, (5) self-d eception, (6) cursedness, (7) belief
+perseverance, and (8) anchoring. 3
+Motivated by the empirical ﬁndings that stock returns are pr edictable, some researchers
+have investigated the impact of stock return predictabilit y on the prices of related assets.
+Lo and Wang (1995), for example, discussed the eﬀect of stock return predictability on the
+price of stock options. They showed that even a small amount o f predictability could have
+a signiﬁcant impact on option pricing. Liao and Chen (2006) d emonstrated that the eﬀect
+of autocorrelated returns on European option prices is sign iﬁcant. Huang et al. (2009) and
+Paschke and Prokopczusk (2010) oﬀer even more recent exampl es of studies about the impact
+of stock returns predictability on the valuation of options . The upshot of these studies is that to
+obtain more realistic stock prices, it is essential to model and analyze stock return predictability
+and incorporate its impact into stock log-returns and optio n pricing models.
+Modeling and analyzing the stock return predictability is c rucial for stock and risk
+1See Kumar and Chaturvedul (2013).
+2See for example, Kandel and Stambaugh (1996), Neely and Well er (2000), Malkiel (2003),
+Barberis and Thaler (2003), Shiller (2003), Avramov (2003) , Wachter and Warusawitharana (2009), Pesaran
+(2010), Zhou (2010), and Bekiros (2013). The models that hav e been used are (1) Conditional Capital Asset
+Pricing Model, (2) vector autoregressive models, (3) Bayes ian statistical factor analysis, (4) posterior moments of
+the predictable regression coeﬃcients, (5) posterior odds , (6) the information in stock prices, (7) business cycles
+eﬀects, (8) stock predictability of future returns from ini tial dividend yields, (9) ﬁrm characteristics as stock retu rn
+predictors, (10) anomalies, (11) predictive power of scale d-price ratios such as book-to-market and earnings-to-
+price, forward spread, and short rate, (12) variance risk pr emia and variance spillovers, (13) momentum, market
+memory and reversals, and (14) early announcements and othe rs.
+3See Lewellen (2000), Barberis and Thaler (2003), Ferson (20 06), Peleg (2000, Chapter 1), and
+Daniel and Hirshleifer (2015).
+2managers. 4Lo and Wang (1995) introduced a model to price options when st ock returns
+are predictable. Their model is based on a specially designe d multivariate trending Orn-
+stein–Uhlenbeck (O-U) process includes many parameters. T he trending O-U processes with
+small dimensions such as univariate and bivariate processe s are not realistic as noted by
+Lo and Wang (1995). Moreover, in their model, predictabilit y is induced by the drift parame-
+ter, which is not a parameter in the classical Black-Scholes model.
+In this paper, we propose a method to model the prediction of s tock prices by adjusting
+the stock predictability as a parameter with the Black and Sc holes (1973) and Merton (1973)
+model framework by using the Stratonovich integral. 5In our model, predictability is viewed as
+the dividend yield, which we refer to dividend yield due to predictability , and is incorporated
+into the option pricing formula. We derive an option pricing model by incorporating the
+predictable stock returns within the classical Black-Scho les-Merton (BSM) framework.
+Next, we deﬁne implied excess predictability to compare an option trader’s predictability
+of stock returns with that of a trader in the cash market (i.e. , spot trader). Using the observed
+price of European call options based on the SPDR S&P 500 ETF (S PY), we plot the implied
+excess predictability against “moneyness” and time to matu rity. The pattern of the implied
+excess predictability surface shows that at each maturity, an option trader’s predictability of
+the SPY is an increasing function of moneyness. The turning p oint of the surface is where the
+moneyness is close to 0.95. The eﬀect of option trader’s predictability of stock retur ns on the
+price of stock options increases when the moneyness increas es from0.95to1.20. Conversely„
+when the moneyness decreases from 0.95to0.7, the eﬀect of spot trader’s predictability of
+stock returns on the price of stock options decreases. These empirical results indicate potential
+asymmetric predictability of stock prices by spot and optio n traders.
+We demonstrate that in pricing an option with signiﬁcant int rinsic value, stock return
+predictability should be incorporated into the BSM model. I n pricing options that have
+moneyness close to one stock predictability is not incorpor ated into the BSM model because
+stock predictability is the same for both types of traders. I n other words, spot traders and option
+traders are equally informed about stock market in this case . We show a popular stock market
+volatility index — the CBOE volatility index (VIX 6) – is potentially more informative than the
+other volatility measures (historical, realized, and time series estimation method volatility) for
+predicting stock returns. The variance risk premium – the di ﬀerence between implied variance
+and realized variance – can potentially predict stock marke t returns.
+This paper is organized as follows. The next section describ es our methodology for model-
+ing the prediction of stock prices. Then we derive an option p ricing formula by incorporating
+the predictability of stock returns into the model. Section 3 describes the results of our model
+using the S&P 500 index options. We then analyze and compare t he prediction of stock market
+returns by option and spot traders. Section 5 summarizes our ﬁndings.
+4See Shirvani et al. (2019).
+5See Kloeden et al. (2000, Chapter 2), Øksendal (2003, Chapte r 5), and Syga (2015).
+6VIX is an index created by CBOE, representing 30-day implied volatility calculated by S&P500 options, see
+http://www.cboe.com/vix.
+32 The Predictability of Stock pricing
+A major issue raised by the proponents of behavioral ﬁnance i s that prices are often pre-
+dictable.7. More precisely, given a stochastic basis (Ω,F,F=(Ft,t≥0),P)a price process
+S(t)t≥0, deﬁned on (Ω,F,P)is not necessarilyF-adapted, it is adapted to an augmented
+ﬁltrationF(∗)⊃/uniontext.1
+t≥oFt, withF(∗)⊂F.
+Admitting the fact that stock returns are predictable, we pr opose a method to model the
+prediction of stock returns by adjusting the predictabilit y of stock returns. Our option pricing
+model is close to the idea put forth by Shiller (2003) of “smar t money versus ordinary investors.”
+To model the predictability of stock prices, we use the Strat onovich integral 8:
+∫T
+0θ(t)◦(1
+2)dB(t)
+=lim0=t(0)<t(1)<···<t(k)=T,t(j)=j∆t,∆t↓0/summationtext.1k−1
+j=0θ/parenleftBig
+t(j+1)+t(j)
+2/parenrightBig /parenleftBig
+B(t(j+1))−B(t(j))/parenrightBig
+.(1)
+In (1), B(t),t≥0, is a Brownian motion generating a stochastic basis (Ω,F,F=(Ft,t≥0),P),
+θ(t)t≥0isF-adapted left-continuous and locally bounded process. An i mportant property
+of the Stratonovich integral is that it “looks into the futur e,” and therefore, price processes
+based on the Stratonovich integral possess predictability properties. In sharp contrast, the Itô
+integral:
+/uni222B.dspT
+0θ(t)dB(t)=lim0=t(0)<t(1)<···<t(k)=T,t(j)=j∆t,∆t↓0k−1/summationdisplay.1
+j=0θ/parenleftBig
+t(j)/parenrightBig /parenleftBig
+B(t(j+1))−B(t(j))/parenrightBig
+(2)
+“does not look in the future,” and thus Itô prices are not pred ictable. Combining both integrals
+(1) and (2) within a Stratonovich α-integral withα∈[0,1]we obtain:
+∫T
+0θ(t)◦(α)dB(t)
+=lim0=t(0)<t(1)<···<t(k)=T,t(j)=j∆t,∆t↓0/summationtext.1k−1
+j=0θ/parenleftBig
+t(j)(1−α)+αt(j+1)/parenrightBig /parenleftBig
+B(t(j+1))−B(t(j))/parenrightBig
+=2α∫T
+0θ(t)◦(1
+2)dB(t)+(1−2α)∫T
+0θ(t)dB(t).(3)
+Consider a market with two assets: (i)a risky asset (stock) Swith potentially predictive
+price process S(t),t≥0, following Itô stochastic diﬀerential equation (SDE):
+dS(t)=µ(t,S(t))dt+σ(t,S(t))dB(t),t≥0,S(0)>0, (4)
+whereµ(t,S(t))=µtS(t), andσ(t,S(t))=σtS(t), For the regularity conditions implying
+existence and uniqueness of the strong solution of (3), see D uﬃe (2001, Chapter 6). By the
+Itô formula, stock price dynamics is given by
+7See, for example, Daniel and Hirshleifer (2015).
+8See Kloeden et al. (2000, Chapter 2), Øksendal (2003, Chapte r 5), and Syga (2015).
+4S(t)=S(0)exp/braceleftbigg/uni222B.dspt
+0/parenleftbigg
+µs−1
+2σ2
+s/parenrightbigg
+ds+/uni222B.dspt
+0σsdB(s)/bracerightbigg
+,S(0)>0,t≥0.
+(ii)riskless asset (bond) Bwith price process β(t),t≥0,deﬁned by
+dβ(t)=rtβ(t),rt=r(t,S(t)), β(0)>0, (5)
+that is,β(t)=β(t)exp/parenleftBig∫t
+0rsds/parenrightBig
+t≥0.
+Consider a European Contingent Claim (ECC) Cwith price process C(t)=C(t,S(t)),
+where C(t,x),t≥0,x>0, has continuous derivatives∂C(t,x)
+∂tand∂2C(t,x)
+∂x2.C’s terminal time
+isT>0, andC‘s terminal payoﬀ is C(T)=C(T,S(T))=g(S(T)),for some continuous
+g:(0,∞)→R.
+Assume that a trader /beth(l)takes a long position in C. Furthermore, when /beth(l)trades stock
+Swith possibly superior or inferior to (4), the following Str atonovichαSDE:
+dS(t)=µ(t,S(t)))dt+σ(t,S(t))◦(α)dB(t),t≥0,S(0)>0,α∈[0,1]. (6)
+Thus, the Stratonovich SDE
+dS(t)=µ(t,S(t))dt+σ(t,S(t))◦(α)dB(t),
+is equivalent to the Itô SDE
+dS(t)=/parenleftBig
+µ(t,S(t))+ασ(t,S(t))∂σ(t,S(t))
+∂x/parenrightBig
+dt+σ(t,S(t))dB(t)
+=µ(α)
+tS(t)dt+σtS(t)dB(t), µ(α)
+t=µt+ασ2
+t,t≥0,t≥0.(7)
+Assume that a trader /beth(s)takes a short position in Ctrading in the contract where /beth(l)had
+taken the long position. /beth(l)and/beth(s)have entered the contract Cas the only participants at the
+closing bid-ask traded C-contract. 9/beth(s)observes only the dynamics of Straded by/beth(l)and
+given by (3). Furthermore, when /beth(s)trades stock S,with dynamics following Stratonovich γ
+SDE:
+dS(t)=µ(t,S(t))dt+σ(t,S(t))◦(γ)dB(t),t≥0,S(0)>0, (8)
+for someγ∈[0,1]; that is,
+dS(t)=µ(γ)
+tS(t)dt+σtS(t)dB(t), µ(α)
+t=µt+γσ2
+tt≥0,t≥0. (9)
+TheC-dynamics as traded by /beth(l)is determined by the Itô formula:
+9We assume that/beth(l)and/beth(s)are the two trading parties in a bid-ask trade of Cproviding the smallest bid-ask
+spread, which ultimately ends up with the trade transaction ofC.
+5dC(t,S(t))
+=/braceleftBig
+∂C(t,S(t))
+∂t+∂C(t,S(t))
+∂xµ(γ)
+tS(t)+1
+2∂2C(t,S(t))
+∂x2σ2
+tS(t)2/bracerightBig
+dt+∂C(t,S(t))
+∂xσtS(t)dB(t).(10)
+To hedge the risky position, /beth(s)forms a replicating self-ﬁnancing strategy given by the
+paira(t),b(t),t≥0,where C(t,S(t))=a(t)S(t)+b(t)β(t)with dC(t,S(t))=a(t)dS(t)+
+b(t)dβ(t).Thus,
+dC(t,S(t))=/parenleftBig
+a(t)µ(γ)
+t+b(t)rtβ(t)/parenrightBig
+S(t)dt+a(t)σ(t,S(t))dB(t) (11)
+From (10) and (11), /beth(s)obtains a(t)=∂C(t,S(t))
+∂x, and b(t)β(t)=C(t,S(t))−∂C(t,S(t))
+∂xS(t).
+Equating the terms with dtand setting S(t)=x,results in the following partial diﬀerential
+equation (PDE):
+0=∂C(t,x)
+∂t+∂C(t,x)
+∂x/parenleftBig
+rt−pσ2
+t/parenrightBig
+x−rtC(t,x)+1
+2∂2C(t,x)
+∂x2σ2
+tx2,p=γ−α. (12)
+We call p∈ [−1,1]theexcess predictability of Straded by/beth(s)over theS-dynamic, when S
+is traded by/beth(l). In the classical Black-Scholes model, dividends were not a ccounted for in
+the model. If we assume that the stock Sprovides a continuous dividend yield of pσ2
+t(i.e.,
+the dividend paid over interval (t,t+dt]equals pσ2
+tSt) we obtain the Black-Scholes partial
+diﬀerential equation given by (12). Borrowing this idea, st ock with continuously compounded
+dividend yield pσ2
+t, we denote Dy(t)=pσ2
+tas the dividend yield due to predictability . As
+the payment of dividends impacts the option price of the unde rlying stock, the stock return
+predictability impacts the price of options. Depending on t he sign of p,Dy(t)could be positive
+or negative. When p=0,we obtain the classical Black-Scholes equation.
+In particular,C-price dynamics is given by 10
+C(t)=EQ
+t/braceleftBig
+e−∫T
+trudug(S(T))}/bracerightBig
+,t∈[0,T), (13)
+whereQis the equivalent martingale measure for the dividend-stoc k-price. That is,Q∼P,and
+the discounted gain process G(Y)(t)=X(Y)(t)+D(Y)(t)is aQ-martingale,
+S(t)=S(0)exp/braceleftbigg/uni222B.dspt
+0/parenleftbigg
+µs−1
+2σ2
+s/parenrightbigg
+ds+/uni222B.dspt
+0σsdB(s)/bracerightbigg
+,S(0)>0,t≥0.
+Y(t)=1
+β(t),t≥0,X(Y)(t)=X(t)Y(t), and dD(Y)(t)=Y(t)dD(t). The dynamics of SonQ
+is given by dS(t)=/parenleftbigrt−Dy(t,x)/parenrightbigS(t)dt+dB(t), where rtis the risk-free rate at time t.
+In conclusion, with (13) we are able to incorporate the predi ctability of stock returns into
+10See Duﬃe (2001, Section 6).
+6option pricing formula within the classical Black-Scholes -Merton framework.
+SupposeCis a European call option with maturity Tand strike K, andg(S(T))=
+max(S(T)−K,0). Then for time to maturity, τ=T−t, the value of a call option for a
+dividend-paying underlying stock in terms of the Black–Sch oles parameters is 11
+C(t)=c(S(t),τ,K,rt,σt,p)=S(t)e−Dy(t)τΦ(d+)−Ke−rtτΦ(d−), (14)
+where Dy(t)=pσ2
+t,Φdenotes the standard normal cumulative distribution funct ion, and
+d±=ln/parenleftbigg
+S(t)e−Dy(t)τ
+Ke−rtτ/parenrightbigg
+±1
+2σ2
+tτ
+σt√τ. Given put–call parity, the price of a put option, P(t)is
+P(t)=C(t)+Dy(t)−St+Ke−rtτ.
+3 Implied dividend yield due to predictability
+In this section, we compare the option and spot trader’s pred ictability of stock returns
+by deﬁning the implied excess predictability . Implied excess predictability is a metric that
+captures the view of the option and spot trader of the likelih ood moves in the stock price. It
+can be used to predict the of stock price from two perspective s. An important characteristic
+of implied excess predictability is that it is forward looki ng. It compares the predictability of
+markets for the given underlying stock market index from two perspectives. Recall that implied
+excess predictability is calibrated from the BSM option pri ce formula.
+We denote by pthe excess predictability of Straded by/beth(s)over theS-dynamic, when S
+is traded by/beth(l). To study/beth(s)’s stock return predictability (option trader) compared to /beth(l)
+(spot trader), we deﬁne implied excess predictability p=p/parenleftBig
+S(t)
+K,τ/parenrightBig
+as a function of moneyness
+S(t)
+Kand time to maturity τas the solution of
+c(S(t),τ,K,rt,σt,p)=C(market)(t,S(t),τ,K), (15)
+whereC(market)(t,S(t),τ,K)is the call option prices of SPY 12.
+We assume that SPY-daily closing prices follow
+S(t)=S(0)exp/braceleftbigg/uni222B.dspt
+0νsds+/uni222B.dspt
+0σsdB(s)/bracerightbigg
+,S(0)>0,t=k∆t,k∈N+={0,1,...},(16)
+whereνs=µs−1
+2σ2
+s. Thus, the SPY-daily return series is given by
+R(t+∆t)=ln/parenleftbiggS(t+∆t)
+S(t)/parenrightbigg
+=/uni222B.dspt+∆t
+tνsds+/uni222B.dspt+∆t
+tσsdB(s),t=k∆t,k∈N+. (17)
+11See, for example, Hull (2009), Chapter 13.
+12https://nance.yahoo.com/quote/SPY/options?p=SPY .
+7Thus, onQ, the SPY daily return is given by dS(t)=/parenleftbigrt−Dy(t,x)/parenrightbigS(t)dt+dB(t). The value
+of a call option for the time to maturity, τ=T−t, is given by (14). We calculate the implied
+excess predictability by taking the option’s market price, entering it into the (15) formula, and
+back-solving for the value of p.
+Here, we compare the option and spot trader’s predictabilit y of stock returns by using the
+implied excess predictability. Rather than looking at indi vidual stocks, our analysis will focus
+on the aggregate stock market. In our case, the SPY is the prox y we use for the aggregate stock
+market. We compare the predictability of markets for the giv en underlying stock market index
+from two perspectives, by doing so it provides important ins ight about the view of option and
+spot traders regarding the future price of the stock market.
+We use call option prices from 01/02/2015 to01/10/2015 with diﬀerent expiration dates
+and strike prices. The expiration date varies from 1/2/2015 to6/20/2015, and the strike price
+varies from 80to250among diﬀerent call option contracts. The midpoint of the bi d and ask
+is used in the computation. As the underlying of the call opti on, the SPY index price was
+206.38on01/02/2015. We use the 10-year Treasury yield curve rate 13on01/02/2015 as the
+risk-free rate rt, here rt=0.0212.
+As an estimates for σt, we use the following four metrics: (1) daily closing values of
+V IX t/√
+365; (2) historical volatility based on one-year historical da ta; (3) realized volatility
+over one-year historical data; and (4) estimated volatilit y over one-year by modeling time
+series with classical methods ARIMA (1,1)-GARCH (1,1)with the Student’s tdistribution as
+an innovation distribution. The minimum estimated value fo rσtis derived where the realized
+volatility is applied and the maximum estimated value is der ived where the daily closing values
+of VIX is used .
+Since implied excess predictability surfaces of all models are very similar, we plot the
+excess predictability surface when σtis estimated from realized volatility. The implied excess
+predictability surface is graphed against both a standard m easure of “moneyness” and time
+to maturity (in year) in Figure 1. Recall that a high value for p(close to one) means excess
+predictability of SPY daily return traded by /beth(s)over the predictability of SPY traded by /beth(l).
+In other words, p=1means that option traders potentially predict the future of the SPY returns
+better than the spot trader. The opposite is true when p=−1. Recall that the implied excess
+predictability surface is an increasing function of σt.
+Figure 1 indicates that at each maturity, implied excess pre dictability of option traders
+increase as moneyness increases. Where the moneyness varie s in(0,0.7), the surface is ﬂat at
+point−1, indicating higher predictability of spot traders compari ng to option traders. Thus,
+to price signiﬁcant out-the-money options, the value of pin the model should be −1. Where
+the moneyness varies in (1.05,1.15), in-the-money options, the value of pstarts increasing
+from0.5, and ﬂats out at point 1. This ﬁnding indicates that option traders can potentially
+predict market changes better than spot traders when the opt ion is in-the-money. In this case,
+for pricing in-the-money option, the value of pin the log-return model should be 1.
+The turning point of the surface is where the moneyness is clo se to0.95. When the
+13https://www.treasury.gov/.
+8-0.8
+1.1-0.6-0.4
+1-0.2
+0.900.2
+0.8 0.250.4
+0.7 0.20.6
+0.60.8
+0.150.50.10.4
+0.05 0.3
+Figure 1: Implied dividend yield against time to maturity an d moneyness.
+0.05
+1.10.1
+10.15
+0.90.2
+0.8 0.250.25
+0.70.3
+0.20.35
+0.60.150.50.10.4
+0.05 0.3
+Figure 2: Relative diﬀerence of excess predictability VIX- Realized model against time to
+maturity and Moneyness.
+moneyness varies in (0.90,1.05),pvaries in(−0.5,0.5). This is the range that spot and option
+traders are equally informed about the market, and the predi ctability of the market is equal
+for both traders. Thus, to price options with no signiﬁcant i ntrinsic value, the classical BSM
+equation can be used.
+As we mentioned, the other four surfaces are very similar. He re, instead of plotting the
+9four similar surfaces, we plot the relative diﬀerence of the excess predictability of each surface
+to the surface derived from realized variance, denoted by pi−p1, where i=2,3,4. Here (1)
+p2refers to the excess predictability surface when σtis imputed from the VIX index, (2) p3
+is whereσtimputed by historical volatility, and (3) p4is whereσtis estimated by time series
+models. Figures 2-4 show the relative diﬀerence of excess pr edictability for each surface. In
+all surfaces, where the moneyness varies in (0.90,1.05), the relative diﬀerence is signiﬁcant.
+At each value for moneyness in (0.90,1.05), the relative diﬀerence of excess predictability
+increases as time to maturity increases.
+Zhou (2010) deﬁned variance risk premium at time tas the diﬀerence between the ex-ante
+risk-neutral expectation and the objective or statistical expectation of the return variance over
+the[t,t+1]time interval,
+V AR t=EQ
+t(Var(rt+1))−EP
+t(Var(rt+1)), (18)
+which is not directly observable in practice. In practice, t he risk-neutral expectation of the return
+variance, EQ
+t(Var(rt+1)), is typically replaced by the VIX2index and statistical expectation of
+the return variance, EP
+t(Var(rt+1)), is estimated by realized variance.
+Zhou (2010) showed that the diﬀerence between implied varia nce and realized variance
+((i.e., variance risk premium) can be used for the short-ter m predictability of equity returns,
+bond returns, forward premiums, and credit spreads. Compar ing Figures 2-4, the most signif-
+icant relative diﬀerence of excess predictability is obser ved in Figure 2. It indicates that the
+VIX index contains more information about the stock market c ompared to the other metrics.
+Figure 3, the historical-realized surface, has the minimum relative diﬀerence.
+Recall that the maximum and minimum values for σtare derived from the VIX and realized
+volatility. As we observed, the most signiﬁcant relative di ﬀerence of excess predictability,
+Figure 2, is derived where the VIX and realized volatility ar e used in the model. Thus, by
+comparing equation (18) for diﬀerent volatility measures a nd the fact that excess predictability
+is an increasing function of σt, suggests that the variance risk premium measure potential ly
+contains more information compared to the other variance me asures for predicting stock market
+returns. The historical volatility measure is the poorest m etric.
+4 Conclusion
+In this paper, we studied the predictability of stock return s within the framework of rational
+ﬁnance rather than relying on behavioral ﬁnance explanatio ns. We proposed a method to
+model stock returns by incorporating the predictability of stock returns in the model and
+then deriving an option pricing formula. To compare the pred ictability of stock returns by
+option traders and spot traders, we constructed a forward-l ooking measure that compares
+the option and spot trader’s stock returns predictability w hich we called the “implied excess
+predictability measure.” The empirical results indicate t hat to price a signiﬁcant in-the-money
+and out-the-money option, the option’s and spot trader’s pr edictability of stock returns should
+101.10.05
+10.1
+0.9
+0.8 0.250.15
+0.7 0.20.2
+0.60.150.50.10.4
+0.05 0.3
+Figure 3: Relative diﬀerence of excess predictability Hist orical-Realized model against time
+to maturity and Moneyness.
+0.05
+1.10.1
+10.15
+0.90.2
+0.8 0.250.25
+0.7 0.20.3
+0.60.150.35
+0.50.10.4
+0.05 0.3
+Figure 4: Relative diﬀerence of excess predictability time series-Realized model against time
+to maturity and Moneyness.
+be incorporated into the BSM model. For options with a small i ntrinsic values, spot traders and
+option traders are equally informed,and the predictabilit y of the market is equal for both traders.
+In this case, the classical BSM model can be used for option pr icing without incorporating
+stock return predictability. Finally, we showed that the di ﬀerence between implied variance
+11and realized variance, which we called variance risk premiu m, is an informative measure for
+predicting the market in contrast to other volatility measu res.
+References
+Avramov, D. (2003). Stock return predictability and asset p ricing models. Review of Financial
+Studies 17 , 699–738.
+Barberis, N. and R. Thaler (2003). A survey of behavioral ﬁna nce. In G. Harris and R. Stulz
+(Eds.), Handbook of the Economics of Finance , Chapter 18, pp. 1051–1121. North Holland,
+Amsterdam: Elsevier Science.
+Bekiros, S. D. (2013). Irrational fads, short-term memory e mulation, and asset predictability.
+Review of Financial Economics 22 , 213–219.
+Black, F. and M. Scholes (1973). The pricing of options and co rporate liabilities. Journal of
+Political Economy 81 , 637–654.
+Campbell, J. Y. and R. J. Shiller (1988). The dividend-price ratio and expectations of future
+dividends and discount factors. Review of Financial Studies 1 (3), 195–228.
+Daniel, K. and D. Hirshleifer (2015). Overconﬁdent investo rs, predictable returns, and exces-
+sive trading. Journal of Economic Perspectives 29 , 61–88.
+Duﬃe, D. (2001). Dynamic Asset Pricing Theory, 3rd Edition . Princeton University Press:
+Princeton N.J.
+Fama, F. E. and R. K. French (1988). Dividend yields and expec ted stock returns. Journal of
+Financial Economics 22 , 3–25.
+Ferson, W. E. (2006). Conditional asset pricing. In A. C. Lee (Ed.), Encyclopedia of Finance ,
+Chapter 9, pp. 376–383.
+Huang, Y. C., C. W. Wu, and C. W. Wang (2009). Valuing american options under ARMA
+processes. International Research Journal of Finance and Economics 28 , 152– 159.
+Kandel, S. and R. F. Stambaugh (1996). On the predictability of stock returns: An asset-
+allocation perspective. Journal of Finance 51 , 385–424.
+Kloeden, P. E., E. Platen, and H. Schurz (2000). Numerical Solution of SDE Through Computer
+Experiments . Heidelberg: Springer-Verlag.
+Kumar, K. and C. Chaturvedul (2013). Price leadership betwe en spot and futures markets.
+Journal of Applied Finance and Banking 3 (1), 93–107.
+12Lewellen, J. W. (2000). On the Predictability of Stock Returns: Theory and Evidence . Ph.
+D. thesis, William E. Simon Graduate School of Business Admi nistration, University of
+Rochester.
+Liao, S. L. and C. C. Chen (2006). The valuation of European op tions when asset returns are
+autocorrelated. Journal of Futures Markets 26 (1), 85–102.
+Lo, A. W. and J. Wang (1995). Implementing option pricing mod els when asset returns are
+predictable. Journal of Finance 50 (1), 87–129.
+Malkiel, B. G. (2003). The eﬃcient market hypothesis and its critics. Journal of Economic
+Perspectives 17 , 59–82.
+Merton, R. C. (1973). Theory of rational option pricing. Bell Journal of Economics and
+Management Science, 6 , 141–183.
+Neely, C. J. and P. Weller (2000). Predictability in interna tional asset returns: A reexamination.
+Journal of Financial and Quantitative Analysis 35 , 601–620.
+Øksendal, B. K. (2003). Stochastic Diﬀerential Equations: An Introduction with Ap plications .
+Heidelberg: Springer-Verlag.
+Paschke, R. and M. Prokopczusk (2010). Commodity derivativ e valuation with autoregressive
+and moving average components in the price dynamics. Journal of Banking and Finance 34 ,
+2742–2752.
+Peleg, E. (2000). Three essays on asset pricing, portfolio choice and behavio ral ﬁnance . Ph.
+D. thesis, Philosophy in Management, University of Califor nia.
+Pesaran, M. H. (2010). Predictability of asset returns and t he eﬃcient market hypothesis. In
+A. Ullah and D. E. Giles (Eds.), Handbook of Empirical Economics and Finance , Chapter 11,
+pp. 281–31. North Holland, Amsterdam: Elsevier Science.
+Shiller, R. J. (2003). From eﬃcient market theory to behavio ral ﬁnance. Journal of Economic
+Perspectives 17 , 83–104.
+Shirvani, A., S. Rachev, and F. Fabozzi (2019). Multiple sub ordinated modeling of asset
+returns. arXiv:1907.12600 [q-ﬁn.MF] 7 .
+Syga, J. (2015). Semimartingale measure in the investigati on of Stratonovich-type stochastic
+integrals and inclusions. Discussiones Mathematicae, Probability and Statistics 35 , 7–27.
+Wachter, J. A. and M. Warusawitharana (2009). Predictable r eturns and asset allocation:
+Should a skeptical investor time the market? Journal of Econometrics 148 , 162–178.
+Zhou, H. (2010). Variance risk premia, asset predictabilit y puzzles, and macroeconomic
+uncertainty. Annual Review of Financial Economics 10 (1), 481–497.
+13

@@ -1,0 +1,577 @@
+Physical Artiﬁcial Intelligence: The Concept Expansion of Next-Generation
+Artiﬁcial Intelligence
+Yingbo Li
+Hainan University
+lantuzi@aliyun.comYucong Duan*
+Hainan University
+duanyucong@hotmail.comAnamaria-Beatrice Spulber
+Visionogy
+anne@visionogy.comHaoyang Che
+Zeekr Group,
+haoyang.che@zeekrlife.com
+Zakaria Maamar
+Zayed University
+zakaria.maamar@zu.ac.aeZhao Li
+Alibaba Group
+lizhao.lz@alibaba-inc.comChen Yang
+Ghent University
+Chen.Yang@UGent.beYu lei
+Inner Mongolia University,
+yuleiimu@sohu.com
+Abstract —Artiﬁcial Intelligence has been a growth catalyst to
+our society and is cosidered across all idustries as a funda-
+mental technology. However, its development has been limited
+to the signal processing domain that relies on the generated
+and collected data from other sensors. In recent research,
+concepts of Digital Artiﬁcial Intelligence and Physicial Artiﬁcal
+Intelligence have emerged and this can be considered a big step
+in the theoretical development of Artiﬁcal Intelligence. In this
+paper we explore the concept of Physicial Artiﬁcal Intelligence
+and propose two subdomains: Integrated Physicial Artiﬁcal
+Intelligence and Distributed Physicial Artiﬁcal Intelligence.
+The paper will also examine the trend and governance of
+Physicial Artiﬁcal Intelligence.
+Index Terms —Physical Artiﬁcial Intelligence, PAI, Artiﬁcial
+Intelligence, DIKW, Deep learning
+1. Introduction
+Artiﬁcial Intelligence (AI) has been one of the most
+popular topics in the Information and Communication Tech-
+nologies (ICT) ﬁeld. AI powered the development of many
+advanced systems such as robotics. AI used to be conﬁned
+to digital signal processing such as text processing, image
+object recognition, and speech recognition. However, when
+considering computer science holistically, signal processing
+is only a small part of the ﬁeld. The AI applications have
+been extended to include robots, Internet of Things (IoT),
+smart cities, etc. In [1], Miriyev and Kovac classiﬁed AI
+into Digital AI which processes signals, and Physical AI in-
+cluding physical robots. In this paper we explore the concept
+of Physical AI and extend it to Integrated Physical AI such
+as robots or Distributed Physical AI such as IoT. In [1],
+authors considered Integrated Physical AI as Physical AI,
+whose components are together and in a restricted space.
+We propose Distributed Physical AI as a kind of Physical AI
+too, whose components could be distributed in a wide space.
+*Corresponding author: duanyucong@hotmail.comThe aalysis of the Physical AI concepts brings the oppor-
+tunity to discuss about AI and Physical AI from a larger
+perspective. Additionally, it enables us to explore further
+the manifestations of Physical AI.
+In this paper, we will begin by reviewing the state of the
+art of Artiﬁcial Intelligence, and conclude with a discussion
+about the concept of Physical Artiﬁcial Intelligence and how
+can we leverage the beneﬁts of it across diffenrent domains.
+Throughout the paper we will review the trends in Physical
+Artiﬁcial Intelligence and the potential governence problem
+implications. Addtionally, we propose to use Knowledge
+Graph and Data-Information-Knowledge-Wisdom (DIKW)
+to further develop the research on Physical Artiﬁcial In-
+telligence. The intenrion of this paper is to advance the
+theoretical development of Physical Artiﬁcial Intelligence.
+2. Overview of Artiﬁcial Intelligence
+AI is well known for its outperforming human capabili-
+ties in popular benchmarks such ImageNet [56]. Its various
+industrial applications, in both its own domains such as
+Natural Language Processing (NLP), speech recognition,
+face detection, and image classiﬁcation, or other disciplines
+such as agriculture, biology, and chemistry has widely been
+recognized.
+AI originates from the principle of building a Turing
+machine from neurons, a concept proposed by McCulloch
+and Pitts in 1943 [2]. Since 1988 different NN milestones
+such as Backpropagation algorithm continued to develop [3].
+Lecun invented Convolutional Neural Network (CNN) with
+backpropagation in 1998, and in 2006 the fast training
+of Neural Network (NN) was addressed. Considering the
+above, both NN and even AI, have begun their fast pace de-
+velopment in 2012 [4]. To succeed, AI needs the support of
+advanced and affordable computing hardware such as GPU
+cards, and machine learning algorithms, especially NN. The
+relationships between NN, AI, and other related concepts
+are illustrated in Figure 1. NN is essential in powering the
+AI, however, the development of the AI domain, involves
+various disciplines such as knowledge modelling, a highlyarXiv:2105.06564v2  [cs.AI]  17 May 2021researched discipline that involves Knowledge Graph to
+DIKW. With the increasing and fundamental importance of
+NN in mind, we will start by reviewing the history and
+successful algorithms of NN.
+The success of deep learning originates from deep NN,
+especially CNN applied to image classiﬁcation [5]. Pri-
+marily, most NN algorithms were of supervised type, such
+as CNN and Recurrent NN (RNN). CNN and its variants
+are involved with the classiﬁcation and recognition purpose
+such as image classifciation and face recognition. RNN is
+different from CNN as it considers the temporal informa-
+tion in the NN, and as such RNN, including its variant
+Long Short-Term Memory (LSTM), has become popular
+in speech recognition and language translation uses. The
+semi-supervised learning such as Generative Adversarial
+Networks (GAN) is often used in image generation, image
+enhancement, and video game [6].
+Figure 1. Disciplines and techniques associated with AI AIarchitecture
+Deep learning algorithms could be classiﬁed into su-
+pervised, semi-supervised, unsupervised, and reinforcement
+learning based on supervision level during the model train-
+ing period [7]. At ﬁrst, the deep learning most supervised
+algorithms have been extensively used in face recognition,
+text sentiment classiﬁcation, speech recognition, and other
+similar cases. When the training data is not entirely labelled,
+variants of supervised deep learning algorithms such as
+semi-supervised learning algorithms could be used. The
+unsupervised learning on the other hand, does not rely
+on training data labelling but it learns from the internal
+relations caused by the initial deﬁned features, such as
+Auto-Encoders(AE), GAN, and Restricted Boltzmann Ma-
+chines (RBM). In reinforcement learning, the algorithms can
+only obtain the incremental data instead of all pre-existing
+data in each processing step.
+Apart from computer science applications, AI has been
+used in academia and various industries. For example, it
+has been used to faciliate the prediction of the process of
+catalysis utilization [8]. Other uses involved the ﬁnancial
+market, where AI has been used in the dynamic pricing
+and fraud detection [9]. In the energy domain, AI is usedto reduce the electricity [10] and solar modelling [11]. In
+the agriculture AI has been used in the detection of fruit
+ripening [12].
+Although AI has proved to be useful in various domains
+of research and industries, AI has also encountered a few
+limitations. Most of the current AI applications are limited
+to the individual applications. One example is that CNN is
+useful in image classiﬁation and text classiﬁcation, while
+RNN is useful in machine translation and speech recog-
+nition. AI still encounters challenges in mananging trivial
+details and annoying business rules, and some of these
+problems have been the focus of researchers [13]. Almost all
+AI algorithms need to understand binary codes or numbers,
+they lack of high logical inference and problem solving
+capabilities that humans have, and this is mainly because not
+every real problem can be converted into pure mathematic
+problems. For example, AI ﬁnds it is hard to understand the
+sentence differences between the ”Macbook can be used as
+the chopping board” and “Macbook is a computer” in the
+architecutre concept of DIKW [14]. In addition, AI mostly
+worked until now like a black, and while researchers know
+AI works well, they are not clear about the reasons behind
+its success for any speciﬁc problems. Therefore, Explainable
+Artiﬁcial Intelligence (XAI) [15] has been a research domain
+that is focused on discovering the reasons behind the success
+of some speciﬁc NN algorithms.
+3. The concept expansion of Physical Artiﬁcial
+Intelligence
+Currently the concept of Artiﬁcial Intelligence, as de-
+scribed in the above section, is related to processing the
+data and signals in the computer system. Even the hardware
+that is related to the AI only captures the input data and
+deliver the output data from the AI system, as illustrated in
+Figure 2. One example is the Smart Home [16] supported
+by Amazon’s Alexa speech assistant [17]. In [1], Miriyev
+and Kovac proposed the concept of Digital Artiﬁcial Intel-
+ligence (DIAI) that refers to the current popular data-based
+and date-processing AI.
+Figure 2. The hardware architecture related to AI
+Contrary to Digital AI, Miriyev and Kovac [1] have pro-
+posed the concept of Physical Artiﬁcial Intelligence (PAI),
+which refers to the nature-like robots that are driven by
+the intelligence. Miriyev and Kovac used the bee robot to
+explain the concept of PAI, a multi-discipline that combines
+autonomous robots, materials, structures, and perceptions.
+PAI requires the balance between software - the intelligent
+system, and hardware - material, mechanics, and etc. As
+illustrated in Figure 3, PAI bears its roots in the materials
+science, mechanical engineering, computer science, chem-
+istry and biology.
+2Figure 3. Multidisciplinary nature of PAI
+In the proposed concept of PAI by Miriyev and Mirko [1]
+[54], PAI refers to the typical robot and robot system. In this
+paper we propose to extend the concept of PAI to all the
+potential applications identifying the advantages of AI for
+both the hardware and software. Several examples are used
+to explain the extended concept of PAI:
+PAI in IoT. IoT is the typical mixed application of
+the cloud, sensor, software and data analytics [18].
+The robot concatenates the hardware and software
+in one complete intelligent machine, while IoT can
+be distributed to either a small space such as a room
+or to a wide area such as the city. Since AI can be
+used to improve the stability of each node of the
+IoT such as a sensor or the central data analytics
+and predication, IoT is a fertile application domain
+for PAI. The node of IoT used for sensing and
+controlling needs the support of the science and
+technologies, materials, chemistry, mechanism, and
+computer science, even the biology.
+PAI in automobile. The self-driving car can be con-
+sidered as a variant of the intelligent robot system.
+The self-driving car has the same necessary fea-
+tures as the normal robot: the sensor, the embedded
+computing module, the mechanical system, the new
+material and so on. The self-driving car is often
+connected to the Internet for navigation and the latter
+provides the IoT feature to the self-driving car.
+PAI in agriculture. The agriculture is one of the most
+successful applications of Physical Artiﬁcial Intelli-
+gence. The sensors including the cameras, tempera-
+ture meter and hygrometer are used to monitor the
+growth progress of the plants and predict the best
+harvest time. The defects are often detected to alarm
+the potential risk for a intervention.
+PAI in healthcare. The healthcare, especially the
+healthcare for the prevention, is a typical usage of
+Physical Artiﬁcial Intelligence. The biological sen-
+sors and the chemical sensors are used to monitor the
+old man and the patient to predict the potential risks
+such as falling or an unstable situation; the centrual
+center is notiﬁed by the edge device when the riskhappens. The computing happends both at the edge
+sides and the centrual servers.
+PAI in Logistics. PAI has been extensively used in
+multiple aspects of the logistics. The ”last mile”
+is the expensive and hard problem of the logistic
+industry at involves parcel and food delivery. Some
+delivery robots and drones [19] have been used
+in the delivery market to replace the humans. The
+automatic sorting robot has been used in the sorting
+center of the logistics [20].
+In the above survey, the extended concept of PAI has
+been extensively used in multiple industries outside the robot
+industry. The concept of PAI is based on the interdiscipline
+research of ﬁve disciplines proposed in Figure 3 [1].
+4. The Trend of Physical Artiﬁcial Intelligence
+Until 2012 Digital Artiﬁcial Intelligence (DIAI) mim-
+icked the brain capability of logical thinking and induction
+in human brain, to process the data and signals percepted by
+human eyes and ears. As far as we know, the capabilities of
+human beings are not limited to the logical thinking of the
+brain. The brain of the human beings is only responsible for
+processing the signals and transmitting commands to other
+parts of the body, that are responsible for many functions,
+such as movement, vision perception, sound perception,
+digestion and etc. Therefore, DIAI just uncovers a limited
+part of the powerful potentials of AI, while PAI like a whole
+human body with respect to the whole human body, would
+heavily extend the application of AI from the academics to
+the industries.
+PAI has the potential to use deep learning to mimick not
+only the individual human but also the human society as a
+whole. Robots are a typical example of Integrated PAI (IPAI)
+that mimick the individual humans, and integrates the per-
+ception of the physical world through multiple sensors that
+collect signals and data, the induction from multiple indices,
+and the physical response in the physical world as shown in
+Fig. 4, that illustrates the most important modules in IPAI. A
+robot’s perception, computing, and mechanical modules are
+conﬁned into a limited space, while similar to the human
+society Distributed PAI (DPAI) distributes the perception,
+the computing and the response modules across a wide
+space, such as a factory or a city, as shown in Fig. 5.
+Industrial IoT system is a good illustration of DPAI [22].
+PAI needs to fuse multiple streams of information in-
+cluding materials, temperature, vision, sound,etc. from mul-
+tiple sensors as per Fig. 3. Therefore, multimodal processing
+is mandatory to understand the information in PAI. Through
+the fuse of the multimodal information, PAI can easier use
+more kinds of information to make better decision and better
+precisions [34], [35]. The data and information sources bring
+multiple kinds of data, which outperform a single source of
+data, to make real-time decisions and predictions. This is a
+signiﬁcant feature of PAI.
+We use Fig. 6 to illustrate the components and relations
+of PAI:IPAI and DPAI. IPAI will be researched and applied
+3Figure 4. Integrated PAI
+in both home environment and industry environment. The
+home environment [23] will receive home service robots
+like household robots, while the industry environment will
+be extensively used in multiple areas of the Industry 4.0 [24]
+from the automative to the security. DPAI will become more
+and more popular when the edge computing [25] is mature
+and every device is connected to the network. IoT and edge
+computing are typical DPAI subdomains. Since it is popular
+for every intelligent system to be online, IPAI and DPAI will
+have more overlapped areas as shown in Fig. 6.
+5. The DIKW Supported Physical Artiﬁcial
+Intelligence
+Artiﬁcial Intelligence needs a large volume of data as the
+”fuel” to train the model for the tasks of the classiﬁcations
+and the predictions. Digital Artiﬁcial Intelligence such as
+image classiﬁcation and automatic speech recognition is
+typically the approach of processing the signal and data from
+the sources of the image, the sound, the text and the temporal
+data. In order to organize the data used in Digital Artiﬁ-
+cial Intellgence well, the researchers and industry use the
+Knowledge Graph [26] to store the ontology from different
+data. Knowledge graph is a complete and correct approach
+to associate the semantic data. Kowledge Graph considers
+all the data inside as the same hierarchical layer, but it
+does not work very well in the real world. For example, the
+sentence ”the spoiled food can not be eaten” represents one
+knowledge or a rule, not only the data indicating ”food”. So
+DIKW [14] architecture is proposed to construct the infor-
+mation architecture. The DIKW architecture is illustrated in
+Figure 7. In DIKW architecture, the data andinformation
+could be used to infer the knowledge , while the wisdom
+as partial knowledge needs the support from the data and
+information . One important feature of DIKW architecture
+is the presentation the 5 Ws: Who; What; When; Where ,
+andWhy .Knowledge can well describe What happens.
+Wisdom in DIKW represents how.Data is related to Who ,
+When , and Where . And What andHow can be infered
+from Information andKnowledge too.
+Digital Artiﬁcial Intelligence originates from data and
+signal processing, especially the text, image and acousticprocessing. In the DIKW architecture, most algorithms of
+above categories belong to the Data layer. For example,
+the image object recognition [27] is to use large volume
+of object image data to train a model and then recognize
+an object name in testing images. While, automatic speech
+recognition is to convert the speech in the sound to the data
+of the text. In the research, the knowledge extraction in
+Digital Artiﬁcial Intelligence exists but is not as popular
+as the data extraction. In the article [28] the authors use the
+multimodal data processing to extract the knowledge of the
+image or video, like ”One bird ﬂies in the sky”. According
+to the best of our knowledge, it is rare to ﬁnd extensive
+deep learning model to deal with more advanced knowl-
+edge processing. Therefore, Physical Artiﬁcial Intelligence
+encounters challenging problems as it needs to process
+the data, information and knowledge and it is not limited
+to signals as Digital Artiﬁcial Intelligence is. PAI needs
+to accept and process the signal and data from at least
+ﬁve categories: materials, mechanics, chemistry, bilogy, and
+computer sensors. In order to deal with more categories of
+signal and data, PAI has to use knowledge graph to support
+the processing and storage, as illustrated in Figure 8.
+As shown in Figure 8, each node of knowledge graph
+will contain 5 categories of data from PAI. All data nodes of
+the same category are internally and organically associated
+to one another. Knowledge graph could handle the com-
+plexity of multiple-indices data. So in Figure 9 we propose
+to integrate 5 categoris of data with 5 Ws and 4 layers
+of DIKW. Thus the semantic information of PAI could be
+inferred and stored in DIKW architecture while keep its
+original relations to the metadata and other basic data.
+6. Physical Artiﬁcial Intelligence Governance
+and Sustainable Development
+Digitial Artiﬁcial Intellgience has been facing the chal-
+lenges of risk and governance problems [55]. Among the
+challenges for DIAI, the most important challenges will be
+discussed in this section:
+The security of DIAI [29]. The training and pre-
+diction of AI model needs large volume of data,
+so the security of the data storage is important.
+The storage security will need both hardware and
+software protection. The data masking [30] is often
+used to separate the data with the original source in
+the software and algorithm level protection.
+The fake data of DIAI. Deepfake [31] attracted much
+attention when it appeared on the Internet. Deepfake
+could convert the human face in the video to the
+desired face, and in many situations the coverted
+video looks real. The fake image and video cause
+the doubt of ”seeing is believing”, which could lead
+to the social and legal problem.
+The social privacy of DIAI. The face recognition
+in the public space has been banned and identiﬁed
+as illegal in many countries [32]. DIAI has enabled
+the tracking of our behavior as easy as possible.
+4Figure 5. Distributed PAI
+Figure 6. IPAI and DPAI
+Figure 7. DIKW architecture
+In addition, DIAI could easily track the online data
+including the social media and infer the proﬁles of a
+person. Therefore, the social privacy has been a big
+focus in the past years.
+The bias in DIAI. In our society the bias exists
+even if it is hidden, for example the data from the
+Internet. Most of training data of DIAI is from web
+source, which means that the training model of DIAI
+naturally contains the property of bias. This bias has
+been found in the hiring screening AI system [33].
+Physical Artiﬁcial Intelligence (PAI) has more problems
+to resolve because of its characteristics of complexity and
+ubiquitousness compared to DIAI:
+Figure 8. Knowledge graph supported PAI
+The existence problem. PAI like IoT needs more
+extensive installation of multiple kinds of sensors.
+If it is in a limited space like a factory, it does not
+have much regulation problem. However, if the space
+is extended to a larger space which is not under
+the same regulation, PAI will face more problems
+of regulation and social problem.
+The information organization problem. As discussed
+in the previous section, the organization of multiple
+kinds and multiple layers of data and information
+will cause the problem of complexity. The proposed
+Knowledge graph and DIKW supported PAI could
+be the potential solution.
+Cannikin Law. The development of PAI depends on
+at least 5 disciplines of materials science, mechan-
+ical engineering, chemistry, biology and computer
+science. Therefore, the slower development of one
+discipline will cause the problem of cannikin law
+and prohibit the development of PAI.
+The social acceptance. Similar to the dilemma of
+DIAI, the ubiquitous application of PAI will cause
+the worry of the society regarding to the unemploy-
+ment, the privacy and etc.
+We illustrates above problem of PAI in Figure 9.
+As the future format of Artiﬁcial Intelligence, Physical
+Artiﬁcial Intelligence will be the next popular research
+topic following the Digital Artiﬁcial Intelligence, because
+Artiﬁcial Intelligence will be more and more applied in
+other industries. Physical Artiﬁcial Intelligence will sup-
+5Figure 9. PAI governence problems
+port the development of the mechanics or the agriculture
+because of their hardware characteristics. Physical Artiﬁcial
+Intelligence will advance AI application as a fundamental
+technology for the world.
+7. Conclusion
+In this paper we have started by reviewing the basic
+knowledge of artiﬁcial intelligence, including its history,
+categories and popular algorithms. Then we reviewed the
+concept of Physical Artiﬁcal Intelligence proposed by Aslan
+Miriyev and Mirko Kovac, and discussed the reason of
+extending the concept of Physical Aritiﬁcial Intelligence
+by Integrated Physical Artiﬁcial Intelligence and Distributed
+Physical Artiﬁcial Intelligence. After that, we proposed to
+use DIKW and knowledge graph to extend the concept of
+Physical Artiﬁcial Intelligence. Finally we discussed the
+governance of Physical Artiﬁcial Intelligence and its sustain-
+able development, compared to the current popular topics of
+Digital Artiﬁcial Intelligence governance. We wish to use
+this paper to discuss the potential development of Physical
+Artiﬁcial Intelligence as the next generation of Artiﬁcial
+Intelligence, and inspire more research and application of
+Physcial Artiﬁcal Intelligence with the discussed theoretical
+support.
+Acknowledgments
+Supported by Natural Science Foundation of China
+Project (No. 61662021 and No.72062015).
+References
+[1] Miriyev A, Kova ˇc M. Skills for physical artiﬁcial intelligence[J].
+Nature Machine Intelligence, 2020, 2(11): 658-660.
+[2] Zhang L, Zhang B. A geometrical representation of McCulloch-Pitts
+neural model and its applications[J]. IEEE Transactions on Neural
+Networks, 1999, 10(4): 925-929.
+[3] Hecht-Nielsen R. Theory of the backpropagation neural network. Neu-
+ral networks for perception. Academic Press, 1992: 65-93.[4] Yadav N, Yadav A, Kumar M. History of neural networks[M]//An
+Introduction to Neural Network Methods for Differential Equations.
+Springer, Dordrecht, 2015: 13-15.
+[5] Alom M Z, Taha T M, Yakopcic C, et al. The history began from
+alexnet: A comprehensive survey on deep learning approaches[J]. arXiv
+preprint arXiv:1803.01164, 2018.
+[6] Creswell A, White T, Dumoulin V , et al. Generative adversarial
+networks: An overview[J]. IEEE Signal Processing Magazine, 2018,
+35(1): 53-65.
+[7] Dey A. Machine learning algorithms: a review[J]. International Journal
+of Computer Science and Information Technologies, 2016, 7(3): 1174-
+1179.
+[8] Li H, Zhang Z, Liu Z. Application of artiﬁcial neural networks for
+catalysis: a review[J]. Catalysts, 2017, 7(10): 306.
+[9] Ryman-Tubb N F, Krause P, Garn W. How Artiﬁcial Intelligence
+and machine learning research impacts payment card fraud detection:
+A survey and industry benchmark[J]. Engineering Applications of
+Artiﬁcial Intelligence, 2018, 76: 130-157.
+[10] Cheng L, Yu T. A new generation of AI: A review and perspective
+on machine learning technologies applied to smart energy and electric
+power systems[J]. International Journal of Energy Research, 2019,
+43(6): 1928-1973.
+[11] Belu R. Artiﬁcial intelligence techniques for solar energy and photo-
+voltaic applications[M]//Robotics: Concepts, methodologies, tools, and
+applications. IGI Global, 2014: 1662-1720.
+[12] May Z, Amaran M H. Automated oil palm fruit grading system using
+artiﬁcial intelligence[J]. Int. J. Eng. Sci, 2011, 11(21): 30-35.
+[13] Xu Y , Shieh C H, van Esch P, et al. AI customer service: Task com-
+plexity, problem-solving ability, and usage intention[J]. Australasian
+Marketing Journal (AMJ), 2020, 28(4): 189-199.
+[14] Frick ´e M. The knowledge pyramid: the DIKW hierarchy[J]. KO
+KNOWLEDGE ORGANIZATION, 2019, 46(1): 33-46.
+[15] Arrieta A B, D ´ıaz-Rodr ´ıguez N, Del Ser J, et al. Explainable Ar-
+tiﬁcial Intelligence (XAI): Concepts, taxonomies, opportunities and
+challenges toward responsible AI[J]. Information Fusion, 2020, 58:
+82-115.
+[16] Marikyan D, Papagiannidis S, Alamanos E. A systematic review
+of the smart home literature: A user perspective[J]. Technological
+Forecasting and Social Change, 2019, 138: 139-154.
+[17] Karppi T, Granata Y . Non-artiﬁcial non-intelligence: Amazon’s Alexa
+and the frictions of AI[J]. AI & SOCIETY , 2019, 34(4): 867-876.
+[18] Srinivasan C R, Rajesh B, Saikalyan P, et al. A review on the different
+types of Internet of Things (IoT)[J]. Journal of Advanced Research in
+Dynamical and Control Systems, 2019, 11(1): 154-158.
+[19] Janeb ¨ack E, Kristiansson M. Friendly robot delivery: Designing an
+autonomous delivery droid for collaborative consumption[D]. , 2019.
+[20] Dekhne A, Hastings G, Murnane J, et al. Automation in logistics:
+Big opportunity, bigger uncertainty[J]. McKinsey Q, 2019: 1-12.
+[21] Marechal C, Mikolajewski D, Tyburek K, et al. Survey on AI-Based
+Multimodal Methods for Emotion Detection[J]. 2019.
+[22] Cheng J, Chen W, Tao F, et al. Industrial IoT in 5G environment
+towards smart manufacturing[J]. Journal of Industrial Information In-
+tegration, 2018, 10: 10-19.
+[23] Wilson G, Pereyda C, Raghunath N, et al. Robot-enabled support
+of daily activities in smart home environments[J]. Cognitive Systems
+Research, 2019, 54: 258-272.
+[24] Dalenogare L S, Benitez G B, Ayala N F, et al. The expected
+contribution of Industry 4.0 technologies for industrial performance[J].
+International Journal of Production Economics, 2018, 204: 383-394.
+[25] Yu W, Liang F, He X, et al. A survey on the edge computing for the
+Internet of Things[J]. IEEE access, 2017, 6: 6900-6919.
+6[26] Wang Q, Mao Z, Wang B, et al. Knowledge graph embedding:
+A survey of approaches and applications[J]. IEEE Transactions on
+Knowledge and Data Engineering, 2017, 29(12): 2724-2743.
+[27] Sukanya C M, Gokul R, Paul V . A survey on object recognition
+methods[J]. International Journal of Science, Engineering and Com-
+puter Technology, 2016, 6(1): 48.
+[28] He X, Deng L. Deep learning for image-to-text generation: A techni-
+cal overview[J]. IEEE Signal Processing Magazine, 2017, 34(6): 109-
+116.
+[29] Gil L, Liska A. Security with AI and Machine Learning[M]. O’Reilly
+Media, Incorporated, 2019.
+[30] Asenjo J C. Data masking, encryption, and their effect on classiﬁca-
+tion performance: trade-offs between data security and utility[J]. 2017.
+[31] G ¨uera D, Delp E J. Deepfake video detection using recurrent neural
+networks[C]//2018 15th IEEE International Conference on Advanced
+Video and Signal Based Surveillance (A VSS). IEEE, 2018: 1-6.
+[32] Deb D, Wiper S, Gong S, et al. Face recognition: Primates in
+the wild[C]//2018 IEEE 9th International Conference on Biometrics
+Theory, Applications and Systems (BTAS). IEEE, 2018: 1-10.
+[33] Dattner B, Chamorro-Premuzic T, Buchband R, et al. The legal and
+ethical implications of using AI in hiring[J]. Harvard Business Review,
+2019, 25.
+[34] Meyer T, Schmitt M, Dietzek B, et al. Accumulating advantages,
+reducing limitations: Multimodal nonlinear imaging in biomedical
+sciences–the synergy of multiple contrast mechanisms[J]. Journal of
+biophotonics, 2013, 6(11-12): 887-904.
+[35] Deng L. Deep learning: from speech recognition to language and mul-
+timodal processing[J]. APSIPA Transactions on Signal and Information
+Processing, 2016, 5.
+[36] Gadepally V , Goodwin J, Kepner J, et al. Ai enabling technologies:
+A survey[J]. arXiv preprint arXiv:1905.03592, 2019.
+[37] Cully, A., Clune, J., Tarapore, D. & Mouret, J.-B. Nature 521,
+503–507 (2015).
+[38] Bilodeau, R. A. & Kramer, R. K. Front. Robot. AI 4, 48 (2017).
+[39] Petersen, K. H., Napp, N., Stuart-Smith, R., Rus, D. & Kovac, M.
+Sci. Robot. 4, eaau8479 (2019).
+[40] Xia, B. et al. Actuators 9, 62 (2020).
+[41] 5. Pena-Francesch, A., Jung, H., Demirel, M. C. & Sitti, M. Nat.
+Mater. 19, 1230–1235 (2020).
+[42] Sadeghi, A., Mondini, A. & Mazzolai, B. Soft Robot. 4, 211–223
+(2017).
+[43] Man, K. & Damasio, A. Nat. Mach. Intell. 1, 446–452 (2019).
+[44] Sol, J. A. H. P. et al. Chem. Commun. 55, 1726–1729 (2019).
+[45] Pfeifer, R., Bongard, J. & Grand, S. How the Body Shapes the Way
+We Think: A New View of Intelligence (MIT Press, 2007).
+[46] Meng ¨uc ¸, Y ., Correll, N., Kramer, R. & Paik, J. Sci. Robot. 2, eaar4527
+(2017).
+[47] Lipson, H. & Pollack, J. B. Nature 406, 974–978 (2000).
+[48] Yang, G.-Z. et al. Sci. Robot. 3, eaar7650 (2018).
+[49] Kovac, M. Science 352, 895–896 (2016).
+[50] Hauser, H. Nat. Mach. Intell. 1, 338–339 (2019).
+[51] Howard, D. et al. Nat. Mach. Intell. 1, 12–19 (2019).
+[52] Chrisley, R. & Ziemke, T. In Encyclopedia of Cognitive Science
+(Wiley, 2006).
+[53] Miriyev, A., Stack, K. & Lipson, H. Nat. Commun. 8, 596 (2017).
+[54] Jo ˜ao Paulo Costeira and Pedro Lima (editors), “A simple guide to
+Physical AI”. Published on the AI4EU platform: http://ai4eu.eu. June
+24, 2020.
+[55] Dafoe, A. (2018). AI governance: a research agenda. Governance
+of AI Program, Future of Humanity Institute, University of Oxford:
+Oxford, UK.
+[56] Deng J, Dong W, Socher R, et al. Imagenet: A large-scale hierarchical
+image database[C]//2009 IEEE conference on computer vision and
+pattern recognition. Ieee, 2009: 248-255.
+7

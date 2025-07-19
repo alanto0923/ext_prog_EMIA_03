@@ -1,0 +1,883 @@
+arXiv:0711.2718v1  [q-fin.PM]  17 Nov 2007A RISK-SENSITIVE PORTFOLIO OPTIMIZATION
+PROBLEM WITH FIXED INCOMES SECURITIES
+MAYANK GOEL AND K. SURESH KUMAR
+Abstract. We discuss a class of risk-sensitive portfolio optimizatio n
+problems. We consider the portfolio optimization model inv estigated by
+Nagai in 2003. The model by its nature can include ﬁxed income securi-
+ties as well in the portfolio. Under fairly general conditio ns, we prove the
+existence of optimal portfolio in both ﬁnite and inﬁnite hor izon problems.
+Key words. Risk-sensitive control, ﬁxed income securities, non stati on-
+ary optimal strategies.
+AMS 2000 subject classiﬁcation. 91B28, 93E20, 49L20, 35K55,
+60H30.
+1.Introduction
+In this paper, we study a class of portfolio optimization pro blems in con-
+tinuous trading framework where the returns of the individu al assets are
+explicitly being aﬀected by underlying economic factors. Th e continuous
+time portfolio management has its origin in the pioneering w ork of Merton,
+see [15, 16]. Since then there were several contributions to the stochastic
+control applications to portfolio management, see [12, 13] for details. But
+most of these works deal with equities. Literature on portfo lio optimization
+with ﬁxed income assets is limited. A stochastic control mod el suitable for
+ﬁxed income assets was ﬁrst formulated by Merton [15]. Biele cki and Pliska
+in [3] and later in [4], investigated the following linear ve rsion of Merton’s
+model [15] with risk-sensitive criterion,
+
+
+dSi(t)
+Si(t)= (a+AX(t))idt+m+n/summationdisplay
+k=1σikdWk(t), Si(0) =si, i= 1,2,···,m,
+dX(t) = (b+BX(t))dt+ΛdW(t), X(0) =x,
+X(·) = (X1(·),X2(·),···,Xn(·)),
+whereSi(t) denote the price of ithsecurity and Xj(t) the level of the jth
+factorattime tandW(·)isanRm+n-valuedstandardBrownianmotionwith
+components Wk(·). In[4], authorsimproved their earlier work [3] byrelaxin g
+the assumption ΣΛ⊥= 0. Hence, the portfolio model become capable of
+incorporating ﬁxed income securities such as rolling horiz on bonds ( it is a
+portfolio of bonds).
+Also Nagai in [17], considered the following general diﬀusio n model and
+addressed the portfolio optimization problem with risk-se nsitive criterion.
+12 MAYANK GOEL AND K. SURESH KUMAR
+They assumed that the set of securities includes one bond, wh ose price is
+deﬁned by the ODE:
+dS0(t) =r(X(t))S0(t)dt, S0(0) =s0,
+wherer(·) is a nonnegative bounded function. The other security pric es
+Si(·), i= 1,2,···,mand factors X(·) are assumed to satisfy the SDEs
+
+
+dSi(t) =Si(t)[gi(X(t))dt+/summationtextm+n
+k=1σik(X(t))dWk(t)],
+Si(0) =si, i= 1,2,···,m,
+dX(t) =b(X(t))dt+λ(X(t))dW(t),
+X(0) =x∈Rn.
+Nagai proved the existence of optimal portfolios underthef ollowing assump-
+tions:
+(i) The functions g, σ, b, λ are Lipschitz continuous and σσ⊥, λλ⊥are
+uniformly elliptic.
+(ii) There exists r0andκpositive such that
+1
+2tr(λλ⊥(x)) +x⊥[b(x)−λσ⊥(σσ⊥)−1(g−r¯1)(x)] +κ
+2x⊥λλ⊥(x)x/radicalbig
+1+/ba∇dblx/ba∇dbl2≤0
+for all/ba∇dblx/ba∇dbl ≥r0,¯1 = (m/bracehtipdownleft/bracehtipupright/bracehtipupleft/bracehtipdownright
+1,···,1 )⊥
+(iii) Let ˆuis the solution to (4.2), then
+4
+θ2(g−r¯1)⊥(σσ⊥)−1(g−r¯1)−(∇ˆu)⊥λσ⊥(σσ⊥)−1σλ⊥∇ˆu→ ∞as/ba∇dblx/ba∇dbl → ∞.
+Ergodic risk sensitive control problem for the linear case i s well studied,
+see [3, 4, 10, 7] for example. But for the nonlinear case, most of the related
+works deals with the small noise case, see for example [10, 8, 5]. The non-
+linear case, suited for the continuous portfolio optimizat ion is studied in [9]
+and later in [17]. The work [9] also assumes the a condition wh ich is sim-
+ilar to the condition (ii) in [17] given above. In this paper w e consider the
+model given in [17]. Our main contribution is that we prove th e existence
+of ergodic optimal investment strategy without the assumpt ion (ii) and the
+assumption (iii) replaced with the assumption (A3) which is standard in the
+literature of stochastic control.
+Rest of our paper is organized as follows: In Section 2, we giv e a formal
+description of the problem. In Section 3, we investigate the ﬁnite horizon
+problem. We prove the existence of optimal investment strat egy in Theorem
+3.1 and give an explicit form for the optimal investment stra tegy in The-
+orem 3.2. In Section 4, we prove the existence of optimal non s tationary
+investment strategy under (A1)-(A3). Note that the main cha llenge is in
+establishing the uniqueness of the pde (4.2). This is achiev ed without the
+condition (ii) of [17] in Theorem 4.1.PORTFOLIO OPTIMIZATION WITH FIXED INCOME SECURITIES 3
+2.Problem Formulation
+We consider an economy with m≥2 securities and n≥1 factors, which
+are continuously traded on a frictionless market. All trade rs are assumed to
+be price takers. The set of securities may include stock, bon ds and savings
+account and the set of factors may include dividend yields, p rice-earning
+ratios, short term interest rates, the rate of inﬂation.
+LetSi(t) denote the price of ith security and Xj(t), the level of the jth
+factor at time t. Dynamics of the security prices and factors are assumed to
+follow SDE given by
+(2.1)
+
+dS0(t) =r(X(t))dt, S0(0) =s0>0,
+dSi(t)
+Si(t)=ai(X(t))dt+m+n/summationdisplay
+k=1σik(X(t))dWk(t),
+Si(0) =si>0, i= 1,2,···,m,
+dXi(t) =µi(X(t))dt+m+n/summationdisplay
+k=1λik(X(t))dWk(t),
+Xi(0) =xi, i= 1,2,···,n,
+wherea= (a1,···,am)⊥, µ= (µ1,···,µn)⊥, σ= [σij] and Λ = [ λij] with
+a:Rn→Rm, µ:Rn→Rn, σ:Rn→Rm×(m+n), Λ :Rn→Rn×(m+n)and
+r:IRn→R.
+We assume that
+(A1)The functions ai, µi,σij,λijare bounded Lipschitz continuous and r
+is positive bounded measurable.
+(A2)Thefunctions σσ⊥,ΛΛ⊥areuniformlyelliptic with uniformellipticity
+constantδ0>0.
+Under (A1) and (A2), the SDE (2.1) has unique strong solution .
+Ifni(t) denote the amount held by the investor in the ithsecurity at time
+t, then the wealth V(t) of the investor at time tis given by
+V(t) =m/summationdisplay
+i=0ni(t)Si(t).
+Sethi(t) =ni(t)Si(t)
+V(t),i.e.,hi(t) is the fraction of the wealth in the ithsecurity
+at timet. Then for a self ﬁnancing strategy wealth equation takes the form
+(2.2)
+
+dV(t) =V(t)[r(X(t)) +h(t)⊥(a(X(t))−r(X(t))¯1]dt
++V(t)h(t)⊥σ(X(t))dW(t), V(0) =v>0,
+whereh(t) = (h1(t),···,hm(t))⊥.
+We use the following admissibility conditions for the inves tment process
+h(·).
+Deﬁnition 2.1. An investment process h(·)isadmissible if the following
+conditions are satisﬁed:4 MAYANK GOEL AND K. SURESH KUMAR
+(i)h(·)takes values in Rm.
+(ii)The process h(·)is progressively measurable with respect to the ﬁl-
+tration
+Gt=σ(S1(s),···,Sm(s),X(s)|s≤t).
+(iii)E/parenleftBig/integraltextT
+0||h(s)||2ds/parenrightBig
+<∞,∀T.
+The class of admissible investment strategies is denoted by H.
+For a prescribedadmissiblestrategy h(·) (see [[10] p.162] for the deﬁnition
+of prescribed strategy) there exists a unique strong and alm ost surely posi-
+tive solution V(·) to the SDE (2.2) see, [[18] p.192] . Also for h(·)∈ H, the
+SDE (2.2) admits a unique weak solution. For an admissible st rategyh(·)
+and for the initial conditions x∈Rnandv >0, the risk-sensitive criterion
+for the horizon [0 ,T] is given by
+(2.3)JθT(v,x,h(·)) =/parenleftbigg−2
+θ/parenrightbigg
+lnEh(·)[e−(θ
+2)lnV(T)|V(0) =v,X(0) =x].
+For the inﬁnite horizon problem, the criterion is
+(2.4)
+Jθ(v,x,h(·)) = liminf
+T→∞/parenleftbigg−2
+θ/parenrightbigg
+T−1lnEh(·)[e−(θ
+2)lnV(T)|V(0) =v,X(0) =x].
+We assume that θ >0, i.e., the investor is risk averse. Now the investor’s
+optimization problem, is as follows:
+For ﬁnite horizon
+max
+h(·)∈HJT
+θ(v,x,h(·))
+subject to (2.1) and (2.2),
+for inﬁnite horizon
+max
+h(·)∈HJθ(v,x,h(·))
+subject to (2.1) and (2.2).
+Deﬁnition 2.2. (i)An admissible strategy h∗(·)is said to be optimal for the
+ﬁnite horizon problem if
+JθT(v,x,h(·))≤JθT(v,x,h∗(·)),∀admissible h(·).
+(ii)An admissible strategy h∗(·)is said to be optimal for the inﬁnite hori-
+zon problem if
+Jθ(v,x,h(·))≤Jθ(v,x,h∗(·)),∀admissible h(·).
+3.Finite Horizon Problem
+In this section, we consider the ﬁnite horizon problem descr ibed in the
+previous section. Our objective is to prove the existence of optimal invest-
+ment strategies for the payoﬀ function
+JT
+θ(v,x,h(·)) =−2
+θlnEh(·)[e−(θ
+2)lnV(T)|V(0) =v,X(0) =x].PORTFOLIO OPTIMIZATION WITH FIXED INCOME SECURITIES 5
+The above optimal control problem is equivalent to minimize overh(·)∈ H,
+the objective function
+Eh(·)[V(T)−θ
+2|V(0) =v,X(0) =x],
+where (X(·),V(·)) is governed by (2.1) and (2.2).
+We investigate the optimization problem by studying the cor responding
+Hamilton Jacobi Bellman(HJB) equation given by
+(3.1)
+0 =∂φ
+∂t+ inf
+h∈RmLh(.)φ(t,x,v), φ(T,x,v) =v−(θ/2)fort>0,x∈Rn,v>0,
+where
+Lhφ= [r(x) +h⊥(a(x)−r(x)¯1)]v∂φ
+∂v+n/summationdisplay
+i=1µi(x)∂φ
+∂xi
++1
+2h⊥σ(x)σ(x)⊥hv2∂2φ
+∂v2+1
+2n/summationdisplay
+ij=1mij(x)∂2φ
+∂xi∂xj
++v
+2n/summationdisplay
+i=1m/summationdisplay
+l=1m+n/summationdisplay
+k=1λik(x)σlk(x)hl∂2φ
+∂xi∂v,
+mij(x) =m+n/summationdisplay
+k=1λik(x)λjk(x).
+We seek a solution to (3.1) in the form
+(3.2) φ(t,x,v) =v−(θ/2)e−(θ/2)u(t,x),
+for a suitable function u. Consider the following PDE
+(3.3)
+0 =∂u
+∂t+n/summationdisplay
+i=1µi(x)∂u
+∂xi+1
+2−θ
+2n/summationdisplay
+i,j=1mij(x)∂u
+∂xi∂u
+∂xj
++1
+2n/summationdisplay
+i,j=1mij(x)∂2u
+∂xi∂xj−Kθ(x,∇u),(t,x)∈(0,∞)×Rn,
+u(T,x) = 0, x∈Rn,
+
+6 MAYANK GOEL AND K. SURESH KUMAR
+where,
+(3.4)
+Kθ(x,∇u) = inf
+h∈Rm/bracketleftbigg1
+2/parenleftbiggθ
+2+1/parenrightbigg
+h⊥σ(x)σ(x)⊥h−h⊥(a(x)−r(x)¯1)−r(x)
++θ
+4n/summationdisplay
+i=1m/summationdisplay
+l=1m+n/summationdisplay
+k=1λik(x)σlk(x)hl∂u
+∂xi/bracketrightBigg
+.
+
+
+Using straight forward calculations, one can show that, the functionu∈
+C1+δ
+2,2+δ((0,T)×Rn),0<δ<1isasolutionto(3.3)iﬀ φ∈C1+δ
+2,2+δ((0,T)×
+Rn) given by (3.2) is a solution to the HJB equation (3.1).
+Set
+u(t,x) =−2
+θlnψ(t,x),(t,x)∈[0,∞)×Rn.
+Then we can show that u∈C1+δ
+2,2+δ((0,T)×Rn) is a solution of (3.3) iﬀ
+ψ∈C1+δ
+2,2+δ((0,T)×Rn) is a positive solution of the PDE
+(3.5)0 =∂ψ
+∂t+1
+2n/summationdisplay
+i,j=1mij(x)∂2ψ
+∂xi∂xj+n/summationdisplay
+i=1µi(x)∂ψ
+∂xi
++H(x,ψ,∇ψ),
+
+
+where
+(3.6)
+H(t,x,ψ,∇ψ) =θ
+2inf
+h∈Rm/bracketleftbigg/braceleftbigg1
+2/parenleftbiggθ
+2+1/parenrightbigg
+h⊥σ(x)σ(x)⊥h−h⊥(a(x)−r(x)¯1)−r(x)/bracerightbigg
+ψ
+−h⊥σ(x)Λ(x)⊥∇ψ/bracketrightBig
+.
+
+
+Lemma 3.1. Assume (A1)-(A2). The PDE (3.5) has unique solution ψ∈
+C1+δ
+2,2+δ((0,T)×Rn).
+See [ [2], pp. 94-97], [[14], pp.419-423] for a proof.
+Theorem 3.1. Assume (A1)-(A2). The HJB equation (3.1) has a unique
+solutionφinC1,2((0,T)×Rn). Moreover
+(i)For(s,x,v)∈[0, T)×Rn×(0,∞),
+φ(s,x,v)≤Eh(.)/bracketleftBig
+V(T)−(θ/2)|V(s) =v,X(s) =x/bracketrightBig
+for any admissible strategy h(·).
+(ii)Ifh∗(·)is an admissible strategy such that
+Lh∗φ(t,x,v) = inf
+h∈RmLhφ(t,x,v),∀t>0, x∈Rn, v>0PORTFOLIO OPTIMIZATION WITH FIXED INCOME SECURITIES 7
+thenφ(s,x,v) =Eh∗(·)/bracketleftBig
+V∗(T)−(θ/2)|V∗(s) =v,X(s) =x/bracketrightBig
+,
+for any solution V∗(·)of (2.2) corresponding to h∗(·)and initial
+condition (v,x).
+Proof: Existence of the solution of (3.1) follows from Lemma 3.1. Le t
+φ∈C1,2((0,T)×Rn) be a solution to (3.1). For each admissible h(·) we
+have
+0≤∂φ
+∂t+Lh(·)φ(t,X(t),V(t)), t≥0,
+where (X(·),V(·)) is given by (2.1)- (2.2) with initial conditions X(s) =
+x,V(s) =v. For every integer n≥1 deﬁne the stopping time
+τn=T/logicalanddisplay
+inf{t≥s| ||(X(t),V(t))|| ≥n},
+where|| · ||is the usual norm in Rn+1. Clearly,τn↑T. Now using Ito’s
+formula, we have
+φ(τn,X(τn),V(τn))−φ(s,x,v)
+=/integraldisplayT
+s/bracketleftBig∂φ
+∂t+Lh(.)φ/bracketrightBig
+I[s,τn](r)dr+/integraldisplayτn
+s/bracketleftBiggn/summationdisplay
+i=1λi(X(r))∂φ
+∂xi+h(r)⊥σ(X(r))V(r)∂φ
+∂v/bracketrightBigg
+dW(r)
+whereI[s,τn]denote the indicator function on [ s,τn] andλiis theithrow of
+matrix Λ.
+Using 0≤∂φ
+∂t+Lh(.)φ(t,x,v),∀t >0, v >0, x∈Rnand taking the
+expectation on the both side, we have
+Eh(.)[φ(τn,X(τn),V(τn))−φ(s,x,v)|V(s) =v,X(s) =x]≥0.
+Now letn→ ∞we get,
+0≤Eh(.)[φ(T,X(T),V(T))|V(s) =v,X(s) =x]
+−Eh(.)[φ(s,x,v)|V(s) =v,X(s) =x].
+φ(s,x,v)≤Eh(.)[φ(T,X(T),V(T))|V(s) =v,X(s) =x].
+φ(s,x,v)≤Eh(.)[V(T)−(θ/2)|V(s) =v,X(s) =x].
+For the proof of (ii), note that from the deﬁnition of h∗(·),we have
+Lh∗(·)φ(t,x,v) = 0
+Now using Ito’s formula as above, it follows that
+φ(s,x,v) =Eh∗(·)/bracketleftBig
+V∗(T)(−θ/2)|V∗(s) =v,X(s) =x/bracketrightBig
+,
+whereV∗(·) is a solution to (2.2) corresponding to h∗(·). Hence
+φ(s,x,v) = inf
+h∈RmEh(·)/bracketleftBig
+V(T)−(θ/2)|V(s) =v, X(s) =x/bracketrightBig
+.8 MAYANK GOEL AND K. SURESH KUMAR
+/square
+Theorem 3.2. Assume (A1)-(A2). Let Hθ(t,x)denote a minimizing selec-
+tor in (3.4), that is,
+Hθ(t,x)⊥=/parenleftBig2
+θ+2/parenrightBig/bracketleftBig
+a(x)−r(x)¯1 +θ
+2σΛ⊥∇u/bracketrightBig
+(σσ⊥)−1(x).
+Then the investment process
+(3.7) hθ(t) :=Hθ(t,X(t)),
+is optimal. i.e.
+(3.8) JθT(v,x,h(·))≤JθT(v,x,hθ(·)),
+for all admissible h(·),v >0,x∈Rn.
+Proof:Letφbe as in (3.2) . Then it follows from Theorem 3.1 that φ
+is the unique solution to the HJB equation (3.1). Since Hθis a minimizing
+selector in equation (3.4), we have
+LHθ(·)φ(t,x,v) = inf
+h∈RmLh(·)φ(t,x,v),∀t>0, v>0, x∈Rn.
+Now (i) and (ii) of Theorem 3.1 implies that
+Ehθ(·)/bracketleftBig
+V∗(T)−(θ/2)|V∗(s) =v,X(s) =x/bracketrightBig
+≤Eh(·)/bracketleftBig
+V(T)−(θ/2)|V(s) =v,X(s) =x/bracketrightBig
+,
+for all admissible h(·) andV∗(·) is the unique solution to (2.2) for the pre-
+scribed admissible strategy hθ(·). Hence,
+JθT(v,x,h(·))≤JθT(v,x,hθ(·)),
+for all admissible strategy ( h(·),v >0,x∈Rn. /square
+4.Infinite Horizon Problem
+Inthis section, weconsider theinﬁnitehorizon problem. Th emethodis to
+treattheproblemastheasymptoticlimitoftheﬁnitehorizo nproblem. Thus
+we investigate the asymptotic behavior of the HJB equation o f the ﬁnite
+horizon problem. Hence we require the following Lyapunov ty pe stability
+condition.
+(A3)There exists a function v:Rm→Rsuch that
+(i)v∈C2(Rm), v≥0
+(ii) The function /ba∇dbl∇v/ba∇dblhas polynomial growth.PORTFOLIO OPTIMIZATION WITH FIXED INCOME SECURITIES 9
+(iii)Lh,ωv(x)→ −∞as/ba∇dblx/ba∇dbl → ∞for allhandω, where
+Lh,ωφ=n/summationdisplay
+i=1/bracketleftBig
+µi(x) +m+n/summationdisplay
+k=1λik(x)ωk+θ
+2n/summationdisplay
+l=1hl/parenleftBigm+n/summationdisplay
+k=1λik(x)σlk(x)/parenrightBig/bracketrightBig∂φ
+∂xi
++1
+2n/summationdisplay
+i=1mij(x)∂2φ
+∂xi∂xj.
+Consider the following auxiliary PDE
+(4.1)
+
+∂˜u
+∂t=n/summationdisplay
+i=1µi(x)∂˜u
+∂xi+1
+2
+−θ
+2n/summationdisplay
+i,j=1mij(x)∂˜u
+∂xi∂˜u
+∂xj
++n/summationdisplay
+i,j=1mij(x)∂2˜u
+∂xi∂xj
+−Kθ(x,∇˜u), t>0,x∈Rn,
+˜u(0,x) = 0,∀x∈Rn,
+We can show that ˜ u∈C1+δ
+2,2+δ((0,T)×Rn) is a solution to (4.1) iﬀ u∈
+C1+δ
+2,2+δ((0,T)×Rn) is unique solution to (3.5). Hence (4.1) has unique
+solution ˜u∈C1+δ
+2,2+δ((0,T)×Rn). Using Feynman-Kac representation of
+(4.1), see [[11], p.366] and (A3), we can show that ˜ u≥0,∂˜u
+∂t≥0.Now
+we state the following estimate which is crucial to study the asymptotic
+behavior of (4.1).
+Lemma 4.1. Let˜ube the unique solution to (4.1). Then for each c>0
+|▽x˜u(t,x)|2−4(1+c)(θ+2)
+θδ0/vextendsingle/vextendsingle/vextendsingle/vextendsingle∂˜u(t,x)
+∂t/vextendsingle/vextendsingle/vextendsingle/vextendsingle
+≤K/parenleftBig
+|∇Q|2
+2r+|∇(λλ⊥)|2
+2r+|∇B|2r+|B|2
+2r+|U|2r+|∇U|2
+2r+1/parenrightBig
+,
+t>0, x∈B(0,r),
+whereδ0is the uniform ellipticity constant of ΛΛ⊥,
+Q(x) =λθ
+4[I−θ
+θ+2σ⊥(σσ⊥)−1σ]λ⊥,
+B(x) =µ(x)−θ
+θ+2λσ⊥(σσ⊥)−1[a(x)−r(x)¯1],
+U(x) =1
+θ+2(a−r¯1)⊥(σσ⊥)−1(a−r¯1)+r(x)
+|·|2r=/ba∇dbl·/ba∇dblL∞(B(0,r))andK >0is a constant depending on c, δ0,n.
+The proof of Lemma 4.1 follows from the proof of [ [17], Theore m 2.1 (i),
+Remark (i)]. Now using the above estimate we prove the follow ing lemma,
+see appendix for the proof.10 MAYANK GOEL AND K. SURESH KUMAR
+Lemma 4.2. Let˜uis be the solution to (4.1) and x0∈Rn, then there
+exists a subsequence {Ti} ⊂R+such that ˜u(Ti,x)−˜u(Ti,x0)converges to
+a function ˆu∈C2(Rn)uniformly on compact sets and strongly in W1,2
+locand
+∂˜u(Ti,·)
+∂ttoρ∈Runiformly on each compact set. Moreover (ˆu(·),ρ)satisﬁes
+(4.2)
+ρ=1
+2n/summationdisplay
+i,j=1mij(x)∂2ˆu
+∂xi∂xj−θ
+4n/summationdisplay
+i,j=1mij(x)∂ˆu
+∂xi∂ˆu
+∂xj+n/summationdisplay
+i=1µi(x)∂ˆu
+∂xi−Kθ(x,∇ˆu),
+lim
+||x||→∞ˆu(x) =∞, x∈Rn.
+
+
+To show the uniqueness of the above PDE (4.2) we rewrite (4.2) as
+ρ=1
+2n/summationdisplay
+i,j=1mij(x)∂2ˆu
+∂xi∂xj−inf
+ω∈Rm+n/bracketleftbigg1
+θ||ω||2−ω⊥Λ(x)⊥∇ˆu/bracketrightbigg
++µ(x)⊥∇ˆu
+−sup
+h∈Rm/bracketleftbigg
+h⊥(a(x)−r(x)¯1)+r(x)−1
+2/parenleftbiggθ
+2+1/parenrightbigg
+h⊥σ(x)σ(x)⊥h−θ
+2h⊥σ(x)Λ(x)⊥∇ˆu/bracketrightbigg
+,
+lim
+||x||→∞ˆu(x) =∞, x∈Rn.
+Hence the PDE (4.2) takes the form
+(4.3)
+ρ=1
+2n/summationdisplay
+i,j=1mij(x)∂2ˆu
+∂xi∂xj
++ sup
+ω∈Rm+ninf
+h∈Rm/bracketleftbigg/parenleftbigg
+µ(x)⊥+ω⊥Λ(x)⊥+θ
+2h⊥σ(x)Λ(x)⊥/parenrightbigg
+∇ˆu−1
+θ||ω||2
++1
+2/parenleftbiggθ
+2+1/parenrightbigg
+h⊥σ(x)σ(x)⊥h−h⊥(a(x)−r(x)¯1)−r(x)/bracketrightbigg
+=1
+2n/summationdisplay
+i,j=1mij(x)∂2ˆu
+∂xi∂xj
++ inf
+h∈Rmsup
+ω∈Rm+n/bracketleftbigg/parenleftbigg
+µ(x)⊥+ω⊥Λ(x)⊥+θ
+2h⊥σ(x)Λ(x)⊥/parenrightbigg
+∇ˆu−1
+θ||ω||2
++1
+2/parenleftbiggθ
+2+1/parenrightbigg
+h⊥σ(x)σ(x)⊥h−h⊥(a(x)−r(x)¯1)−r(x)/bracketrightbigg
+,
+lim
+||x||→∞ˆu(x) =∞.
+
+PORTFOLIO OPTIMIZATION WITH FIXED INCOME SECURITIES 11
+Consider the SDE
+(4.4)
+dXi(t) =/bracketleftBigg
+µi(X(t))+m+n/summationdisplay
+k=1λik(X(t))ωk(X(t))+θ
+2m/summationdisplay
+l=1m+n/summationdisplay
+k=1λik(X(t))σlk(X(t))hl(t)/bracketrightBigg
+dt
++m+n/summationdisplay
+k=1λik(X(t))dWk(t),i= 1,···,n.
+LetM1denote the set of all Markov strategies in Hand
+M2={ω:IR→IRn+m|measurable and E/integraldisplayT
+0/ba∇dblω(X(t))/ba∇dbl2dt <∞for allT >0}.
+Forh∈Rm, w∈IRn+m, φ:IRn→IR, set
+Lh,ωφ=n/summationdisplay
+i=1/bracketleftBig
+µi(x) +m+n/summationdisplay
+k=1λik(x)ωk+θ
+2n/summationdisplay
+l=1hl/parenleftBigm+n/summationdisplay
+k=1λik(x)σlk(x)/parenrightBig/bracketrightBig∂φ
+∂xi
++1
+2n/summationdisplay
+i=1mij(x)∂2φ
+∂xi∂xj.
+and
+r(x,h,ω) =1
+2/parenleftbiggθ
+2+1/parenrightbigg
+h⊥σ(x)σ(x)⊥h−1
+θ||ω||2−h⊥(a(x)−r(x)¯1)−r(x).
+Let ¯ω(·),¯h(·) be such that
+sup
+ω∈Rm+ninf
+h∈Rm/bracketleftBig
+Lh,ωˆu+r(h,ω)/bracketrightBig
+= inf
+h∈Rm/bracketleftBig
+Lh,¯ω(·)ˆu+r(h,¯ω(·))/bracketrightBig
+= sup
+ω∈Rm+n/bracketleftBig
+L¯h(·),ωˆu+r(¯h(·),ω)/bracketrightBig
+= inf
+h∈Rmsup
+ω∈Rm+n/bracketleftBig
+Lh,ωˆu+r(h,ω)/bracketrightBig
+=L¯h(·),¯ω(·)ˆu+r(¯h(·),¯ω(·))
+Fixh(·)∈ M1, letX1(·) denote the process (4.4) with initial condition
+x∈Rncorresponding to ( h(·),¯ω(·)), then using Ito’s formula, we have12 MAYANK GOEL AND K. SURESH KUMAR
+ˆu(X1(T))−ˆu(x)
+=/integraldisplayT
+0Lh(·),¯ω(·)ˆu(X1(t))dt+Martingale (Zero-mean)
+=/integraldisplayT
+0/bracketleftBig
+Lh(·),¯ω(·)ˆu(X1(t))+r(X1(t),h(X1(t)),¯ω(X1(t)))/bracketrightBig
+dt
+−/integraldisplayT
+0r(X1(t),h(X1(t)),¯ω(X1(t)))dt+Martingale (Zero-mean)
+≥inf
+h∈M1/integraldisplayT
+0/bracketleftBig
+Lh(·),¯ω(·)ˆu(X1(t))+r(X1(t),h(X1(t)),¯ω(X1(t)))/bracketrightBig
+dt
+−/integraldisplayT
+0r(X1(t),h(X1(t)),¯ω(X1(t)))dt+Martingale (Zero-mean)
+= inf
+ω∈M2sup
+h∈M1/integraldisplayT
+0/bracketleftBig
+Lh(·),ω(·)ˆu(X1(t))+r(X1(t),h(X1(t)),ω(X1(t)))/bracketrightBig
+dt
+−/integraldisplayT
+0r(X1(t),h(X1(t)),¯ω(X1(t)))dt+Martingale (Zero-mean)
+=Tρ−/integraldisplayT
+0r(X1(t),h(X1(t)),¯ω(X1(t)))dt+Martingale (Zero-mean) .
+Taking expectation, we have
+(4.5)E[ˆu(X1(T)]−ˆu(x)≥ρT−E/bracketleftbigg/integraldisplayT
+0r(X1(t),h(X1(t)),¯ω(X1(t)))dt/bracketrightbigg
+.
+Now mimicking the arguments in [1](see appendix for a proof) , using (A3)
+we can show that ˆ u∈o(v(·) and
+(4.6) lim
+T→∞1
+TE[ˆu(X1(T))] = 0,
+Now divide (4.5) by and let T→ ∞we have
+ρ≤lim
+T→∞1
+TE/bracketleftbigg/integraldisplayT
+0r(X1(t),¯h(X1(t)),¯ω(X1(t)))/bracketrightbigg
+dt∀h(·)∈ M1.
+Therefore
+ρ≤sup
+h(·)∈M1limT→∞1
+TE/bracketleftbigg/integraldisplayT
+0r(X1(t),h(X1(t)),¯ω(1(t)))dt/bracketrightbigg
+.
+Hence
+(4.7)ρ≤inf
+ω(·)∈M2sup
+h(·)∈M1limT→∞1
+TE/bracketleftbigg/integraldisplayT
+0r(X(t),h(X(t)),ω(X(t)))dt/bracketrightbigg
+,
+whereX(·) is the process (4.4) corresponding to ( h(·),ω(·)). Now a similar
+argument shows that
+(4.8)ρ≥sup
+h(·)∈M1inf
+ω(·)∈M2limT→∞1
+TE/bracketleftbigg/integraldisplayT
+0r(X(t),h(X(t)),ω(X(t)))dt/bracketrightbigg
+.PORTFOLIO OPTIMIZATION WITH FIXED INCOME SECURITIES 13
+Combining (4.7) and (4.8), we get
+ρ= sup
+h(·)∈M1inf
+ω(·)∈M2limT→∞1
+TE/bracketleftbigg/integraldisplayT
+0r(X(t),h(X(t)),ω(X(t)))dt/bracketrightbigg
+= inf
+ω(·)∈M2sup
+h(·)∈M1limT→∞1
+TE/bracketleftbigg/integraldisplayT
+0r(X(t),h(X(t)),ω(X(t)))dt/bracketrightbigg
+Let (ρ′,ψ) is another solution in the class R×C2(Rn
++)∩o(ˆu(·)). Then using
+the similar argument, one can easily check that
+ρ′= sup
+h(·)∈Hinf
+ω(·)∈MlimT→∞1
+TE/bracketleftbigg/integraldisplayT
+0r(X(t),h(X(t)),ω(X(t)))dt/bracketrightbigg
+=ρ.
+Leth1∈ M1be such that
+ρ= inf
+w∈Rn+m/bracketleftBig
+Lh1(·),wˆu+r(x,h1(x),w)/bracketrightBig
+,
+w1∈ M2be such that
+ρ= sup
+h∈Rm/bracketleftBig
+Lh,w1(·)ψ+r(x,h,w1(x))/bracketrightBig
+andX(·) be the solution to (4.4) corresponding to ( h1(·),w1(·). Then
+Lh(·),ω(·)(ˆu−ψ)≤0∀h(·)∈ M1, ω(·)∈ M2.
+Thus ˆu(X(t))−ψ(X(t)), t≥0 is a submartingale satisfying
+sup
+tE[|u(X(t))−ψ(X(t))|]≤klim
+t→∞1
+t/integraldisplayt
+0||X(t)||2nds<∞,
+forsuitable k>0, n≥1. Weuseherethefactthat ψand ˆuhavepolynomial
+growth. By the submartingale convergence theorem, it conve rges a.s. Since
+ψ(x0) = ˆu(x0) = 0 and X(·) visits any arbitrarily small neighborhood of
+zero inﬁnitely often a.s., it can converge only to zero. The s ame argument
+proves that ψ−˜uis identically zero: if not, ψ−ˆu > δ > 0 for some δin
+some open ball which is visited inﬁnitely often a.s.by X(·), contradicting the
+convergence of ψ(X(·))−ˆu(X(·)) to zero. Hence ψ−˜uis identically zero.
+Thus we have the following theorem.
+Theorem 4.1. Assume (A1)-(A3). The pde (4.1) has a unique solution
+(ρ,ˆu)∈R×C(Rn)satisfying ˆu(x0) = 0.
+Theorem 4.2. Assume (A1)-(A3). Let hθ(·)be as in Theorem 3.2. Then:
+(i).For allv>0andx∈Rnwe have
+Jθ(v,x,hθ(·)) = lim
+t→∞/parenleftbigg−2
+θ/parenrightbigg
+t−1lnEhθ(·)/bracketleftBig
+e−(θ/2)lnV∗(t)|V(0) =v,X(0) =x/bracketrightBig
+:=ρ(θ)
+whereV∗(·)is the unique solution of (2.1) corresponding to hθ(·)
+and the initial condition (v,x).14 MAYANK GOEL AND K. SURESH KUMAR
+(ii).The admissible strategy hθ(·)is optimal.
+Proof:From Theorem 3.2, we have
+(4.9)1
+TJT
+θ(x,v,hθ(·))≥1
+TJT
+θ(x,v,h(·))
+for allh·) admissible. Now using Theorem 4.1, we have
+(4.10)1
+TJT
+θ(x,v,hθ(·)) =1
+T−2
+θlnφ(T−t,x,v)
+=1
+Tlnv−1
+Tu(T−t,x)
+→ρasT→ ∞.
+Now from (4.9) and (4.10), we have
+ρ= lim
+T→∞1
+TJT
+θ(v,x,hθ(·))≥liminf
+T→∞1
+TJT
+θ(v,x,h(·)).
+Hence we have the theorem. /square
+Remark 4.1. We have shown that the optimal strategies in both ﬁnite hori-
+zon and inﬁnite horizon problems are functions of the econom ic factors only.
+This happens since the economic factors are what which drives the asset price
+movements. Another interesting observation is the same opt imal strategy
+works for both ﬁnite and inﬁnite horizon problems.
+Remark 4.2. (i) If we assume that σΛ⊥≡0, then strategy given in The-
+orem 4.2 is stationary. But in this case portfolio cannot inc lude bonds.
+(ii) Instead of σΛ⊥≡0if we assume the condition (ii) of [17], then a close
+mimicry of the proof of [ [17], Theorem 4.1] we can show that
+Hθ(x) =θ
+θ+2(σσ⊥)−1[a(x)−r(x)¯1−θ
+2σλ⊥∇ˆu(x).
+is an optimal stationary strategy.
+5.Conclusion
+In this paper, we have investigated the risk-sensitive port folio optimiza-
+tion problem where the assets are explicitly depending on th e economic
+factors. Our portfolio model can also include ﬁxed income se curities such as
+rolling horizon bonds. We prove the existence of optimal inv estment strate-
+gies under very general conditions.
+6.Appendix
+Proof of Lemma 4.2.
+Set˜φ(T,x) = ˜u(T,x)−˜u(T,x0). Using Lemma 4.1, it can be shown
+that{˜φ(T,·)|T >0}is uniformly bounded and equicontinuous on compact
+subsets of Rn. Therefore it has a subsequence {˜φ(Ti,·)}converging to a
+function ˆu(·)∈C2(Rn) uniformly on each compact set. Moreover,∂˜u
+∂t≥
+0 and by Lemma 4.1 {˜φ(T,·)}forms a bounded subset of Hilbert spacePORTFOLIO OPTIMIZATION WITH FIXED INCOME SECURITIES 15
+W1,2(B(0,R)) for each R >0 and we see that there exists a subsequence
+(w.o.l.g itself) {˜u(Ti,·)}converging to ¯ u∈W1,2
+loc(Rn) weakly in W1,2
+locand
+strongly in L2
+loc. Taking a further subsequence(w.l.o.g itself), we can see
+that ˜u(Ti,·)→¯u(·) a.s. and that ¯ u≡ˆu.
+Also we can show that ∇˜φ(Ti,·)→ ∇ˆu(·) strongly in L2
+loc(Rn).
+Putξ(·) =∂˜u
+∂t. Then we obtain from (4.4)
+∂ξ
+∂t=1
+2/summationtextn
+ij=1mij(x)∂2ξ
+∂xi∂xj+/summationtextn
+i=1µi(x)∂ξ
+∂xi−θ
+2/summationtextn
+ij=1mij(x)∂˜u
+∂xj∂ξ
+∂xi
+−θ
+2infh∈Rmh⊥σ(x)Λ(x)⊥∇ξ,
+sinceξis bounded on ( ǫ,∞)×B(0,R) because of Lemma 4.1, the regu-
+larity theorem for parabolic equations implies that {ξ(T,·)}forms a family
+of Holder equicontinuous functions on ( ǫ,∞)×B(0,R) for eachR. Thus
+we have a subsequence (w.o.l.g. itself) {ξ(Ti,·)}converging to a function
+ρ∈C(Rn) uniformly on each compact set. Now take the limit along the
+subsequence in
+(6.1)
+∂˜φ(Ti,x)
+∂t=n/summationdisplay
+i=1µi(x)∂˜φ(Ti,x)
+∂xi+1
+2
+−θ
+2n/summationdisplay
+i,j=1mij(x)∂˜φ(Ti,x)
+∂xi∂˜φ(Ti,x)
+∂xj
++n/summationdisplay
+i,j=1mij(x)∂2˜φ(Ti,x)
+∂xi∂xj
+−Kθ(x,∇˜φ),(Ti,x)∈(0,∞)×Rn,
+˜φ(0,x) = 0,∀x∈Rn,
+
+
+we can see that (ˆ u(·),ρ(·)) satisﬁes (4.1). Now we show that ρ(·) is a con-
+stant.
+Fixx1∈B(0,R0). Forx∈B(0,R), forR≥R0
+ρ(x) = lim
+n→∞∂˜φ(Tn,x)
+∂t= lim
+n→∞˜φ(Tn,x)
+Tn
+= lim
+n→∞˜φ(Tn,x)−˜u(Tn,x1)
+Tn+ lim
+n→∞˜φ(Tn,x1)
+Tn
+= lim
+n→∞∇˜φ(Tn,x1).(x−x1)
+Tn+ρ(x1).
+Now from Lemma 4.1, it follows that
+lim
+n→∞∇˜φ(Tn,x1).(x−x1)
+Tn= 0 whenever x∈B(0,R).
+Thereforeρ(x) =ρ(x1) whenever x∈B(0,R),for anyR≥R0.
+SinceR0, Rcan be chosen arbitrary, we have
+ρ(x) =ρ(x1)∀y∈Rn.16 MAYANK GOEL AND K. SURESH KUMAR
+Henceρis constant. /square
+Proof of (4.6). From (A3), there exists r>0 such that
+Lh,ωv(x)≤ −1,whenever /ba∇dblx/ba∇dbl ≥r,h∈Rm, ω∈Rn+m.
+LetX(·) bethe process corresponding to ( ¯h(·),¯ω(·)) withX(0) =x,/ba∇dblx/ba∇dbl ≥
+r. Note that
+¯h(x) =2
+θ+2(σσ⊥)−1[a(x)−r(x)¯1−θ
+4Λσ⊥∇ˆu]
+and
+¯ω(x) =θ
+2Λ∇ˆu(x).
+From Lemma 4.1 and (A1), it follows that
+/ba∇dbl∇ˆu/ba∇dblL∞(Rn)≤c,for somec>0.
+Hence there exits a constant c1>0 such that
+/ba∇dbl¯h/ba∇dblL∞(Rn)+/ba∇dbl¯ω/ba∇dblL∞(Rn)≤c1.
+Letτrbe the ﬁrst time the process X(·) hits the ball B(0,r). Using Ito’s
+formula we have,
+Eˆu(X(τr))−ˆu(x) =−E/bracketleftBig/integraldisplayτr
+0r(X(s),¯h(X(s)),¯ω(X(s)))ds
+Therefore from [ [1], Lemma 4.1, p. 166], there exists consta ntsc2, c3such
+that
+ˆu(x)≤c2+c3v(x),/ba∇dblx/ba∇dbl ≥r.
+i.e. ˆu∈o(v(·)). Now mimicking the arguments from [[1], pp.165-168], the
+equation (4.6) follows.
+References
+[1] Borkar, V. S., Optimal control of diﬀusion processes , Pitman research notes in math-
+ematics series, no. 203, Longman Scientiﬁc & Technical, UK, 1989.
+[2] Bensoussan, A., Stochastic control by functional analysis methods, Studie s in mathe-
+matics and it’s applications , North-Holland, New York, 11(1982).
+[3] Bielecki, T.R. and Pliska, S. R., Risk-Sensitive Dynamic Asset Management , App.
+Math. Optim., 39(1999), pp. 337-360.
+[4] Bielecki, T. R. and Pliska, S. R., A risk-sensitive intertemporal CAPM, with applica-
+tion to ﬁxed income management , IEEE Transaction on Automatic Control, 49(2004),
+pp. 420-432.
+[5] Dupuis, P. and McEneaney, W. M., Risk-sensitive and robust escape criteria , SIAM
+J. on Control and Optimization, 35(1997), pp. 2021-2049.
+[6] Fleming, W. H. and Sheu, S. J., Risk-sensitive control and an optimal investment
+model, Math. Finance, 10(2000), pp. 197-213.
+[7] Fleming, W. H. and Sheu, S. J., Risk-sensitive control and an optimal investment
+model(II) , Ann. Appl. Probab., 12(2002), pp. 730-767.
+[8] Fleming, W. H. and Zhang, Q., Risk-sensitive production planing of a stochastic
+manufacturing system , SIAM J. on Control and Optimization, 36(1998), pp. 1147-
+1170.PORTFOLIO OPTIMIZATION WITH FIXED INCOME SECURITIES 17
+[9] Fleming, W. H. and McEneaney, W. M., Risk-sensitive control on an inﬁnite time
+horizon, SIAM J. Control Optim., 33 (1995), pp. 1881-1915.
+[10] Fleming, W. H. and Rishel, R. W., Deterministic and Stochastic Optimal Control ,
+Springer-Verlag, New York, 1975.
+[11] Karatzas, I. and Shreve, S. E., Brownian Motion and Stochastic Calculus , Springer-
+Verlag, New York, 1998.
+[12] Karatzas, I. and Shreve, S. E., Methods of mathematical ﬁnance , Springer-Verlag,
+New York, 1998.
+[13] Korn, R., Optimal portfolios: Stochastic models for optimal investm ent and risk man-
+agement in continuous time , World Scientiﬁc, Singapore, 1997.
+[14] Ladyzenskaya, O. A., Solonikov, V. A. and Uralceva, N. N .,Linear and Quasi-Linear
+Equations of Parabolic Type , AMS Trans. of Math. Monographs, Providence, RI,
+1968.
+[15] Merton, C., Life time portfolio selection under uncertainty: The conti nuous case ,
+Rev. Econom. Statistics, 51(1969), pp. 247-257.
+[16] Merton, C., Optimal consumption and portfolio rules in a continuous-ti me model , J.
+Econom. Theory, 3(1971), pp. 373-413.
+[17] Nagai, H., Optimal strategies for risk-sensitive portfolio optimiza tion problems for
+general factor models , SIAM J. on Control and Optimization, 41(2003), pp. 1779-
+1800.
+[18] Stroock D. W. and Varadhan, S. R. S., Multidimensional Diﬀusion Process , Springer-
+Verlag, 1979.
+Research Analyst, Quantitative Strategies Group, BA Conti nuum Solu-
+tions Pvt. Ltd.(A non bank subsidiary of Bank of America), Mu mbai-400072
+Department of Mathematics, Indian Institute of Technology Bombay, Mum-
+bai - 400076, India.
+E-mail address :mayank.goel@bankofamerica.com, suresh@math.iiitb.ac. in (corresponding
+author)

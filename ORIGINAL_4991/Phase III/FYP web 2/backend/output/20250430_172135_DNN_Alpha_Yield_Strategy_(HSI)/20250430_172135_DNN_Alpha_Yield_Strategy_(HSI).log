@@ -1,0 +1,381 @@
+2025-04-30 17:21:35,769 - INFO - app.tasks - Logging for Run ID 20250430_172135_DNN_Alpha_Yield_Strategy_(HSI) configured to: output\20250430_172135_DNN_Alpha_Yield_Strategy_(HSI)\20250430_172135_DNN_Alpha_Yield_Strategy_(HSI).log
+2025-04-30 17:21:35,809 - INFO - app.core.strategy_logic - ===== Starting Workflow: DNN Alpha Yield Strategy (HSI) (Run ID: 20250430_172135_DNN_Alpha_Yield_Strategy_(HSI)) =====
+2025-04-30 17:21:35,809 - INFO - app.core.strategy_logic - Output directory: output\20250430_172135_DNN_Alpha_Yield_Strategy_(HSI)
+2025-04-30 17:21:35,809 - INFO - app.core.strategy_logic - Output file basename: DNN_Alpha_Yield_Strategy_(HSI)
+2025-04-30 17:21:35,809 - INFO - app.core.strategy_logic - --- Setting Random Seeds to 42 ---
+2025-04-30 17:21:35,812 - INFO - app.core.strategy_logic - No GPUs detected by TensorFlow.
+2025-04-30 17:21:35,816 - INFO - app.core.strategy_logic - --- Progress Step 1/6: Fetch & Process Raw Data (16%) ---
+2025-04-30 17:21:35,819 - INFO - app.core.strategy_logic - 
+----- STEP 1: Fetching and Processing Raw Data -----
+2025-04-30 17:21:35,819 - INFO - app.core.strategy_logic - Starting raw data fetch & processing: 2020-03-24 to 2024-03-24
+2025-04-30 17:21:35,820 - INFO - app.core.strategy_logic - Fetching benchmark data: ^HSI
+2025-04-30 17:21:36,287 - INFO - app.core.strategy_logic - Benchmark data fetched. Shape: (985, 5)
+2025-04-30 17:21:36,287 - INFO - app.core.strategy_logic - --- Processing ticker 1/87: 0001.HK ---
+2025-04-30 17:21:38,173 - INFO - app.core.strategy_logic - --- Processing ticker 10/87: 0027.HK ---
+2025-04-30 17:21:40,128 - INFO - app.core.strategy_logic - --- Processing ticker 20/87: 0322.HK ---
+2025-04-30 17:21:42,762 - INFO - app.core.strategy_logic - --- Processing ticker 30/87: 0868.HK ---
+2025-04-30 17:21:44,905 - INFO - app.core.strategy_logic - --- Processing ticker 40/87: 1038.HK ---
+2025-04-30 17:21:46,857 - INFO - app.core.strategy_logic - --- Processing ticker 50/87: 1299.HK ---
+2025-04-30 17:21:48,843 - INFO - app.core.strategy_logic - --- Processing ticker 60/87: 2015.HK ---
+2025-04-30 17:21:50,898 - INFO - app.core.strategy_logic - --- Processing ticker 70/87: 2628.HK ---
+2025-04-30 17:21:52,889 - INFO - app.core.strategy_logic - --- Processing ticker 80/87: 6862.HK ---
+2025-04-30 17:21:54,264 - INFO - app.core.strategy_logic - --- Processing ticker 87/87: 9999.HK ---
+2025-04-30 17:21:54,423 - INFO - app.core.strategy_logic - Combining all successfully processed ticker data...
+2025-04-30 17:21:54,469 - INFO - app.core.strategy_logic - Combined raw data shape (successful tickers): (83713, 14)
+2025-04-30 17:21:54,471 - INFO - app.core.strategy_logic - Filtering combined data for essential columns and selected factors...
+2025-04-30 17:21:54,503 - INFO - app.core.strategy_logic - Filtered DataFrame shape: (83713, 14)
+2025-04-30 17:21:54,503 - INFO - app.core.strategy_logic - Columns kept: ['ATR_14d', 'Close', 'Date', 'High', 'Low', 'MA_Crossover_10_50', 'Mean_Reversion_20d', 'Normalized_BBW_20d_2std', 'Open', 'Stochastic_Oscillator_14d', 'Volume', 'Volume_Momentum_50d', 'price', 'stock_id']
+2025-04-30 17:21:54,504 - INFO - app.core.strategy_logic - Handling potential NaNs in selected alpha factors...
+2025-04-30 17:21:54,508 - INFO - app.core.strategy_logic - Found 8700 NaNs in alpha factors. Applying forward fill then backward fill per stock...
+2025-04-30 17:21:54,634 - INFO - app.core.strategy_logic - NaN count in alpha factors after ffill/bfill: 0
+2025-04-30 17:21:54,649 - INFO - app.core.strategy_logic - Final cleaned DataFrame shape for saving: (83713, 14)
+2025-04-30 17:21:54,650 - INFO - app.core.strategy_logic - Saving final filtered dataframe to output\20250430_172135_DNN_Alpha_Yield_Strategy_(HSI)\DNN_Alpha_Yield_Strategy_(HSI)_raw_data.csv...
+2025-04-30 17:21:56,436 - INFO - app.core.strategy_logic - Raw data processing complete.
+2025-04-30 17:21:56,443 - INFO - app.core.strategy_logic - --- Progress Step 2/6: Preprocess Data (33%) ---
+2025-04-30 17:21:56,448 - INFO - app.core.strategy_logic - 
+----- STEP 2: Preprocessing Data for DNN -----
+2025-04-30 17:21:56,449 - INFO - app.core.strategy_logic - --- Starting DNN Data Preprocessing ---
+2025-04-30 17:21:56,816 - INFO - app.core.strategy_logic - Loaded filtered data from output\20250430_172135_DNN_Alpha_Yield_Strategy_(HSI)\DNN_Alpha_Yield_Strategy_(HSI)_raw_data.csv. Shape: (83713, 14)
+2025-04-30 17:21:56,842 - INFO - app.core.strategy_logic - Calculating 1-day forward returns (target variable)...
+2025-04-30 17:21:56,912 - INFO - app.core.strategy_logic - Dropped 87 rows with NaN forward returns.
+2025-04-30 17:21:56,913 - INFO - app.core.strategy_logic - Shape after calculating and cleaning targets: (83626, 15)
+2025-04-30 17:21:56,913 - INFO - app.core.strategy_logic - Performing time-based split...
+2025-04-30 17:21:56,960 - INFO - app.core.strategy_logic - Data split shapes: Train=(62485, 15), Validation=(21141, 15), Test=(0, 15)
+2025-04-30 17:21:56,960 - WARNING - app.core.strategy_logic - Test data split is empty. This is expected if VALIDATION_END_DATE ('2024-03-24') is the last date in the input data ('2024-03-21').
+2025-04-30 17:21:56,971 - INFO - app.core.strategy_logic - Saving context data (Date, stock_id) for each split...
+2025-04-30 17:21:56,994 - INFO - app.core.strategy_logic - Scaling features using MinMaxScaler (fitting on Train data only)...
+2025-04-30 17:21:57,003 - INFO - app.core.strategy_logic - No NaNs found after scaling.
+2025-04-30 17:21:57,004 - INFO - app.core.strategy_logic - Saving processed numpy arrays and scaler to 'output\20250430_172135_DNN_Alpha_Yield_Strategy_(HSI)\processed_dnn_data_regression'...
+2025-04-30 17:21:57,029 - INFO - app.core.strategy_logic - DNN data preprocessing complete.
+2025-04-30 17:21:57,036 - INFO - app.core.strategy_logic - --- Progress Step 3/6: Train DNN Model (50%) ---
+2025-04-30 17:21:57,039 - INFO - app.core.strategy_logic - 
+----- STEP 3: Training DNN Model -----
+2025-04-30 17:21:57,039 - INFO - app.core.strategy_logic - --- Starting DNN Model Training ---
+2025-04-30 17:21:57,039 - INFO - app.core.strategy_logic - --- Setting Random Seeds to 42 ---
+2025-04-30 17:21:57,041 - INFO - app.core.strategy_logic - No GPUs detected by TensorFlow.
+2025-04-30 17:21:57,041 - INFO - app.core.strategy_logic - Loading preprocessed data from 'output\20250430_172135_DNN_Alpha_Yield_Strategy_(HSI)\processed_dnn_data_regression'...
+2025-04-30 17:21:57,139 - INFO - app.core.strategy_logic - Data loaded. Features (6): ['ATR_14d', 'MA_Crossover_10_50', 'Mean_Reversion_20d', 'Normalized_BBW_20d_2std', 'Stochastic_Oscillator_14d']... Shapes: Tr=(62485, 6), V=(21141, 6), Te=(0, 6)
+2025-04-30 17:21:57,143 - INFO - app.core.strategy_logic - Test data empty or shape mismatch. Skipping test evaluation.
+2025-04-30 17:21:57,143 - INFO - app.core.strategy_logic - Defining the DNN model...
+2025-04-30 17:21:57,263 - INFO - app.core.strategy_logic - Compiling the model...
+2025-04-30 17:21:57,269 - INFO - app.core.strategy_logic - Setting up callbacks: EarlyStopping (patience=20), EpochLogger
+2025-04-30 17:21:57,269 - INFO - app.core.strategy_logic - Starting model training (Max Epochs=200)...
+2025-04-30 17:21:57,323 - INFO - app.core.strategy_logic - --- Starting Epoch 1/200 ---
+2025-04-30 17:22:06,872 - INFO - app.core.strategy_logic - --- Starting Epoch 10/200 ---
+2025-04-30 17:22:07,686 - INFO - app.core.strategy_logic - Epoch 10/200 completed - loss: 0.03991 - mae: 0.17258 - mse: 0.03991 - val_loss: 0.00958 - val_mae: 0.08030 - val_mse: 0.00958
+2025-04-30 17:22:15,528 - INFO - app.core.strategy_logic - --- Starting Epoch 20/200 ---
+2025-04-30 17:22:16,294 - INFO - app.core.strategy_logic - Epoch 20/200 completed - loss: 0.01909 - mae: 0.11720 - mse: 0.01909 - val_loss: 0.00301 - val_mae: 0.04324 - val_mse: 0.00301
+2025-04-30 17:22:23,501 - INFO - app.core.strategy_logic - --- Starting Epoch 30/200 ---
+2025-04-30 17:22:24,726 - INFO - app.core.strategy_logic - Epoch 30/200 completed - loss: 0.00832 - mae: 0.07722 - mse: 0.00832 - val_loss: 0.00172 - val_mae: 0.03190 - val_mse: 0.00172
+2025-04-30 17:22:33,400 - INFO - app.core.strategy_logic - --- Starting Epoch 40/200 ---
+2025-04-30 17:22:34,239 - INFO - app.core.strategy_logic - Epoch 40/200 completed - loss: 0.00351 - mae: 0.04867 - mse: 0.00351 - val_loss: 0.00109 - val_mae: 0.02469 - val_mse: 0.00109
+2025-04-30 17:22:44,190 - INFO - app.core.strategy_logic - --- Starting Epoch 50/200 ---
+2025-04-30 17:22:45,231 - INFO - app.core.strategy_logic - Epoch 50/200 completed - loss: 0.00174 - mae: 0.03240 - mse: 0.00174 - val_loss: 0.00086 - val_mae: 0.02152 - val_mse: 0.00086
+2025-04-30 17:22:52,595 - INFO - app.core.strategy_logic - --- Starting Epoch 60/200 ---
+2025-04-30 17:22:53,369 - INFO - app.core.strategy_logic - Epoch 60/200 completed - loss: 0.00105 - mae: 0.02284 - mse: 0.00105 - val_loss: 0.00070 - val_mae: 0.01901 - val_mse: 0.00070
+2025-04-30 17:23:04,088 - INFO - app.core.strategy_logic - --- Starting Epoch 70/200 ---
+2025-04-30 17:23:04,851 - INFO - app.core.strategy_logic - Epoch 70/200 completed - loss: 0.00087 - mae: 0.01984 - mse: 0.00087 - val_loss: 0.00063 - val_mae: 0.01756 - val_mse: 0.00063
+2025-04-30 17:23:12,072 - INFO - app.core.strategy_logic - --- Starting Epoch 80/200 ---
+2025-04-30 17:23:13,014 - INFO - app.core.strategy_logic - Epoch 80/200 completed - loss: 0.00085 - mae: 0.01959 - mse: 0.00085 - val_loss: 0.00062 - val_mae: 0.01750 - val_mse: 0.00062
+2025-04-30 17:23:21,328 - INFO - app.core.strategy_logic - --- Starting Epoch 90/200 ---
+2025-04-30 17:23:22,106 - INFO - app.core.strategy_logic - Epoch 90/200 completed - loss: 0.00085 - mae: 0.01953 - mse: 0.00085 - val_loss: 0.00062 - val_mae: 0.01750 - val_mse: 0.00062
+2025-04-30 17:23:31,094 - INFO - app.core.strategy_logic - --- Starting Epoch 100/200 ---
+2025-04-30 17:23:31,952 - INFO - app.core.strategy_logic - Epoch 100/200 completed - loss: 0.00085 - mae: 0.01951 - mse: 0.00085 - val_loss: 0.00062 - val_mae: 0.01750 - val_mse: 0.00062
+2025-04-30 17:23:40,323 - INFO - app.core.strategy_logic - --- Starting Epoch 110/200 ---
+2025-04-30 17:23:41,339 - INFO - app.core.strategy_logic - Epoch 110/200 completed - loss: 0.00084 - mae: 0.01950 - mse: 0.00084 - val_loss: 0.00062 - val_mae: 0.01750 - val_mse: 0.00062
+2025-04-30 17:23:47,589 - INFO - app.core.strategy_logic - Epoch 116/200 completed - loss: 0.00084 - mae: 0.01950 - mse: 0.00084 - val_loss: 0.00062 - val_mae: 0.01750 - val_mse: 0.00062
+2025-04-30 17:23:47,604 - INFO - app.core.strategy_logic - Training finished after 116 epochs.
+2025-04-30 17:23:47,604 - INFO - app.core.strategy_logic - Early stopping triggered. Restoring weights from epoch 96.
+2025-04-30 17:23:47,604 - INFO - app.core.strategy_logic - Skipping test data evaluation.
+2025-04-30 17:23:47,604 - INFO - app.core.strategy_logic - Saving trained model to output\20250430_172135_DNN_Alpha_Yield_Strategy_(HSI)\DNN_Alpha_Yield_Strategy_(HSI)_model.keras...
+2025-04-30 17:23:47,630 - INFO - app.core.strategy_logic - Plotting training history...
+2025-04-30 17:23:48,047 - INFO - app.core.strategy_logic - Training history plot saved to output\20250430_172135_DNN_Alpha_Yield_Strategy_(HSI)\DNN_Alpha_Yield_Strategy_(HSI)_training_history.png
+2025-04-30 17:23:48,047 - INFO - app.core.strategy_logic - DNN training and evaluation complete.
+2025-04-30 17:23:48,047 - INFO - app.core.strategy_logic - --- Progress Step 4/6: Backtest & Grid Search (66%) ---
+2025-04-30 17:23:48,051 - INFO - app.core.strategy_logic - 
+----- STEP 4: Backtesting and Grid Search -----
+2025-04-30 17:23:48,052 - INFO - app.core.strategy_logic - --- Starting Backtesting, Grid Search, and Analysis ---
+2025-04-30 17:23:48,052 - INFO - app.core.strategy_logic - --- Setting Random Seeds to 42 ---
+2025-04-30 17:23:48,056 - INFO - app.core.strategy_logic - No GPUs detected by TensorFlow.
+2025-04-30 17:23:48,056 - INFO - app.core.strategy_logic - Loading model, scaler, features, data arrays, and context...
+2025-04-30 17:23:48,161 - INFO - app.core.strategy_logic - Loaded data shapes: X_val=(21141, 6), y_val=(21141,), X_test=(0, 6), y_test=(0,)
+2025-04-30 17:23:48,161 - INFO - app.core.strategy_logic - Using Features: ['ATR_14d', 'MA_Crossover_10_50', 'Mean_Reversion_20d', 'Normalized_BBW_20d_2std', 'Stochastic_Oscillator_14d', 'Volume_Momentum_50d']
+2025-04-30 17:23:48,161 - INFO - app.core.strategy_logic - Generating predictions...
+2025-04-30 17:23:48,365 - INFO - app.core.strategy_logic - Test set empty, skipping test predictions.
+2025-04-30 17:23:48,366 - INFO - app.core.strategy_logic - Preparing simulation dataframes...
+2025-04-30 17:23:48,526 - INFO - app.core.strategy_logic - Val sim: Dropped 0 NaN return rows.
+2025-04-30 17:23:48,527 - INFO - app.core.strategy_logic - Val sim ready: (21141, 3), Dates: 2023-03-27 to 2024-03-21
+2025-04-30 17:23:48,527 - INFO - app.core.strategy_logic - Test sim ready: (0, 3), Dates: N/A to N/A
+2025-04-30 17:23:48,528 - INFO - app.core.strategy_logic - Calculating Benchmark (^HSI) & Tracker (2800.HK) Metrics...
+2025-04-30 17:23:48,528 - INFO - app.core.strategy_logic - Fetching ['^HSI', '2800.HK'] from 2023-03-17 to 2024-03-23
+2025-04-30 17:23:48,744 - INFO - app.core.strategy_logic -   ^HSI Perf (Validation): {'Cumulative Return': '-0.1533', 'Annualized Return': '-0.1585', 'Annualized Volatility': '0.2239', 'Sharpe Ratio': '-0.7079', 'Sortino Ratio': '-0.7464', 'Max Drawdown': '-0.2801', 'Trading Days': 243, 'Positive Days %': '46.5021', 'risk_free_rate': '0.0000'}
+2025-04-30 17:23:48,746 - INFO - app.core.strategy_logic -   2800.HK Perf (Validation): {'Cumulative Return': '-0.1182', 'Annualized Return': '-0.1223', 'Annualized Volatility': '0.2253', 'Sharpe Ratio': '-0.5426', 'Sortino Ratio': '-0.5686', 'Max Drawdown': '-0.2549', 'Trading Days': 243, 'Positive Days %': '45.6790', 'risk_free_rate': '0.0000'}
+2025-04-30 17:23:48,746 - INFO - app.core.strategy_logic - Skipping Test comparison calc as test dates are empty.
+2025-04-30 17:23:48,747 - INFO - app.core.strategy_logic - --- Starting Grid Search (110 simulations) on VALIDATION SET ---
+2025-04-30 17:23:48,747 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=50,n=1)): k=50, n=1 ---
+2025-04-30 17:23:49,212 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=50,n=1)): k=50, n=1. CumRet=-2.69%, Sharpe=-0.095. Time=0.5s
+2025-04-30 17:23:49,215 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=50,n=2)): k=50, n=2 ---
+2025-04-30 17:23:49,686 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=50,n=2)): k=50, n=2. CumRet=0.30%, Sharpe=0.011. Time=0.5s
+2025-04-30 17:23:49,689 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=50,n=3)): k=50, n=3 ---
+2025-04-30 17:23:50,152 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=50,n=3)): k=50, n=3. CumRet=5.54%, Sharpe=0.227. Time=0.5s
+2025-04-30 17:23:50,155 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=50,n=4)): k=50, n=4 ---
+2025-04-30 17:23:50,604 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=50,n=4)): k=50, n=4. CumRet=-0.16%, Sharpe=-0.007. Time=0.4s
+2025-04-30 17:23:50,607 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=50,n=5)): k=50, n=5 ---
+2025-04-30 17:23:51,130 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=50,n=5)): k=50, n=5. CumRet=-4.55%, Sharpe=-0.186. Time=0.5s
+2025-04-30 17:23:51,132 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=50,n=6)): k=50, n=6 ---
+2025-04-30 17:23:51,596 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=50,n=6)): k=50, n=6. CumRet=-8.79%, Sharpe=-0.360. Time=0.5s
+2025-04-30 17:23:51,599 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=50,n=7)): k=50, n=7 ---
+2025-04-30 17:23:52,054 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=50,n=7)): k=50, n=7. CumRet=-9.67%, Sharpe=-0.396. Time=0.5s
+2025-04-30 17:23:52,057 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=50,n=8)): k=50, n=8 ---
+2025-04-30 17:23:52,511 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=50,n=8)): k=50, n=8. CumRet=-11.52%, Sharpe=-0.474. Time=0.5s
+2025-04-30 17:23:52,513 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=50,n=9)): k=50, n=9 ---
+2025-04-30 17:23:52,961 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=50,n=9)): k=50, n=9. CumRet=-12.36%, Sharpe=-0.509. Time=0.4s
+2025-04-30 17:23:52,964 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=50,n=10)): k=50, n=10 ---
+2025-04-30 17:23:53,417 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=50,n=10)): k=50, n=10. CumRet=-12.85%, Sharpe=-0.529. Time=0.5s
+2025-04-30 17:23:53,419 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=51,n=1)): k=51, n=1 ---
+2025-04-30 17:23:53,863 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=51,n=1)): k=51, n=1. CumRet=-3.40%, Sharpe=-0.118. Time=0.4s
+2025-04-30 17:23:53,866 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=51,n=2)): k=51, n=2 ---
+2025-04-30 17:23:54,310 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=51,n=2)): k=51, n=2. CumRet=1.46%, Sharpe=0.056. Time=0.4s
+2025-04-30 17:23:54,313 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=51,n=3)): k=51, n=3 ---
+2025-04-30 17:23:54,760 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=51,n=3)): k=51, n=3. CumRet=2.27%, Sharpe=0.093. Time=0.4s
+2025-04-30 17:23:54,762 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=51,n=4)): k=51, n=4 ---
+2025-04-30 17:23:55,209 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=51,n=4)): k=51, n=4. CumRet=-3.23%, Sharpe=-0.132. Time=0.4s
+2025-04-30 17:23:55,212 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=51,n=5)): k=51, n=5 ---
+2025-04-30 17:23:55,662 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=51,n=5)): k=51, n=5. CumRet=-3.80%, Sharpe=-0.155. Time=0.4s
+2025-04-30 17:23:55,664 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=51,n=6)): k=51, n=6 ---
+2025-04-30 17:23:56,156 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=51,n=6)): k=51, n=6. CumRet=-9.40%, Sharpe=-0.385. Time=0.5s
+2025-04-30 17:23:56,159 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=51,n=7)): k=51, n=7 ---
+2025-04-30 17:23:56,623 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=51,n=7)): k=51, n=7. CumRet=-9.82%, Sharpe=-0.405. Time=0.5s
+2025-04-30 17:23:56,626 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=51,n=8)): k=51, n=8 ---
+2025-04-30 17:23:57,081 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=51,n=8)): k=51, n=8. CumRet=-12.92%, Sharpe=-0.533. Time=0.5s
+2025-04-30 17:23:57,083 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=51,n=9)): k=51, n=9 ---
+2025-04-30 17:23:57,536 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=51,n=9)): k=51, n=9. CumRet=-12.68%, Sharpe=-0.522. Time=0.5s
+2025-04-30 17:23:57,539 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=51,n=10)): k=51, n=10 ---
+2025-04-30 17:23:57,988 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=51,n=10)): k=51, n=10. CumRet=-13.65%, Sharpe=-0.563. Time=0.4s
+2025-04-30 17:23:57,991 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=52,n=1)): k=52, n=1 ---
+2025-04-30 17:23:58,484 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=52,n=1)): k=52, n=1. CumRet=8.07%, Sharpe=0.281. Time=0.5s
+2025-04-30 17:23:58,487 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=52,n=2)): k=52, n=2 ---
+2025-04-30 17:23:58,931 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=52,n=2)): k=52, n=2. CumRet=4.34%, Sharpe=0.169. Time=0.4s
+2025-04-30 17:23:58,934 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=52,n=3)): k=52, n=3 ---
+2025-04-30 17:23:59,386 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=52,n=3)): k=52, n=3. CumRet=1.16%, Sharpe=0.047. Time=0.5s
+2025-04-30 17:23:59,389 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=52,n=4)): k=52, n=4 ---
+2025-04-30 17:23:59,895 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=52,n=4)): k=52, n=4. CumRet=-2.98%, Sharpe=-0.122. Time=0.5s
+2025-04-30 17:23:59,898 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=52,n=5)): k=52, n=5 ---
+2025-04-30 17:24:00,400 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=52,n=5)): k=52, n=5. CumRet=-6.13%, Sharpe=-0.249. Time=0.5s
+2025-04-30 17:24:00,402 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=52,n=6)): k=52, n=6 ---
+2025-04-30 17:24:01,029 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=52,n=6)): k=52, n=6. CumRet=-10.31%, Sharpe=-0.422. Time=0.6s
+2025-04-30 17:24:01,031 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=52,n=7)): k=52, n=7 ---
+2025-04-30 17:24:01,613 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=52,n=7)): k=52, n=7. CumRet=-12.96%, Sharpe=-0.533. Time=0.6s
+2025-04-30 17:24:01,619 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=52,n=8)): k=52, n=8 ---
+2025-04-30 17:24:02,153 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=52,n=8)): k=52, n=8. CumRet=-13.07%, Sharpe=-0.540. Time=0.5s
+2025-04-30 17:24:02,155 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=52,n=9)): k=52, n=9 ---
+2025-04-30 17:24:02,637 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=52,n=9)): k=52, n=9. CumRet=-13.98%, Sharpe=-0.578. Time=0.5s
+2025-04-30 17:24:02,639 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=52,n=10)): k=52, n=10 ---
+2025-04-30 17:24:03,094 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=52,n=10)): k=52, n=10. CumRet=-13.93%, Sharpe=-0.574. Time=0.5s
+2025-04-30 17:24:03,097 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=53,n=1)): k=53, n=1 ---
+2025-04-30 17:24:03,571 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=53,n=1)): k=53, n=1. CumRet=0.45%, Sharpe=0.016. Time=0.5s
+2025-04-30 17:24:03,574 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=53,n=2)): k=53, n=2 ---
+2025-04-30 17:24:04,059 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=53,n=2)): k=53, n=2. CumRet=-0.25%, Sharpe=-0.010. Time=0.5s
+2025-04-30 17:24:04,062 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=53,n=3)): k=53, n=3 ---
+2025-04-30 17:24:04,527 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=53,n=3)): k=53, n=3. CumRet=-1.44%, Sharpe=-0.058. Time=0.5s
+2025-04-30 17:24:04,530 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=53,n=4)): k=53, n=4 ---
+2025-04-30 17:24:05,030 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=53,n=4)): k=53, n=4. CumRet=-3.40%, Sharpe=-0.138. Time=0.5s
+2025-04-30 17:24:05,032 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=53,n=5)): k=53, n=5 ---
+2025-04-30 17:24:05,488 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=53,n=5)): k=53, n=5. CumRet=-6.53%, Sharpe=-0.265. Time=0.5s
+2025-04-30 17:24:05,492 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=53,n=6)): k=53, n=6 ---
+2025-04-30 17:24:05,972 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=53,n=6)): k=53, n=6. CumRet=-11.78%, Sharpe=-0.485. Time=0.5s
+2025-04-30 17:24:05,974 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=53,n=7)): k=53, n=7 ---
+2025-04-30 17:24:06,426 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=53,n=7)): k=53, n=7. CumRet=-13.37%, Sharpe=-0.550. Time=0.5s
+2025-04-30 17:24:06,429 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=53,n=8)): k=53, n=8 ---
+2025-04-30 17:24:06,887 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=53,n=8)): k=53, n=8. CumRet=-13.08%, Sharpe=-0.539. Time=0.5s
+2025-04-30 17:24:06,889 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=53,n=9)): k=53, n=9 ---
+2025-04-30 17:24:07,326 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=53,n=9)): k=53, n=9. CumRet=-13.01%, Sharpe=-0.538. Time=0.4s
+2025-04-30 17:24:07,329 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=53,n=10)): k=53, n=10 ---
+2025-04-30 17:24:07,785 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=53,n=10)): k=53, n=10. CumRet=-14.24%, Sharpe=-0.588. Time=0.5s
+2025-04-30 17:24:07,788 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=54,n=1)): k=54, n=1 ---
+2025-04-30 17:24:08,231 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=54,n=1)): k=54, n=1. CumRet=1.38%, Sharpe=0.047. Time=0.4s
+2025-04-30 17:24:08,233 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=54,n=2)): k=54, n=2 ---
+2025-04-30 17:24:08,732 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=54,n=2)): k=54, n=2. CumRet=-3.59%, Sharpe=-0.142. Time=0.5s
+2025-04-30 17:24:08,735 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=54,n=3)): k=54, n=3 ---
+2025-04-30 17:24:09,195 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=54,n=3)): k=54, n=3. CumRet=2.31%, Sharpe=0.093. Time=0.5s
+2025-04-30 17:24:09,198 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=54,n=4)): k=54, n=4 ---
+2025-04-30 17:24:09,662 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=54,n=4)): k=54, n=4. CumRet=-4.18%, Sharpe=-0.170. Time=0.5s
+2025-04-30 17:24:09,665 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=54,n=5)): k=54, n=5 ---
+2025-04-30 17:24:10,115 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=54,n=5)): k=54, n=5. CumRet=-8.40%, Sharpe=-0.342. Time=0.4s
+2025-04-30 17:24:10,118 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=54,n=6)): k=54, n=6 ---
+2025-04-30 17:24:10,559 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=54,n=6)): k=54, n=6. CumRet=-11.94%, Sharpe=-0.490. Time=0.4s
+2025-04-30 17:24:10,562 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=54,n=7)): k=54, n=7 ---
+2025-04-30 17:24:11,055 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=54,n=7)): k=54, n=7. CumRet=-12.55%, Sharpe=-0.514. Time=0.5s
+2025-04-30 17:24:11,059 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=54,n=8)): k=54, n=8 ---
+2025-04-30 17:24:11,503 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=54,n=8)): k=54, n=8. CumRet=-14.71%, Sharpe=-0.605. Time=0.4s
+2025-04-30 17:24:11,505 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=54,n=9)): k=54, n=9 ---
+2025-04-30 17:24:11,956 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=54,n=9)): k=54, n=9. CumRet=-14.72%, Sharpe=-0.607. Time=0.5s
+2025-04-30 17:24:11,959 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=54,n=10)): k=54, n=10 ---
+2025-04-30 17:24:12,438 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=54,n=10)): k=54, n=10. CumRet=-14.45%, Sharpe=-0.595. Time=0.5s
+2025-04-30 17:24:12,440 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=55,n=1)): k=55, n=1 ---
+2025-04-30 17:24:13,163 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=55,n=1)): k=55, n=1. CumRet=10.77%, Sharpe=0.378. Time=0.7s
+2025-04-30 17:24:13,167 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=55,n=2)): k=55, n=2 ---
+2025-04-30 17:24:13,737 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=55,n=2)): k=55, n=2. CumRet=-2.06%, Sharpe=-0.081. Time=0.6s
+2025-04-30 17:24:13,739 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=55,n=3)): k=55, n=3 ---
+2025-04-30 17:24:14,656 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=55,n=3)): k=55, n=3. CumRet=1.47%, Sharpe=0.059. Time=0.9s
+2025-04-30 17:24:14,659 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=55,n=4)): k=55, n=4 ---
+2025-04-30 17:24:15,572 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=55,n=4)): k=55, n=4. CumRet=-6.75%, Sharpe=-0.276. Time=0.9s
+2025-04-30 17:24:15,575 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=55,n=5)): k=55, n=5 ---
+2025-04-30 17:24:16,412 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=55,n=5)): k=55, n=5. CumRet=-7.74%, Sharpe=-0.316. Time=0.8s
+2025-04-30 17:24:16,417 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=55,n=6)): k=55, n=6 ---
+2025-04-30 17:24:17,533 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=55,n=6)): k=55, n=6. CumRet=-11.40%, Sharpe=-0.467. Time=1.1s
+2025-04-30 17:24:17,535 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=55,n=7)): k=55, n=7 ---
+2025-04-30 17:24:18,424 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=55,n=7)): k=55, n=7. CumRet=-12.28%, Sharpe=-0.504. Time=0.9s
+2025-04-30 17:24:18,428 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=55,n=8)): k=55, n=8 ---
+2025-04-30 17:24:18,995 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=55,n=8)): k=55, n=8. CumRet=-14.93%, Sharpe=-0.613. Time=0.6s
+2025-04-30 17:24:18,998 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=55,n=9)): k=55, n=9 ---
+2025-04-30 17:24:19,521 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=55,n=9)): k=55, n=9. CumRet=-15.90%, Sharpe=-0.654. Time=0.5s
+2025-04-30 17:24:19,523 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=55,n=10)): k=55, n=10 ---
+2025-04-30 17:24:20,035 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=55,n=10)): k=55, n=10. CumRet=-15.38%, Sharpe=-0.635. Time=0.5s
+2025-04-30 17:24:20,038 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=56,n=1)): k=56, n=1 ---
+2025-04-30 17:24:20,535 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=56,n=1)): k=56, n=1. CumRet=-0.62%, Sharpe=-0.021. Time=0.5s
+2025-04-30 17:24:20,537 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=56,n=2)): k=56, n=2 ---
+2025-04-30 17:24:21,027 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=56,n=2)): k=56, n=2. CumRet=-8.46%, Sharpe=-0.338. Time=0.5s
+2025-04-30 17:24:21,030 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=56,n=3)): k=56, n=3 ---
+2025-04-30 17:24:21,479 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=56,n=3)): k=56, n=3. CumRet=-1.70%, Sharpe=-0.068. Time=0.4s
+2025-04-30 17:24:21,482 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=56,n=4)): k=56, n=4 ---
+2025-04-30 17:24:21,938 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=56,n=4)): k=56, n=4. CumRet=-5.82%, Sharpe=-0.238. Time=0.5s
+2025-04-30 17:24:21,940 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=56,n=5)): k=56, n=5 ---
+2025-04-30 17:24:22,389 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=56,n=5)): k=56, n=5. CumRet=-9.40%, Sharpe=-0.389. Time=0.4s
+2025-04-30 17:24:22,391 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=56,n=6)): k=56, n=6 ---
+2025-04-30 17:24:22,839 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=56,n=6)): k=56, n=6. CumRet=-13.15%, Sharpe=-0.542. Time=0.4s
+2025-04-30 17:24:22,842 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=56,n=7)): k=56, n=7 ---
+2025-04-30 17:24:23,292 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=56,n=7)): k=56, n=7. CumRet=-13.53%, Sharpe=-0.557. Time=0.4s
+2025-04-30 17:24:23,294 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=56,n=8)): k=56, n=8 ---
+2025-04-30 17:24:23,734 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=56,n=8)): k=56, n=8. CumRet=-15.51%, Sharpe=-0.640. Time=0.4s
+2025-04-30 17:24:23,737 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=56,n=9)): k=56, n=9 ---
+2025-04-30 17:24:24,180 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=56,n=9)): k=56, n=9. CumRet=-15.61%, Sharpe=-0.645. Time=0.4s
+2025-04-30 17:24:24,184 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=56,n=10)): k=56, n=10 ---
+2025-04-30 17:24:24,629 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=56,n=10)): k=56, n=10. CumRet=-15.34%, Sharpe=-0.633. Time=0.4s
+2025-04-30 17:24:24,632 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=57,n=1)): k=57, n=1 ---
+2025-04-30 17:24:25,079 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=57,n=1)): k=57, n=1. CumRet=-4.75%, Sharpe=-0.168. Time=0.4s
+2025-04-30 17:24:25,081 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=57,n=2)): k=57, n=2 ---
+2025-04-30 17:24:25,520 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=57,n=2)): k=57, n=2. CumRet=-7.70%, Sharpe=-0.305. Time=0.4s
+2025-04-30 17:24:25,522 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=57,n=3)): k=57, n=3 ---
+2025-04-30 17:24:25,956 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=57,n=3)): k=57, n=3. CumRet=-2.47%, Sharpe=-0.099. Time=0.4s
+2025-04-30 17:24:25,959 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=57,n=4)): k=57, n=4 ---
+2025-04-30 17:24:26,422 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=57,n=4)): k=57, n=4. CumRet=-7.00%, Sharpe=-0.286. Time=0.5s
+2025-04-30 17:24:26,425 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=57,n=5)): k=57, n=5 ---
+2025-04-30 17:24:26,871 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=57,n=5)): k=57, n=5. CumRet=-9.24%, Sharpe=-0.379. Time=0.4s
+2025-04-30 17:24:26,873 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=57,n=6)): k=57, n=6 ---
+2025-04-30 17:24:27,338 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=57,n=6)): k=57, n=6. CumRet=-12.79%, Sharpe=-0.524. Time=0.5s
+2025-04-30 17:24:27,341 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=57,n=7)): k=57, n=7 ---
+2025-04-30 17:24:27,791 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=57,n=7)): k=57, n=7. CumRet=-13.08%, Sharpe=-0.536. Time=0.5s
+2025-04-30 17:24:27,794 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=57,n=8)): k=57, n=8 ---
+2025-04-30 17:24:28,237 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=57,n=8)): k=57, n=8. CumRet=-16.18%, Sharpe=-0.665. Time=0.4s
+2025-04-30 17:24:28,239 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=57,n=9)): k=57, n=9 ---
+2025-04-30 17:24:28,754 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=57,n=9)): k=57, n=9. CumRet=-15.92%, Sharpe=-0.655. Time=0.5s
+2025-04-30 17:24:28,757 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=57,n=10)): k=57, n=10 ---
+2025-04-30 17:24:29,203 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=57,n=10)): k=57, n=10. CumRet=-15.87%, Sharpe=-0.651. Time=0.4s
+2025-04-30 17:24:29,206 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=58,n=1)): k=58, n=1 ---
+2025-04-30 17:24:29,664 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=58,n=1)): k=58, n=1. CumRet=-2.47%, Sharpe=-0.088. Time=0.5s
+2025-04-30 17:24:29,667 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=58,n=2)): k=58, n=2 ---
+2025-04-30 17:24:30,142 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=58,n=2)): k=58, n=2. CumRet=-7.38%, Sharpe=-0.289. Time=0.5s
+2025-04-30 17:24:30,144 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=58,n=3)): k=58, n=3 ---
+2025-04-30 17:24:30,622 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=58,n=3)): k=58, n=3. CumRet=-3.62%, Sharpe=-0.146. Time=0.5s
+2025-04-30 17:24:30,624 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=58,n=4)): k=58, n=4 ---
+2025-04-30 17:24:31,106 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=58,n=4)): k=58, n=4. CumRet=-7.52%, Sharpe=-0.308. Time=0.5s
+2025-04-30 17:24:31,109 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=58,n=5)): k=58, n=5 ---
+2025-04-30 17:24:31,574 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=58,n=5)): k=58, n=5. CumRet=-8.95%, Sharpe=-0.368. Time=0.5s
+2025-04-30 17:24:31,576 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=58,n=6)): k=58, n=6 ---
+2025-04-30 17:24:32,089 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=58,n=6)): k=58, n=6. CumRet=-11.72%, Sharpe=-0.482. Time=0.5s
+2025-04-30 17:24:32,092 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=58,n=7)): k=58, n=7 ---
+2025-04-30 17:24:32,636 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=58,n=7)): k=58, n=7. CumRet=-13.20%, Sharpe=-0.540. Time=0.5s
+2025-04-30 17:24:32,639 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=58,n=8)): k=58, n=8 ---
+2025-04-30 17:24:33,131 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=58,n=8)): k=58, n=8. CumRet=-15.46%, Sharpe=-0.635. Time=0.5s
+2025-04-30 17:24:33,133 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=58,n=9)): k=58, n=9 ---
+2025-04-30 17:24:33,676 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=58,n=9)): k=58, n=9. CumRet=-16.21%, Sharpe=-0.668. Time=0.5s
+2025-04-30 17:24:33,678 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=58,n=10)): k=58, n=10 ---
+2025-04-30 17:24:34,188 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=58,n=10)): k=58, n=10. CumRet=-16.10%, Sharpe=-0.661. Time=0.5s
+2025-04-30 17:24:34,191 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=59,n=1)): k=59, n=1 ---
+2025-04-30 17:24:34,651 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=59,n=1)): k=59, n=1. CumRet=-10.58%, Sharpe=-0.380. Time=0.5s
+2025-04-30 17:24:34,654 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=59,n=2)): k=59, n=2 ---
+2025-04-30 17:24:35,103 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=59,n=2)): k=59, n=2. CumRet=-11.98%, Sharpe=-0.471. Time=0.4s
+2025-04-30 17:24:35,106 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=59,n=3)): k=59, n=3 ---
+2025-04-30 17:24:35,539 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=59,n=3)): k=59, n=3. CumRet=-5.36%, Sharpe=-0.218. Time=0.4s
+2025-04-30 17:24:35,541 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=59,n=4)): k=59, n=4 ---
+2025-04-30 17:24:35,983 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=59,n=4)): k=59, n=4. CumRet=-4.68%, Sharpe=-0.192. Time=0.4s
+2025-04-30 17:24:35,988 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=59,n=5)): k=59, n=5 ---
+2025-04-30 17:24:36,433 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=59,n=5)): k=59, n=5. CumRet=-9.73%, Sharpe=-0.401. Time=0.4s
+2025-04-30 17:24:36,436 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=59,n=6)): k=59, n=6 ---
+2025-04-30 17:24:36,897 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=59,n=6)): k=59, n=6. CumRet=-11.97%, Sharpe=-0.494. Time=0.5s
+2025-04-30 17:24:36,899 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=59,n=7)): k=59, n=7 ---
+2025-04-30 17:24:37,350 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=59,n=7)): k=59, n=7. CumRet=-14.10%, Sharpe=-0.580. Time=0.4s
+2025-04-30 17:24:37,355 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=59,n=8)): k=59, n=8 ---
+2025-04-30 17:24:37,794 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=59,n=8)): k=59, n=8. CumRet=-15.08%, Sharpe=-0.622. Time=0.4s
+2025-04-30 17:24:37,796 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=59,n=9)): k=59, n=9 ---
+2025-04-30 17:24:38,401 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=59,n=9)): k=59, n=9. CumRet=-15.35%, Sharpe=-0.632. Time=0.6s
+2025-04-30 17:24:38,406 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=59,n=10)): k=59, n=10 ---
+2025-04-30 17:24:39,266 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=59,n=10)): k=59, n=10. CumRet=-14.93%, Sharpe=-0.613. Time=0.9s
+2025-04-30 17:24:39,269 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=60,n=1)): k=60, n=1 ---
+2025-04-30 17:24:39,777 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=60,n=1)): k=60, n=1. CumRet=-17.08%, Sharpe=-0.617. Time=0.5s
+2025-04-30 17:24:39,782 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=60,n=2)): k=60, n=2 ---
+2025-04-30 17:24:40,234 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=60,n=2)): k=60, n=2. CumRet=-10.97%, Sharpe=-0.436. Time=0.5s
+2025-04-30 17:24:40,237 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=60,n=3)): k=60, n=3 ---
+2025-04-30 17:24:40,689 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=60,n=3)): k=60, n=3. CumRet=-4.95%, Sharpe=-0.202. Time=0.5s
+2025-04-30 17:24:40,692 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=60,n=4)): k=60, n=4 ---
+2025-04-30 17:24:41,195 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=60,n=4)): k=60, n=4. CumRet=-4.14%, Sharpe=-0.169. Time=0.5s
+2025-04-30 17:24:41,199 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=60,n=5)): k=60, n=5 ---
+2025-04-30 17:24:41,639 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=60,n=5)): k=60, n=5. CumRet=-9.70%, Sharpe=-0.401. Time=0.4s
+2025-04-30 17:24:41,643 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=60,n=6)): k=60, n=6 ---
+2025-04-30 17:24:42,086 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=60,n=6)): k=60, n=6. CumRet=-12.86%, Sharpe=-0.528. Time=0.4s
+2025-04-30 17:24:42,090 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=60,n=7)): k=60, n=7 ---
+2025-04-30 17:24:42,543 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=60,n=7)): k=60, n=7. CumRet=-15.05%, Sharpe=-0.620. Time=0.5s
+2025-04-30 17:24:42,545 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=60,n=8)): k=60, n=8 ---
+2025-04-30 17:24:43,012 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=60,n=8)): k=60, n=8. CumRet=-16.10%, Sharpe=-0.664. Time=0.5s
+2025-04-30 17:24:43,015 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=60,n=9)): k=60, n=9 ---
+2025-04-30 17:24:43,452 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=60,n=9)): k=60, n=9. CumRet=-14.89%, Sharpe=-0.612. Time=0.4s
+2025-04-30 17:24:43,454 - INFO - app.core.strategy_logic - --- Running Simulation (Validation(k=60,n=10)): k=60, n=10 ---
+2025-04-30 17:24:43,893 - INFO - app.core.strategy_logic - Finished Sim (Validation(k=60,n=10)): k=60, n=10. CumRet=-15.46%, Sharpe=-0.635. Time=0.4s
+2025-04-30 17:24:43,896 - INFO - app.core.strategy_logic - --- Grid Search Complete (55.15 seconds) ---
+2025-04-30 17:24:43,896 - INFO - app.core.strategy_logic - --- Selecting Top 5 based on Val 'Sharpe Ratio' ---
+2025-04-30 17:24:43,899 - INFO - app.core.strategy_logic - Selecting Top 5 candidates...
+2025-04-30 17:24:43,900 - INFO - app.core.strategy_logic - Selected. Best Validation: k=55, n=1
+2025-04-30 17:24:43,904 - INFO - app.core.strategy_logic - 
+--- Top 5 Validation Candidates Performance ---
+ k  n  Sharpe Ratio  Cumulative Return  Sharpe Ratio  Max Drawdown
+55  1        0.3784             0.1077        0.3784       -0.1725
+52  1        0.2807             0.0807        0.2807       -0.1691
+50  3        0.2268             0.0554        0.2268       -0.1364
+52  2        0.1691             0.0434        0.1691       -0.1466
+54  3        0.0929             0.0231        0.0929       -0.1385
+2025-04-30 17:24:43,904 - INFO - app.core.strategy_logic - --- Evaluating Top 5 Candidates on TEST SET ---
+2025-04-30 17:24:43,904 - WARNING - app.core.strategy_logic - Skipping test set eval - test data empty.
+2025-04-30 17:24:43,904 - INFO - app.core.strategy_logic - 
+
+--- === BACKTEST PERFORMANCE SUMMARY (Log) === ---
+2025-04-30 17:24:43,904 - INFO - app.core.strategy_logic - 
+--- Test Set Benchmark (^HSI) Perf ---
+2025-04-30 17:24:43,905 - INFO - app.core.strategy_logic - {'Cumulative Return': None, 'Annualized Return': None, 'Annualized Volatility': None, 'Sharpe Ratio': None, 'Sortino Ratio': None, 'Max Drawdown': None, 'Trading Days': 0, 'Positive Days %': None, 'risk_free_rate': '0.0000'}
+2025-04-30 17:24:43,905 - INFO - app.core.strategy_logic - 
+--- Test Set Tracker (2800.HK) Perf ---
+2025-04-30 17:24:43,905 - INFO - app.core.strategy_logic - {'Cumulative Return': None, 'Annualized Return': None, 'Annualized Volatility': None, 'Sharpe Ratio': None, 'Sortino Ratio': None, 'Max Drawdown': None, 'Trading Days': 0, 'Positive Days %': None, 'risk_free_rate': '0.0000'}
+2025-04-30 17:24:43,905 - INFO - app.core.strategy_logic - 
+--- Test Set Perf Comparison for Top 0 Candidate(s) ---
+2025-04-30 17:24:43,905 - INFO - app.core.strategy_logic -   No test set results.
+2025-04-30 17:24:43,906 - INFO - app.core.strategy_logic - --- Plotting #1 Ranked Candidate on TEST Period ---
+2025-04-30 17:24:43,906 - WARNING - app.core.strategy_logic - Skipping Test Set plot: No test results.
+2025-04-30 17:24:43,906 - INFO - app.core.strategy_logic - Best parameters from Validation Grid Search: k=55, n=1
+2025-04-30 17:24:43,906 - INFO - app.core.strategy_logic - --- Progress Step 5/6: Extended Simulation (83%) ---
+2025-04-30 17:24:43,909 - INFO - app.core.strategy_logic - 
+----- STEP 5: Extended Simulation and Report Data Preparation -----
+2025-04-30 17:24:43,909 - CRITICAL - app.core.strategy_logic - !!! Workflow FAILED Unhandled in run_full_strategy_workflow: run_extended_simulation_and_prep_report_data() got an unexpected keyword argument 'full_plot_filename_tpl' (Run ID: 20250430_172135_DNN_Alpha_Yield_Strategy_(HSI)) !!!
+Traceback (most recent call last):
+  File "D:\FYP web\backend\app\core\strategy_logic.py", line 2029, in run_full_strategy_workflow
+    )
+TypeError: run_extended_simulation_and_prep_report_data() got an unexpected keyword argument 'full_plot_filename_tpl'
+2025-04-30 17:24:43,909 - CRITICAL - app.tasks - !!! Workflow Task for Run ID 20250430_172135_DNN_Alpha_Yield_Strategy_(HSI) FAILED Internally: run_extended_simulation_and_prep_report_data() got an unexpected keyword argument 'full_plot_filename_tpl' !!!
+Traceback (most recent call last):
+  File "D:\FYP web\backend\app\tasks.py", line 73, in run_strategy_task
+    result = run_full_strategy_workflow(
+  File "D:\FYP web\backend\app\core\strategy_logic.py", line 2136, in run_full_strategy_workflow
+    if os.path.exists(TEMP_EXTENDED_RESULTS_PATH):
+  File "D:\FYP web\backend\app\core\strategy_logic.py", line 2029, in run_full_strategy_workflow
+    )
+TypeError: run_extended_simulation_and_prep_report_data() got an unexpected keyword argument 'full_plot_filename_tpl'
+2025-04-30 17:24:43,911 - INFO - app.tasks - Task for Run ID 20250430_172135_DNN_Alpha_Yield_Strategy_(HSI): Cleaning up specific run log handlers.

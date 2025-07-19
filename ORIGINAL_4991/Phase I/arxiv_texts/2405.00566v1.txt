@@ -1,0 +1,605 @@
+NumLLM: Numeric-Sensitive Large Language Model
+for Chinese Finance
+Huan-Yi Su, Ke Wu, Yu-Hao Huang, Wu-Jun Li∗
+National Key Laboratory for Novel Software Technology
+Department of Computer Science and Technology
+Nanjing University, Nanjing 210023, China
+{shyringo, ke.wu, huangyh}@smail.nju.edu.cn, liwujun@nju.edu.cn
+Abstract
+Recently, many works have proposed various financial large language models (Fin-
+LLMs) by pre-training from scratch or fine-tuning open-sourced LLMs on financial
+corpora. However, existing FinLLMs exhibit unsatisfactory performance in un-
+derstanding financial text when numeric variables are involved in questions. In
+this paper, we propose a novel LLM, called numeric-sensitive large language
+model (NumLLM), for Chinese finance. We first construct a financial corpus from
+financial textbooks which is essential for improving numeric capability of LLMs
+during fine-tuning. After that, we train two individual low-rank adaptation (LoRA)
+modules by fine-tuning on our constructed financial corpus. One module is for
+adapting general-purpose LLMs to financial domain, and the other module is for
+enhancing the ability of NumLLM to understand financial text with numeric vari-
+ables. Lastly, we merge the two LoRA modules into the foundation model to obtain
+NumLLM for inference. Experiments on financial question-answering benchmark
+show that NumLLM can boost the performance of the foundation model and can
+achieve the best overall performance compared to all baselines, on both numeric
+and non-numeric questions.
+1 Introduction
+Large language models (LLMs), often comprising more than billions of parameters, have revolu-
+tionized the research paradigm in natural language processing (NLP). By pre-training on massive
+corpora, LLMs have shown their excellent capability in learning complex language patterns and
+representations due to their immense model size [Brown et al., 2020, Touvron et al., 2023a,b]. LLMs
+have also shown promising performance in natural language understanding and generation tasks,
+such as question answering, machine translation and sentiment analysis [Yang et al., 2023, Touvron
+et al., 2023a]. Hence, LLMs have attracted much attention in the artificial intelligence community.
+Recently, many works have proposed various financial large language models (FinLLMs) by
+pre-training from scratch or fine-tuning open-sourced LLMs on financial corpora. For example,
+BloombergGPT [Wu et al., 2023] and XuanYuan 2.0 [Zhang and Yang, 2023] are pre-trained
+with a BLOOM-style [Scao et al., 2022] LLM from scratch. DISC-FinLLM [Chen et al., 2023a],
+FinMA [Xie et al., 2023a], Fin-Alpaca-LoRA-Linly [Yu, 2023] and FinGPT-v3 [Liu et al., 2023] are
+fine-tuned from Baichuan [Yang et al., 2023], LLaMA [Touvron et al., 2023a], Chinese-LLaMA [Cui
+et al., 2023] and ChatGLM2 [Du et al., 2022], respectively. All these FinLLMs, except for FinGPT-v3 ,
+are pre-trained or fine-tuned on financial corpora collected by their corresponding authors.
+Although these existing FinLLMs can achieve impressive performance in financial natural language
+understanding, they exhibit unsatisfactory performance in understanding financial text when numeric
+*Corresponding author.
+Preprint.arXiv:2405.00566v1  [cs.CE]  1 May 2024variables are involved in questions. More specifically, most of them, except for FinGPT-v3 , are
+trained with next-token prediction objectives in an auto-regressive manner, which only includes
+preceding context for prediction of numeric variables. However, training in an auto-regressive manner
+cannot fully learn the context dependency of numeric variables [Du et al., 2022] which is important
+for understanding financial text with numeric variables. Although FinGPT-v3 can learn the context
+dependency with an auto-regressive blank infilling objective, it constructs blank tokens with random
+masking, lacking sensitivity to numeric variables within financial text. Since it is common for
+financial text to involve numeric variables, improving the numeric capability is essential for FinLLMs
+to better understand financial text with numeric variables.
+In this paper, we propose a novel LLM, called num eric-sensitive l arge l anguage m odel (NumLLM),
+for Chinese finance1. The contributions of this paper are outlined as follows:
+•We construct a financial corpus from financial textbooks, which is essential for improving
+numeric capability of LLMs during fine-tuning.
+•We develop a novel fine-tuning method with two individual low-rank adaptation (LoRA)
+modules to enhance the ability of NumLLM in understanding financial text with numeric
+variables.
+•Experiments on financial question-answering benchmark show that NumLLM can boost
+the performance of the foundation model and can achieve the best overall performance
+compared to all baselines, on both numeric and non-numeric questions.
+2 Related Works
+In this section, we introduce some related works about financial corpora and financial LLMs.
+2.1 Financial Corpora
+Adapting LLMs for a particular domain often requires domain-specific corpora. Therefore, construct-
+ing financial corpora is a crucial step for training financial LLMs. Existing works have constructed
+a few financial corpora in various ways. For example, FinGPT-v3 [Liu et al., 2023] constructs its
+financial corpora from diverse sources, such as financial news, filing data and social media, which
+can be collected from Stocknet [Xu and Cohen, 2018] and FiQA SA [Maia et al., 2018]. BBT-
+FinCorpus [Lu et al., 2023] is a massive Chinese financial corpus, collected from financial news,
+company announcements, research reports, and social media. TigerBot [Chen et al., 2023b] constructs
+its corpus from thousands of research reports and earnings reports. Yayi2is an instruction tuning
+dataset which is constructed from financial news events. DISC-Fin-SFT [Chen et al., 2023a] is an
+instruction dataset derived from various data sources. PIXIU [Xie et al., 2023a] constructs a financial
+instruction tuning dataset (FIT) from open-sourced data.
+All financial corpora mentioned above lack financial expertise from financial textbooks. This
+phenomenon motivates us to construct a financial corpus collected from financial textbooks which is
+essential for improving numeric capability of LLMs during fine-tuning.
+2.2 Financial LLMs
+Since general-purpose LLMs are pre-trained on massive and diverse corpora to learn general language
+representations, fine-tuning is often required to adapt them to specific domains. Existing financial
+LLMs can be mainly categorized into models pre-trained from scratch and models fine-tuned from
+open-sourced LLMs. Models pre-trained from scratch include BloombergGPT [Wu et al., 2023]
+and XuanYuan 2.0 [Zhang and Yang, 2023], both of which are BLOOM-style [Scao et al., 2022]
+LLMs. More specifically, BloomberGPT pre-trains a BLOOM-50B model on its collected massive
+financial corpora. XuanYuan 2.0 pre-trains a BLOOM-176B model on its collected Chinese financial
+corpora. Models fine-tuned from open-sourced LLMs include DISC-FinLLM [Chen et al., 2023a],
+PIXIU [Xie et al., 2023a], Fin-Alpaca-LoRA-Linly [Yu, 2023] and FinGPT-v3 [Liu et al., 2023],
+1We focus on Chinese finance in this paper. But the techniques proposed in this paper can be easily adapted
+to finance in other languages.
+2https://huggingface.co/datasets/wenge-research/yayi_domain_subset
+2Numeric -Sensitive Instance Extraction
+Numeric -Masked Choice Generation 
+Q: ...small face value bonds, which generally have an original 
+maturity period of ____ to 15 years...
+A. -352 B. 755 C. -695 D. 7
+A: DNumCT Instruction…
+Foundation LLMLoRA  Module
+Numeric -Sensitive Choice Tuning (NumCT)Instruction
+TuningContinual 
+Pre-training
+NumLLMMerge
+LoRA  ModuleNumCT Instruction Construction...small face value bonds, which 
+generally have an original maturity 
+period of    7    to 15 years...7Fin-Textbooks
+Numeric 
+Calibration60 000
+60\n000 => 60000
+6\n\n000
+Filtering &
+Refinement
+Raw Text
+Train
+Inference...the return on equity = 2/10 x 100% = 
+20%, the current P/B...Numeric -Sensitive Instances
+...small face value bonds, which 
+generally have an original maturity 
+period of 7 to 15 years...Figure 1: The architecture of NumLLM.
+which are fine-tuned from different open-sourced LLMs. For example, DISC-FinLLM is fine-tuned
+from Baichuan 13B [Yang et al., 2023] with its proposed multiple experts fine-tuning framework.
+PIXIU, the first English financial LLM, is fine-tuned from LLaMA [Touvron et al., 2023a] with its
+constructed instruction data. Fin-Alpaca-LoRA-Linly, a model for question-answering in Chinese
+finance, is fine-tuned from Chinese-LLaMA [Cui et al., 2023] which is a LLaMA model adapted for
+Chinese. FinGPT-v3 applies LoRA [Hu et al., 2022] to fine-tune ChatGLM2 [Du et al., 2022] with
+the inherent feedback from markets. XuanYuan 2.0, DISC-FinLLM, Fin-Alpaca-LoRA-Linly and
+FinGPT-v3 are for Chinese finance, while BloomberGPT and PIXIU are for finance tasks in other
+languages.
+Although existing financial LLMs can achieve good performance in financial natural language
+understanding tasks, they exhibit unsatisfactory performance in understanding financial text when
+numeric variables are involved in questions. This phenomenon motivates the work in this paper.
+3 Numeric-Sensitive Large Language Model
+In this section, we introduce the details of our proposed NumLLM , the architecture of which is
+illustrated in Figure 1. Firstly, we construct a financial corpus, called Fin-Textbooks, from textbooks
+in finance. After that, we train two individual LoRA modules by fine-tuning on Fin-Textbooks .
+In particular, one module is for continual pre-training by fine-tuning the foundation LLM with
+next-token prediction task. The other module is trained by fine-tuning the foundation model with
+our proposed numeric-sensitive choice tuning (NumCT) to enhance the capability of the LLM in
+understanding financial text with numeric variables. Lastly, we mix the two LoRA modules and merge
+the mixed LoRA module into the foundation model to obtain NumLLM for inference. We choose
+Qwen-7B [Bai et al., 2023] as the foundation model, because our experiments show that Qwen-7B is
+superior over other models with comparable model size on both numeric and non-numeric questions.
+3.1 Fin-Textbooks: Chinese Financial Textbook Corpus
+Fin-Textbooks consists of 24 preprocessed financial textbook documents. It covers 34 different
+financial subjects, including fundamentals of futures and derivatives, probability and mathematical
+statistics and so on. The statistics of Fin-Textbooks are summarized in Table 1. All textbooks are
+crawled or downloaded from websites.
+We preprocess the raw textbooks by filtering, refinement and numeric calibration. The details are as
+follows:
+3Table 1: Statistics of Fin-Textbooks
+Item Value
+Number of subjects 34
+Number of documents 24
+Number of tokens 6,913,132
+•The filtering operation removes non-financial content from the raw textbooks, such as
+information of publication and list of references.
+•The refinement operation further eliminates components that do not contain financial knowl-
+edge, such as table of contents and some section headings.
+•The numeric calibration addresses numeric-related formatting issues in the raw textbook
+texts, such as spacing and paragraph breaks within numeric variables.
+3.2 Continual Pre-Training
+Continual pre-training refers to domain-adaptive pre-training with augmented data [Gururangan
+et al., 2020]. Continual pre-training has been proved successful in adapting pre-trained language
+models to domain-specific tasks [Zhang et al., 2023a, Xie et al., 2023b, Gong et al., 2022]. We apply
+LoRA to continually pre-train Qwen-7B on Fin-Textbooks. The training settings are the same as in
+Qwen-7B. The learning task is to perform next-token prediction as in the standard language modeling
+objective [Chowdhery et al., 2023]. In particular, we maximize the following log likelihood function:
+LCP=X
+ilogP(wi|wi−k, . . . , w i−1; Θ), (1)
+where wiis the i-th token in the corpus, kis the size of the context window and Θis the model
+parameters.
+3.3 Numeric-Sensitive Choice Tuning
+NumCT is developed to enhance the capability of the LLM in understanding financial text when
+numeric variables are involved in questions. NumCT includes four steps: numeric-sensitive instance
+extraction, numeric-masked choice generation, NumCT instruction construction and instruction
+fine-tuning.
+3.3.1 Numeric-Sensitive Instance Extraction
+In this step, we extract instances containing numeric variables from the preprocessed corpus, where
+each instance is a segment of text. We define the hyperparameter nminas the minimum number of
+paragraphs per instance and nmax as the maximum number of paragraphs per instance. These two
+hyperparameters influence the average length per instruction. We define rinsas the ratio of selected
+instances. We conduct instance extraction from the beginning of the corpus. For each instance, we
+initialize it as an empty string and add nminparagraphs in the first place. We make sure that each
+instance is grammatically intact and does not exceed nmax paragraphs. If an instance does not contain
+numeric variables, it is discarded. In addition, if all the numeric variables are structural variables,
+such as the “3” in “Figure 3”, the instance is discarded. We repeat this procedure until we reach the
+end of the corpus.
+After going through the whole corpus, we can extract Ninsinstances. In the end, we randomly
+select rinsportion of the instances, which is ˜Nins=⌈rins×Nins⌉instances, for the next step. The
+randomness in numeric-sensitive instance extraction enhances the relevance of financial knowledge in
+the selected instances. Even in textbooks, there are still rare texts that are irrelevant and contain little
+financial knowledge, like common formal expressions and nonessential details in the used examples.
+These irrelevant texts are not likely to be removed in the preprocessing stage because of the variety of
+structures and styles across different textbooks. If we assume the number of instances composed of
+such irrelevant texts is Nirr≪Nins, the probability of all the selected instances being relevant should
+be
+p= Nins−Nirr
+˜Nins
+ Nins
+˜Nins=(Nins−Nirr)!
+Nins!NirrY
+j=1(Nins−Nirr−˜Nins+j). (2)
+4Since ˜Nins=⌈rins×Nins⌉, a smaller rinsmeans a larger pand lower occurrence of irrelevant texts.
+Please note that rinsshould not be too small, in order to make full usage of the corpus.
+3.3.2 Numeric-Masked Choice Generation
+We define rNVas the ratio of selected numeric variables to mask per instance and nchoas the
+number of choices in each instruction. For each instance It, where t= 1,2, . . . , ˜Nins, we perform
+numeric-masked choice generation. Suppose there are Mtlegitimate numeric variables in the current
+instance It. The numeric variables with the same numeric value but at different positions within the
+instance will be treated as different numeric variables. We then randomly select ˜Mt=⌈rNV×Mt⌉
+numeric variables from Itfor numeric-masked choice generation. For each numeric variable NVti∈
+˜MtS
+i=1{NVti},we define vtias its numeric value. For each NVti, we generate (ncho−1)numeric
+choices, denoted as {ctij}, where j= 1,2, . . . , n cho−1. Specifically, we handle NVtiin two
+different ways according to its numeric type, thus enabling the LLM to learn to reason on both
+integers and floating-point numbers. If vtiis a floating-point number, we generate (ncho−1)random
+floating-point numbers within the following interval:
+ctij∈[⌊vti⌋,⌊vti+ 1⌋], j= 1,2, . . . , n cho−1. (3)
+Ifvtiis an integer, we generate (ncho−1)random integers between the following interval:
+ctij∈[−s|vti|, s|vti|], j= 1,2, . . . , n cho−1, (4)
+where s >0is a scaler and set to be 1000 in our implementation. The randomness in numeric-masked
+choice generation maintains the diversity of instructions, which can improve model performance
+according to LIMA [Zhou et al., 2023]. The appropriate value of rNVis dependent on the corpus.
+IfrNVis set to be too large, then most of the content of the instructions constructed from the same
+instance would be overlapped, thus impairing diversity. rNVshould not be too small either, in order
+to make full exploitation of the corpus.
+3.3.3 NumCT Instruction Construction
+One NumCT instruction is a string comprised of a question, nchoidentifiers {IDk},nchochoices
+{Ck}, and the necessary prompt constituents, where k= 1,2, . . . , n cho.{IDk}corresponds to {Ck},
+respectively. Then, for each NVti, we randomly select one identifier IDktias the identifier for
+the choice of the correct answer. The randomness in selection is the same as the choice shuffling
+proposed in Medprompt [Nori et al., 2023], which can be helpful in mitigating position bias of
+models [Ko et al., 2020, Zheng et al., 2023]. Then Cktiis assigned as vti. The other choices, i.e.,
+{Ck}, k= 1, . . . , k ti−1, kti+1, . . . , n cho, are assigned as {ctij}, j= 1,2, . . . , n cho−1, respectively.
+Fork= 1,2, . . . , n cho, we concatenate ID kwithCkto produce Fk.
+Finally, for each NVti, we transform the instance into a question by masking NVtiwith a blank
+underline of four token length. For NVti, we generate an NumCT instruction, by combining the
+question, {Fk}, k= 1,2, . . . , n choand the necessary prompt constituents. The output matching the
+instruction is IDkti. As a common practice [Hendrycks et al., 2021, Huang et al., 2023], we set
+ncho= 4and set the identifiers as “A”, “B”, “C”, “D”. An example of the instruction-output pair is
+shown in Figure 2.
+3.3.4 Instruction Fine-Tuning
+After the above steps, we obtain an instruction-output pair for each NVti. By traversing all the
+selected numeric variables in all the selected instances, we obtain an instruction fine-tuning dataset
+containing Ninstruction-output pairs, where Nis computed as:
+N=˜NinsX
+t=1˜Mt. (5)
+We use this instruction fine-tuning dataset to perform instruction fine-tuning [Wei et al., 2022] on
+the foundation LLM. The settings of fine-tuning are the same as the standard settings of fine-tuning
+5Instruction: 
+同时，由于利率的多变性，银行会面临利率风险，特别是浮动利率债券，当利率水平上
+升时，银行的利息负担会加重。
+银行发行的中长期债券的种类主要有：
+（1）资本票据。这是一种以固定利率计息的小面额债券，它的原始到期期限一般为
+____～15年，可以在金融市场上出售，也可直接向银行的客户推销。
+A. -352  B. 755  C. -695  D. 7
+答案：  
+(Simultaneously, due to the variability of interest rates, banks face interest rate risk, 
+especially with floating -rate bonds. When the level of interest rates rises, the bank's 
+interest burden intensifies. 
+The types of medium and long -term bonds issued by banks mainly include:
+(1)Capital notes. These are small face value bonds that accrue interest at a fixed rate. 
+Their original maturity period is generally ____ to 15 years, and they can be sold on 
+the financial market or directly marketed to the bank's customers.
+A. -352  B. 755  C. -695  D. 7
+Answer: )
+Output: DFigure 2: An example of instruction-output pair constructed by NumCT. Translation in English is
+provided below the original text.
+Qwen, LLAMA2 and so on. We optimize an auto-regressive objective function, while zeroing out the
+loss on tokens from the instruction. NumCT maximizes the following log likelihood function:
+LNumCT =NX
+j=1˜ljX
+i=1logP(oi), (6)
+where
+P(oi) =P 
+oi|wlj+i−k, . . . , w lj, o1, . . . , o i−1; Θ
+, i≤k
+P(oi|oi−k, . . . , o i−1; Θ) , i > k. (7)
+Here, Nis the number of instruction-output pairs, ljis the length of the j-th instruction, ˜ljis the
+length of the j-th output, wljis the lj-th token in the instruction, oiis the i-th token in the output, k
+is the size of the context window and Θis the model parameters.
+3.4 Mixing and Merging LoRA Modules
+After continual pre-training and NumCT, we obtain two LoRA modules. In the mixing and merging
+step, we employ a singular value decomposition (SVD) based method to mix the two LoRA modules
+and finally merge LoRA modules into the foundation LLM with an add operation as in PEFT [Man-
+grulkar et al., 2022]. For convenience, we denote the LoRA module of continual pre-training by
+MCPand denote the LoRA module of NumCT by MNumCT .rCPis the rank of MCPandrNumCT is the
+rank of MNumCT .∆WCPdenotes the product between the two low-rank matrices learned for MCP,
+and∆WNumCT denotes the product between the two low-rank matrices learned for MNumCT . Let
+r=max(rNumCT , rCP). We perform SVD on
+∆Wmean=∆WNumCT + ∆WCP
+2, (8)
+and retain the top rsingular values for the mixed LoRA module. Specifically, SVD decomposition
+for∆Wmean∈Rd×kcan be represented by
+∆Wmean=UΣVT, U∈Rd×d,Σ∈Rd×k, V∈Rk×k. (9)
+After extracting the top rsingular values and the corresponding singular vectors, we can obtain
+U′∈Rd×r,Σ′∈Rr×r, V′∈Rk×r. The we can obtain the full matrix for the mixed LoRA module
+as follows:
+∆WSVD=U′Σ′(V′)T. (10)
+During inference, we merge the mixed LoRA module with the foundation model by using an add
+operation to obtain the NumLLM model, which is consistent with the default operation in LoRA [Hu
+et al., 2022]. We set rCP= 64 andrNumCT = 8. By mixing and merging the two LoRA modules
+through an SVD-based method, we preserve the most important information from each LoRA module.
+Thus we enhance the ability of NumLLM to understand the financial texts involving numeric variables
+as well as those not involving numeric variables.
+4 Experiment
+In this section, we conduct experiments to compare our NumLLM with existing LLMs, including
+representative general-purpose LLMs and financial LLMs.
+6根据企业破产法律制度的规定，下列关于破产案件诉讼费用承担的表述中，
+正确的是 ____。
+A.由破产申请人预先支付 B. 由全体债权人按比例分担
+C. 从债务人财产中随时拨付     D. 由债权人和债务人分担
+According to the provisions of the corporate bankruptcy legal 
+system, the correct statement about the bearing of litigation costs 
+in bankruptcy cases is ____. 
+A. Prepaid by the bankruptcy applicant 
+B. Shared proportionally by all creditors 
+C. Paid at any time from the debtor's property 
+D. Shared by creditors and debtors
+Non-numeric Question2015年3月29日，华夏上证 50ETF基金的收盘价为 ¥2.649，4月份到期、行权价
+格为¥2.250的上证50ETF认购期权的收盘价为 ¥0.406，那么，该期权的内在价
+值或执行价值为 ____。
+A.1.844 B. 0.399 C. 2.243 D. 0.406
+On March 29, 2015, the closing price of the Huaxia SSE 50 ETF fund 
+was ¥2.649, and the closing price of the SSE 50 ETF call option 
+with an expiration in April and an exercise price of ¥2.250 was 
+¥0.406. Therefore, the intrinsic value or exercise value of this 
+option is ____.
+A. 1.844 B. 0.399 C. 2.243 D. 0.406
+Numeric QuestionFigure 3: Examples of numeric and non-numeric questions. Translation in English is provided below
+the original text.
+Table 2: Number of questions in FinEval. Each column denotes a sub-domain. “All” denotes the
+number of questions within all sub-domains. “#Numeric” denotes the number of numeric questions
+and “#Non-numeric” denotes the number of non-numeric questions. “#Total” denotes the sum of
+“#Numeric” and “#Non-numeric”.
+Accounting Certificate Economy Finance All
+#Numeric 68 73 42 56 239
+#Non-numeric 237 261 165 249 912
+#Total 305 334 207 305 1151
+4.1 Experimental Setup
+4.1.1 Evaluation Tasks
+We evaluate all models on FinEval [Zhang et al., 2023b] which is a comprehensive benchmark for
+the Chinese financial question answering task. Each task is in the form of multiple-choice question
+answering and is evaluated under a five-shot scenario without chain-of-thought. Each task adopts
+accuracy as the evaluation metric. As stated in FinEval, such an evaluation setting is reasonable
+because all methods can achieve the highest accuracy compared to that under the setting of zero-shot
+or chain-of-thought. We present results in four sub-domains of finance, including Finance, Economy,
+Accounting and Certificate. We also present average results over all sub-domains. Additionally, we
+decompose all questions within each sub-domain into numeric questions and non-numeric questions,
+and present the results respectively. Figure 3 shows examples of numeric and non-numeric questions.
+More examples can be found in the Appendix. FinEval adopts the same settings as in existing
+works [Hendrycks et al., 2021, Brown et al., 2020], where the choice corresponding to the largest
+output logit is returned as the choice made by LLMs. The prompt template in FinEval simply
+concatenates the necessary prompt constituents, the question, four identifiers and four choices. The
+question is masked partially with a blank underline of four token length.
+The financial-domain questions in FinEval include 34 distinct subjects which are classified into four
+sub-domains. Please note that the testing set we use corresponds to the validation set in the original
+paper of FinEval, because the labels for the testing set in the original paper are not publicly available.
+The number of questions within the testing set is shown in Table 2.
+4.1.2 Implementation Details
+For hyperparameters mentioned in Section 3.1, we set nmin= 3, nmax= 8, rins= 0.05, rNV= 0.3.
+The experiments on hyperparameters can be found in the Appendix. In continual pre-training, we set
+the learning rate to be 5×10−5and adjust it with the cosine annealing schedule during training. We
+set the block size to be 512 where the block size denotes the maximum length of the input sequence.
+We run the continual pre-training on 8 Tesla-V100-32G GPUs. The batch size per GPU is set to be 8.
+The number of total optimization steps is 6004 and the patience of early stopping is 5 epochs. For
+NumCT, we set the learning rate to be 5×10−5and adjust it with the cosine annealing schedule
+during training.
+7Table 3: Accuracy (%) in four sub-domains and on FinEval overall. * indicates that the result of
+the model is directly adopted from the paper of FinEval, with one digit after the decimal point. In
+the column “category” , “g” means general-purpose LLM, “f” means financial LLM. The “Overall”
+accuracy is the average accuracy over all the subjects regardless of sub-domain, computed in the same
+way as in FinEval. The column “n” represents numeric questions, “non-n” represents non-numeric
+questions, and “avg” represents average accuracy over all the questions, whether numeric or non-
+numeric questions. Bold indicates the best result. Underline indicates the second best result. The
+numbers within parentheses are the standard deviations of NumLLM.
+model size categoryAccounting Certificate Economy Finance Overall
+n non-n avg n non-n avg n non-n avg n non-n avg n non-n avg
+ChatGLM2 6B g 35.29 59.92 54.43 32.88 58.24 52.69 35.71 44.85 43.00 39.29 57.83 54.43 35.56 55.37 51.87
+ChatGLM3 6B g 36.76 47.26 44.92 32.88 54.41 49.70 30.95 51.52 47.34 37.50 53.41 50.49 34.73 52.47 48.22
+LLaMA 7B g 45.59 31.22 34.43 27.40 24.52 25.15 28.57 26.67 27.05 35.71 23.69 25.90 34.73 26.06 28.15
+LLAMA2-CHAT 7B g 36.76 35.02 35.41 38.36 34.87 35.63 28.57 36.97 35.27 28.57 32.93 32.13 33.89 34.62 34.58
+InternLM* 7B g - - 49.00 - - 49.20 - - 40.50 - - 49.40 - - 47.10
+TigerBot-chat-v3 7B g 39.71 45.99 44.59 32.88 52.49 48.20 14.29 41.82 36.23 39.29 51.00 48.85 33.05 48.49 45.26
+Baichuan2-Chat 13B g 25.00 60.34 52.46 36.99 66.67 60.18 33.33 61.82 56.04 39.29 65.06 60.33 33.47 63.81 57.43
+Ziya-LLaMA-v1* 13B g - - 43.30 - - 36.90 - - 34.30 - - 41.20 - - 39.30
+Qwen 7B g 32.35 64.98 57.70 46.58 68.20 63.47 23.81 55.76 49.28 39.29 63.45 59.02 36.82 64.54 58.21
+FinGPT-v3 6B f 17.65 29.11 26.56 35.62 38.31 37.72 33.33 26.06 27.54 21.43 33.73 31.48 26.78 32.46 31.28
+ChatGLM2-AFAC2023Generation 6B f 33.82 58.23 52.79 34.25 57.85 52.69 38.10 44.24 43.00 37.50 56.22 52.79 35.56 54.76 51.00
+ChatGLM2-Yayi 6B f 36.76 54.01 50.16 39.73 56.70 52.99 40.48 40.00 40.10 32.14 53.82 49.84 36.82 55.37 49.09
+Fin-Alpaca-LoRA-Linly 7B f 19.12 29.11 26.89 23.29 27.59 26.65 19.05 29.09 27.05 19.64 28.92 27.21 20.50 28.71 26.93
+DISC-FinLLM 13B f 33.82 49.79 46.23 32.88 54.02 49.40 26.19 44.85 41.06 33.93 55.42 51.48 32.22 51.27 47.61
+Qwen-Yayi 7B f 33.82 53.16 48.85 36.99 62.45 56.89 23.81 51.52 45.89 35.71 61.04 56.39 33.47 58.14 52.65
+NumLLM 7B f 32.06 63.80 56.72 47.67 68.97 64.31 26.19 57.94 51.50 44.29 65.38 61.51 38.74 65.40 59.25
+(2.16) (0.56) (0.55) (1.60) (0.24) (0.40) (0.00) (1.19) (0.95) (1.34) (0.82) (0.74) (1.11) (0.73) (0.36)
+4.1.3 Baselines
+The baselines can be mainly categorized into two classes. The first class includes general-purpose
+LLMs that are able to answer financial questions. The second class includes financial LLMs that are
+fine-tuned from open-sourced LLMs on financial corpora.
+The general-purpose LLMs for comparison include ChatGLM2-6B [Du et al., 2022], ChatGLM3-
+6B [Du et al., 2022], LLaMA-7B [Touvron et al., 2023a], LLAMA2-7B-CHAT [Touvron et al.,
+2023b], Qwen-7B [Bai et al., 2023], InternLM-7B3, Tigerbot-7B-chat-v3 [Chen et al., 2023b],
+Baichuan2-13B-Chat [Yang et al., 2023] and Ziya-LLaMA-13B-v1 [Zhang et al., 2022].
+The financial LLMs for comparison include FinGPT-v3-6B [Liu et al., 2023], ChatGLM2-6B-
+AFAC2023Generation, ChatGLM2-6B-Yayi, Qwen-7B-Yayi, Fin-Alpaca-LoRA-7B-Linly [Yu, 2023]
+and DISC-FinLLM-13B [Chen et al., 2023a]. ChatGLM2-6B-AFAC2023Generation is fine-tuned
+from ChatGLM2-6B with the instruction dataset AFAC2023Generation derived from the AFAC2023
+competition in generation of financial market viewpoints4. ChatGLM2-6B-Yayi is fine-tuned from
+ChatGLM2-6B with the instruction dataset constructed in Yayi. Qwen-7B-Yayi is fine-tuned from
+ChatGLM2-6B with the instruction dataset constructed in Yayi. DISC-FinLLM-13B refers to DISC-
+FinLLM-13B (consulting) which performs the best among the four variants proposed in the original
+work.
+4.2 Results on Financial Question Answering
+Experiment results are presented in Table 3. The results of NumLLM are averaged over five
+independent NumCT runs. From Table 3, we can find the following phenomena.
+Firstly, NumLLM outperforms all baselines in terms of overall accuracy, overall accuracy on numeric
+questions and overall accuracy on non-numeric questions.
+Secondly, on numeric questions of the sub-domains, NumLLM outperforms Qwen on Finance,
+Economy and Certificate by a large margin. More specifically, NumLLM achieves accuracy gains of
+5.00%, 2.38% and 1.09%, respectively. Meanwhile, NumLLM is on par with Qwen on Accounting.
+Thirdly, on non-numeric questions of the sub-domains, NumLLM also outperforms Qwen on Finance,
+Economy and Certificate by a large margin. More specifically, NumLLM achieves accuracy gains
+of 1.97%, 2.18% and 0.77%, respectively. Meanwhile, NumLLM keeps the second-best accuracy
+among all the compared models. Please note that Qwen-Yayi is fine-tuned from the same foundation
+3https://github.com/InternLM/InternLM-techreport
+4https://tianchi.aliyun.com/competition/entrance/532091/information
+8Overall
+Accounting
+Certificate EconomyFinance
+ 30
+  40
+   50
+   60NumLLM
+FinGPT-v3
+ChatGLM2-
+AFAC2023Generation
+ChatGLM2-Yayi
+Qwen-Yayi
+Fin-Alpaca-Linly
+DISC-FinLLMFigure 4: A radar graph for average (over numeric and non-numeric questions) accuracy (%) of all
+financial LLMs in all sub-domains.
+Table 4: Ablation study. Accuracy (%) on FinEval overall. The numbers within parentheses are the
+standard deviations.
+modelOverall
+n non-n avg
+NumLLM (w/o NumCT) 37.66 64.90 58.73
+NumLLM (w/o numeric choices) 37.24 (1.57) 63.85 (0.52) 58.33 (0.67)
+NumLLM (w/o CP) 31.52 (2.56) 63.85 (0.54) 57.14 (0.23)
+NumLLM (sum-based mix) 33.47 (0.59) 63.34 (0.61) 57.14 (0.57)
+NumLLM (mean-based mix) 38.49 (0.34) 64.07 (0.31) 58.76 (0.22)
+NumLLM 38.74 (1.11) 65.40 (0.73) 59.25 (0.36)
+model as NumLLM but on different corpora. However, Qwen-Yayi achieves much lower scores than
+NumLLM.
+Finally, among all FinLLMs, NumLLM achieves the highest average accuracy in terms of overall
+results and results within each sub-domain. We can also observe this phenomenon from the radar
+graph in Figure 4.
+4.3 Ablation Study
+To study the effectiveness of each procedure during the construction of NumLLM, we conduct the
+ablation study by substituting each procedure with its variants or removing the procedure. The results
+are presented in Table 4.
+4.3.1 Effectiveness of NumCT
+To verify the effectiveness of NumCT, we remove the LoRA module obtained by NumCT. Therefore,
+the foundation model is merged only with the LoRA module obtained by continual pre-training. The
+model obtained under this setting is denoted by NumLLM (w/o NumCT) in Table 4. We can find
+that the accuracy of NumLLM (w/o NumCT) are 1.08%, 0.50% and 0.52% lower than NumLLM on
+numeric questions, non-numeric questions and their average, respectively.
+Moreover, we verify the effectiveness of numeric-masked choice generation within the procedure
+of NumCT. More specifically, we remove the step of numeric-masked choice generation when
+constructing NumCT instructions. For the target numeric variable in each instance, we transform
+the instance into a question by masking the numeric variable with a blank underline of four token
+length. The instruction is constructed by concatenating the necessary prompt constituents and the
+masked instance. The output is set to be the corresponding true value of the target numeric variable.
+The model obtained under this setting is denoted by NumLLM (w/o numeric choices) in Table 4.
+9We can find that the accuracy of NumLLM (w/o numeric choices) decreases by 1.50%, 1.55%,
+0.92% compared to that of NumLLM on numeric questions, non-numeric questions and their average,
+respectively. Similarly, the accuracy of NumLLM (w/o numeric choices) decreases by 0.44%, 1.05%,
+0.40% compared to that of NumLLM (w/o NumCT) on numeric questions, non-numeric questions
+and their average, respectively.
+4.3.2 Effectiveness of Continual Pre-Training
+To verify the necessity of conducting continual pre-training, we train a model which only performs
+NumCT with LoRA on Qwen but without LoRA for continual pre-training. The model obtained
+under this setting is denoted by NumLLM (w/o CP) in Table 4. We can find that the accuracy of
+NumLLM (w/o CP) decreases by 7.22%, 1.55% and 2.11% on numeric questions, non-numeric
+questions and their average, respectively.
+4.3.3 Effectiveness of SVD-based Method to Mix LoRA Modules
+To verify the effectiveness of the SVD-based method for mixing the two LoRA modules, we construct
+two variants of NumLLM for comparison. Specifically, we construct one variant using mean-based
+method for mixing LoRA modules, which adopts the ∆Wmeanin Section 3.4 as the full matrix of
+the mixed LoRA module. We construct the other variant using sum-based method for mixing LoRA
+modules, which adopts ∆Wsum= ∆WNumCT + ∆WCPas the full matrix of the mixed LoRA module.
+These two variants are denoted by NumLLM (mean-based mix) and NumLLM (sum-based mix),
+respectively. From Table 4, we can find that NumLLM (sum-based mix) achieves the lowest accuracy
+among all three different mixing methods. Furthermore, when compared to NumLLM (mean-based
+mix), NumLLM improves the accuracy by 0.25%, 1.33% and 0.48% on numeric questions, non-
+numeric questions and the average result, respectively. This proves the superiority of SVD-based
+method for mixing LoRA modules over mean-based method. One possible reason to explain this
+result is that because the ranks and training objectives are both different between continual pre-
+training and NumCT, the subspaces of ∆WNumCT and∆WCPhave different meanings which will
+result in noises in computing ∆Wmean. But NumCT can mitigate the resulting noise through SVD,
+since SVD is an effective way for denoising [Guo et al., 2016].
+5 Conclusion
+In this paper, we propose a novel LLM, called num eric-sensitive l arge l anguage m odel (NumLLM),
+for Chinese finance, which addresses the shortcoming of existing FinLLMs in understanding financial
+text when numeric variables are involved in questions. Experiments on financial question-answering
+benchmark show that NumLLM can outperform existing FinLLMs to achieve the best performance.
+Applying our method for finance in other languages will be pursued in our future work.
+References
+Tom B. Brown, Benjamin Mann, and Nick Ryder et al. Language models are few-shot learners. In
+Advances in Neural Information Processing Systems , 2020.
+Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timothée
+Lacroix, Baptiste Rozière, Naman Goyal, Eric Hambro, Faisal Azhar, Aurélien Rodriguez, Armand
+Joulin, Edouard Grave, and Guillaume Lample. LLaMA: Open and efficient foundation language
+models. CoRR , abs/2302.13971, 2023a.
+Hugo Touvron, Louis Martin, and Kevin Stone et al. Llama 2: Open foundation and fine-tuned chat
+models. CoRR , abs/2307.09288, 2023b.
+Aiyuan Yang, Bin Xiao, and Bingning Wang et al. Baichuan 2: Open large-scale language models.
+CoRR , abs/2309.10305, 2023.
+Shijie Wu, Ozan Irsoy, Steven Lu, Vadim Dabravolski, Mark Dredze, Sebastian Gehrmann, Prabhan-
+jan Kambadur, David S. Rosenberg, and Gideon Mann. BloombergGPT: A large language model
+for finance. CoRR , abs/2303.17564, 2023.
+10Xuanyu Zhang and Qing Yang. XuanYuan 2.0: A large chinese financial chat model with hundreds
+of billions parameters. In Proceedings of ACM International Conference on Information and
+Knowledge Management , 2023.
+Teven Le Scao, Angela Fan, and Christopher Akiki et al. BLOOM: A 176b-parameter open-access
+multilingual language model. CoRR , abs/2211.05100, 2022.
+Wei Chen, Qiushi Wang, Zefei Long, Xianyin Zhang, Zhongtian Lu, Bingxuan Li, Siyuan Wang,
+Jiarong Xu, Xiang Bai, Xuanjing Huang, and Zhongyu Wei. DISC-FinLLM: A chinese financial
+large language model based on multiple experts fine-tuning. CoRR , abs/2310.15205, 2023a.
+Qianqian Xie, Weiguang Han, Xiao Zhang, Yanzhao Lai, Min Peng, Alejandro Lopez-Lira, and Jimin
+Huang. PIXIU: A comprehensive benchmark, instruction dataset and large language model for
+finance. In Advances in Neural Information Processing Systems , 2023a.
+YangMu Yu. Cornucopia-llama-fin-chinese. https://github.com/jerry1993-tech/
+Cornucopia-LLaMA-Fin-Chinese , 2023.
+Xiao-Yang Liu, Guoxuan Wang, Hongyang Yang, and Daochen Zha. FinGPT: Democratizing internet-
+scale data for financial large language models. In Advances in Neural Information Processing
+Systems Workshop on Instruction Tuning and Instruction Following , 2023.
+Yiming Cui, Ziqing Yang, and Xin Yao. Efficient and effective text encoding for chinese llama and
+alpaca. CoRR , abs/2304.08177, 2023.
+Zhengxiao Du, Yujie Qian, Xiao Liu, Ming Ding, Jiezhong Qiu, Zhilin Yang, and Jie Tang. GLM:
+general language model pretraining with autoregressive blank infilling. In Proceedings of Annual
+Meeting of the Association for Computational Linguistics , 2022.
+Yumo Xu and Shay B. Cohen. Stock movement prediction from tweets and historical prices. In
+Proceedings of Annual Meeting of the Association for Computational Linguistics , 2018.
+Macedo Maia, Siegfried Handschuh, André Freitas, Brian Davis, Ross McDermott, Manel Zarrouk,
+and Alexandra Balahur. Www’18 open challenge: Financial opinion mining and question answer-
+ing. In Companion Proceedings of ACM Web Conference , 2018.
+Dakuan Lu, Hengkui Wu, Jiaqing Liang, Yipei Xu, Qianyu He, Yipeng Geng, Mengkun Han, Yingsi
+Xin, and Yanghua Xiao. BBT-Fin: Comprehensive construction of chinese financial domain
+pre-trained language model, corpus and benchmark. CoRR , abs/2302.09432, 2023.
+Ye Chen, Wei Cai, Liangmin Wu, Xiaowei Li, Zhanxuan Xin, and Cong Fu. TigerBot: An open
+multilingual multitask LLM. CoRR , abs/2312.08688, 2023b.
+Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang,
+and Weizhu Chen. LoRA: Low-rank adaptation of large language models. In Proceedings of
+International Conference on Learning Representations , 2022.
+Jinze Bai, Shuai Bai, and Yunfei Chu et al. Qwen technical report. CoRR , abs/2309.16609, 2023.
+Suchin Gururangan, Ana Marasovic, Swabha Swayamdipta, Kyle Lo, Iz Beltagy, Doug Downey,
+and Noah A. Smith. Don’t stop pretraining: Adapt language models to domains and tasks. In
+Proceedings of Annual Meeting of the Association for Computational Linguistics , 2020.
+Wenbo Zhang, Hangzhi Guo, Prerna Ranganathan, Jay Patel, Sathyanath Rajasekharan, Nidhi
+Danayak, Manan Gupta, and Amulya Yadav. A continual pre-training approach to tele-triaging
+pregnant women in kenya. In Proceedings of AAAI Conference on Artificial Intelligence , 2023a.
+Jian Xie, Yidan Liang, Jingping Liu, Yanghua Xiao, Baohua Wu, and Shenghua Ni. QUERT:
+Continual pre-training of language model for query understanding in travel domain search. In
+Proceedings of ACM SIGKDD Conference on Knowledge Discovery and Data Mining , 2023b.
+Zheng Gong, Kun Zhou, Wayne Xin Zhao, Jing Sha, Shijin Wang, and Ji-Rong Wen. Continual
+pre-training of language models for math problem understanding with syntax-aware memory
+network. In Proceedings of Annual Meeting of the Association for Computational Linguistics ,
+2022.
+11Aakanksha Chowdhery, Sharan Narang, and Jacob Devlin et al. Palm: Scaling language modeling
+with pathways. Journal of Machine Learning Research , 24:240:1–240:113, 2023.
+Chunting Zhou, Pengfei Liu, Puxin Xu, Srini Iyer, Jiao Sun, Yuning Mao, Xuezhe Ma, Avia Efrat,
+Ping Yu, Lili Yu, Susan Zhang, Gargi Ghosh, Mike Lewis, Luke Zettlemoyer, and Omer Levy.
+LIMA: Less is more for alignment. In Advances in Neural Information Processing Systems , 2023.
+Harsha Nori, Yin Tat Lee, and Sheng Zhang et al. Can generalist foundation models outcompete
+special-purpose tuning? Case study in medicine. CoRR , abs/2311.16452, 2023.
+Miyoung Ko, Jinhyuk Lee, Hyunjae Kim, Gangwoo Kim, and Jaewoo Kang. Look at the first
+sentence: Position bias in question answering. In Proceedings of Conference on Empirical
+Methods in Natural Language Processing , 2020.
+Lianmin Zheng, Wei-Lin Chiang, Ying Sheng, Siyuan Zhuang, Zhanghao Wu, Yonghao Zhuang,
+Zi Lin, Zhuohan Li, Dacheng Li, Eric P. Xing, Hao Zhang, Joseph E. Gonzalez, and Ion Stoica.
+Judging llm-as-a-judge with mt-bench and chatbot arena. In Advances in Neural Information
+Processing Systems , 2023.
+Dan Hendrycks, Collin Burns, Steven Basart, Andy Zou, Mantas Mazeika, Dawn Song, and Jacob
+Steinhardt. Measuring massive multitask language understanding. In Proceedings of International
+Conference on Learning Representations , 2021.
+Yuzhen Huang, Yuzhuo Bai, Zhihao Zhu, Junlei Zhang, Jinghan Zhang, Tangjun Su, Junteng Liu,
+Chuancheng Lv, Yikai Zhang, Jiayi Lei, Yao Fu, Maosong Sun, and Junxian He. C-Eval: A
+multi-level multi-discipline chinese evaluation suite for foundation models. In Advances in Neural
+Information Processing Systems , 2023.
+Jason Wei, Maarten Bosma, Vincent Y . Zhao, Kelvin Guu, Adams Wei Yu, Brian Lester, Nan Du,
+Andrew M. Dai, and Quoc V . Le. Finetuned language models are zero-shot learners. In Proceedings
+of International Conference on Learning Representations , 2022.
+Sourab Mangrulkar, Sylvain Gugger, Lysandre Debut, Younes Belkada, Sayak Paul, and Benjamin
+Bossan. PEFT: State-of-the-art parameter-efficient fine-tuning methods. https://github.com/
+huggingface/peft , 2022.
+Liwen Zhang, Weige Cai, Zhaowei Liu, Zhi Yang, Wei Dai, Yujie Liao, Qianru Qin, Yifei Li, Xingyu
+Liu, Zhiqiang Liu, Zhoufan Zhu, Anbo Wu, Xin Guo, and Yun Chen. FinEval: A chinese financial
+domain knowledge evaluation benchmark for large language models. CoRR , abs/2308.09975,
+2023b.
+Jiaxing Zhang, Ruyi Gan, and Junjie Wang et al. Fengshenbang 1.0: Being the foundation of chinese
+cognitive intelligence. CoRR , abs/2209.02970, 2022.
+Qiang Guo, Caiming Zhang, Yunfeng Zhang, and Hui Liu. An efficient svd-based method for image
+denoising. IEEE Transactions on Circuits and Systems for Video Technology , 26(5):868–880,
+2016.
+12

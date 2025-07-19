@@ -1,0 +1,510 @@
+arXiv:2204.00204v1  [q-fin.PM]  1 Apr 2022LoCoV: low dimension covariance voting algorithm for
+portfolio optimization
+Juntao Duan∗, Ionel Popescu†
+Abstract
+Minimum-variance portfolio optimizations rely on accurat e covariance estimator to
+obtain optimal portfolios. However, it usually suﬀers from l arge error from sample
+covariance matrix when the sample size nis not signiﬁcantly larger than the number
+of assets p. We analyze the random matrix aspects of portfolio optimiza tion and iden-
+tify the order of errors in sample optimal portfolio weight a nd show portfolio risk are
+underestimated when using samples. We also provide LoCoV (l ow dimension covari-
+ance voting) algorithm to reduce error inherited from rando m samples. From various
+experiments, LoCoV is shown to outperform the classical met hod by a large margin.
+Keywords: portfolio optimization; covariance; LoCoV; low dimension covariance voting
+1 Introduction
+Portfolio theory pioneered by Markowitz in 1950’s [9] is at t he center of theoretical developments
+in ﬁnance. The mean-variance model tells investors should h old a portfolio on the eﬃcient frontier
+which trade oﬀ portfolio mean (return) against variance (ri sk). In practice, mean and variance
+are calculated using estimated sample mean and sample covar iance matrix. However, estimation
+error in sample mean and covariance will signiﬁcantly aﬀect t he accuracy of the portfolio thus
+perform poorly in practice (see [7, 10]). Quantitative resu lt on how sample covariance aﬀects the
+performanceare very limited. Thebias in sampleportfoliow eight is discussedin [5] butnopractical
+guidance is given on how large is the bias when use mean-varia nce model with sample data. We in
+this work will obtain that the order of magnitude of the error in sample portfolio weight which is
+large when the sample size nis comparable to the number of assets p. And the error decays in the
+rate of/radicalBig
+p
+nasnincreases.
+For this reason, there has been many work suggest diﬀerent app roaches to overcome standard
+mean-variance portfolio optimizations. These suggestion s include imposing portfolio constraints
+(see [6, 3, 1]), use of factor models ([2]), modifying object ive to be more robust ([4]) and improving
+samplecovariancematrixestimation ([8]). Instead, inthi sworkweusetheobservationfromrandom
+matrix theory to provide alternative view on the error in sam ple covariance matrix. We propose
+LoCoV, low dimension covariance voting, which eﬀectively ex ploits the accurate low dimensional
+∗Corresponding author. School of Mathematics, Georgia Institut e of Technology, juntaoduan@gmail.com
+†University of Bucharest, Faculty of Mathematics and Computer Sc ience, Institute of Mathematics of the
+Romanian Academy, ioionel@gmail.com
+1covariance to vote on diﬀerent assets. It outperform the stan dard sample portfolio by a large
+margin.
+We shall ﬁrst set up the problem. For simplicity, we only disc uss minimum-variance portfolio
+optimization. Assume the true covariance admits diagonali zation
+Σ =PTD2P
+whereDis a non-negative deﬁnite diagonal matrix, and Pis an orthogonal matrix. Then a data
+matrix (asset return) realized by random matrix N(n×p) with i.i.d. standard random variables is
+X=NDP
+a sample covariance matrix is then obtained as
+ˆΣ =PTDNTN
+nDP
+We deﬁne the minimum variance portfolio to be the optimizer o f
+min
+wwTΣw
+s.t. wT/BD= 1(1.1)
+where /BD=/bracketleftbig
+1···1/bracketrightbigT. In reality, Σ is not known, therefore it is replaced by an est imatorˆΣ to
+obtain an approximated optimal portfolio. That is we solve
+min
+wwTˆΣw
+s.t. wT/BD= 1(1.2)
+2 Universality of optimal portfolio weight and risk
+We ﬁrst derive the solution of minimum-variance by the metho d of Lagrange multiplier since a
+closed form is available. Later on based on the explicit form of the solutions, we will investigate
+probabilistic properties of portfolio weight and risk.
+Observe that both Σ and ˆΣ take the form ATAwhereAisDPfor true covariance Σ and A
+is1√nNDPfor the sample covariance matrix ˆΣ. We shall deﬁne the portfolio optimization in the
+general form
+min
+wwTATA w
+s.t. wT/BD= 1(2.1)
+Deﬁne the Lagrangian function
+L(w) =wTATAw−λ(wT/BD−1)
+Taking derivatives with respect to the portfolio weight w, and set the gradient to be zero,
+∇L= 2wTATA−λ /BDT= 0
+write gradient as column vector this is
+2ATAw=λ /BD
+2For real life portfolio optimization, we can assume ATA(Σ orˆΣ) is invertible since otherwise
+optimal portfolio weight will have large error or ambiguity . Then we ﬁnd the optimal portfolio
+weight
+w=λ
+2(ATA)−1/BD
+We know the portfolio weights should be normalized so that th ey sum up to 1. Therefore λ/2 is
+essentially a normalizing factor. For convenience of notat ion, we make the following deﬁnition.
+Deﬁnition 1. Thefree (non-normalized) optimal weight of portfolio optimization 2.1 is
+S=/bracketleftbig
+s1···sp/bracketrightbigT= (ATA)−1/BD
+And denote its sum as
+/ba∇dblS/ba∇dbls:=p/summationdisplay
+k=1sk
+Normalizing the vector Swe obtain optimal portfolio weight
+w∗=1/summationtextp
+i=1siS=S
+/ba∇dblS/ba∇dbls
+It is easy to see λ∗=2/summationtextp
+i=1si= 2/ba∇dblS/ba∇dbl−1
+s. Then take dot product of ∇Landw, we ﬁnd
+0 =∇LTw= 2wTATAw−λ /BDTw
+and recall /BDTw= 1, therefore, we ﬁnd the minimum portfolio risk
+R(w∗) =w∗TATAw∗=λ∗/2 =/ba∇dblS/ba∇dbl−1
+s
+We summarize the result as follows,
+Proposition 2. For the constrained optimization 2.1, the free optimal weight is
+S=
+s1
+...
+sp
+= (ATA)−1/BD (2.2)
+Normalizing S, we obtain the optimal portfolio weight
+w∗=/ba∇dblS/ba∇dbl−1
+sS (2.3)
+and theminimum portfolio risk is
+R(w∗) =/ba∇dblS/ba∇dbl−1
+s (2.4)
+where/ba∇dblS/ba∇dbl−1
+s=/summationtextp
+k=1sk.
+32.1 Behavior of sample portfolio
+Assume the diagonalization of true covariance matrix
+Σ =PTD2P=PTdiag(σ2
+1,···,σ2
+p)P
+By proposition 2, plugging in ATA= Σ, we ﬁndthe true free optimal weight andtrue optimal
+portfolio weight of 1.1 are
+SΣ= Σ−1/BD=PTD−2P /BD, w∗=/ba∇dblSΣ/ba∇dbl−1
+sSΣ (2.5)
+Then recall the return (data matrix) is generated as X=NDPwhereNis an×pmatrix with
+i.i.d. standard random variables (mean zero and variance on e). This leads to the sample covariance
+matrix
+ˆΣ =PTDNTN
+nDP
+Plugging in ATA=ˆΣ for proposition 2, we obtain sample free optimal weight andsample
+optimal portfolio weight of 1.2
+SˆΣ=PTˆΣ−1P /BD=PTD−1/parenleftbiggNTN
+n/parenrightbigg−1
+D−1P /BD,ˆw∗=/ba∇dblSˆΣ/ba∇dbl−1
+sSˆΣ(2.6)
+The diﬀerence between SˆΣandSΣdepends on the random matrix (inverse of sample covariance)
+M:=/parenleftBig
+NTN
+n/parenrightBig−1
+, diagonal matrix Dand orthogonal matrix P.Mis the inverse of a sample
+covariance matrix. It is possible to directly use the formul a for inverse from Cramer rule to analyze
+this random matrix and show EM=I. Since this work mainly focus on improving the accuracy of
+portfolio, we will not pursue the probabilistic properties here (which shall be discussed in another
+work elsewhere). Instead we use several experiments to show the sample portfolio weight ˆ w∗is
+centered around the true portfolio weight w∗.
+2.2 First example: sample portfolio of independent assets
+We shall start with the simplest case that all assets are inde pendent, i.e. the matrix Pis identity.
+This means the true covariance matrix is a diagonal matrix Σ = D2. Then by 2.5 true free
+optimal weight andtrue optimal portfolio weight
+SΣ= Σ−1/BD=D−1D−1/BD=/bracketleftbig
+σ−2
+1···σ−2
+p/bracketrightbigT, w∗=/ba∇dblSΣ/ba∇dbl−1
+sSΣ
+Similarly by 2.6 sample free optimal weight andsample optimal portfolio weight
+SˆΣ=ˆΣ−1/BD=D−1/parenleftbiggNTN
+n/parenrightbigg−1
+D−1/BD,ˆw∗=/ba∇dblSˆΣ/ba∇dbl−1
+sSˆΣ
+40 5 10 15 20 25 30−20246portfolio weight
+true
+sample_mean
+sample
+0.00 0.05 0.10 0.15 0.20 0.25050100150200250portfolio risk
+true
+samplen=30, p=30
+0 5 10 15 20 25 300.000.050.100.150.200.25portfolio weight
+true
+sample_mean
+sample
+0.225 0.230 0.235 0.240 0.245 0.250 0.255 0.260 0.265010203040506070portfolio risk
+true
+samplen=3000, p=30
+Figure 1: We select eigenvalues of Σ equally spaced between 1 to 30. N amelyσ2
+k=k,1≤
+k≤30. We generate 300 samples for each of the two settings ( n,p) = (30,30) and (3000 ,30).
+whenp
+n= 1, the error of the portfolio weight is O(1). whenp
+n= 1/100, the error of the
+portfolio weight is O(1/10)
+On the left ﬁgure 1, true optimal weight is red line which is cl osely aligned with the mean
+value of sample optimal weights which is show as blue connect ed dash-line. As we see the standard
+deviation in sample portfolio weight is at O(/radicalbig
+p/n). Asp/ndecreases, the sample portfolio weight
+become less volatile around the true portfolio weight. On th e right, the sample optimal risk has
+higher chance of underestimate the true optimal risk. As p/ndecreases, the sample portfolio risk
+become less volatile and more centered around the true portf olio risk.
+2.3 Second example: sample portfolio of dependent assets
+For general assets with dependence, 2.5 and 2.6 have provide d the formulas. Again we will only
+use experiments to show relations between the sample portfo lio weight ˆ w∗and the true portfolio
+5weightw∗.
+0 5 10 15 20 25 30−6−4−20246portfolio weight
+true
+sample_mean
+sample
+0.00 0.05 0.10 0.15 0.20 0.250255075100125150175200portfolio risk
+true
+samplen=30, p=30
+0 5 10 15 20 25 30−0.050−0.0250.0000.0250.0500.0750.1000.125portfolio weight
+true
+sample_mean
+sample
+0.245 0.250 0.255 0.260 0.265 0.270 0.275 0.280 0.285010203040506070portfolio risk
+true
+samplen=3000, p=30
+Figure 2: We still select eigenvalues of Σ equally spaced between 1 to 3 0. Namely σ2
+k=
+k,1≤k≤30. We now select Pto be a random orthogonal matrix according to the Haar
+measure.
+Since we are using non-identity orthogonal matrix Pto create dependence among the assets,
+the true optimal portfolio weight is not ordered. The concen tration and deviation properties of the
+sample portfolio weight has not changed. On the left ﬁgure 2, true optimal weight is the red line
+which is still closely aligned with the mean value of sample o ptimal weights which is shown as blue
+connected dash-line. As we see the standard deviation in sam ple portfolio weight is at O(p/n). On
+the right, the sample optimal risk has higher chance of under estimate the true optimal risk. As
+p/ndecreases, both sample weight and sample risk become more ac curate.
+2.4 The order of error in sample optimal portfolio
+We summarize our ﬁndings from previous examples and experim ents as the following conjecture
+6Conjecture 1. Error estimates for ˆw∗(2.6) compared with w∗( 2.5): If assume eigenvalues of true
+covariance matrix Σareσ2
+k, then
+E|ˆw∗
+k−w∗
+k|=O/parenleftbigg
+σk×/radicalbiggp
+n/parenrightbigg
+,∀1≤k≤n
+The constant in the order depends on smallest and largest eige nvalues of Σ.
+Even though we can not prove this in full generality, we can sh ow
+Theorem 2. Assume the true covariance of assets has diagonalization Σ =PTD2PwithD=
+diag(σ1,···σp)and asset return data X=NDPwhereNis an×pmatrix with i.i.d. standard
+Gaussian random variables (mean zero and variance one). And the sample covariance matrix
+ˆΣ =PTDNTN
+nDP
+Then error in sample free optimal weight SˆΣof 2.6 satisﬁes the bound
+E/ba∇dblSˆΣ−SΣ/ba∇dbl2≤O/parenleftbigg
+p σmaxσ−1
+min/radicalbiggp
+n/parenrightbigg
+with high probability. where /ba∇dbl·/ba∇dblis the matrix 2-norm.
+Proof:From 2.5 and 2.6, we know the free optimal weights SΣandSˆΣsolves the linear system
+ΣSΣ=PTD2PSΣ= /BD
+ˆΣSˆΣ=PTD/parenleftbiggNTN
+n/parenrightbigg
+DPSˆΣ= /BD
+To compare SΣandSˆΣ, we use perturbation theory of linear systems. Given linear systemAx=b
+and its perturbed version ( A+B)ˆx=b. then
+(A+B)(ˆx−x+x) =b
+(A+B)(ˆx−x) =Ax−(A+B)x
+ˆx−x=−(A+B)−1Bx
+Therefore for any norm /ba∇dbl·/ba∇dbl.
+/ba∇dblˆx−x/ba∇dbl≤/ba∇dbl(A+B)−1B/ba∇dbl/ba∇dblx/ba∇dbl
+ReplaceA=PTD2PandA+B=PTD/parenleftBig
+NTN
+n/parenrightBig
+DP, we ﬁnd
+/ba∇dblSΣ−SˆΣ/ba∇dbl2≤/vextenddouble/vextenddouble/vextenddouble/vextenddouble/vextenddoublePTD−1/parenleftbiggNTN
+n/parenrightbigg−1
+D−1PPTD/parenleftbiggNTN
+n−I/parenrightbigg
+DP/vextenddouble/vextenddouble/vextenddouble/vextenddouble/vextenddouble
+2/ba∇dblSΣ/ba∇dbl2
+≤/vextenddouble/vextenddouble/vextenddouble/vextenddouble/vextenddoublePTD−1/parenleftbiggNTN
+n/parenrightbigg−1/parenleftbiggNTN
+n−I/parenrightbigg
+DP/vextenddouble/vextenddouble/vextenddouble/vextenddouble/vextenddouble
+2/ba∇dblSΣ/ba∇dbl2
+7NoticeDis diagonal and Pis orthogonal, we see
+/ba∇dblD/ba∇dbl2=σmax,/ba∇dblD−1/ba∇dbl2=σ−1
+min,/ba∇dblP/ba∇dbl2= 1
+DenoteM:=NTN
+n. Therefore we have the bound
+/ba∇dblSΣ−SˆΣ/ba∇dbl2≤/ba∇dblSΣ/ba∇dbl2σ−1
+minσmax/vextenddouble/vextenddoubleI−M−1/vextenddouble/vextenddouble
+2
+Notice
+/ba∇dblI−M−1/ba∇dbl2= max(|1−λ−1
+min|,|1−λ−1
+max|)
+≤|1−λ−1
+min|+|1−λ−1
+max|
+=λ−1
+min−λ−1
+max
+From random matrix theory, eigenvalues of Mfollows Marchenko-Pastur distribution. Moreover,
+smallest and largest eigenvalues of Msatisﬁes (see [11])
+Eλmax(M)≤/parenleftbigg
+1+/radicalbiggp
+n/parenrightbigg2
+,Eλmin(M)≥/parenleftbigg
+1−/radicalbiggp
+n/parenrightbigg2
+It is known the non-asymptotic behavior of λmaxandλminsatisﬁes sub-exponential tails
+P/parenleftBigg/parenleftbigg
+1−/radicalbiggp
+n/parenrightbigg2
+−t≤λmin(M)≤λmax(M)≤/parenleftbigg
+1+/radicalbiggp
+n/parenrightbigg2
++t/parenrightBigg
+≤2e−√nt
+The sub-exponential tail properties implies with high prob ability (1−O(n−c)) so that λmin≥
+1−O(/radicalBig
+p
+n) andλmax≤1+O(/radicalBig
+p
+n) is concentrated around ( Eλmin)−1−(Eλmax)−1. Then with
+high probability
+E/ba∇dblI−M−1/ba∇dbl2≤Eλ−1
+min−Eλ−1
+max
+≤C
+1
+1−O(/radicalBig
+p
+n)−1
+1+O(/radicalBig
+p
+n)
+
+=O(/radicalbiggp
+n)
+Therefore we conclude
+/ba∇dblSΣ−SˆΣ/ba∇dbl2≤/ba∇dblSΣ/ba∇dbl2σ−1
+minσmaxO(/radicalbiggp
+n)
+Notice this result is closely related to how ˆ w∗behave. For instance, if we assume D=P=I,
+then/ba∇dblSΣ/ba∇dbl2=p, we see
+/ba∇dblw∗−ˆw∗/ba∇dbl2≤/ba∇dblˆw∗−SˆΣ/p/ba∇dbl2+σ−1
+minσmaxO(/radicalbiggp
+n)
+83 LoCoV: low dimension covariance voting
+So far we have seen that large errors are present when we use 1. 2 to approximate 1.1 especially
+whenp/nis not small. The natural question is whether there is a rescu e to reduce the errors when
+pandnare comparable. The answer is positive and we provide LoCoV a lgorithm, low dimension
+covariance voting, which consistently outperform the samp le optimal portfolio ˆ w∗.
+Let us start with the motivation behind LoCoV. From random ma trix theory, the sample
+covariance approaches to the true covariance as p/n→0. Suppose we have n= 30 samples for
+p= 30 assets. Then for any two assets, XkandXt, the 2×2 samplecovariance matrix ˆΣksfor assets
+XkandXthas 30 samples thus feature-to-sample ratio is 2 /30 which is much smaller compared
+with 30/30 for the sample covariance matrix ˆΣ for all 30 assets.
+On the other hand, philosophically portfolio optimization is to compare diﬀerent assets and ﬁnd
+proper investment hedges (ratios). Since we have a very accu rate sample covariance matrix ˆΣktfor
+assetXkandXt, we can ﬁnd accurate investment relative-weights ( uk,ut), invest ukon asset Xk
+anduton asset Xt, by solving 1.2. As we repeat this process for any pair of two a ssets, we can
+use these low dimension covariance matrices ˆΣktto accurately construct ratios ( uk,ut) and then
+we utilize all p2pairs of ratios to vote on each assets and obtain a ﬁnal portfo lio weight vector.
+Algorithm 1: ‘LoCoV- 2’
+Data:centered asset return X∈Rn×p,n,p >0
+1Compute sample covariance matrix ˆΣ←1
+nXTX
+2Initialization: U←1
+2I,V←0.
+//Uisp×prelative-weight matrix, Visp×1free-weight vector
+3fori←1topdo
+/*1. For asset ifind relative-weights */
+4forj←i+1topdo
+5 Extract 2×2 sub-matrix ˆΣi,j, and solve the 2-assets portfolio optimization
+min
+uuTˆΣi,ju
+s.t. uT/BD= 1
+or use formula u= (u1,u2) =ˆΣ−1
+i,j
+/BD.
+6 Ui,j←u1 // invest u1in asset i
+7 Uj,i←u2 // invest u2in asset j
+8end
+/*2. Voting */
+9Compute free-weight by uniform voting
+Vi←1
+pp/summationdisplay
+j=1Ui,j
+10end
+11Normalize V
+w←V
+/ba∇dblV/ba∇dbls=V/summationtextp
+i=1Vi
+Output: w
+And we can easily generalize this algorithm to that using k×kdimensional covariance and
+9solve corresponding 1.2 for kassets instead of using 2 ×2 low dimensional covariance. Therefore
+we propose the following ‘LoCoV- k’ algorithm.
+Algorithm 2: ‘LoCoV- k’(k≥3)
+Data:centered asset return X∈Rn×p,n,p >0
+1Compute sample covariance matrix ˆΣ←1
+nXTX
+2Initialization: U←1
+k
+/BD/BDT,V←0.
+// /BDisp×1vector of all ones, Visp×1free-weight vector
+3fori←1topdo
+/*1. For asset ifind relative-weights */
+4forj←1topdo
+5 Generate index set I={i,l1,···,lk−1}wherel1,···lk−1random uniformly in
+{1,···,p}\{i}.
+6 Extractk×ksub-matrix ˆΣI, and solve the k-assets portfolio optimization
+min
+uuTˆΣIu
+s.t. uT/BD= 1
+or use formula u= (u0,u1,···,uk−1) =ˆΣ−1
+I
+/BD.
+7 Ui,j←1
+2u0+1
+2Ui,j // invest u0in asset i
+8 Ult,i←1
+2ut+1
+2Ult,i,∀1≤t≤k−1 // invest utin asset lt
+9end
+/*2. Voting */
+10Compute free-weight by uniform voting
+Vi←1
+pp/summationdisplay
+j=1Ui,j
+11end
+12Normalize V
+w←V
+/ba∇dblV/ba∇dbls=V/summationtextp
+i=1Vi
+Output: w
+In LoCoV- k, there are several tweaks from LoCoV-2 in order to adapt to k-assets. Every time
+we solve a k-assets portfolio optimization problem, we obtain krelative weights. In order to use
+allkweights, we initialize the relative-weight matrix Uwith all entries being1
+k. If there is a new
+weight generated from the computation, we take average of th e existing weight and the new weight.
+This update will diminish old weights which is only for conve nience reading and understanding the
+algorithm. One could take a more delicate update on entries o fU, for example keep track of the
+total number of weights generated for each entry, and then up date with an average of all weights.
+4 Simulations
+We run three experiments and select Σ = I,D2,PTD2P. For each experiment, we generate 300
+samples ˆΣ and compute corresponding ˆ w∗and LoCoV estimator. We plot ˆ w∗in green and LoCoV-
+10weight in black. The experiments show LoCoV consistently ou tperforms the sample optimal port-
+folio.
+0 5 10 15 20 25 30−6−4−202468portfolio weight
+true
+sample
+LoCoV2
+0 10 20 30 40 5001234567portfolio weight error
+sample
+LoCoV2n=30, p=30
+Figure 3: Σ = I
+0 5 10 15 20 25 30−10−5051015portfolio weight
+true
+sample
+LoCoV2
+0 20 40 60 80 100 120 14002468101214portfolio weight error
+sample
+LoCoV2n=30, p=30
+Figure 4: Σ = D2with eigenvalues of Σ equally spaced between 1 to 30. Namely σ2
+k=k,1≤
+k≤30.
+110 5 10 15 20 25 30−4−3−2−101234portfolio weight
+true
+sample
+LoCoV2
+0 20 40 60 80012345678portfolio weight error
+sample
+LoCoV2n=30, p=30
+Figure 5: Σ = PTD2Pwith eigenvalues of Σ equally spaced between 1 to 30. Namely
+σ2
+k=k,1≤k≤30.Pis a random orthogonal matrix according to the Haar measure.
+5 Conclusion and open question
+We analyzed the minimum variance portfolio question with th e consideration of randomness of
+sample covariance matrix. In light of random matrix theory, we use experiments showed the error
+in sample optimal portfolio has the order of the assets-to-s ample ratio p/n. When number of assets
+pis not considerably smaller than the number of samples n, the sample optimal portfolio fails to
+provide accurate estimation of true optimal portfolio. Thu s we proposed the LoCoV method which
+exploits the fact that k-dimensional sub-covariance matrix is more accurate thus c an be used to
+produce relative weights among kassets. Using relative weights to uniformly vote on given as sets
+eventually improve dramatically on the performance of the p ortfolio.
+5.1 Adapt LoCoV to general mean-variance portfolio
+Wehavenotdiscussedtheroleofmeanreturnandassumedourd ataiscentered. Toadapttogeneral
+non-centered mean-variance portfolio optimization, one m ust modify the k-assets optimization sub-
+problem. Namely, one has to compute sample mean µ=1
+nXi·, and then solve the k-assets portfolio
+optimization
+min
+uuTˆΣIu
+s.t. uT/BD= 1
+µu≥r0
+wherer0is the lower bound of expected return.
+However, there is no guarantee to achieve the mean return µw≥r0for the voting procedure
+produced weight w. Of course one can try to apply LoCoV ﬁrst and check whether me an return is
+above the threshold r0, if not then repeating the process of updating relative-wei ght matrix Uwill
+probably improve.
+12References
+[1] Patrick Behr, Andre Guettler, and Felix Miebs. On portfo lio optimization: Imposing the right
+constraints. Journal of Banking & Finance , 37(4):1232–1242, 2013.
+[2] Louis KC Chan, Jason Karceski, and Josef Lakonishok. On p ortfolio optimization: Forecasting
+covariances and choosing the risk model. The review of Financial studies , 12(5):937–974, 1999.
+[3] Victor DeMiguel, Lorenzo Garlappi, Francisco J Nogales , and Raman Uppal. A generalized
+approach to portfolio optimization: Improving performanc e by constraining portfolio norms.
+Management science , 55(5):798–812, 2009.
+[4] Victor DeMiguel and Francisco J Nogales. Portfolio sele ction with robust estimation. Opera-
+tions Research , 57(3):560–577, 2009.
+[5] Noureddine El Karoui. High-dimensionality eﬀects in the markowitz problem and other
+quadratic programs with linear constraints: Risk underest imation. The Annals of Statistics ,
+38(6):3487–3566, 2010.
+[6] Ravi Jagannathan and Tongshu Ma. Risk reduction in large portfolios: Why imposing the
+wrong constraints helps. The Journal of Finance , 58(4):1651–1683, 2003.
+[7] J David Jobson and Robert M Korkie. Putting markowitz the ory to work. The Journal of
+Portfolio Management , 7(4):70–74, 1981.
+[8] Olivier LedoitandMichael Wolf. Improvedestimation of thecovariance matrix of stock returns
+with an application to portfolio selection. Journal of empirical ﬁnance , 10(5):603–621, 2003.
+[9] Harry M Markowitz. Portfolio selection. Journal of Finance , 7(1):77–91, 1952.
+[10] Richard O Michaud. The markowitz optimization enigma: Is ‘optimized’optimal? Financial
+analysts journal , 45(1):31–42, 1989.
+[11] Mark Rudelson and Roman Vershynin. Non-asymptotic the ory of random matrices: extreme
+singular values. In Proceedings of the International Congress of Mathematicians 2010 (ICM
+2010) (In 4 Volumes) Vol. I: Plenary Lectures and Ceremonies Vol s. II–IV: Invited Lectures ,
+pages 1576–1602. World Scientiﬁc, 2010.
+13

@@ -1,0 +1,367 @@
+arXiv:2006.05515v1  [q-fin.TR]  9 Jun 2020An overall view of key problems in algorithmic trading
+and recent progress
+Micha¨ el Karpe∗
+June 9, 2020
+Abstract
+We summarize the fundamental issues at stake in algorithmic trading , and the progress
+made in this ﬁeld over the last twenty years. We ﬁrst present the ke y problems of algorithmic
+trading, describing the concepts of optimal execution, optimal pla cement, and price impact.
+We then discuss the most recent advances in algorithmic trading thr ough the use of Machine
+Learning, discussing the use of Deep Learning, Reinforcement Lea rning, and Generative Ad-
+versarial Networks.
+1 Introduction
+Algorithmic trading is a form of automated trading with the use of elec tronic platforms
+for the entry of stock orders, letting an algorithm decide the diﬀer ent aspects of the order,
+such as the opening or closing time, the price or the volume of the ord er, most times without
+the slightest human intervention. Since algorithmic trading is used fo r order placement and
+execution, increasingly intelligent and complex algorithms are compet ing to optimize the
+placement and execution of these orders in a market that is becomin g better and better
+understood by the developers of these algorithms.
+2 Key problems in algorithmic trading
+The study of algorithmic trading ﬁrst requires an understanding of its fundamental is-
+sues, namely what is the best quantity for an order to be executed (optimal execution), how
+∗Department of Industrial Engineering and Operations Research, University of California, Berkeley.
+Email: michael.karpe@berkeley.edu
+1to place orders in a time range (optimal placement), and the conseq uences of these orders on
+the price of the stock on which we place an order (price impact). In t his section, we explore
+these three fundamental issues using key references that addr ess these problems.
+2.1 Optimal execution
+Optimal execution is the most known problem in algorithmic trading and was addressed
+by Bertsimas and Lo [1] in the case of a discrete random walk model an d by Almgren and
+Chriss [2] in the case of a Brownian motion model. Optimal execution co nsists of buying
+or selling a large amount of stock in a short period, which then has an im pact on the price
+of the stock. Such execution is optimal in the sense that one seeks to minimize the price
+impact or execution costs or to maximize the expectation of a prede ﬁned utility function.
+2.1.1 Optimal execution in Bertsimas and Lo
+In Bertsimas andLo [1], optimal execution ispresented asanexecut ion cost minimization
+problem, under the constraint of acquiring a quantity Sof shares over the entire period of
+lengthT. Mathematically, by deﬁning for each instant t∈ {1,2,...,T},Stthe number of
+shares acquired in period tat pricePt, this optimal execution problem is written:
+min
+St, t∈{1,2,...,T}E/parenleftBiggT/summationdisplay
+t=1PtSt/parenrightBigg
+s.t.T/summationdisplay
+t=1St=S
+The simplest evolution of the price Ptproposed by Bertsimas and Lo [1] is to deﬁne Pt
+as the sum of the previous price Pt−1, a linear price impact term θSt(θ >0) depending on
+the number of shares Stacquired at the time t, and a white noise εt(εt∼WN(0,σ2)):
+Pt=Pt−1+θSt+εtwithE[εt|Pt−1, St] = 0
+In their paper, Bertsimas and Lo [1] show that for such an evolution of the price Pt, the
+solution of the optimal execution problem is obtained recursively thr ough dynamic program-
+ming and is S∗
+1=S∗
+2=···=S∗
+T=S/T.
+Then, they deal with the case of the linear price impact with informat ion, by consider-
+ing an additional term γXtin the evolution of the price, such that Xt=ρXt−1+ηtwith
+ρ∈(−1,1)andηt= WN(0,σ2),aswellaswiththegeneralcasewhere Pt=ft(Pt−1,Xt,St,εt)
+andXt=gt(Xt−1,ηt). In both previous cases, the solution to the optimal execution pr oblem
+can still be obtained recursively through dynamic programming, res ulting in a more complex
+formulation of the optimal execution strategy.
+22.1.2 Optimal execution in Almgren and Chriss
+In Almgren and Chriss [2], the optimal execution problem is presented as the minimiza-
+tionofautilityfunction Ubeing thesumoftheexpectation Eandlinear termofthevariance
+Vof the implementation shortfall:
+U(x) =E(x)+λV(x)
+Before deﬁning further the expectation and the variance of the im plementation shortfall,
+we need to deﬁne the evolution of the price and the price impact. In A lmgren and Chriss
+[2], we deﬁne Xthe number of shares to liquidate before time T,tk=kτwithτ=T/Na
+discretization of the time interval [0 ,T] inNintervals, xkthe number of remaining shares
+at timekandnk=xk−1−xk. The evolution of the price Pkis deﬁned as the sum of the
+previous price Pk−1, a linear term of a white noise ξt(ξt∼WN(0,σ2)) and a permanent
+linear price impact depending on nk:
+Pk=Pk−1+στ1/2ξk−τg/parenleftBignk
+τ/parenrightBig
+whereσis the volatility of the asset and g(v) =γv.
+Almgren and Chriss [2] also consider a temporary price impact, howe ver, this temporary
+price impact only inﬂuences the price per share ˜Pkreceived and not on the actual price Pk:
+˜Pk=Pk−1−h/parenleftBignk
+τ/parenrightBig
+whereh(nk/τ) =εsgn(nk) +ηnk/τ, with”a reasonable estimate for εbeing the ﬁxed costs
+of selling” [2] andηdepending on the market microstructure.
+The framework of the Almgren and Chriss [2] optimal execution being deﬁned, we can
+now deﬁne the expectation and the variance of the implementation s hortfall:
+E(x) =N/summationdisplay
+k=1τxkg/parenleftBignk
+τ/parenrightBig
++N/summationdisplay
+k=1nkh/parenleftBignk
+τ/parenrightBig
+V(x) =σ2N/summationdisplay
+k=1τx2
+k
+Inthisframework, optimalexecution strategiescanalsobecompu tedexplicitly andareil-
+lustrated in the form of an eﬃcient frontier in the variance-expect ation two-dimension space.
+Almgren and Chriss [2] also stress the importance of considering the risk/reward tradeoﬀ in
+the calculation of optimal execution strategies, through the use o f aλrisk-aversion param-
+eter, to create optimal execution strategies adapted to the risk proﬁle of the executor.
+32.1.3 Further work on optimal execution
+Bertsimas and Lo [1] & Almgren and Chriss [2] models support most of t he work done
+on optimal execution since 2000.
+On the one hand, recent work uses Bertsimas and Lo [1] model to sh ow there is no sig-
+niﬁcant improvement in moving from static optimal execution strate gies to adapted ones for
+the benchmark models studied [3].
+On the other hand, while Almgren and Chriss [2] deal with the problem o f optimal execu-
+tion under price uncertainty, recent work uses this model to cons ider the problem of optimal
+execution under volume uncertainty, if the volume of shares that c an be executed is not
+known in advance [4]. They show ”risk-averse trader has beneﬁt in delaying their trades”
+[4] and that under both price and volume uncertainty, ”the optimal strategy is a trade-oﬀ
+between early and late trades to balance the risk associated with both price and volume” [4].
+2.2 Optimal placement
+The optimal placement problem is a much less studied algorithmic tradin g problem than
+the optimal execution one. This problem consists of determining how to split the orders into
+thediﬀerent levels ofthelimit order bookateach period, tominimize th etotalexpected cost.
+This problem is summarized in Guo et al. [5] as a problem where ”one needs to buy N
+orders before time T >0”[5] and where Nk,tis the number of orders at the k-th best bid
+(N0,tbeing the number of orders at the market price), andis solved inthe case of a correlated
+random walk model. We refer to Section 2.2. of Guo et al. [5] for the c omplete formulation
+of the optimal placement problem.
+2.3 Price impact
+Thepriceimpactismainlystudiedinthecaseoftheoptimalexecutionp roblem. Gatheral
+and Schied [6] present an overview of the main price impact models. Th ey distinguish three
+distinct types of price impact: permanent, temporary, and trans ient.
+2.3.1 Permanent and temporary price impact
+Permanent and temporary price impact are usually studied togethe r as two consequences
+of the same cause. Whereas the permanent price impact aﬀects th e stock price and therefore
+all subsequent orders, the temporary price impact only aﬀects th e price of the executed order
+and does not inﬂuence the stock price. Both Almgren and Chriss [2] and Bertsimas and Lo
+[1] models present permanent and temporary price impact compone nts.
+4Gatheral and Schied [6] recall in their paper the notion of ”price manipulation strategy”
+[6], being deﬁned as an order execution strategy with strictly positiv e expected revenues.
+Then, they show on the one hand that an Almgren and Chriss [2] mod el which does not
+admit price manipulation must have a linear permanent price impact, an d on the other
+hand that a Bertsimas and Lo [1] model with linear permanent price imp act does not admit
+bounded price manipulation strategies.
+An estimation ofthe permanent and temporaryprice impact inthe eq uity market is stud-
+ied in Almgren et al. [7], showing that while the linear permanent price impa ct hypothesis
+cannot be rejected on equity markets, the hypothesis of a squar e-root model for temporary
+impact is rejected, in favor of a power law with coeﬃcient 0.6 [7].
+However, while many articles studying the permanent price impact do so under the hy-
+pothesis of a linear impact, some research articles question this linea r hypothesis, stating
+that permanent market impact can sometimes be nonlinear [8].
+Recent work pushes further the case of nonlinear permanent and temporary price impact,
+by considering a continuous-time price impact model close to the Almg ren and Chriss [2]
+model but where the parameters of the price impact are stochast ic [9]. They show that
+their stochastic optimal liquidation problem still admits optimal strat egy approximations,
+depending on the stochastic behavior of the price impact paramete rs.
+2.3.2 Transient price impact
+As explained in Gatheral and Schied [6], ”transience of price impact means that this
+price impact will decay over time” [6]. Transient price impact challenges classical models of
+permanent and temporary price impact, especially because perman ent market impact must
+be linear to avoid dynamic arbitrage [10].
+Obizhaeva and Wang [11] propose a linear transient price impact mode l with exponen-
+tial decay, and additional research papers also deal with the stud y of linear transient price
+impact. However, other papers show the limits of the linear hypothe sis in the transient
+price impact model by studying the slow decay of impact in equity mark ets [12]. Recent
+work presents a portfolio liquidation problem of 100 NASDAQ stocks u nder transient price
+impact [13].
+3 Recent progress in algorithmic trading
+The rise of Machine Learning over the last few years has shaken up m any areas, includ-
+ing the ﬁeld of algorithmic trading. Machine Learning, Deep Learning, and Reinforcement
+5Learning can be used in algorithmic trading to develop intelligent algorit hms, capable of
+learning by themselves the evolution of a stock’s price or the best ac tion to take for the
+execution or placement of an order.
+In this section, we discuss the most recent advances in algorithmic t rading through the
+use of Machine Learning, assuming that the reader already has prio r knowledge in this area.
+First, we present applications of Deep Learning in ﬁnancial engineer ing, then the use of
+Reinforcement Learning agents for optimal order execution or pla cement, and ﬁnally, we
+brieﬂy mention applications of Generative Adversarial Networks (G ANs) for ﬁnancial data
+and time series generation.
+3.1 Deep Learning
+Applications of Deep Learning in ﬁnancial engineering are numerous. Deep Learning is
+generally used for estimating or predicting ﬁnancial data, such as p rice trends for ﬁnancial
+products. In this subsection, we are considering a group of neura l networks that are Recur-
+rent Neural Networks (RNNs) and their applications, and the notio n of transfer learning.
+3.1.1 Recurrent Neural Networks (RNNs)
+RNNs are a class of neural networks that allow previous outputs to be used as inputs
+while having hidden states. RNNs are used for sequences of data, w hich can correspond, for
+example, to a sequence of temporal or textual data. They aim to le arn a sequential scheme
+of the data provided as the input of the network, the output of ea ch cell depending on the
+output of the previous cells.
+In ﬁnancial engineering, RNNs are commonly used for stock price pr ediction or asset
+pricing [14]. Other applications include predictions of cash ﬂows or con sumer default [15],
+but also more original applications as part of the analysis of alternat ive data, with, for ex-
+ample, the study of textual data or the study of the evolution of s atellite images to acquire
+information on the health of a company.
+3.1.2 Transfer Learning
+Transfer learning focuses on storing the knowledge gained by solvin g a problem and
+applying it to a diﬀerent but related problem [16]. Transfer learning is generally studied
+in the Deep Learning framework. It aims to train a neural network o n a huge dataset to
+have the neural network learning successfully the requested tas k, and then ﬁne-tuning the
+training of this neural network on the few data of the new task we w ant our neural network
+to perform, this new task having generally few training data to train a model on [17].
+6A very recent paper applied this concept to the transfer of syste matic trading strategies
+[18]. The idea proposed in this paper is to build a neural network archit ecture – called
+QuantNet – based on two layers speciﬁc to the market, and anothe r layer which is market-
+agnostic between these two market-speciﬁc layers. Transfer lea rning is then carried out with
+the market-agnostic layer. The authors of the paper claim an impro vement of the sharpe
+ratio of 15% across 3103 assets in 58 equity markets across the wo rld, in comparison with
+trading strategies not based on transfer learning [18].
+3.2 Reinforcement Learning (RL)
+RL is one of the three kinds of Machine Learning (along with supervise d and unsuper-
+vised learning) and consists of training an agent to take actions bas ed on an observed state
+and the rewards obtained by performing an action for a given state . By deﬁnition of RL, we
+can see algorithmic trading as an RL problem where a trading agent aim s to maximize its
+proﬁt from buying or selling actions taken in a market.
+In this subsection, we ﬁrst describe the challenges of using RL in algo rithmic trading. We
+then discuss the framework of Multi-Agent Reinforcement Learnin g (MARL) where many
+trading agents compete. Finally, we explain the importance of develo ping a realistic sim-
+ulationenvironment for thetraining oftrading agents andtherece nt work doneonthis topic.
+3.2.1 Single-Agent Reinforcement Learning
+One of the ﬁrst papers on RL for optimal execution was released in 2 006 [19], showing
+a signiﬁcant improvement over the methods used for optimal execu tion, with results ”based
+on 1.5 years of millisecond time-scale limit order data from NASDAQ” [19].
+The state of an RL algorithm can have as many features as we want, however, we can
+easily imagine that too many features would cause the curse of dimen sionality issue and
+features of such an RL algorithm for algorithmic trading should be ch osen appropriately.
+Some common features used in an RL optimal execution problem are, among others, time
+remaining, the number of shares remaining, spread, volume imbalanc e, and current price.
+The development of high-frequency trading has even made it neces sary to develop RL
+algorithms to act quickly and optimally on the market. In recent work , the most commonly
+used RL algorithms for optimal execution are usually Q-Learning algo rithms. Two papers
+published in2018useQ-Learning inthecase oftemporal-diﬀerence R L[20] andrisk-sensitive
+RL [21].
+Another paper released in 2018 presents the use of Double Deep Q- Learning for optimal
+execution [22]. While Deep Q-Learning uses a neural network to appr oximate the Q-value
+7function [23], Double Deep Q-Learning uses two neural networks to avoid overestimation
+that can happen when we use only one neural network [24].
+3.2.2 Multi-Agent Reinforcement Learning (MARL)
+All previously mentioned papers are studying the optimal execution problem as a single-
+agent RL problem, i.e., only one agent is trained on the market data an d there are no other
+competing agents. Such anapproach is not representative of the reality ofthe high-frequency
+trading market, where not only do millions of agents train on the mark et and compete, but
+each agent is likely to adapt its strategy to the strategy of other a gents. MARL is intended
+to address this issue by having multiple agents at the same time – who m ay or may not train
+– to better capture the reality of ﬁnancial markets.
+The use of MARL for market making has been addressed in a recent p aper showing ”the
+reinforcement learning agent is able to learn about its comp etitor’s pricing policy” [25]. An-
+other recent paper discusses further the need for a MARL frame work for the evaluation of
+trading strategies [26].
+Especially, the latter reminds us that we can assess a trading strat egy through two major
+methods, which are Market Replay and Interactive Agent-Based S imulation (IABS) [26].
+Whereas in Market Replay, the simulation does not respond implement ing the RL strategy,
+IABS aims to simulate responses of the market or of other agents, although an IABS simu-
+lation may remain not realistic with respect to real ﬁnancial market c onditions.
+3.2.3 On the importance of a realistic simulation environme nt
+AfterhavingstatedtheneedforaMARLsimulationforthetrainingo fRLtradingagents,
+one of the key issues is to build a simulation close to the reality of the hig h-frequency trading
+market.
+TheAgent-BasedInteractive DiscreteEvent Simulation(ABIDES) environment [27]aims
+to be such a realistic ﬁnancial environment, by considering the ”market physics” of the real
+high-frequency trading world, including a nanosecond resolution, a gent computation delays
+or communication between agents through standardized message protocols [27]. ABIDES
+also enables MARL between thousands of agents interacting throu gh an exchange agent.
+Arecent paperstudiestherealismoftheABIDESenvironment thro ughtheuseofstylized
+facts on limit order books [28]. After a review of most of the stylized facts known for limit
+order books, this paper shows that the two multi-agent simulations ran into ABIDES veriﬁes
+most of thetested stylized facts. However, the paper acknowled ges that further improvement
+is needed to have all the stylized facts veriﬁed.
+83.3 Generative Adversarial Networks (GANs)
+GANs have been introduced in the Goodfellow et al. paper [29]. The main idea of GANs
+is to train simultaneously two models, the ﬁrst being called a generativ e model and which
+needs to reproduce the distribution of the data to generate, and the second being called a
+discriminative model and which needs to test whether a sample comes from the training data
+or the data created by the generative model.
+This training process is usually presented as a two-player minimax gam e of a value
+function V(G,D) which is:
+min
+Gmax
+DV(D,G) =Ex∼pdata(x)[logD(x)]+Ez∼pz(z)[log1−D(G(z))]
+A recent paper presents the use of GANs for the generation of ﬁn ancial time series, with
+an architecture called Quant GANs [30]. The key idea and innovation of this paper is the
+use of Temporal Convolutional Networks (TCNs) for the generat or and the discriminator,
+in order to ”capture long-range dependencies such as the presence of vo latility clusters” [30].
+The authors of the paper have been able to generate successfully ﬁnancial time series with
+similar behavior than S&P 500 stock prices.
+Ideally, ﬁnancial data generated through GANs could be used by RL agents such as de-
+scribed in the previous section to improve the performance of the a gents. Other applications
+of GANs for the generation of ﬁnancial data are credit card fraud [31], credit scoring [32] or
+deep hedging [33].
+4 Conclusion
+Optimal execution is probably the most known problem in algorithmic tr ading. In this
+paper, we reminded the framework of the optimal execution proble m in Bertsimas and Lo
+[1], andin Almgren and Chriss [2]. We also mentioned the problem of optim al placement and
+discussed the distinct types of price impact, which are permanent, temporary, and transient
+price impact. We then described recent progress in algorithmic trad ing through the use of
+Machine Learning. Whereas the use of Deep Learning for stock pre diction has already been
+widely explored, there is room for improvement for the use of Reinfo rcement Learning for
+algorithmic trading, and even more for the use of Generative Adver sarial Networks.
+9References
+[1] Dimitris Bertsimas and Andrew W Lo. Optimal control of execution costs.Journal of
+Financial Markets , 1(1):1–50, 1998.
+[2] Robert Almgren and Neil Chriss. Optimal execution of portfolio tr ansactions. Journal
+of Risk, 3:5–40, 2001.
+[3] Damiano Brigo, Cl´ ement Piat, et al. Static versus adapted optim al execution strategies
+in two benchmark trading models. World Scientiﬁc Book Chapters , pages 239–273,
+2018.
+[4] Julien Vaes and Raphael Hauser. Optimal execution strategy un der price and volume
+uncertainty. arXiv preprint arXiv:1810.11454 , 2018.
+[5] Xin Guo, Adrien De Larrard, and Zhao Ruan. Optimal placement in a limit order book:
+an analytical approach. Mathematics and Financial Economics , 11(2):189–213, 2017.
+[6] JimGatheralandAlexanderSchied. Dynamicalmodelsofmarketim pactandalgorithms
+for order execution. HANDBOOK ON SYSTEMIC RISK, Jean-Pierre Fouque, Joseph
+A. Langsam, eds , pages 579–599, 2013.
+[7] Robert Almgren, Chee Thum, Emmanuel Hauptmann, and Hong Li. Direct estimation
+of equity market impact. Risk, 18(7):58–62, 2005.
+[8] Olivier Gu´ eant. Permanent market impact can be nonlinear. arXiv preprint
+arXiv:1305.0413 , 2013.
+[9] Weston Barger and Matthew Lorig. Optimal liquidation under stoc hastic price impact.
+International Journal of Theoretical and Applied Finance , 22(02):1850059, 2019.
+[10] Gur Huberman and Werner Stanzl. Price manipulation and quasi-a rbitrage. Economet-
+rica, 72(4):1247–1275, 2004.
+[11] Anna A Obizhaeva and Jiang Wang. Optimal trading strategy and supply/demand
+dynamics. Journal of Financial Markets , 16(1):1–32, 2013.
+[12] Xavier Brokmann, Emmanuel Serie, Julien Kockelkoren, andJ-P Bouchaud. Slow decay
+of impact in equity markets. Market Microstructure and Liquidity , 1(02):1550007, 2015.
+[13] Ying Chen, Ulrich Horst, and Hoang Hai Tran. Portfolio liquidation under transient
+price impact–theoretical solution and implementation with 100 nasda q stocks. Available
+at SSRN 3504133 , 2019.
+[14] Luyang Chen, Markus Pelger, and Jason Zhu. Deep learning in as set pricing. Available
+at SSRN 3350138 , 2019.
+10[15] Stefania Albanesi and Domonkos F Vamossy. Predicting consum er default: A deep
+learning approach. Technical report, National Bureau of Econom ic Research, 2019.
+[16] Fuzhen Zhuang, Zhiyuan Qi, Keyu Duan, Dongbo Xi, Yongchun Zh u, Hengshu Zhu,
+Hui Xiong, and Qing He. A comprehensive survey on transfer learnin g, 2019.
+[17] Chuanqi Tan, Fuchun Sun, Tao Kong, Wenchang Zhang, Chao Y ang, and Chunfang
+Liu. A survey on deep transfer learning, 2018.
+[18] Adriano Koshiyama, Sebastian Flennerhag, Stefano B Blumberg , Nick Firoozye, and
+Philip Treleaven. Quantnet: Transferring learning across systema tic trading strategies.
+arXiv preprint arXiv:2004.03445 , 2020.
+[19] Yuriy Nevmyvaka, Yi Feng, and Michael Kearns. Reinforcemen t learning for optimized
+trade execution. In Proceedings of the 23rd international conference on Machin e learn-
+ing, pages 673–680, 2006.
+[20] Thomas Spooner, John Fearnley, Rahul Savani, and Andreas K oukorinis. Market mak-
+ing via reinforcement learning, 2018.
+[21] Svitlana Vyetrenko and Shaojie Xu. Risk-sensitive compact dec ision trees for au-
+tonomous execution in presence of simulated market response, 20 19.
+[22] Brian Ning, Franco Ho Ting Ling, and Sebastian Jaimungal. Double d eep q-learning
+for optimal execution. arXiv preprint arXiv:1812.06600 , 2018.
+[23] Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Alex Graves, I oannis Antonoglou,
+Daan Wierstra, and Martin Riedmiller. Playing atari with deep reinforc ement learning.
+arXiv preprint arXiv:1312.5602 , 2013.
+[24] Hado van Hasselt, Arthur Guez, and David Silver. Deep reinforc ement learning with
+double q-learning, 2015.
+[25] SumitraGanesh, NelsonVadori, MengdaXu, HuaZheng, Prasha ntReddy, andManuela
+Veloso. Reinforcement learning for market making in a multi-agent de aler market, 2019.
+[26] Tucker Hybinette Balch, Mahmoud Mahfouz, Joshua Lockhart , Maria Hybinette, and
+David Byrd. How to evaluate trading strategies: Single agent marke t replay or multiple
+agent interactive simulation? arXiv preprint arXiv:1906.12010 , 2019.
+[27] David Byrd, Maria Hybinette, and Tucker Hybinette Balch. Abide s: Towards high-
+ﬁdelity market simulation for ai research. arXiv preprint arXiv:1904.12066 , 2019.
+[28] Svitlana Vyetrenko, David Byrd, Nick Petosa, Mahmoud Mahfou z, Danial Dervovic,
+Manuela Veloso, and Tucker Hybinette Balch. Get real: Realism metric s for robust
+limit order book market simulations, 2019.
+11[29] IanGoodfellow,JeanPouget-Abadie, MehdiMirza, BingXu, Dav idWarde-Farley, Sher-
+jil Ozair, AaronCourville, andYoshua Bengio. Generative adversar ial nets. In Advances
+in neural information processing systems , pages 2672–2680, 2014.
+[30] Magnus Wiese, Robert Knobloch, Ralf Korn, and Peter Kretsch mer. Quant gans: deep
+generation of ﬁnancial time series. Quantitative Finance , pages 1–22, 2020.
+[31] Dmitry Eﬁmov, Di Xu, Luyang Kong, Alexey Nefedov, and Archa na Anandakrishnan.
+Using generative adversarial networks to synthesize artiﬁcial ﬁn ancial datasets. arXiv
+preprint arXiv:2002.02271 , 2020.
+[32] Rogelio A Mancisidor, Michael Kampﬀmeyer, Kjersti Aas, and Ro bert Jenssen. Deep
+generative models for reject inference in credit scoring. Knowledge-Based Systems , page
+105758, 2020.
+[33] Magnus Wiese, Lianjun Bai, Ben Wood, and Hans Buehler. Deep he dging: learning to
+simulate equity option markets. Available at SSRN 3470756 , 2019.
+12

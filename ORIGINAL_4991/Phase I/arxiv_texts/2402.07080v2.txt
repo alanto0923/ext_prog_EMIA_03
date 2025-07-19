@@ -1,0 +1,964 @@
+RiskMiner: Discovering Formulaic Alphas via Risk Seeking Monte
+Carlo Tree Search
+Tao Ren
+Wuhan Institute of Artificial
+Intelligence, Guanghua School of
+Management, Peking University
+Xiangjiang Laboratory
+China
+rtkenny@stu.pku.edu.cnRuihan Zhou
+Wuhan Institute of Artificial
+Intelligence, Guanghua School of
+Management, Peking University
+Xiangjiang Laboratory
+China
+rhzhou@stu.pku.edu.cnJinyang Jiang
+Wuhan Institute of Artificial
+Intelligence, Guanghua School of
+Management, Peking University
+Xiangjiang Laboratory
+China
+jinyang.jiang@stu.pku.edu.cn
+Jiafeng Liang
+Harbin Institute of Technology
+Harbin, China
+jfliang@ir.hit.edu.cnQinghao Wang
+Peking University
+Beijing, China
+qinghw@pku.edu.cnYijie Peng∗
+Wuhan Institute of Artificial
+Intelligence, Guanghua School of
+Management, Peking University
+Xiangjiang Laboratory
+China
+pengyijie@pku.edu.cn
+ABSTRACT
+The formulaic alphas are mathematical formulas that transform
+raw stock data into indicated signals. In the industry, a collection
+of formulaic alphas is combined to enhance modeling accuracy.
+Existing alpha mining only employs the neural network agent,
+unable to utilize the structural information of the solution space.
+Moreover, they didn’t consider the correlation between alphas in
+the collection, which limits the synergistic performance. To address
+these problems, we propose a novel alpha mining framework, which
+formulates the alpha mining problems as a reward-dense Markov
+Decision Process (MDP) and solves the MDP by the risk-seeking
+Monte Carlo Tree Search (MCTS). The MCTS-based agent fully
+exploits the structural information of discrete solution space and the
+risk-seeking policy explicitly optimizes the best-case performance
+rather than average outcomes. Comprehensive experiments are
+conducted to demonstrate the efficiency of our framework. Our
+method outperforms all state-of-the-art benchmarks on two real-
+world stock sets under various metrics. Backtest experiments show
+that our alphas achieve the most profitable results under a realistic
+trading setting.
+CCS CONCEPTS
+•Computing methodologies →Reinforcement learning ;Search
+methodologies ;•Applied computing →Economics .
+∗Corresponding authors.
+Permission to make digital or hard copies of all or part of this work for personal or
+classroom use is granted without fee provided that copies are not made or distributed
+for profit or commercial advantage and that copies bear this notice and the full citation
+on the first page. Copyrights for components of this work owned by others than the
+author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or
+republish, to post on servers or to redistribute to lists, requires prior specific permission
+and/or a fee. Request permissions from permissions@acm.org.
+arxiv, ,
+©2024 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+ACM ISBN 978-1-4503-XXXX-X/18/06. . . $15.00
+https://doi.org/XXXXXXX.XXXXXXXKEYWORDS
+Computational Finance, Stock Trend Forecasting, Reinforcement
+Learning, Search Algorithm
+ACM Reference Format:
+Tao Ren, Ruihan Zhou, Jinyang Jiang, Jiafeng Liang, Qinghao Wang, and Yi-
+jie Peng. 2024. RiskMiner: Discovering Formulaic Alphas via Risk Seeking
+Monte Carlo Tree Search. In Proceedings of (arxiv). ACM, New York, NY,
+USA, 11 pages. https://doi.org/XXXXXXX.XXXXXXX
+1 INTRODUCTION
+Alpha factors or alphas transform raw stock data into indicated
+signals for future stock trends. There are two types of alphas: for-
+mulaic alphas[ 3,11,12,27,30] and machine-learning alphas[ 5,10,
+22,23,29,31]. The formulaic alphas[ 20], expressed by mathemat-
+ical formulas, perform feature engineering on the price/volume
+data. The formulaic alphas can be used either as trading signals
+or as input for complex machine-learning forecasting models. The
+machine learning alphas refer to machine learning models designed
+to produce trading signals[ 6]. Even though they usually are more
+predictive than formulaic alphas, the black-box nature renders the
+lack of interpretability.
+Recently, researchers have designed various frameworks [ 3,11,
+12,27,30] to generate the formulaic alpha automatically. Most of
+the alpha generation methods are based on genetic programming
+(GP) [ 3,11,12,30]. By performing bionic operations on the ex-
+pression tree, new alphas are generated based on existing alphas.
+Alphagen[ 27] uses Reinforcement Learning (RL) to generate alphas
+synergistically. They formulate the mining pipeline as a Markov
+decision process (MDP) and use proximal policy optimization (PPO)
+[18] to solve it. Even though they have achieved better performance
+than GP, their mining pipeline still has many limitations. First, the
+reward-sparse nature of the MDP makes the learning process highly
+non-stationary, as it provides limited feedback for the search pro-
+cess. Second, similar to chess games, the discrete solution space
+for the formulas is huge and PPO is not the optimal method toarXiv:2402.07080v2  [q-fin.CP]  29 Feb 2024arxiv, ,
+Tao Ren, Ruihan Zhou, Jinyang Jiang, Jiafeng Liang, Qinghao Wang, and Yijie Peng
+BEG
+$close
+10
+StdSelection and Expand Rollout and Backpropagation
+………Alpha evaluatorTrajectories
+Tree policy and rollout policy
+RewardBEG
+$close
+10
+Std
+END$open
+AddTrain
+Replay Buffer
+Risk seeking 
+policy
+Categorical distribution
+…BEG 10 Std $close
+BEG 10 Std $closeoptimize
+Tokens
+Figure 1: Algorithm framework diagram. The alpha evaluator provides reward signals for the reward-dense MDP. On the left
+side, the MCTS serves as a sampler to sample trajectories from the MDP. On the right side, a risk-seeking policy is trained and
+the policy will be used as the tree policy and rollout policy in the MCTS.
+explore such a solution space. Third, the alphagen only considers
+the average performance when mining alpha whereas the best-case
+performance should be the focus when mining alpha factors. To
+overcome these challenges, we introduce RiskMiner, a novel alpha
+mining framework addressing all the limitations.
+Figure 1 illustrates the main idea of our framework. The MCTS
+serves as a sampler providing training data for risk-seeking policy
+optimization. Meanwhile, the trained risk-seeking policy network
+will be used in the MCTS search cycle. The two modules operate
+alternately as an alpha mining agent.
+To solve the first limitation, our approach involves a reward-
+dense MDP, which is structured with both intermediate and ter-
+minal rewards, thereby providing more frequent and informative
+feedback throughout the learning process. The mining agent can
+discover "excellent and different" synergistic alphas from solving
+the reward-dense MDP.
+To solve the second limitation, we employ Monte Carlo Tree
+Search (MCTS), which is a potent tool for solving discrete sequen-
+tial decision-making problems, records the explored solution space
+through its tree-like structure, and searches unexplored areas based
+on specific policies. MCTS plays a pivotal role in the champion-
+defeating algorithm, e.g. AlphaZero[ 19] and MuZero[ 16]. The suc-
+cess in playing Go and other board games has demonstrated the
+potential of MCTS for solving discrete planning problems in other
+fields. Since then, there has been a series of research applying the
+MCTS framework to solve other real-world problems including
+discovering faster sorting algorithms[ 14] and matrix multiplication
+algorithms [ 7]. While the MCTS has been successfully applied in
+various domains, to our best knowledge, this is its first application
+in discovering alphas in quantitative finance.
+Unlike other reinforcement learning tasks where mean or worst-
+case performance is typically prioritized (such as game playing[ 17],
+robotic control[ 2], and portfolio management[ 13]), alpha mining
+should focus on best-case performance. The intuitive explanationfor this is that bumping into bad formulas won’t hurt whereas dis-
+covering a good formula will significantly boost the overall perfor-
+mance. After sampling trajectories from the MCTS, we employ a
+risk-seeking policy optimization method to optimize the best-case
+performance, addressing the third limitation.
+We evaluate our framework on real-world stock data from two
+stock sets: constituent stocks from CSI300 and CSI500. We compare
+our framework with a couple of baselines under various evaluation
+metrics. Our method outperforms all the benchmarks in every
+metric. We also conduct an investment simulation study under
+a realistic trading setting. Employing a simple and widely used
+trading strategy, our methods achieve the most profitable outcomes
+among all compared methods. In the end, we design an ablation
+study to investigate the contribution of each component.
+The contributions of our work can be summarized as follows:
+•We design a new reward-dense MDP to stabilize the syner-
+gistic alpha mining process.
+•We propose RiskMiner, a novel alpha mining framework that
+combines MCTS and risk-seeking policy, to efficiently search
+the solution space.
+•We conduct the experiments on signal-based metrics and
+investment simulation on the real-world data. An ablation
+study is also included. The results verified our RiskMiner
+framework’s superiority and validity.
+2 RELATED WORK
+Formulaic alphas. The expression space for formulaic alphas
+is extremely large, owing to the myriad of operands and opera-
+tors involved in their construction. GP has been the mainstream
+method for discovering formulas. [ 12] and [ 11] modify the gplearn
+library by incorporating non-linear and time-series operators, al-
+lowing for a more nuanced exploration of the alpha expressionRiskMiner: Discovering Formulaic Alphas via Risk Seeking Monte Carlo Tree Searcharxiv, ,
+space. Autoalpha[ 30] enhances GP by integrating Principal Compo-
+nent Analysis (PCA), which aids in steering the search away from
+already explored solution spaces. Alphaevolve [ 3] includes vector
+and matrix operator in their evolutionary framework to further
+enhance the predictive ability of the alphas. However, complicated
+vectors and matrix operations lead to reduced interpretability. Al-
+phagen [ 27] formulates the mining pipeline as an MDP and uses
+PPO to solve it. Even though Alphagen has surpassed previous
+evolving-based methods, its deficiency is obvious. Due to the sparse
+reward characteristic, the MDP is highly non-stationary thereby
+making the learning process difficult. Meanwhile, the PPO agent,
+with only the neural-network-based agent, doesn’t efficiently ex-
+ploit the structural information of the search space.
+Stock trend forecasting. Using end-to-end machine-learning
+models to forecast stock trends has attracted enormous attention
+from researchers. The vanilla idea is to use time-series models[ 21]
+to predict future trends. [ 5] employs the transformer to forecast
+future stock trends. [ 22] applies orthogonal regularization tricks
+to make multi-head attention more efficient in extracting hierar-
+chical information from stock data. Inspired by signal processing
+theory, [ 29] proposes a DFT-like forecasting method to capture
+the latent trading pattern underlying the fluctuation of stock price.
+Researchers also attempt to use diffusion models to model the dis-
+tribution of stock returns. [ 10] combines the diffusion model and
+variational autoencoder to regress future returns. The machine-
+learning methods usually have strong forecasting abilities but they
+require high-quality features constructed by formulaic alphas.
+Since real-world events are also correlated with stock price move-
+ment, forecasting methods that utilize textual inputs, like news
+articles[ 4,8], are gaining attention. [ 25] develops a news-driven
+trading algorithm, which can detect abrupt jumps caused by spot-
+light news. The burgeoning field of Large Language Models (LLMs)
+presents new research frontiers, with emerging research[ 24,28]
+exploring their potential to provide financial insights.
+3 PROBLEM FORMULATION
+3.1 Formulaic Alpha
+Formulaic alpha is defined as a mathematical expression 𝑓(·). The
+formula transforms the original price data 𝑋𝑡of stocks and other
+relevant financial and market data into alpha values 𝑧𝑡=𝑓(𝑋𝑡)∈
+R𝑛, in which𝑛is the number of stocks. We use the term alpha to
+refer to the formula and the calculation results. Good alpha should
+have a significant correlation between the current alpha values and
+the subsequent stock returns. The Information Coefficient (IC) is
+a popular metric in the industry for evaluating alphas. The IC is
+the Pearson correlation between the alpha value 𝑧𝑡and the future
+stock returns 𝑟𝑡+1, expressed by the formula
+IC=Cov(𝑧𝑡,𝑟𝑡+1)
+𝜎𝑧𝑡𝜎𝑟𝑡+1, (1)
+in which Cov is the covariance and 𝜎is the standard deviation.
+When the alpha value and the returns are ranked by their mag-
+nitude, the resulting IC is referred to as RankIC. The purpose of
+this approach is to mitigate the impact of extreme values and to
+emphasize the relative order of the predicted stocks. For instance,
+an original series of alpha values such as (0.1, 0.2, 0.3) becomes (1,2, 3) after ranking, which is then used to calculate the RankIC:
+RankIC =Cov(rank(𝑧𝑡),rank(𝑟𝑡+1))
+𝜎rank(𝑧𝑡)𝜎rank(𝑟𝑡+1). (2)
+The range of IC values extends from -1 to 1, with values closer
+to 1 or -1 indicating a stronger predictive capability of the alpha.
+The goal of alpha mining is to discover alpha expressions with
+strong predictive ability, reflected in higher IC and RankIC values.
+Additionally, the similarity between two alphas can be assessed
+by calculating the Pearson correlation coefficient between them,
+known as the Mutual Information Coefficient (mutIC), which is
+used to evaluate the similarity between two alphas in predicting
+the same target:
+mutIC =Cov(𝑧𝑡,𝑧∗
+𝑡)
+𝜎𝑧𝑡𝜎𝑧∗
+𝑡. (3)
+3.2 Mining Combinational Alpha
+It is a common practice to use an alpha synthesis model to generate a
+composite alpha value from a group of alphas. The composite alpha
+can better guide the construction of the investment portfolio. Let
+F={𝑓1,𝑓2,...,𝑓 𝑘}be a set containing 𝑘alphas. the alpha synthesis
+model,𝑐(·|F,𝜔), integrates the information of each alpha. Given
+the model parameters, 𝜔, the composite alpha value 𝑧𝑡=𝑐(𝑋𝑡|F,𝜔)
+can be computed.
+The composite alpha, integrating diverse information from mul-
+tiple alphas, provides a comprehensive perspective of the market
+and often has strong predictive capabilities. In the alpha mining
+procedure, the objective is to identify not only alphas with high IC
+but also those that can further enhance the composite alpha’s IC
+when combined with other alphas, achieving synergistic effects.
+Discovering an ideal set of alphas is a highly challenging task.
+An ideal alpha combination should meet the following criteria: the
+alphas in the set should have high individual IC, meanwhile main-
+taining mutIC as low as possible with other alphas. High mutIC
+between alphas indicates market information overlaps. The redun-
+dancy within the alpha pool leads to limited improvement in the
+composite alpha’s performance. Therefore, finding a combination
+of "excellent and unique" alphas is essential in alpha mining.
+3.3 Reverse Polish Notation
+In our approach, we represent alphas using Reverse Polish Notation
+(RPN), setting up the stage for the subsequent design of an MDP.
+Reverse Polish Notation is derived from the post-order traversal of
+an expression binary tree. With operands as leaf nodes and opera-
+tors as non-leaf nodes, the expression binary tree unambiguously
+represents the expression of an alpha. The RPN models the formula
+as a sequence of tokens. Figure 2 provides an example of the RPN.
+4 METHODOLOGY
+To mine the "excellent and different" alpha set, we first formulate a
+reward-dense MDP that enables the search algorithm to efficiently
+learn the characteristics of the expression space. Then we propose
+a novel risk-seeking MCTS to explore the expression space. To be
+specific, MCTS and risk-seeking policy optimization are executed
+alternately to mining alphas.arxiv, ,
+Tao Ren, Ruihan Zhou, Jinyang Jiang, Jiafeng Liang, Qinghao Wang, and Yijie Peng
+Add(Std($close, 10), $open)
+$close 10Add
+$open Std
+Post-order traverse
+BEG 10 Std $close Add END $open
+Figure 2: Reverse Polish Notation(RPN).
+4.1 Alpha Pool
+We typically utilize an alpha pool to synthesize a group of alphas.
+An ideal alpha pool should be a structurally simple and efficient
+machine learning model, which can be either a linear model or a
+tree model. Given the efficacy, interpretability, and simplicity, we
+opt for using a linear model for alpha synthesis.
+Given the alpha pool model 𝑐(·|F,𝜔), we calculate the com-
+posite alpha 𝑧𝑡=𝑐(𝑋𝑡|F,𝜔)through a weighted synthesis ap-
+proach. Assuming there are 𝑘alphas in the pool, the model pa-
+rameters𝜔=(𝜔1,𝜔2,...,𝜔 𝑘)represent the weight coefficients
+for each alpha. The absolute values of the elements in the weight
+vector reflect the importance of the corresponding alpha. 𝑓(𝑋𝑡)=
+(𝑓1(𝑋𝑡),𝑓2(𝑋𝑡),...,𝑓 𝑘(𝑋𝑡))is the current value of the 𝑘alphas, and
+𝑧𝑡=𝜔·𝑓(𝑋𝑡)represents the value of the composite alpha.
+During the model training process, we employ Mean Squared
+Error (MSE) as the loss function to measure the gap between the
+synthesized alpha and the future stock returns:
+L(𝜔)=1
+𝑛𝑇𝑇∑︁
+𝑡=1||𝑧𝑡−𝑟𝑡+1||2. (4)
+By using gradient descent to minimize the loss, we obtain the op-
+timal weight 𝜔for the current alpha set F. The pool size 𝐾is
+predefined. The new alpha will be added to the pool incrementally.
+When a new alpha is added to the pool, gradient descent is per-
+formed to get the updated weight of the 𝑘+1alphas. If the number
+of alphas has reached the threshold 𝐾, the least principal alpha,
+whose absolute weight value is the smallest, is removed from the
+pool. The pseudocode for maintaining the alpha pool is shown in
+Algorithm 1.
+4.2 Reward-Dense MDP
+We construct a reward-dense MDP for the alpha mining problem.
+By solving this MDP, the algorithm can identify alphas exhibiting
+high IC performance.
+Key Concept in the MDP — Token: A Token is the fundamental
+building block in this MDP, representing an abstraction of operands
+and operators. Within this framework, the state of the MDP, 𝑠𝑡, is
+defined as the current sequence of selected Tokens, while the action,
+𝑎𝑡, is to select the next Token. The transition is deterministic. Each
+decision sequence (episode) starts with a specific beginning Token
+(BEG) and concludes upon selecting the ending Token (END).
+Design of Intermediate State Rewards: Intermediate rewards are
+set for states that have not reached the end state (i.e., have notselected the END Token). If the current Token sequence forms a
+valid RPN expression, we can compute the IC value of the alpha
+formed by this Token sequence. Furthermore, if the alpha pool is
+non-empty, we calculate the mutIC between this Token sequence
+and each alpha in the alpha pool. The intermediate reward signal
+is derived from these calculations:
+Reward inter=IC−𝜆1
+𝑘𝑘∑︁
+𝑖=1mutIC 𝑖, (5)
+where𝑘is the number of existing alphas in the pool, mutIC 𝑖denotes
+the mutual IC value between the current alpha and the 𝑖-th alpha
+in the pool, and 𝜆is a hyperparameter in the MDP, set to 0.1 in this
+study.
+………Stock data Alpha poolIntermediate Reward (single IC -mutual IC)
+Episode reward (pool IC)Alpha evaluator
+BEG 10 Std $close Add END $openBEG 10 Std $close
+Figure 3: Reward-Dense MDP. The intermediate reward is
+designed for the legal but not complete expression. When
+the episode is terminated, an episode reward is assigned.
+Episode Termination and Reward Allocation: The selection of
+the END Token signifies the end of an episode. At this point, the
+corresponding alpha is added to the alpha pool, and a specific
+algorithm (Algorithm 1) is executed to obtain the current composite
+alpha value. Ultimately, the IC value of the composite alpha serves
+as the overall reward Reward endfor that episode. The maximum
+length of the episode is 30.
+4.3 Risk-based Monte Carlo Tree Search
+To effectively search the expression space, we design a special
+MCTS, aimed at efficiently exploring the vast and discrete alpha
+solution space composed of RPN expressions. Figure 4 shows a
+single cycle of MCTS. A single search cycle in MCTS consists of
+four phases: Selection, Expansion, Rollout, and Backpropagation. In
+the Selection phase, the Tree Policy is a crucial mechanism guiding
+the search process from the root to the leaf node, determining which
+leaf node is worthy of further exploration. The Rollout phase aims
+to assess the value of the current leaf node by the Rollout Policy.
+The efficacy of the Tree Policy and Rollout Policy directly impact
+the quality of the search.
+To enhance the efficiency of searching the expression space,
+this study trains a policy network via a novel risk-seeking policy
+gradient method. The policy generated by the network is used as both
+the Tree Policy and Rollout Policy to assist in the selection and rollout
+processes. The training method of this network will be detailed in
+Section 4.4.
+Each edge(𝑠,𝑎)in the Monte Carlo tree contains the following
+information:{𝑁(𝑠,𝑎),𝑃(𝑠,𝑎),𝑄(𝑠,𝑎),𝑅(𝑠,𝑎)}, where𝑁(𝑠,𝑎)is the
+number of visits to the edge, 𝑃(𝑠,𝑎)is the prior probability of the
+edge as given by the risk policy network, and 𝑄(𝑠,𝑎)is the value
+of the edge.RiskMiner: Discovering Formulaic Alphas via Risk Seeking Monte Carlo Tree Searcharxiv, ,
+Selection Rollout
+Update 
+parametersExpand Backpropagation
+BEG
+$close
+10
+Std Risk seeking 
+policy
+arg max
+1ri kb
+saN
+a Q P
+N=+
++BEG
+$close
+10
+Std
+11; { ( | )}l
+i i ias−= =p
+END$open
+$AddBEG
+$close
+10
+Std
+END$open
+$AddBEG
+$close
+10
+Std
+Figure 4: Search Cycle of Monte Carlo Tree Search. Selection: start from the root and reach the leaf according to the Tree Policy.
+Expand: expand the leaf node and assign the initial value for the newly added edges. Rollout: reach the terminated state with
+the Rollout Policy. Backpropagation: update the value of the edge along the trajectory with the intermediate and terminated
+reward.
+Selection and Expansion: In the Monte Carlo Tree, nodes represent
+the tokens of the expression, and edges represent the action of
+selecting the next token from the current token sequence. The root
+node of the tree is the BEG Token, where the search begins. During
+the selection process, we employ the following PUCT formula to
+determine the next non-leaf node to select:
+𝑎𝑡=arg max𝑎𝑄(𝑠,𝑎)+𝑃(𝑠,𝑎)√︁Í
+𝑏𝑁(𝑠,𝑏)
+1+𝑁(𝑠,𝑎). (6)
+Upon reaching a leaf node that is not an endpoint (i.e., not the
+END Token), we invoke the risk policy network, 𝑝𝑙=𝜋𝑟𝑖𝑠𝑘(𝑠𝑙),
+and assign initial values to the newly expanded edges {𝑁(𝑠,𝑎)=
+0,𝑃(𝑠,𝑎)=𝑝𝑙,𝑄(𝑠,𝑎)=0,𝑅(𝑠,𝑎)=0}. Each time an intermediate
+node is selected, if the current token sequence is valid, then the
+reward of edge(𝑠,𝑎)is updated with 𝑅(𝑠,𝑎)=𝑟𝑡=Reward inter.
+Rollout and Backpropagation: After completing the selection and
+reaching a non-terminal leaf node, the rollout is performed. During
+the rollout, the next action is sampled from the probability given by
+the policy network until the END Token is met. The intermediate
+rewards Reward intergenerated during the rollout, along with the
+final reward Reward end, are summed to get the node value esti-
+mation𝑣𝑙. For non-leaf node 𝑘=𝑙,..., 0, we perform a 𝑙−𝑘step
+bootstrap and get the following cumulative rewards:
+𝐺𝑘=𝑙−1−𝑘∑︁
+𝑖=0𝛾𝑖𝑟𝑘+1+𝑖+𝑣𝑙, (7)
+where𝛾is set to 1 in this scenario because we encourage the explo-
+ration of long expressions. For 𝑘=𝑙,..., 1, we update the data on
+the edge(𝑠𝑘−1,𝑎𝑘):
+𝑄(𝑠𝑘−1,𝑎𝑘)=𝑁(𝑠𝑘−1,𝑎𝑘)×𝑄(𝑠𝑘−1,𝑎𝑘)+𝐺𝑘
+𝑁(𝑠𝑘−1,𝑎𝑘)+1, (8)
+𝑁(𝑠𝑘−1,𝑎𝑘)=𝑁(𝑠𝑘−1,𝑎𝑘)+1. (9)In one search loop of MCTS, the process from the BEG Token to
+the END Token constitutes a complete episode trajectory
+𝜏={𝑠0,𝑎1,𝑟1,𝑠1,...,𝑠 𝑇−1,𝑎𝑇,𝑟𝑇,𝑠𝑇}.
+Episodes generated during the search process are stored in the
+replay buffer. When the number of episodes in the buffer reaches a
+predetermined threshold, the search is stopped, and these data are
+used to train the risk policy network for subsequent search cycles.
+4.4 Risk-Seeking Policy Optimization
+Mainstream RL algorithms typically aim at maximizing the expecta-
+tion of cumulative rewards, which can be ineffective in optimizing
+the best-case performance of the policy. We design a novel policy-
+based RL algorithm to train a risk-seeking policy network that
+prioritizes identifying optimal alphas by focusing on best-case sce-
+narios. In standard planning and decision-making problems, tail
+risks (i.e., the worst-case performance of a policy) are often em-
+phasized, to minimize losses in the worst-case scenarios. However,
+in the context of alpha search, our focus shifts towards pursuing
+the best-case performance. We utilize quantile optimization, an
+effective mathematical tool for reshaping the distribution, to tailor
+our risk-seeking policy. The trained risk-seeking policy serves as the
+rollout and tree policy in the MCTS to optimize the best-case perfor-
+mance during the alpha search process. Through this approach, we
+can conduct more efficient searches across the expression space.
+In each episode, a trajectory 𝜏is generated by following the
+action selecting policy 𝜋(·|·;𝜃), which is represented by a neural
+network with parameter 𝜃. The corresponding cumulative reward is
+given by𝑅(𝜏)=Í𝑇−1
+𝑡=0𝛾𝑡𝑟𝑡, which follows a CDF 𝐹𝑅(·;𝜃). Classical
+policy-based RL aims to optimize the expectation objective 𝐽(𝜃)=
+E𝜏∼Π(·;𝜃)[𝑅(𝜏)]. However, our interest lies in the quantile of the
+cumulative reward, which can be defined as 𝑞(𝜃;𝛼)=𝐹−1
+𝑅(𝛼;𝜃)arxiv, ,
+Tao Ren, Ruihan Zhou, Jinyang Jiang, Jiafeng Liang, Qinghao Wang, and Yijie Peng
+when𝐹𝑅(·;𝜃)is continuous. We are concerned with the upper 𝛼-
+quantile of𝑅(𝜏), thus solving the optimization problem
+max
+𝜃∈Θ𝐽𝑟𝑖𝑠𝑘(𝜃;𝛼)=max
+𝜃∈Θ𝑞(𝜃; 1−𝛼), (10)
+where Θdenotes the parameter space. The policy optimization
+procedure under the quantile criterion can be implemented by two
+coupled recursions. We first need to estimate the quantile of the
+cumulative reward. The upper 𝛼-quantile is tracked by
+𝑞𝑖+1=𝑞𝑖+𝛽(1−𝛼−1{𝑅(𝜏𝑖)≤𝑞𝑖}), (11)
+which is a numerical approach for solving the root searching prob-
+lem𝐹𝑅(𝑞(1−𝛼;𝜃);𝜃)=1−𝛼. Then we can perform gradient ascent
+with the direction calculated by the following theorem.
+Theorem 4.1. The objective gradient ∇𝜃𝐽𝑟𝑖𝑠𝑘(𝛼;𝜃)has the same
+direction as 𝐸[𝐷(𝜏;𝜃,𝑞(𝛼;𝜃))], where
+𝐷(𝜏;𝜃,𝑟)=−1{𝑅(𝜏𝑖)≤𝑟}𝑇∑︁
+𝑡=1∇𝜃log𝜋(𝑎𝑡|𝑠𝑡;𝜃). (12)
+With Theorem 4.1, we can update the network parameters by
+𝜃𝑖+1=𝜃𝑖+𝛾𝐷(𝜏𝑖;𝜃𝑖,𝑞𝑖). (13)
+4.5 Training Pipeline
+The MCTS and the policy optimization are executed alternately
+to mine alphas. Trajectories sampled from the MCTS will be the
+training data for the risk-seeking policy network. The trained policy
+network will be used in the selection and rollout procedures in the
+MCTS. In other words, the MCTS serves as a sampler to interact
+with the environment; using the sample trajectories, the policy
+optimization works as a optimizer to train a risk-seeking policy
+for the MCTS sampler. The policy network is composed of a GRU
+feature extractor and a multilayer perceptron policy head. The
+pseudocode for the mining pipeline is shown in Algorithm 2.
+5 EXPERIMENT
+We design experiments to answer the following questions:
+•Q1:How does our proposed method performance compare
+with other state-of-the-art methods?
+•Q2:How do the synergistic alphas perform in a realistic
+trading scenario?
+•Q3:How do different components in our methods contribute
+to the overall performance?
+5.1 Experiment Setting
+5.1.1 Data. We evaluate our alpha mining pipeline on China’s
+A share market. Six features on stock price and volume are used
+in our experiments: open, high, low, close, volume, vwap(volume-
+weighted average price). We use the raw stock feature as input
+and mine alphas that have a good correlation with future returns.
+The returns are computed on the close price and we have two
+targets for the returns. One is the 5-day returns, the other is 10-
+day returns. The dataset contains 13 years of daily data and is
+split into a training set (2010/01/01 to 2019/12/31), a validation set
+(2020/01/01 to 2020/12/31), a test set (2021/01/01 to 2022/12/31).
+Two popular stock sets are used in the experiments: constituent
+stocks on CSI300 index and CSI500 index.5.1.2 Baselines. To demonstrate the superiority of our method, we
+compare it with a variety of benchmarks. First, we compare with
+methods about formulaic alphas.
+Formulaic alphas:
+•Alpha101 is a list of 101 formulaic alphas widely known
+by industrial practitioners. To ensure the fairness of the
+experiment, the 101 alphas are combined linearly to form a
+mega-alpha in the experiment.
+•Genetic Programming is a popular method of generating
+alpha by manipulating the structure of the expression tree.
+Most previous alphas generating methods are based on GP
+which generates one alpha at a time using IC as fitness mea-
+sures. We use implementation by gplearn in the experiment.
+Alphas generated by gplearn also are combined linearly to
+generate a mega-alpha.
+•Alphagen is a new framework for generating synergistic
+alphas by reinforcement learning. It is the current SOTA
+of generating formulaic alpha. We use the authors’ official
+implementation in our experiment.
+To better evaluate the effectiveness of our method, we also com-
+pare it with direct forecasting machine learning models imple-
+mented on qlib[ 26]. For each stock, the models look back 60 days
+with the 6 price/volume features to construct 360-dimension in-
+put data. The models are trained by regression on future returns
+and then give the predictive score. The hyperparameters of these
+end-to-end models are set according to the benchmarks on qlib.
+Neural network model:
+•MLP : a fully connected neural network of interconnected
+nodes that process input data.
+•GRU : Gated Recurrent Unit, a type of recurrent neural net-
+work architecture, is particularly effective for processing
+sequential data.
+Ensemble model:
+•XGBoost : a highly efficient and popular machine learning
+algorithm that uses a gradient boosting framework[1].
+•LightGBM : a fast, distributed, high-performance gradient
+boosting framework based on decision tree algorithms[9].
+•CatBoost : an open-source, gradient boosting toolkit opti-
+mized for categorical data and known for its robustness and
+efficiency[15].
+5.1.3 Evaluation Metrics. We use industry-wide accepted metrics
+to evaluate the performance of the algorithm.
+•IC: a statistical measure expressing the correlation between
+predicted score and actual stock returns.
+•ICIR : a performance metric that measures the consistency
+of the predictive ability over time by dividing the IC by its
+standard deviation.
+•RankIC : the correlation between the predicted ranks and
+the actual ranks of asset returns, offering a robust approach
+to evaluating forecasts that is less sensitive to outliers.
+5.2 Main Results
+To answer Q1, we conduct experiments on different methods in-
+cluding formulaic alphas generator(gplearn, alphagen) and directRiskMiner: Discovering Formulaic Alphas via Risk Seeking Monte Carlo Tree Searcharxiv, ,
+Table 1: Main results on CSI300 and CSI500. All experiments repeat 10 times. Values outside the parenthesis are the mean and
+values inside the parenthesis are the standard deviation. All the evaluation metrics are the higher the better.
+MethodCSI300 CSI500
+5 days 10 days 5 days 10 days
+IC ICIR RankIC IC ICIR RankIC IC ICIR RankIC IC ICIR RankIC
+MLP0.0273 0.1870 0.0396 0.0265 0.1772 0.0326 0.0259 0.1930 0.0389 0.0272 0.2042 0.0293
+(0.0042) (0.0207) (0.0052) (0.0071) (0.0258) (0.0088) (0.0021) (0.0147) (0.0039) (0.0020) (0.0160) (0.0031)
+GRU0.0383 0.2772 0.0584 0.0362 0.2883 0.0474 0.0378 0.2879 0.0576 0.0376 0.2987 0.0435
+(0.0031) (0.0187) (0.0031) (0.0049) (0.0150) (0.0076) (0.0017) (0.0316) (0.0027) (0.0036) (0.0117) (0.0042)
+XgBoost0.0394 0.2909 0.0448 0.0372 0.3102 0.0423 0.0417 0.3327 0.0439 0.0368 0.3576 0.0479
+(0.0027) (0.0219) (0.0034) (0.0038) (0.0280) (0.0054) (0.0036) (0.0408) (0.0052) (0.0050) (0.0481) (0.0067)
+LightGBM0.0403 0.4737 0.0499 0.0398 0.3342 0.0512 0.0392 0.3481 0.0409 0.0416 0.3765 0.0537
+(0.0085) (0.0190) (0.0067) (0.0052) (0.0318) (0.0060) (0.0041) (0.0270) (0.0042) (0.0032) (0.0353) (0.0044)
+CatBoost0.0378 0.3714 0.0467 0.0431 0.4380 0.0583 0.0427 0.4529 0.0492 0.0386 0.4237 0.0426
+(0.0060) (0.0306) (0.0062) (0.0067) (0.0230) (0.0078) (0.0039) (0.0523) (0.0068) (0.0056) (0.0464) (0.0057)
+alpha101 0.0094 0.1107 0.0114 0.0127 0.1703 0.0165 0.0135 0.1875 0.0176 0.0116 0.1697 0.0189
+gplearn0.0283 0.2425 0.0298 0.0257 0.2653 0.0372 0.0327 0.3562 0.0463 0.0254 0.2938 0.0372
+(0.0089) (0.0247) (0.0073) (0.0070) (0.0190) (0.0082) (0.0059) (0.0203) (0.0112) (0.0063) (0.0291) (0.0067)
+alphagen0.0604 0.4023 0.0689 0.0593 0.3422 0.0633 0.0519 0.4296 0.0792 0.0537 0.5137 0.0708
+(0.0109) (0.0288) (0.0083) (0.0090) (0.0172) (0.0120) (0.0047) (0.0260) (0.0062) (0.0052) (0.0320) (0.0065)
+RiskMiner0.0645 0.5126 0.0734 0.0637 0.5361 0.0728 0.0596 0.6420 0.0837 0.0603 0.5920 0.0752
+(0.0069) (0.0270) (0.0093) (0.0083) (0.0192) (0.0107) (0.0064) (0.0183) (0.0067) (0.0043) (0.0361) (0.0055)
+stock trend forecasting model(MLP, GRU, XGBoost, LightGBM, Cat-
+Boost). A widely known alpha set, alpha101, is also included in the
+experiment as a benchmark.
+Table 1 shows our signal-based main results. Our proposed
+method achieves the best results across all baselines. The synergistic
+alphas discovered by RiskMiner not only exhibit strong predictive
+ability(high IC and RankIC) but also have stable performance(high
+ICIR). The alphagen comes in the second tier. It has competitive
+results on IC and RankIC. However, the gap in the ICIR indica-
+tor shows that the predictive power of the alphas generated by
+alphagen is not stable enough compared with our method. The
+end-to-end forecasting models have moderate performance in the
+experiment since they use raw stock data to predict future trends
+without elaborate feature engineering. The alphas generated by
+traditional GP are no longer competitive with other methods gener-
+ating formulaic alpha. The performance of the well-known alpha101
+has decayed dramatically since its discovery.
+Since using quantile as the risk measure to facilitate the search
+process, it is necessary to investigate how the model performs
+under different risk-seeking levels. We run the mining pipeline
+under quantile values of 𝛼∈{0.6,0.65,0.7,0.75,0.8,0.85,0.9,0.95}
+and monitor the IC performance. The results are shown in Figure 5.
+In the beginning, the IC scores increase as the quantile level
+increases. It indicates that the risk-seeking policy can efficiently
+discover high-quality alphas since it directly optimizes the best-
+case performance. However, when the quantile value exceeds 0.85,
+the performance of our pipeline starts to decline. Therefore, an
+overly aggressive search strategy does not lead to significant im-
+provements in results. On the contrary, it can lead to performance
+degradation. Selecting the appropriate quantile is crucial to the
+experimental outcomes.A plausible explanation for this phenomenon could be that: even
+though the risk-seeking policy is more likely to discover better
+alphas, an overly aggressive policy may stuck in some local opti-
+mum. Mining alphas factor is different from other traditional RL tasks.
+We want to search as much as local optimums as possible instead of
+finding one global optimum. As the risk-seeking level increases, the
+model would spend most of the search budget on the current best
+local optimum and fail to investigate other possible optimums in
+the expression space.
+/uni00000013/uni00000011/uni00000019 /uni00000013/uni00000011/uni00000019/uni00000018 /uni00000013/uni00000011/uni0000001a /uni00000013/uni00000011/uni0000001a/uni00000018 /uni00000013/uni00000011/uni0000001b /uni00000013/uni00000011/uni0000001b/uni00000018 /uni00000013/uni00000011/uni0000001c /uni00000013/uni00000011/uni0000001c/uni00000018
+/uni00000034/uni00000058/uni00000044/uni00000051/uni00000057/uni0000004c/uni0000004f/uni00000048/uni00000013/uni00000011/uni00000013/uni00000018/uni00000015/uni00000013/uni00000011/uni00000013/uni00000018/uni00000017/uni00000013/uni00000011/uni00000013/uni00000018/uni00000019/uni00000013/uni00000011/uni00000013/uni00000018/uni0000001b/uni00000013/uni00000011/uni00000013/uni00000019/uni00000013/uni00000013/uni00000011/uni00000013/uni00000019/uni00000015/uni00000013/uni00000011/uni00000013/uni00000019/uni00000017/uni0000002c/uni00000026/uni00000003/uni00000003/uni0000000b/uni00000018/uni00000010/uni00000047/uni00000044/uni0000005c/uni00000003/uni00000055/uni00000048/uni00000057/uni00000058/uni00000055/uni00000051/uni00000056/uni0000000c
+/uni00000026/uni00000036/uni0000002c/uni00000016/uni00000013/uni00000013
+/uni00000026/uni00000036/uni0000002c/uni00000018/uni00000013/uni00000013
+/uni00000013/uni00000011/uni00000019 /uni00000013/uni00000011/uni00000019/uni00000018 /uni00000013/uni00000011/uni0000001a /uni00000013/uni00000011/uni0000001a/uni00000018 /uni00000013/uni00000011/uni0000001b /uni00000013/uni00000011/uni0000001b/uni00000018 /uni00000013/uni00000011/uni0000001c /uni00000013/uni00000011/uni0000001c/uni00000018
+/uni00000034/uni00000058/uni00000044/uni00000051/uni00000057/uni0000004c/uni0000004f/uni00000048/uni00000013/uni00000011/uni00000013/uni00000018/uni0000001b/uni00000013/uni00000011/uni00000013/uni00000018/uni0000001c/uni00000013/uni00000011/uni00000013/uni00000019/uni00000013/uni00000013/uni00000011/uni00000013/uni00000019/uni00000014/uni00000013/uni00000011/uni00000013/uni00000019/uni00000015/uni00000013/uni00000011/uni00000013/uni00000019/uni00000016/uni0000002c/uni00000026/uni00000003/uni00000003/uni0000000b/uni00000014/uni00000013/uni00000010/uni00000047/uni00000044/uni0000005c/uni00000003/uni00000055/uni00000048/uni00000057/uni00000058/uni00000055/uni00000051/uni00000056/uni0000000c
+/uni00000026/uni00000036/uni0000002c/uni00000016/uni00000013/uni00000013
+/uni00000026/uni00000036/uni0000002c/uni00000018/uni00000013/uni00000013
+Figure 5: Model performance under different quantile level
+5.3 Backtesting Results
+To answer Q2, we conduct a simulated trading experiment on the
+test set (from 021/01/01 to 2022/12/31). We use the 5-day alphas in
+the previous experiment as trading signals and we rebalance our
+stock position weekly(every 5 days). We have excluded stocks that
+hit the price limit up or down and those suspended from trading.
+We adopt a simple long strategy in the experiment. Specifically,
+we rank the stock on day 𝑡according to the predicted score or
+alpha value. Then we select the top 𝑘stocks to evenly invest in
+them and sell currently held stocks that rank lower than 𝑘. We usearxiv, ,
+Tao Ren, Ruihan Zhou, Jinyang Jiang, Jiafeng Liang, Qinghao Wang, and Yijie Peng
+/uni00000015/uni00000013/uni00000015/uni00000014/uni00000010/uni00000013/uni00000014 /uni00000015/uni00000013/uni00000015/uni00000014/uni00000010/uni00000013/uni00000017 /uni00000015/uni00000013/uni00000015/uni00000014/uni00000010/uni00000013/uni0000001a /uni00000015/uni00000013/uni00000015/uni00000014/uni00000010/uni00000014/uni00000013 /uni00000015/uni00000013/uni00000015/uni00000015/uni00000010/uni00000013/uni00000014 /uni00000015/uni00000013/uni00000015/uni00000015/uni00000010/uni00000013/uni00000017 /uni00000015/uni00000013/uni00000015/uni00000015/uni00000010/uni00000013/uni0000001a /uni00000015/uni00000013/uni00000015/uni00000015/uni00000010/uni00000014/uni00000013 /uni00000015/uni00000013/uni00000015/uni00000016/uni00000010/uni00000013/uni00000014/uni00000010/uni00000017/uni00000013/uni00000008/uni00000010/uni00000015/uni00000013/uni00000008/uni00000013/uni00000008/uni00000015/uni00000013/uni00000008/uni00000017/uni00000013/uni00000008/uni00000026/uni00000058/uni00000050/uni00000058/uni0000004f/uni00000044/uni00000057/uni0000004c/uni00000059/uni00000048/uni00000003/uni00000035/uni00000048/uni00000057/uni00000058/uni00000055/uni00000051/uni00000035/uni0000004c/uni00000056/uni0000004e/uni00000050/uni0000004c/uni00000051/uni00000048/uni00000055
+/uni00000044/uni0000004f/uni00000053/uni0000004b/uni00000044/uni0000004a/uni00000048/uni00000051
+/uni0000004a/uni00000053/uni0000004f/uni00000048/uni00000044/uni00000055/uni00000051
+/uni00000026/uni00000044/uni00000057/uni00000025/uni00000052/uni00000052/uni00000056/uni00000057
+/uni0000002f/uni0000004c/uni0000004a/uni0000004b/uni00000057/uni0000002a/uni00000025/uni00000030
+/uni0000003b/uni0000002a/uni00000025/uni00000052/uni00000052/uni00000056/uni00000057
+/uni0000002a/uni00000035/uni00000038
+/uni00000030/uni0000002f/uni00000033
+/uni00000026/uni00000036/uni0000002c/uni00000016/uni00000013/uni00000013
+Figure 6: Backtest results on CSI300. The lines represent the cumulative return of agents under different alpha mining methods.
+Table 2: Ablation study on CSI300.
+MCTS Risk-seeking policy5 days
+IC ICIR RankIC
+✓ ✓ 0.0645 0.5126 0.0734
+×✓ 0.0617 0.4622 0.0693
+✓× 0.0630 0.4501 0.0721
+cumulative returns as the portfolio metrics to evaluate the trading
+performance.
+•Cumulative return : cumulative return is defined as the
+total change in the value of an investment or portfolio over
+a set period.
+CR=Final Value
+Initial Value−1
+To find the best parameter 𝑘, we conduct grid searches on the vali-
+dation set. The candidate parameter set for 𝑘is{10,20,30,40,50,60}.
+We discover that 𝑘=40can maximize the cumulative returns on the
+validation set. The results are shown in Figure 6. It is worth noting
+that the A-share market was in a bear market from 2021/01/01 to
+2022/12/31. During the bear market, deriving profitable long strate-
+gies is extremely challenging. Certain models, including gplearn
+and MLP, incur losses in the period. Alphas by alphagen have de-
+sirable performance compared with other methods. However, our
+proposed RiskMiner outperforms the alphagen by a large margin.
+5.4 Ablation Study
+To answer Q3, we conduct the ablation study on the CSI300 dataset.
+Note that MCTS and the risk-seeking policy can work separately
+as alphas generators to search the expression space from the al-
+phapool’s reward. We investigate the individual performance of the
+two modules and the aggregate performance when they are work-
+ing together. The results are shown in Table 2. The performance
+of individual modules degrades to a certain extent. The MCTShas a slight advantage over the Risk-seeking policy. We can infer
+that MCTS contributes significantly to the overall performance. By
+integrating with a risk-seeking policy, our methods can elevate
+performance to a new tier.
+6 CONCLUSION
+In this paper, we propose RiskMiner, a novel framework for generat-
+ing synergistic formulaic alphas. A reward-dense MDP is designed
+to stabilize the search. Then we integrate MCTS with the risk-
+seeking policy enabling Riskminer to effectively navigate through
+vast discrete solution space in alpha mining. We demonstrate the
+effectiveness of RiskMiner through extensive experiments on real-
+world datasets, showcasing its superiority in discovering synergistic
+alphas with strong predictive abilities and stable performance. The
+proposed method outperforms all existing state-of-the-art meth-
+ods. Moreover, we give insights into the importance of selecting
+appropriate risk-seeking levels to avoid performance degradation,
+which provides valuable guidance for application in the industry.
+In the future, a possible direction for our research is constructing
+sentimental alphas with the strong text-processing ability of LLM.
+ACKNOWLEDGMENTS
+This work was supported in part by the National Natural Science
+Foundation of China (NSFC) under Grants 72325007,72250065,72022001
+REFERENCES
+[1]Tianqi Chen and Carlos Guestrin. 2016. XGBoost: A Scalable Tree Boosting
+System. In Proceedings of the 22nd ACM SIGKDD International Conference on
+Knowledge Discovery and Data Mining, San Francisco, CA, USA, August 13-17,
+2016, Balaji Krishnapuram, Mohak Shah, Alexander J. Smola, Charu C. Aggarwal,
+Dou Shen, and Rajeev Rastogi (Eds.). ACM, 785–794.
+[2]Yuanpei Chen, Tianhao Wu, Shengjie Wang, Xidong Feng, Jiechuan Jiang,
+Zongqing Lu, Stephen McAleer, Hao Dong, Song-Chun Zhu, and Yaodong Yang.
+2022. Towards human-level bimanual dexterous manipulation with reinforce-
+ment learning. Advances in Neural Information Processing Systems 35 (2022),
+5150–5163.
+[3]Can Cui, Wei Wang, Meihui Zhang, Gang Chen, Zhaojing Luo, and Beng Chin
+Ooi. 2021. AlphaEvolve: A Learning Framework to Discover Novel Alphas in
+Quantitative Investment. In SIGMOD ’21: International Conference on ManagementRiskMiner: Discovering Formulaic Alphas via Risk Seeking Monte Carlo Tree Searcharxiv, ,
+of Data, Virtual Event, China, June 20-25, 2021 , Guoliang Li, Zhanhuai Li, Stratos
+Idreos, and Divesh Srivastava (Eds.). ACM, 2208–2216.
+[4]Shumin Deng, Ningyu Zhang, Wen Zhang, Jiaoyan Chen, Jeff Z Pan, and Huajun
+Chen. 2019. Knowledge-driven stock trend prediction and explanation via tem-
+poral convolutional network. In Companion Proceedings of The 2019 World Wide
+Web Conference . 678–685.
+[5]Qianggang Ding, Sifan Wu, Hao Sun, Jiadong Guo, and Jian Guo. 2020. Hier-
+archical Multi-Scale Gaussian Transformer for Stock Movement Prediction.. In
+IJCAI . 4640–4646.
+[6]Yitong Duan, Lei Wang, Qizhong Zhang, and Jian Li. 2022. Factorvae: A proba-
+bilistic dynamic factor model based on variational autoencoder for predicting
+cross-sectional stock returns. In Proceedings of the AAAI Conference on Artificial
+Intelligence , Vol. 36. 4468–4476.
+[7]Alhussein Fawzi, Matej Balog, Aja Huang, Thomas Hubert, Bernardino Romera-
+Paredes, Mohammadamin Barekatain, Alexander Novikov, Francisco J R Ruiz,
+Julian Schrittwieser, Grzegorz Swirszcz, et al .2022. Discovering faster matrix
+multiplication algorithms with reinforcement learning. Nature 610, 7930 (2022),
+47–53.
+[8]Ziniu Hu, Weiqing Liu, Jiang Bian, Xuanzhe Liu, and Tie-Yan Liu. 2018. Listening
+to chaotic whispers: A deep learning framework for news-oriented stock trend
+prediction. In Proceedings of the eleventh ACM international conference on web
+search and data mining . 261–269.
+[9]Guolin Ke, Qi Meng, Thomas Finley, Taifeng Wang, Wei Chen, Weidong Ma,
+Qiwei Ye, and Tie-Yan Liu. 2017. LightGBM: A Highly Efficient Gradient Boosting
+Decision Tree. In Advances in Neural Information Processing Systems 30: Annual
+Conference on Neural Information Processing Systems 2017, December 4-9, 2017,
+Long Beach, CA, USA , Isabelle Guyon, Ulrike von Luxburg, Samy Bengio, Hanna M.
+Wallach, Rob Fergus, S. V. N. Vishwanathan, and Roman Garnett (Eds.). 3146–
+3154.
+[10] Kelvin JL Koa, Yunshan Ma, Ritchie Ng, and Tat-Seng Chua. 2023. Diffusion
+Variational Autoencoder for Tackling Stochasticity in Multi-Step Regression
+Stock Price Prediction. In Proceedings of the 32nd ACM International Conference
+on Information and Knowledge Management . 1087–1096.
+[11] Xiaoming Lin, Ye Chen, Ziyu Li, and Kang He. 2019. Revisiting Stock Alpha
+Mining Based On Genetic Algorithm . Technical Report. Huatai Securities Research
+Center. https://crm.htsc.com.cn/doc/2019/10750101/3f178e66-597a-4639-a34d-
+45f0558e2bce.pdf
+[12] Xiaoming Lin, Ye Chen, Ziyu Li, and Kang He. 2019. Stock Alpha Mining
+Based On Genetic Algorithm . Technical Report. Huatai Securities Research
+Center. https://crm.htsc.com.cn/doc/2019/10750101/f75b4b6a-2bdd-4694-b696-
+4c62528791ea.pdf
+[13] Xiao-Yang Liu, Hongyang Yang, Qian Chen, Runjia Zhang, Liuqing Yang, Bowen
+Xiao, and Christina Dan Wang. 2020. FinRL: A deep reinforcement learning
+library for automated stock trading in quantitative finance. arXiv preprint
+arXiv:2011.09607 (2020).
+[14] Daniel J Mankowitz, Andrea Michi, Anton Zhernov, Marco Gelmi, Marco Selvi,
+Cosmin Paduraru, Edouard Leurent, Shariq Iqbal, Jean-Baptiste Lespiau, Alex
+Ahern, et al .2023. Faster sorting algorithms discovered using deep reinforcement
+learning. Nature 618, 7964 (2023), 257–263.
+[15] Liudmila Prokhorenkova, Gleb Gusev, Aleksandr Vorobev, Anna Veronika Doro-
+gush, and Andrey Gulin. 2018. CatBoost: unbiased boosting with categorical
+features. Advances in neural information processing systems 31 (2018).
+[16] Julian Schrittwieser, Ioannis Antonoglou, Thomas Hubert, Karen Simonyan,
+Laurent Sifre, Simon Schmitt, Arthur Guez, Edward Lockhart, Demis Hassabis,
+Thore Graepel, et al .2020. Mastering atari, go, chess and shogi by planning with
+a learned model. Nature 588, 7839 (2020), 604–609.
+[17] Julian Schrittwieser, Ioannis Antonoglou, Thomas Hubert, Karen Simonyan,
+Laurent Sifre, Simon Schmitt, Arthur Guez, Edward Lockhart, Demis Hassabis,
+Thore Graepel, et al .2020. Mastering atari, go, chess and shogi by planning with
+a learned model. Nature 588, 7839 (2020), 604–609.
+[18] John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov.
+2017. Proximal Policy Optimization Algorithms. (2017). arXiv:1707.06347
+[19] David Silver, Thomas Hubert, Julian Schrittwieser, Ioannis Antonoglou, Matthew
+Lai, Arthur Guez, Marc Lanctot, Laurent Sifre, Dharshan Kumaran, Thore Graepel,
+et al.2018. A general reinforcement learning algorithm that masters chess, shogi,
+and Go through self-play. Science 362, 6419 (2018), 1140–1144.
+[20] I. Tulchinsky. 2015. Finding Alphas: A Quantitative Approach to Building Trading
+Strategies . 1–253 pages.
+[21] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin. 2017. Attention is all
+you need. Advances in neural information processing systems 30 (2017).
+[22] Heyuan Wang, Tengjiao Wang, Shun Li, Jiayi Zheng, Shijie Guan, and Wei Chen.
+2022. Adaptive long-short pattern transformer for stock investment selection. In
+Proceedings of the Thirty-First International Joint Conference on Artificial Intelli-
+gence . 3970–3977.
+[23] Wentao Xu, Weiqing Liu, Lewen Wang, Yingce Xia, Jiang Bian, Jian Yin, and
+Tie-Yan Liu. 2021. HIST: A Graph-based Framework for Stock Trend Forecasting
+via Mining Concept-Oriented Shared Information. (2021). arXiv:2110.13716[24] Hongyang Yang, Xiao-Yang Liu, and Christina Dan Wang. 2023. FinGPT: Open-
+Source Financial Large Language Models. arXiv preprint arXiv:2306.06031 (2023).
+[25] Mengyuan Yang, Mengying Zhu, Qianqiao Liang, Xiaolin Zheng, and MengHan
+Wang. 2023. Spotlight news driven quantitative trading based on trajectory
+optimization. In Proceedings of the Thirty-Second International Joint Conference
+on Artificial Intelligence . 4930–4939.
+[26] Xiao Yang, Weiqing Liu, Dong Zhou, Jiang Bian, and Tie-Yan Liu. 2020. Qlib: An
+AI-oriented Quantitative Investment Platform. (2020). arXiv:2009.11189
+[27] Shuo Yu, Hongyan Xue, Xiang Ao, Feiyang Pan, Jia He, Dandan Tu, and Qing He.
+2023. Generating Synergistic Formulaic Alpha Collections via Reinforcement
+Learning. arXiv preprint arXiv:2306.12964 (2023).
+[28] Yangyang Yu, Haohang Li, Zhi Chen, Yuechen Jiang, Yang Li, Denghui Zhang,
+Rong Liu, Jordan W Suchow, and Khaldoun Khashanah. 2023. FinMem: A
+Performance-Enhanced LLM Trading Agent with Layered Memory and Character
+Design. arXiv e-prints (2023), arXiv–2311.
+[29] Liheng Zhang, Charu C. Aggarwal, and Guo-Jun Qi. 2017. Stock Price Prediction
+via Discovering Multi-Frequency Trading Patterns. In Proceedings of the 23rd
+ACM SIGKDD International Conference on Knowledge Discovery and Data Mining,
+Halifax, NS, Canada, August 13 - 17, 2017 . ACM, 2141–2149.
+[30] Tianping Zhang, Yuanqi Li, Yifei Jin, and Jian Li. 2020. AutoAlpha: an Efficient
+Hierarchical Evolutionary Algorithm for Mining Alpha Factors in Quantitative
+Investment. arXiv preprint arXiv:2002.08245 (2020).
+[31] Lifan Zhao, Shuming Kong, and Yanyan Shen. 2023. DoubleAdapt: A Meta-
+learning Approach to Incremental Learning for Stock Trend Forecasting. In
+Proceedings of the 29th ACM SIGKDD Conference on Knowledge Discovery and
+Data Mining . 3492–3503.
+A PROOF OF THEOREM 4.1
+Proof. By the definition of the 𝛼-quantile, we have
+𝐹𝑅(𝑞(𝛼;𝜃);𝜃)=𝛼.
+With the implicit function theorem, we can obtain
+∇𝜃𝑞(𝛼;𝜃)=−∇𝜃𝐹𝑅(𝑟;𝜃)
+𝑓𝑅(𝑟;𝜃)𝑟=𝑞(𝛼;𝜃),
+where𝑓𝑅(·;𝜃)is the non-negative density function and implies
+∇𝜃𝑞(𝛼;𝜃) ∝−∇ 𝜃𝐹𝑅(𝑟;𝜃)|𝑟=𝑞(𝛼;𝜃).
+Since 1{𝑅(𝜏)≤𝑟}is an unbiased estimator for 𝐹𝑅(𝑟;𝜃), we derive
+the CDF gradient as follows:
+∇𝜃𝐹𝑅(𝑟;𝜃)=∇𝜃E[1{𝑅(𝜏)≤𝑟}]=∇𝜃∫
+Ω𝜏1{𝑅(𝜏)≤𝑟}Π(𝜏;𝜃)𝑑𝜏
+=E[1{𝑅(𝜏)≤𝑟}∇𝜃logΠ(𝜏;𝜃)],
+where Ω𝜏is the trajectory space, and the third equality comes
+from the likelihood ratio technique. Note that ∇𝜃logΠ(𝜏;𝜃)=Í𝑇
+𝑡=1∇𝜃log𝜋(𝑎𝑡|𝑠𝑡−1;𝜃). We further have
+∇𝜃𝐹𝑅(𝑟;𝜃)=E[1{𝑅(𝜏)≤𝑟}𝑇∑︁
+𝑡=1∇𝜃log𝜋(𝑎𝑡|𝑠𝑡−1;𝜃)].
+Thus, we obtain the unbiased estimator for −∇𝜃𝐹𝑅(𝑟;𝜃)as follows:
+𝐷(𝜏;𝜃,𝑟)=−1{𝑅(𝜏𝑖)≤𝑟}𝑇∑︁
+𝑡=1∇𝜃log𝜋(𝑎𝑡|𝑠𝑡−1;𝜃),
+which completes the proof. □
+B PSEUDO CODES
+we provide pseudocode for the alphapool and the overall alpha
+mining framework.arxiv, ,
+Tao Ren, Ruihan Zhou, Jinyang Jiang, Jiafeng Liang, Qinghao Wang, and Yijie Peng
+Algorithm 1: maintain the alpha pool
+Input: alpha setF={𝑓1,𝑓2,...,𝑓 𝑘}; a new alpha 𝑓𝑛𝑒𝑤; the
+alpha combination model 𝑐(·|F,𝜔)
+Output: optimal alpha setF∗={𝑓∗
+1,𝑓∗
+2,...,𝑓∗
+𝑘}and its
+weight𝜔∗=(𝜔∗
+1,𝜔∗
+2,...,𝜔∗
+𝑘)
+1F←F∪𝑓𝑛𝑒𝑤, ,𝑤←𝑤∥rand();
+2foreach iteration do
+3 Calculating 𝑧𝑡=𝑐(𝑋𝑡|F,𝜔)andL(𝜔);
+4𝜔←GradientDescent(L(𝜔));
+5𝑖=arg min 𝑖|𝜔𝑖|;
+6F←F/{𝑓𝑖},𝜔← (𝜔1,...,𝜔 𝑖−1,𝜔𝑖+1,...,𝜔 𝑘);
+7returnFand𝜔
+Algorithm 2: alpha mining pipeline
+Input: raw stock data 𝑋𝑡
+Output: optimal alpha setF∗={𝑓∗
+1,𝑓∗
+2,...,𝑓∗
+𝑘}and its
+weight𝜔∗=(𝜔∗
+1,𝜔∗
+2,...,𝜔∗
+𝑘)
+1InitializeFand𝜔;
+2Initialize𝜋𝑟𝑖𝑠𝑘(·|𝜃)and replay bufferB={};
+3foreach iteration do
+4 Reset the root node of the search tree;
+5 EmptyB;
+6 foreach interation do
+7 Select by Equation 6 to reach the leaf node then
+expand;
+8 Rollout by𝜋𝑟𝑖𝑠𝑘(·|𝜃)then backpropagation;
+9 UpdateFand𝜔using Algorithm 1;
+10B←B∪𝜏;
+11 foreach𝜏∈Bdo
+12 Using Equation 11 to estimate current quantile;
+13 Using Equation 13 to update policy network
+parameter;
+14returnFand𝜔
+C OPERATORS AND OPERANDS
+All the operators and operands used in our mining framework are
+listed. There are three types of operands: price/volume feature,
+times deltas, and constant. Times deltas can only be processed by
+the time-series operators. The operands are listed in Table 3. The
+operators can be divided into 2 groups: cross-section and time-
+series operators. In each category, operators can be further divided
+as unary and binary. The operators are listed in Table 4
+Table 3: operands used in our framework.
+Operand Description
+Price/volume feature open, high, close, low, volume, vwap
+Times deltas 1, 5, 10, 20, 30, 40, 50
+Constant-30.0, -10.0, -5.0, -2.0, -1.0, -0.5, -0.01,
+0.5, 1.0, 2.0, 5.0, 10.0, 30.0D IMPLEMENTATION DETAILS
+We set the alphapool size 𝐾=100. The parameter 𝜆in the reward-
+dense MDP is set to 0.1. The GRU feature extractor has a 4-layer
+structure and the hidden layer dimension is 64. The policy head is
+MLP with two hidden layers of 32 neurons. In one mining iteration,
+the MCTS search cycle will be executed 200 times, and the sampled
+trajectories will be used for subsequent risk-seeking policy opti-
+mization. The learning rate 𝛽for quantile regression is 0.01. The
+learning rate 𝛾for network parameter update is 0.001.RiskMiner: Discovering Formulaic Alphas via Risk Seeking Monte Carlo Tree Searcharxiv, ,
+Table 4: operators used in our framework.
+Operators Description
+Sign(𝑥) Return 1 if𝑥is positive, otherwise return 0.
+Abs(𝑥) The absolute value of 𝑥.
+Log(𝑥) Natural logarithmic function on. 𝑥
+CSRank(x)The rank of the current stock’s feature value 𝑥relative to the feature values of all stocks on
+today’s date.
+𝑥+𝑦,𝑥−𝑦,𝑥·𝑦,𝑥/𝑦 Arithmetic operators.
+Greater(𝑥,𝑦),Less(𝑥,𝑦) Comparison between two values.
+Ref(𝑥,𝑡) The value of the variable 𝑥when assessed 𝑡days prior to today.
+Rank(𝑥,𝑡)The rank of the present feature value, 𝑥, compared to its values from today going back up
+to𝑡days.
+Skew(𝑥,𝑡) The skewness of the feature 𝑥in past𝑡days prior to today.
+Kurt(𝑥,𝑡) The kurtosis of the feature 𝑥in past𝑡days prior to today.
+Mean(𝑥,𝑡),Med(𝑥,𝑡),Sum(𝑥,𝑡) The mean, median, or total sum of the feature 𝑥calculated over the past 𝑡days.
+Std(𝑥,𝑡),Var(𝑥,𝑡) The standard deviation or variance of the feature 𝑥calculated for the past 𝑡days.
+Max(𝑥,𝑡),Min(𝑥,𝑡) The maximum/minimum value of the expression 𝑥calculated on the past 𝑡days.
+WMA(𝑥,𝑡),EMA(𝑥,𝑡)The weighted moving average and exponential moving average for the variable 𝑥calculated over
+the past𝑡days.
+Cov(𝑥,𝑦,𝑡) The covariance between two features 𝑥and𝑦in the past𝑡days.
+Corr(𝑥,𝑦,𝑡) The Pearson’s correlation coefficient between two features 𝑥and𝑦in past𝑡days.

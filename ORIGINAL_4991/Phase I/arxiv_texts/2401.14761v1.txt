@@ -1,0 +1,428 @@
+ESG driven pairs algorithm for sustainable trading:
+Analysis from the Indian market
+Eeshaan Dutta∗Sarthak Diwan†
+Siddhartha P. Chakrabarty‡
+Abstract
+This paper proposes an algorithmic trading framework integrating Environmen-
+tal, Social, and Governance (ESG) ratings with a pairs trading strategy. It addresses
+the demand for socially responsible investment solutions by developing a unique al-
+gorithm blending ESG data with methods for identifying co-integrated stocks. This
+allows selecting profitable pairs adhering to ESG principles. Further, it incorporates
+technical indicators for optimal trade execution within this sustainability framework.
+Extensive back-testing provides evidence of the model’s effectiveness, consistently
+generating positive returns exceeding conventional pairs trading strategies, while
+upholding ESG principles. This paves the way for a transformative approach to
+algorithmic trading, offering insights for investors, policymakers, and academics.
+Keywords: ESG, Pairs Trading, Sustainable Investing
+1 Introduction
+In a world that is increasingly interconnected and faced with challenges of climate change,
+the long term survival as well as success of a firm is contingent on factors beyond the
+realm of traditional metrics of financial performance. Accordingly, Environmental Social
+and Governance (ESG) considerations have emerged as a pivotal driver of sustainable per-
+formance of firms, not only from the perspective of investment decisions and risk manage-
+ment, but also from the viewpoint of consumer preferences, as well as regulatory practices,
+all of which, eventually has a bearing on the reputation and viability of a firms’ operation
+[13]. At the heart of ESG standing of a firm lies the encompassing of the environmental im-
+pact, which can be attributed to the firm, the stakeholders of the firm and the consequent
+practices of corporate governance. In this context, particular consideration is extended to
+∗Department of Mathematics, Indian Institute of Technology Guwahati, Guwahati-781039, India, e-
+mail: d.eeshaan@iitg.ac.in
+†Department of Mathematics, Indian Institute of Technology Guwahati, Guwahati-781039, India, e-
+mail: s.diwan@iitg.ac.in
+‡Department of Mathematics, Indian Institute of Technology Guwahati, Guwahati-781039, India, e-
+mail: pratim@iitg.ac.in, Phone: +91-361-2582606
+1arXiv:2401.14761v1  [q-fin.TR]  26 Jan 2024environmental dimension, including carbon footprint, energy consumption and use, and
+the effort towards management of emission, reduction of waste and conservation of natural
+resources.
+In order to facilitate the tangible assessment of the ESG performance of a firm, in case
+of the environment component, one can adopt metrics such as per unit (of production)
+energy consumption, extent of green house gas (GHG) emission and level of recycling
+as well as conservation efforts [14]. The social dimension of ESG, emphasizes on the
+relationship that a firm shares with its stakeholders, both internal (ethical workplace
+practices, diversity and inclusion) and external (engagement with the local community
+and philanthropic outreach activities). Some of the metrics which can be adopted for
+this, include employee turnover, workplace safety, customer satisfaction and community
+engagement [12]. Finally, on the criterion of good governance, the firm may be assessed via
+metrics like diversity indices, corporate governance ratings and performance on account
+of regulatory compliance.
+Market-based tools like emissions trading schemes, carbon taxes, and carbon deriva-
+tives drive GHG emissions cuts. Emissions trading schemes work by capping emissions
+and issuing tradeable permits (which the firm can trade based on their emission levels).
+This enables reducing emission in a flexible and cost-effective manner [6]. Challenges with
+over-allocated permits, thereby leading to reduced prices can be addressed via mechanisms
+like the European Union Emission Trading Scheme (EU ETS) Market Stability Reserve,
+which reduces the surplus supply of permits [7].
+The social cost of carbon, also called the carbon tax or carbon price, is the emissions
+tax per ton of CO2 [10]. The tax level incentives shifts to low-carbon options across
+sectors. Examples of successful carbon tax initiatives exist in Nordic countries, with
+Sweden instituting a 1991 carbon tax covering about half its emissions. The tax design
+balances emissions cuts, competitiveness and social impacts. Revenues generated from
+carbon tax can also result in additional environmental and economic gains.
+Additionally, carbon derivatives help firms hedge risks from carbon price fluctuations
+due to market-based tools. European companies covered by EU ETS use futures and
+option contracts on EU Allowances (EUAs) to provide price certainty over compliance
+periods [8]. As more countries implement carbon pricing, the carbon derivative markets
+is likely to experience growth, though transparency, regulation and liquidity challenges
+remain. Overall these flexible approaches mobilize private capital towards needed low-
+carbon investments, which is the genesis of this paper.
+2 Data Analysis and Asset Picking
+In this section we present a description of data sourcing and their analysis, followed by
+the presentation of the approach adopted for selection of asset (stocks) for inclusion in the
+portfolio. The ESG data for firms of Indian market was obtained from the CSRHub on-
+line repository [3]. This comprehensive data set includes monthly historical ESG records
+pertaining to a large number of firms, along with information identifying to the corre-
+2sponding industries to which the firms’ belong, offering detailed insight into the ESG
+practices adopted by these firms. In particular, our comprehensive exercise of extraction
+and collation of the data, resulted in a total of 133 unique industrial sectors and 1,392
+unique firms, with the some of the key statistics resulting from the analysis of the data,
+are as enumerated below:
+(A) The average ESG score across all firms was determined to be approximately 56 .46.
+(B) The average ESG score across all industries was approximately 54 .91.
+(C) Out of the total of 1,392 firms analyzed, 570 firms did not have recorded ESG scores.
+(D) The firm with the highest ESG score was FLEX-FOODS-LIMITED, with a perfect
+score of 100 .0.
+(E) The firm with the lowest ESG score was Tide-Water-Oil-India-Co-Ltd, with a score
+of 0 (though might also indicate the absence of a recorded ESG score).
+The histogram of the distribution of ESG scores in Figure 1, from which we infer the
+following:
+(A) A significant number of firms have ESG scores in the range of approximately 40 to
+80.
+(B) There’s a peak around the score of 84, followed by a decline. However there are
+several firms achieving perfect scores.
+(C) Fewer firms have very low ESG scores, with a slight rise in the number of firms having
+scores close to 0 (though this may be attributed to the absence of data).
+Figure 1: Distribution of ESG Score
+The trends of average ESG scores are present in Figure 2, from which we surmise the
+following :
+(A) The ESG scores generally show an upward trend, indicating that, on average, firms
+are improving their ESG performance over time.
+3(B) There are some fluctuations in the scores, but the overall trajectory seems positive.
+(C) The final dip maybe due to addition of more new data in 2023.
+Figure 2: Average ESG Scores Over Time
+Finally the top 5 and bottom 5 industry ESG scores are given in Table 1 and Table 2
+respectively.
+Industry Mean ESG Industry Score
+Electrical Equipment Manufacturing, Architectural,
+Engineering, & Related Services98.7440
+Electronic Equipment & Instrumentation, Energy
+Equipment & Services96.4656
+IT & Network Services, Business Support Services 96 .3444
+Manufacturing, Electrical Equipment Manufacturing 91 .2384
+Heavy & Civil Engineering Construction, Electronic
+Equipment & Instrumentation, Machinery Manufac-
+turing90.0116
+Table 1: Top 5 industry ESG scores
+4Industry Mean ESG Industry Score
+Forestry & Fishing 1 .085000
+Industrial Conglomerates, Architectural, Engineering,
+& Related Services, Airport, Harbor Operations, & Lo-
+gistics3.950000
+Electronic Equipment & Instrumentation, Household
+Appliance Manufacturing, Oil and Gas Extraction6.538333
+Personal Care Products 8 .467857
+Accounting, Tax Prep., & Payroll Services 16 .147500
+Table 2: Bottom 5 industry ESG scores
+For the asset picking exercise, in this paper, we adopt two distinct methodologies for
+stock selection utilizing ESG scores, as enumerated below:
+(A) Approach 1:
+(i) Categorizing the firms according to their respective industries.
+(ii) Computing the average ESG score for all firms within each industry for a specific
+timestamp.
+(iii) From each industry group, the firm that exhibits the highest ESG score for that
+timestamp is identified.
+(iv) Only firms whose ESG score exceeds a threshold parameter ζ(contingent on
+the ESG value specified in the preceding step) are considered.
+(B) Approach 2:
+(i) Evaluation of each firm’s ESG score in relation to the average score of its re-
+spective industry.
+(ii) Select firms that outperform their industry average in terms of ESG scores by
+a given specified margin ξ.
+The stocks selected based on the aforesaid approaches will be identified by the term “stock
+universe”, and this will then be employed for subsequent portfolio construction.
+3 Methodology
+In this section, we focus on the identification of stock pairs for the purpose of pairs trading,
+a strategy that is driven fundamentally via the notions of mean reversion and stationarity.
+5While the former indicates a tendency of values (in a time series) reverting back to the
+average, the latter encapsulates situations where the statistical properties do not exhibit
+any temporal changes. For the purpose of this work, we adopt four tests, namely, unit root
+tests, Engle-Granger co-integration test, Hurst exponent and half-life test, all of which we
+briefly elaborate upon in the following discussion.
+The unit root test that was chosen for this work is the Augmented Dickey-Fuller
+(ADF) test, whose purpose is to ascertain the presence of a unit root in the series, thereby
+implying the existence of non-stationarity in the series. If the ADF test statistic is more
+negative than the critical value (as obtained from Dickey and Fuller table), then it indicates
+stationarity of the series and in case it is less negative than the critical value, then it is
+suggestive of non-stationarity [2].
+The co-integration tests due to Engle and Granger [5] describes a comprehensive
+methodology to ascertain the co-integration of two time series, with the specific procedure
+being accomplished through a two time-step method. In the first step (of the procedure)
+an ordinary least square (OLS) approach is used to determine the coefficient of a linear
+relation assumed between the two times series. This is followed by the second step wherein
+the residual of the linear relation is tested for stationarity, which if it holds, implies the
+co-integration between the two time series.
+In case of a time series for prices, the rate of price diffusivity can be quantitatively
+determined. If the (logarithmic) price series does not exhibit the geometric Brownian
+walk, then contingent on the Hurst exponent, one can conclude whether the series exhibits
+mean-reverting (anti-persistent), uncorrelated or trending (persistent) behaviour [2].
+Finally, we dwell upon the key factor of mean-reversion half-life, which indicates the
+time taken for a series to revert to its mean level [2]. Assuming a mean-reversion model,
+with a corresponding mean-reversion factor, one may conclude mean reversion (exponential
+decay), contingent on whether the mean reversion factor is positive (negative). In fact,
+the mean reversion speed is observed to be inversely proportional to the absolute value of
+mean-reversion factor.
+4 APO Based Trading Strategy
+In this section we present our trading strategy based on the Absolute Price Oscillator
+(APO) [5], an approach used to identify potential trading opportunities contingent on the
+price momentum of assets. This strategy makes use of the difference observed between
+a fast and a slow Exponential Moving Average (EMA) to ascertain the entry and exit
+strategy for the trades. A rising and a falling APO indicates bullish and bearish momen-
+tum, respectively. The first step in our strategy involves the adoption of the following pair
+selection approach as enumerated below and summarized in Algorithm 1.
+(A) Dimensionality Reduction: This step involves processing the financial data to find a
+compact representation for each security. Dimensionality reduction is crucial when
+dealing with large datasets to reduce the computational load while still capturing
+6the most significant features that contribute to the variability in the data. Tech-
+niques such as Principal Component Analysis (PCA) or Singular Value Decomposi-
+tion (SVD) can be used to reduce the number of variables, with the former (PCA)
+being used in this work.
+(B) Clustering with OPTICS: After reducing the dimensionality, the next step is to apply
+a clustering algorithm to group similar data points. OPTICS (Ordering Points To
+Identify the Clustering Structure) is a clustering algorithm [1] that can handle varying
+densities and is robust to outliers, making it suitable for financial datasets where such
+characteristics are common. This step will organize the securities into clusters based
+on their similarities in the reduced dimensional space.
+(C) Forming Pairs: Once the clusters are formed, the final step is to select all possible
+pair combinations within each cluster. Since securities within the same cluster are
+similar according to the chosen metrics and dimensions, they are likely candidates for
+pairs trading. This step involves generating pairs that will then be evaluated based on
+their trading potential, typically through metrics like co-integration, mean reversion,
+and other statistical measures relevant to pairs trading strategies [11].
+Algorithm 1 PCA-based clustering
+1:procedure Pairs Selection Framework
+2: Dimensionality Reduction:
+3: Apply technique to find a compact representation for each security.
+4: Clustering with OPTICS:
+5: Apply OPTICS algorithm to identify clusters of similar data points.
+6: Forming Pairs:
+7: Select all possible pair combinations within each cluster.
+8: Output: Clusters indicative of potential pairs for trading.
+9:end procedure
+In the second step, we introduce the APO spread trading strategy which capitalizes on
+the spread differences between two correlated assets. The algorithm computes a hedge ratio
+to form a spread series, which is then analyzed for trading signals based on the APO [4].
+This method provides a systematic approach to pairs trading, focusing on the principles
+of mean reversion. It leverages statistical methods to form a hedge position between two
+assets, aiming to profit from convergence in their price series. By continuously monitoring
+the APO spread, the strategy can adapt to market movements, making it a dynamic tool
+for traders. The specifics of the APO based approach adopted by us is enumerated in
+Algorithm 2.
+7Algorithm 2 APO Spread Trading Strategy Algorithm
+1:Input: Stock data for two assets S1andS2, buy threshold, sell threshold
+2:Output: Trade signals for pairs trading
+3:
+4:procedure Compute Hedge Ratio (data1, data2)
+5: model ←perform OLS regression (data1, data2)
+6: return model.params[1]
+7:end procedure
+8:
+9:procedure Initialize (fast, slow)
+10: hedge ratio←Compute Hedge Ratio (S1,S2)
+11: Calculate spread ←S1−hedge ratio×S2
+12: fastema←EMA (spread, fast)
+13: slow ema←EMA (spread, slow)
+14: apospread ←fastema−slow ema
+15: position ←0
+16:end procedure
+17:
+18:procedure Next (buy threshold, sell threshold)
+19: ifapospread <buythreshold then
+20: Execute Buy for S1and Sell Short for S2
+21: else if apospread >sellthreshold then
+22: Execute Sell Short for S1and Buy for S2
+23: end if
+24:end procedure
+5 Results
+For the empirical analysis, our data set comprises a comprehensive selection of equities
+listed on the National Stock Exchange (NSE) [9] of India. In the initial data acquisition
+phase, we encountered the common challenge of data sparsity and non-uniformity, which
+necessitated a meticulous data cleaning process. We focused on ensuring that only stocks
+with a complete and consistent set of historical data were retained for further analysis,
+thereby eliminating any securities that could introduce bias or inaccuracy due to incom-
+plete information. Post the data cleaning step, we applied the ESG filtering criterion
+and selected only those firms that demonstrated superior ESG performance relative to
+the industry average. The final data set, after rigorous cleaning and applying the ESG
+filter, consisted of a balanced panel of equities that are both representative of the market
+and reflective of high sustainability standards. This data set forms the backbone of our
+analysis, ensuring that our pairs trading strategy is both financially sound and ethically
+responsible. Finally, for the purpose of backtesting we used a commission rate of 0 .1%.
+The results for the training set are presented in Table 3 from where we see that pairs
+8with high Sharpe Ratios and low drawdowns, like “GESHIP and SOMANYCERA” and
+“BAJAJELEC and GSPL”, are generally more favorable as they suggest efficient risk-
+adjusted returns with lower declines. Pairs with high returns but also high drawdowns,
+such as “CCL and SSWL” and “ADANIPORTS and ASHOKLEY”, might have provided
+good returns but at higher risk levels. Consistency between training and testing perfor-
+mance is crucial for validating any trading strategy, so it’s important to compare these
+training results with out-of-sample testing results for a comprehensive assessment.
+Pair1 Pair2 Train Sharpe Train Drawdown Train Returns
+GOKEX PETRONET 0.5716 0.0000 18.5213
+JINDALPOLY RCOM 0.6804 0.4312 24.9551
+RADICO TATAELXSI 0.6107 0.6194 20.4039
+CENTRALBK MRPL 0.6548 0.6935 15.4413
+JINDALPOLY MMTC 0.6393 0.9320 23.6378
+DCBBANK JSWENERGY 0.5750 1.4613 20.4349
+CENTRALBK ENGINERSIN 0.6737 1.6708 9.8932
+DCBBANK SOUTHBANK 0.5613 1.8784 21.6379
+GOKEX GOCLCORP 0.5239 1.9633 14.7174
+BAJAJ-AUTO ITC 0.7972 12.7331 19.2181
+BAJAJHLDNG MAHSCOOTER 0.6238 14.1017 18.3774
+GHCL SSWL 0.7697 16.7510 13.4474
+DCBBANK ENGINERSIN 0.5185 2.1551 18.4253
+BAJAJELEC RADICO 0.7588 2.1763 23.9585
+HDFCBANK KOTAKBANK 0.6458 2.3241 9.0718
+BAJAJELEC GSPL 0.9368 3.0490 21.8646
+BALRAMCHIN IIFL 0.5144 3.3268 16.7721
+GESHIP SOMANYCERA 1.1106 3.5970 19.3314
+INDIANB MRPL 0.5213 30.1832 19.3686
+ADANIPORTS ASHOKLEY 0.5948 30.3840 13.4715
+BALRAMCHIN JKTYRE 0.6734 4.1314 22.9861
+HGS MANAPPURAM 0.5235 4.3003 23.6353
+CCL SSWL 0.5794 45.8747 13.4428
+INDUSINDBK SHRIRAMFIN 0.5808 6.7566 23.2811
+CENTRALBK NCC 0.5740 7.8748 12.0443
+Table 3: Training Results
+The wide range of Sharpe Ratios and Test Returns indicates that performance varies
+significantly across different pairs. From Table 4 we notice that pairs like “RADICO
+and TATAELXSI” and “ADANIPORTS and ASHOKLEY” show high Sharpe Ratios and
+positive returns, suggesting they performed well during the test period. On the other
+hand, pairs like “CENTRALBK and ENGINERSIN” and “INDIANB and MRPL” with
+9negative Sharpe Ratios and returns indicate underperformance.
+Pair1 Pair2 Test Sharpe Test Drawdown Test Returns
+GOKEX PETRONET -0.8136 194.0331 –
+JINDALPOLY RCOM 0.1746 0.5390 2.3736
+RADICO TATAELXSI 2.3859 0.0000 7.4691
+CENTRALBK MRPL 0.0104 3.3137 1.1331
+JINDALPOLY MMTC 0.1447 3.2516 1.7674
+DCBBANK JSWENERGY -0.0275 15.0868 -2.9384
+CENTRALBK ENGINERSIN -6.6027 0.2840 0.1121
+DCBBANK SOUTHBANK -0.7268 2.9508 0.4989
+GOKEX GOCLCORP -0.9397 177.5813 –
+BAJAJ-AUTO ITC -0.8490 13.0009 -3.4101
+BAJAJHLDNG MAHSCOOTER -0.3883 17.6147 -6.6273
+GHCL SSWL 1.4122 0.5998 7.2819
+DCBBANK ENGINERSIN -0.5181 0.2315 0.5511
+BAJAJELEC RADICO 0.8062 3.5841 6.4714
+HDFCBANK KOTAKBANK -0.3050 5.9456 0.5962
+BAJAJELEC GSPL 2.5906 0.0000 7.0640
+BALRAMCHIN IIFL 0.4547 0.3986 3.9414
+GESHIP SOMANYCERA -0.7121 38.4214 -11.6323
+INDIANB MRPL -1.0069 17.9628 -3.5252
+ADANIPORTS ASHOKLEY 5.5966 8.1725 7.4305
+BALRAMCHIN JKTYRE -0.3629 11.4830 -4.4709
+HGS MANAPPURAM 0.2499 1.4495 0.5723
+CCL SSWL 5.7691 3.2371 11.1632
+INDUSINDBK SHRIRAMFIN 3.6843 0.5587 8.5831
+CENTRALBK NCC nan 0.0000 0.0000
+Table 4: Testing Results
+The cointegration values suggest how strongly the pairs are correlated in the long term.
+From Table 5 we infer that pairs like “BALRAMCHIN and IIFL” or “DCBBANK and
+SOUTHBANK” have a stronger cointegration, meaning these pairs are more likely to move
+together over time. Lower values, like in “GOKEX and GOCLCORP” or “BAJAJHLDNG
+and MAHSCOOTER” suggest weaker cointegration, indicating less predictability in the
+movement of these pairs together over time.
+10Pair1 Pair2 Hedge Ratio Cointegration Half-Life Cross
+GOKEX PETRONET 0.0266 0.0270 154.6689 17.0000
+JINDALPOLY RCOM -0.2093 0.3778 -3108.3293 6.0000
+RADICO TATAELXSI 0.1881 0.7027 511.3864 3.0000
+CENTRALBK MRPL 0.6533 0.3883 165.3586 10.0000
+JINDALPOLY MMTC 0.0082 0.2972 304.7383 12.0000
+DCBBANK JSWENERGY 0.5206 0.6992 90.1140 33.0000
+CENTRALBK ENGINERSIN 0.7560 0.5032 175.0639 16.0000
+DCBBANK SOUTHBANK -0.0049 0.7776 4966.0117 22.0000
+GOKEX GOCLCORP 0.0577 0.0055 62.4343 43.0000
+BAJAJ-AUTO ITC 8.3471 0.3522 183.9925 21.0000
+BAJAJHLDNG MAHSCOOTER 0.7121 0.0035 80.9430 22.0000
+GHCL SSWL 2.4861 0.1172 337.4438 10.0000
+DCBBANK ENGINERSIN 0.4730 0.5506 178.8774 15.0000
+BAJAJELEC RADICO 0.9440 0.0180 198.7051 17.0000
+HDFCBANK KOTAKBANK 0.7478 0.0009 81.9989 19.0000
+BAJAJELEC GSPL 1.8355 0.2210 311.5972 9.0000
+BALRAMCHIN IIFL 0.2224 0.8221 289.8524 13.0000
+GESHIP SOMANYCERA 0.1787 0.0192 131.8533 12.0000
+INDIANB MRPL 2.6927 0.0561 188.8532 22.0000
+ADANIPORTS ASHOKLEY 2.2631 0.3997 442.6782 7.0000
+BALRAMCHIN JKTYRE 0.4465 0.8090 367.8877 5.0000
+HGS MANAPPURAM 1.2358 0.1436 649.1161 7.0000
+CCL SSWL 2.8661 0.6521 440.5626 10.0000
+INDUSINDBK SHRIRAMFIN 1.8646 0.0073 44.4288 41.0000
+CENTRALBK NCC 0.3387 0.6469 353.2915 5.0000
+Table 5: Cointegration and Hedge Ratio without Mean Reversion
+Finally, We can draw various conclusions about the data by plotting the box plots.
+The box plot for Sharpe ratios in Figure 3 indicates a median near zero, with a wide
+interquartile range and outliers in both directions, signifying a mix of pairs with both high
+and low risk-adjusted returns. The drawdown box plot in Figure 4 shows a low median with
+most data clustered in a narrow range, suggesting consistent potential drawdown across
+pairs, yet with some notable high-drawdown outliers. The returns box plot in Figure 5
+displays a concentration of pairs with modest median returns, a tight interquartile range,
+and a few exceptional outliers.
+11Figure 3: Boxplot of Sharpe Ratios
+Figure 4: Boxplot of Drawdown
+Figure 5: Boxplot of Returns
+126 Conclusion and Future Directions
+This paper introduces a pairs trading algorithm combining ESG measures for sustain-
+able asset picking. Quantitative techniques, including, cointegration, mean reversion and
+dimensionality reduction are combined with the APO spread trading approach to algorith-
+mically identify and trade pairs. Although backtests show differences between train and
+test results, some top pairs display strong signals, integration and positive risk-adjusted
+gains over both (train and test) periods, indicating feasibility, in terms real-life trading.
+Overall this study connects ethical investing and statistical arbitrage, providing a frame-
+work positioned to traverse markets, while upholding sustainability values.
+Future work would involve application of this strategy to high-frequency data in order
+to uncover more trading opportunities and understand short term price moves, despite
+increased complexity. Additional dimensionality reduction methods like t-SNE could re-
+veal new data patterns missed by PCA. Exploring clustering algorithms beyond OPTICS
+may provide fresh insights and alternative pairs. Machine learning approaches could dy-
+namically determine entry and exit points, thereby adapting the strategy to evolving
+markets. The model could also integrate other performance factors like macroeconomic
+and sentiment indicators or more nuanced ESG metrics. In summary, integrating high-
+frequency data, new dimensionality and clustering techniques, and advanced machine
+learning promises an adaptive, robust strategy aligning of financial and sustainability
+objectives.
+Declaration of Interests
+The authors declare that they have no known competing financial interests or personal
+relationships that could have appeared to influence the work reported in this paper.
+References
+[1] Mihael Ankerst, Markus M Breunig, Hans-Peter Kriegel, and J¨ org Sander. OPTICS:
+Ordering points to identify the clustering structure. ACM Sigmod record , 28(2):49–60,
+1999.
+[2] Ernie Chan. Algorithmic trading: winning strategies and their rationale , volume 625.
+John Wiley & Sons, 2013.
+[3] CSRHub. CSRHub - corporate social responsibility and sustainability ratings. https:
+//www.csrhub.com/, 2023. Accessed: 2023-10-04.
+[4] Sebastien Donadio and Sourav Ghosh. Learn Algorithmic Trading: Build and deploy
+algorithmic trading systems and strategies using Python and advanced data analysis .
+Packt Publishing Ltd, 2019.
+13[5] Robert F Engle and Clive WJ Granger. Co-integration and error correction: represen-
+tation, estimation, and testing. Econometrica: Journal of the Econometric Society ,
+pages 251–276, 1987.
+[6] European Commission. EU Emissions Trading System (EU ETS). https://climate.ec.
+europa.eu/eu-action/eu-emissions-trading-system-eu-ets en. Accessed: 2024-10-04.
+[7] Martin Hellmich and Rudiger Kiesel. Carbon Finance: A Risk Management View .
+World Scientific, 2021.
+[8] International Swaps and Derivatives Association. Role of derivatives in carbon
+markets. https://www.isda.org/a/soigE/Role-of-Derivatives-in-Carbon-Markets.pdf.
+Accessed: 2024-01-24.
+[9] National Stock Exchange of India. NSE - national stock exchange of india ltd. https:
+//www.nseindia.com/, 2023. Accessed: 2023-10-11.
+[10] Thierry Roncalli. Handbook of Sustainable Finance. Available at SSRN , 2022.
+[11] Sim˜ ao Moraes Sarmento and Nuno Horta. A Machine Learning based Pairs Trading
+Investment Strategy . Springer, 2021.
+[12] UN Principles for Responsible Investment. Climate change and the just transition: A
+guide for investor action. https://www.unpri.org/download?ac=9452, 2018. Accessed:
+2023-10-04.
+[13] World Business Council for Sustainable Development. Reporting Matters 2020. https:
+//www.wbcsd.org/contentwbc/download/10460/156310/1, 2020. Accessed: 2023-10-
+04.
+[14] World Resources Institute. State of Climate Action 2022. https://www.wri.org/
+webform/download publication?source entity type=node&source entity id=102515,
+2022. Accessed: 2023-10-04.
+14

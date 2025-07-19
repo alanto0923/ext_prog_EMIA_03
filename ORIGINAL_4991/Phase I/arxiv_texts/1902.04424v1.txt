@@ -1,0 +1,710 @@
+arXiv:1902.04424v1  [math.LO]  12 Feb 2019Kalimullin Pair and Semicomputability in α-Computability
+Theory
+Dávid Natingga
+February 13, 2019
+Abstract
+We generalize some results on semicomputability by Jockusc h [4] to the setting of α-Computability Theory.
+We deﬁne an α-Kalimullin pair and show that it is deﬁnable in the α-enumeration degrees Dαeif the pro-
+jectum of αisα∗=ωor ifαis an inﬁnite regular cardinal. Finally using this work on α-semicomputability
+andα-Kalimullin pairs we conclude that every nontrivial total α-enumeration degree is a join of a maximal
+α-Kalimullin pair if αis an inﬁnite regular cardinal.
+1α-Computability Theory
+α-Computability Theory is the study of the deﬁnability theor y over Gödel’s Lαwhereαis an admissible
+ordinal. One can think of equivalent deﬁnitions on Turing ma chines with a transﬁnite tape and time [5] [6]
+[7] [8] or on generalized register machines [9]. Recommende d references for this section are [12], [2], [10]
+and [3].
+Classical Computability Theory is α-Computability Theory where α=ω.
+1.1 Gödel’s Constructible Universe
+Deﬁnition 1.1. (Gödel’s Constructible Universe)
+Deﬁne Gödel’s constructible universe asL:=/uniontext
+β∈OrdLβwhereγ,δ∈Ord,δis a limit ordinal and:
+L0:=∅,
+Lγ+1:= Def(Lγ) :={x|x⊆Lγandxis ﬁrst-order deﬁnable over Lγ},
+Lδ=/uniontext
+γ<δLγ.
+1.2 Admissibility
+Deﬁnition 1.2. (Admissible ordinal[2])
+An ordinal αisΣ1admissible (admissible for short) iff αis a limit ordinal and LαsatisﬁesΣ1-collection:
+∀φ(x,y)∈Σ1(Lα).Lα|=∀u[∀x∈u∃y.φ(x,y) =⇒ ∃z∀x∈u∃y∈z.φ(x,y)]whereLαis theα-th
+level of the Gödel’s Constructible Hierarchy (deﬁnition 1. 1).
+Example 1.3. (Examples of admissible ordinals [2] [17])
+•ωCK
+1- Church-Kleene ω1, the ﬁrst non-computable ordinal
+•every stable ordinal α(i.e.Lα≺Σ1L), e.g.δ1
+2- the least ordinal which is not an order type of a ∆1
+2
+subset of N, 1ststable ordinal
+1•every inﬁnite cardinal in a transitive model of ZF
+1.3 Basic concepts
+Deﬁnition 1.4. A setK⊆αisα-ﬁnite iffK∈Lα.
+Deﬁnition 1.5. (α-computability and computable enumerability)
+•A function f:α→αisα-computable ifffisΣ1(Lα)deﬁnable.
+•A setA⊆αisα-computably enumerable (α-c.e.) iffA∈Σ1(Lα).
+•A setA⊆αisα-computable iffA∈∆1(Lα)iffA∈Σ1(Lα)andα−A∈Σ1(Lα).
+Proposition 1.6. [2] There exists a Σ1(Lα)-deﬁnable bijection b:α→Lα.
+LetKγdenote an α-ﬁnite set b(γ). The next proposition establishes that we can also index pai rs and
+other ﬁnite vectors from αnby an index in α.
+Proposition 1.7. [10] For every n, there is a Σ1-deﬁnable bijection pn:α→α×α×...×α(n-fold
+product).
+Similarly, we can index α-c.e.,α-computable sets by an index in α. LetWedenote an α-c.e. set with
+an indexe < α .
+Proposition 1.8. (α-ﬁnite union of α-ﬁnite sets1)
+α-ﬁnite union of α-ﬁnite sets is α-ﬁnite, i.e. if K∈Lγ, then/uniontext
+γ∈KKγ∈Lα.
+1.4 Enumeration reducibility
+The generalization of the enumeration reducibility corres ponds to two different notions - weak α-enumeration
+reducibility and α-enumeration reducibility.
+Deﬁnition 1.9. (Weakα-enumeration reducibility)
+Ais weakly α-enumeration reducible to Bdenoted as A≤wαeBiff∃Φ∈Σ1(Lα)stΦ(B) ={x < α:
+∃δ < α[/an}bracke⊔le{⊔x,δ/an}bracke⊔ri}h⊔ ∈Φ∧Kδ⊆B]}. The setΦis called a weak α-enumeration operator.
+Deﬁnition 1.10. (α-enumeration reducibility)
+Aisα-enumeration reducible to Bdenoted as A≤αeBiff∃W∈Σ1(Lα)st∀γ < α[Kγ⊆A⇐⇒
+∃δ < α[/an}bracke⊔le{⊔γ,δ/an}bracke⊔ri}h⊔ ∈W∧Kδ⊆B]].
+Denote the fact that Areduces to BviaWasA=W(B).
+Fact 1.11. (Transitivity)
+Theα-enumeration reducibility ≤αeis transitive. But in general the weak α-enumeration reducibility is not
+transitive.
+Lemma 1.12. A≤αeB⊕C∧B∈Σ1(Lα) =⇒A≤αeC
+Fact 1.13. IfA≤wαeBandB≤αeC, thenA≤wαeC.
+1From [12] p162.
+21.5 Properties of α-enumeration operator
+Fact 1.14. IfA⊆α, thenΦe(A)≤wαeA.
+Fact 1.15. (Monotonicity)
+∀e < α∀A,B⊆α[A⊆B=⇒Φe(A)⊆Φe(B)].
+Proposition 1.16. (Witness property)
+Ifx∈Φe(A), then∃K⊆A[K∈Lα∧x∈Φe(K)].
+Proof. NoteΦe(A) :=/uniontext{Kγ:∃δ < α[/an}bracke⊔le{⊔γ,δ/an}bracke⊔ri}h⊔ ∈We∧Kδ⊆A}. Thus if x∈Φe(A), then∃γ < α st
+x∈Kγand so∃δ < α[/an}bracke⊔le{⊔γ,δ/an}bracke⊔ri}h⊔ ∈We∧Kδ⊆A]. TakingKto beKδconcludes the proof.
+1.6 Totality
+Deﬁnition 1.17.2Thecomputable join of setsA,B⊆αdenotedA⊕Bis deﬁned to be
+A⊕B:={2a:a∈A}∪{2b+1 :b∈B}.
+The computable join satisﬁes the usual properties of the cas eα=ω.
+The generalization of the Turing reducibility corresponds to two different notions - weak αreducibility
+andαreducibility.
+Deﬁnition 1.18. (Total reducibilities)
+•Aisα-reducible to Bdenoted as A≤αBiffA⊕A≤αeB⊕B.
+•Ais weakly α-reducible to Bdenoted as A≤wαBiffA⊕A≤wαeB⊕B.
+Deﬁnition 1.19. (Total set)
+A subsetA⊆αis total iff A≤αeAiffA≡αeA⊕A.
+1.7Σ1-projectum
+Deﬁnition 1.20. (Projectum3)
+TheΣ1projectum (projectum for short) of αis
+α∗:= min{γ≤α:∃A⊆γ[A∈Σ1(Lα)∧A/ne}a⊔ionslash∈Lα]}.
+Proposition 1.21.4The following ordinals are equal:
+i)α∗:= min{γ < α:∃A⊆γ[A∈Σ1(Lα)∧A/ne}a⊔ionslash∈Lα]}
+ii)min{γ≤α:∃partial surjection p1:γ ⇀ α∈Σ1(Lα)}
+iii)min{γ≤α:∃total injection i:α֌γ∈Σ1(Lα)}.
+Proposition 1.22. (Indexing α-c.e. sets with a projectum)
+We can index all α-c.e. sets just with indices from α∗.
+1.8 Degree Theory
+Deﬁnition 1.23. (Degrees)
+• Dα:=P(α)/≡αis a set of α-degrees .
+• Dαe:=P(α)/≡αeis a set of α-enumeration degrees.
+2From [2] p8.
+3Deﬁnition 1.19 in [2].
+4Theorem 1.20 in [2].
+3Induce≤onDαandDαeby≤αand≤αerespectively.
+Fact 1.24. (Embedding of the total degrees)
+/an}bracke⊔le{⊔Dα,≤/an}bracke⊔ri}h⊔embeds into /an}bracke⊔le{⊔Dαe,≤/an}bracke⊔ri}h⊔viaι:Dα֒→ Dαe,A/maps⊔o→A⊕A.
+Deﬁnition 1.25. (Total degrees)
+Letι:Dα֒→ Dαebe the embedding from above. The total α-enumeration degrees T OTαeare the image
+ofι, i.e.T OTαe:=ι[Dα].
+Proposition 1.26. (Unboundedness of α-enumeration degrees) For every set A⊆α, there is a set B⊆α
+stA <αeB.
+1.9 Regularity
+Regularity and quasiregularity
+Deﬁnition 1.27. (Regularity and quasiregularity)
+•A subsetA⊆αisα-regular iff∀γ < α.A ∩γ∈Lα.
+•A subsetA⊆αisα-quasiregular iff∀γ <sup(A).A∩γ∈Lα.
+If clear from the context, we just say regular andquasiregular instead of α-regular and α-quasiregular
+respectively.
+Fact 1.28. i)∀A⊆α[Aregular⇐⇒Aregular],
+ii)∀A,B⊆α[Aregular∧Bregular=⇒A⊕Bregular],
+iii)∀A,B⊆α[Aregular∧Bregular=⇒A∪Bregular].
+Theorem 1.29. (Sack’s Theorem on regular set existence5)
+LetAbeα-computably enumerable. Then there exists a regular, α-computably enumerable Bof the same
+α-degree as A.
+Theorem 1.30. (Shore’s Splitting Theorem [15])
+LetBbeα-computably enumerable and regular. Then there exists α-computably enumerable A0,A1st
+B=A0⊔A1andB/ne}a⊔ionslash≤αAi(i∈ {0,1}).
+Megaregularity
+Megaregularity of a set Ameasures the amount of the admissibility of a structure stru cture/an}bracke⊔le{⊔Lα,A/an}bracke⊔ri}h⊔, i.e. a
+structure extended by a predicate with an access to A.
+Note 1.31. (Formula with a positive/negative parameter)
+•LetBdenote a set, B+its enumeration, B−the enumeration of its complement B.
+•Denote by Σ1(Lα,B)the class of Σ1formulas with a parameter Bor inLα.
+•AΣ1(Lα,B)formulaφ(x,B)isΣ1(Lα,B+)iffBoccurs in φ(x,B)only positively, i.e. there is no
+negation up the formula tree above the literal x∈B.
+•Similarly, a Σ1(Lα,B)formulaφ(x,B)isΣ1(Lα,B−)iffBoccurs in φ(x,B)only negatively.
+Deﬁnition 1.32. (Megaregularity)
+LetB ∈ {B,B−,B+}and addBas a predicate to the language for the structure /an}bracke⊔le{⊔Lα,B/an}bracke⊔ri}h⊔.
+5Sacks [12], theorem 4.2
+4•ThenBisα-megaregular iffαisΣ1(Lα,B)admissible iff the structure /an}bracke⊔le{⊔Lα,B/an}bracke⊔ri}h⊔is admissible,
+i.e. every Σ1(Lα,B)deﬁnable function satisﬁes the replacement axiom: ∀f∈Σ1(Lα,B)∀K∈
+Lα.f[K]∈Lα.
+•Bispositively α-megaregular iffB+isα-megaregular.
+•Bisnegatively α-megaregular iffB−isα-megaregular.
+If clear from the context, we just say megaregular instead of α-megaregular.
+Remark 1.33. (Hyperregularity and megaregularity)
+A person familiar with the notion of hyperregularity shall n ote that a set is megaregular iff it is regular and
+hyperregular.
+Proposition 1.34. LetB ∈ {B,B−,B+}be megaregular and let A⊆α. Then: A∈LαiffA∈
+∆1(Lα,B)andAis bounded by some β < α .
+Proof.=⇒direction is clear. For the other direction, assume that A∈∆1(Lα,B)andA⊆β < α for
+someβ. WLOG let A/ne}a⊔ionslash=∅and leta∈A. Deﬁne a function f:α→αbyf(x) =y:⇐⇒x/ne}a⊔ionslash∈β∧y=
+a∨x∈β∧[x∈A∧x=y∨x/ne}a⊔ionslash∈A∧y=a]. SinceA∈∆1(Lα,B), the function fisΣ1(Lα,B)
+deﬁnable. By the megaregularity of B, we have that A=f[β]∈Lαas required.
+Corollary 1.35. (Megaregularity closure and degree invariance)
+i) IfA≤αeBandB+megaregular, then A+megaregular.
+ii) IfA≡αeB, then[A+megaregular iff B+megaregular ].
+iii) IfA≤αBandBmegaregular, then Amegaregular.
+iv) IfA≡αB, then[Amegaregular iff Bmegaregular ].
+v) IfA∈Σ1(Lα), thenA+is megaregular.
+vi) IfA∈∆1(Lα), thenAis megaregular.
+Regularity and deﬁnability
+Proposition 1.36. (Σ1deﬁnability and α-enumeration reducibilities correspondence)
+We have the following implication diagram:
+A∈Σ1(Lα,B+) A≤wαeB A ≤αeBifBregularifB+megaregular
+alwaysalways
+Notions of regularity by strength
+Remark 1.37. We have the following strict separation of the notions where α-ﬁniteness is the strongest
+condition and quasiregularity is the weakest:
+α-ﬁnite=⇒α-computable =⇒megaregular =⇒regular=⇒quasiregular
+51.10 Useful lemmas
+Lemma 1.38.6A0∩A1=∅,Ai∈{0,1}∈Σ1(Lα,A0⊔A1) =⇒A0⊔A1≡αA0⊕A1.
+Proof.A0⊔A1≤αA0⊕A1trivially. Let i∈ {0,1}. ForA0⊕A1≤αA0⊔A1:x∈Airecognizable
+byAi∈Σ1(Lα,A0⊔A1). Alsox/ne}a⊔ionslash∈Aiis recognizable since x/ne}a⊔ionslash∈Ai⇐⇒x∈A1−i∨x/ne}a⊔ionslash∈A0⊔A1
+by disjointness and both x∈A1−i,x/ne}a⊔ionslash∈A0⊔A1are recognizable from A0⊔A1. HenceA0⊔A1≡α
+A0⊕A1.
+The lemma implies that if A0,A1are disjoint α-incomparable α-computably enumerable sets, then
+A0⊔A1≡αA0⊕A1(proposition 3.3 in [16]).
+Lemma 1.39. There exists an α-computable function g:α×α×α→αstDη:={x|g(η,x,1) = 1} ∈Lα,
+Eη:={x|g(η,x,2) = 1} ∈Lαand for every pair (ˆD,ˆE)ofα-ﬁnite subsets of αthere is an index η < α
+stDη=ˆDandEη=ˆE.
+Therefore we can α-effectively number the pairs of the α-ﬁnite subsets of αby the indices of α.
+Proof. Note that there are α-computable bijections j:α→Lαandf:α→α×α. Letπ1andπ2be the
+projections. Deﬁne g(η,x,k) := [x∈j◦πk◦f(η)]. Thengis the required α-computable function.
+Lemma 1.40. Leti,j,k:α×α→αbe anyα-computable numberings of α-ﬁnite subsets of α. Then:
+i) There is an α-computable function u:α→αst
+∀γ < α./uniontext
+x∈j(γ)i(x) =k(u(γ)).
+ii) There is an α-computable function v:α×α→αst
+∀γ,δ < α.k (v(γ,δ)) =i(γ)⊕j(δ).
+iii) There exist α-computable functions iπ1,iπ2:α→αst
+∀l∈ {1,2}∀γ < α.k(iπl(γ)) ={xl:/an}bracke⊔le{⊔x1,x2/an}bracke⊔ri}h⊔ ∈i(γ)}.
+iv) There exists an α-computable function ip2:α→αst
+∀γ < α.k(ip2(γ)) =i(γ)×j(γ).
+v) There exists an α-computable function w:α×α→αst ifγ,δ < α , thenk(w(γ,δ)) ={/an}bracke⊔le{⊔x,y/an}bracke⊔ri}h⊔:x∈
+j(δ)∧y∈j(γ)∧y∈i(x)}.
+vi) There exists a function ti,j:α→α∈Σ1(Lα)st∀γ < α.i(γ) =j(ti,j(γ)).
+vii) LetK(γ) :=/uniontext
+x∈j(γ)i(x). Then there exists a function si,j:α→α∈Σ1(Lα)st∀γ < α.s i,j(γ) =
+
+0 K(γ) =∅
+sup(K(γ))K(γ)/ne}a⊔ionslash=∅.
+2 Semicomputability
+The goal of this section is to lift the necessary results of Jo ckusch [4] on semicomputable sets from the level
+ωto a level α.
+Deﬁnition 2.1. A setA⊆αisα-semicomputable iff there exists a total α-computable function sA:
+α×α→αcalled a selector function satisfying:
+i)∀x,y∈α.sA(x,y)∈ {x,y},
+ii)∀x,y∈α[{x,y}∩A/ne}a⊔ionslash=∅=⇒sA(x,y)∈A].
+Denote by sc(Lα)the class of α-semicomputable sets.
+Fact 2.2. (Semicomputability closure)
+i)A∈sc(Lα)⇐⇒A∈sc(Lα),
+ii)A⊕B∈sc(Lα) =⇒A∈sc(Lα)∧B∈sc(Lα).
+6From lemma 6 in [11] on p66.
+6Deﬁnition 2.3. (Index set)
+Anindex set for a setA⊆αdenoted as AIis a set of allindices of α-ﬁnite subsets of A, i.e.AI:={γ <
+α:Kγ⊆A}.
+Proposition 2.4. (Semicomputability of an index set)
+For every set A⊆α, its index set AIisα-semicomputable.
+Proof. Deﬁne the selector function of AIassAI:={/an}bracke⊔le{⊔γ,δ,/an}bracke⊔ri}h⊔:Kγ⊆Kδ}. The function sAIisα-
+computable as required.
+Deﬁnition 2.5. (Binary ordering)
+Deﬁne<b⊆ P(α)×P(α)and≤b⊆ P(α)×P(α)to be numerical orderings on the binary representation
+of the compared sets:
+•A <bB:⇐⇒ ∃β∈α[β/ne}a⊔ionslash∈A∧β∈B∧A∩β=B∩β],
+•A≤bB:⇐⇒A <bB∨A=B.
+Remark 2.6. The restrictions of the orderings <band≤btoα-ﬁnite sets are ﬁrst-order deﬁnable and
+α-computable since an α-ﬁnite set is bounded.
+Proposition 2.7. (Properties of binary ordering)
+Let/lhd∈ {<,≤}, then:
+i)<bis a strict total order,
+ii)≤bis a total order,
+iii)([0,1],/lhd∗R)∼=(P(α),/lhdb))where∗Ris an appropriate model of the hyperreal numbers,
+iv)A/lhdbB⇐⇒B/lhdbA.
+Proof. i), ii), iii) are trivial. To prove iv), use iii) and consider P(α)as the interval [0,1]from the ﬁeld of
+hyperreals, where 0 :=∅and1 :=α. Then:B/lhdbA⇐⇒1−B/lhdb1−A⇐⇒ −B/lhdb−A⇐⇒
+A/lhdbB.
+Fact 2.8. (Binary and subset ordering)
+i)A⊂B=⇒A <bB,
+ii)A⊆B=⇒A≤bB,
+iii)A=B⇐⇒A≡bB.
+Note 2.9. IfA≤bCandB≤bC, is it true that A∪B≤bC?
+No. Consider A= 011...,B= 100...,C= 110.... ThenA∪B= 111.... ThusA≤bCandB≤bC,
+but¬A∪B≤bC.
+Deﬁnition 2.10. Given a set AdeﬁneLA:={x∈α:Kx≤bA},RA:=LA.
+Remark 2.11. IfA/ne}a⊔ionslash∈Lα, then:
+•LA={x < α:Kx<bA}areα-ﬁnite sets leftofA,
+•RA={x < α:A <bKx}areα-ﬁnite sets right ofA.
+Fact 2.12. (Properties of left/right α-ﬁnite sets)
+LetA⊆αandβ,γ,δ < α . Then:
+i)K∈Lα∧Kδ=/uniontext
+γ∈KKγ∧δ∈LA=⇒K⊆LA,
+ii)β∈LA∧γ∈RA∧Kβ∩δ=Kγ∩δ=⇒Kβ∩δ⊆A.
+7Lemma 2.13. For anyA⊆αthe setsLA,RAareα-semicomputable.
+Proof.LAisα-semicomputable since it has an α-computable selector function s:={(x,y) :Kx≤b
+Ky}∪{(y,x) :Kx>bKy}by remark 2.6.
+Lemma 2.14. LetA⊆αbe a quasiregular set, then A≡αLA≡αRA.
+Proof. IfA∈∆1(Lα), then trivially A≡αLA≡αRA. Hence WLOG assume that A/ne}a⊔ionslash∈Lαand use
+remark 2.11. Also WLOG A/ne}a⊔ionslash∈∆1(Lα)and so in the proof implicitly use the property: ∀x∈A∃y,z[x <
+y < α∧x < z < α ∧y/ne}a⊔ionslash∈A∧z∈A].
+Note that/uniontext
+x∈KγKx∈Lα. Hence for any γ < α we have: Kγ⊆LA⇐⇒ ∃β < α[Kβ<bA∧∀x∈
+Kγ.Kx<bKβ]. ThusLA≤αeAviaW:={/an}bracke⊔le{⊔γ,δ/an}bracke⊔ri}h⊔:∃β < α[Kδ={β} ∧ ∀x∈Kγ.Kx<bKβ]} ∈
+Σ1(Lα). By symmetry RA≤αeA. HenceLA⊕RA≤αeA.
+Let/hatwideAdenoteAorA. ThenKγ⊆/hatwideA⇐⇒ ∃βL,βR< α[∀x∈Kγ∀y≤x[y∈KβL⇐⇒
+y∈KβR]∧Kγ⊆/hatwidestKβL∧βL∈LA∧βR∈RA]for anyγ < α using the quasiregularity of Aand
+fact 2.12ii. Hence deﬁne W:={/an}bracke⊔le{⊔γ,δ/an}bracke⊔ri}h⊔:∃βL,βR< α[∀x∈Kγ∀y≤x[y∈KβL⇐⇒y∈
+KβR]∧Kγ⊆/hatwidestKβL∧Kδ={βL} ⊕ {βR}]}. Note that W∈Σ1(Lα)and so/hatwideA≤αeLA⊕RAviaW.
+HenceA⊕A≤αeLA⊕RA.
+Therefore A⊕A≡αeLA⊕RA=LA⊕LA=RA⊕RAand soA≡αLA≡αRAas required.
+Lemma 2.15.7B∈Σ1(Lα)∧B >α0 =⇒
+∃A[Aregular∧A≡αB∧LA/ne}a⊔ionslash∈Π1(Lα)∧LA/ne}a⊔ionslash∈Σ1(Lα)].
+Proof. By theorem 1.29 every Σ1(Lα)set isα-equivalent to some regular set, so WLOG assume that Bis
+regular. By Shore’s Splitting Theorem 1.30, ∃C0,D0∈Σ1(Lα)[B=C0⊔D0∧C0|αD0(incomparable
+wrtα-reducibility) ]. Using theorem 1.29 again, let C,D beα-c.e. regular sets st C≡αC0andD≡αD0.
+DeﬁneA:=C⊕D.
+NoteA=C⊕D≡αC0⊕D0. HenceA≡αBby lemma 1.38 as required.
+AsDis regular, so Dis regular. As CandDare regular, so A=C⊕Dis regular as required.
+Next we prove LA/ne}a⊔ionslash∈Π1(Lα)∧LA/ne}a⊔ionslash∈Σ1(Lα). For suppose to the contrary that ¬(LA/ne}a⊔ionslash∈Π1(Lα)∧LA/ne}a⊔ionslash∈
+Σ1(Lα)). ThenLA∈Σ1(Lα)∨LA∈Π1(Lα).
+•CaseLA∈Σ1(Lα):
+Note that D≤αeC⊕Cvia
+W:={/an}bracke⊔le{⊔γ,δ/an}bracke⊔ri}h⊔:β= min{ǫ < α:Kγ∩ǫ=Kγ}∧∃ζ∈LA∀x < β[
+(2x∈Kδ⇐⇒2x+1/ne}a⊔ionslash∈Kδ⇐⇒2x∈Kζ)∧
+(x∈Kγ=⇒2x+1∈Kζ)∧
+(2x+ 1/ne}a⊔ionslash∈Kζ=⇒x∈D)]}. The set Wisα-c.e. since LAandDareα-c.e. The condition
+2x∈Kδ⇐⇒2x+ 1/ne}a⊔ionslash∈Kδensures that Kδcontains the initial segment C∩βofC. The
+conditions 2x∈Kδ⇐⇒2x∈Kζand2x+ 1/ne}a⊔ionslash∈Kζ=⇒x∈Densure that Kζcontains the
+initial segment (C∩β)⊕(D∩β)ofC⊕D. Finally, the condition x∈Kγ=⇒2x+ 1∈Kζ
+veriﬁes that Kγis a subset of D, or more precisely a subset of its initial segment D∩β.
+AsDisα-c.e., so this gives us D≤αCwhich is a contradiction to the case LA∈Σ1(Lα).
+•CaseLA∈Π1(Lα):
+Note that RA=LA∈Σ1(Lα). Hence similarly C≤αDusing the fact that RAandCare both
+α-c.e. by applying a symmetric argument to the one above. This is a contradiction to the case
+LA∈Π1(Lα).
+7Adapted from Lemma 5.5 in [4] for α=ω
+8So by the two cases LA/ne}a⊔ionslash∈Π1(Lα)∧LA/ne}a⊔ionslash∈Σ1(Lα).
+Therefore given B >α0, there is a regular set AstA≡αB∧LA/ne}a⊔ionslash∈Π1(Lα)∧LA/ne}a⊔ionslash∈Σ1(Lα)as
+required.
+Theorem 2.16. LetB⊆αbe quasiregular and B >α0. Then there exists an α-semicomputable set Ast
+A≡αB∧A/ne}a⊔ionslash∈Σ1(Lα)∧A/ne}a⊔ionslash∈Π1(Lα).
+Proof. Ifdegα(B)isα-c.e. degree, then WLOG let B∈Σ1(Lα). Then by lemma 2.15 there is CstCis
+quasiregular, B≡αC∧LC/ne}a⊔ionslash∈Σ1(Lα)∧LC/ne}a⊔ionslash∈Π1(Lα). By lemma 2.14 and quasiregularity of Cwe have
+thatC≡αLCand soB≡αLC. HenceA:=LCis the required α-semicomputable set by lemma 2.13.
+Otherwise degα(B)is not anα-c.e. degree and so ∀C∈degα(B)[C/ne}a⊔ionslash∈Σ1(Lα)∧C/ne}a⊔ionslash∈Π1(Lα)]. Note
+thatA:=LB≡αBby the quasiregularity of Band by lemma 2.14 and so A/ne}a⊔ionslash∈Σ1(Lα)∧A/ne}a⊔ionslash∈Π1(Lα).
+Finally,Aisα-semicomputable by lemma 2.13 as required.
+3 Kalimullin pair
+The goal of this section is to generalize the results of Kalim ullin [14] on the deﬁnability of a Kalimullin
+pair to a level α.
+3.1 Introduction and basic properties
+Deﬁnition 3.1. SetsA,B⊆αare aα-U-Kalimullin pair denoted by KU(A,B)iff∃W≤αeU[A×B⊆
+W∧A×B⊆W]. If clear, we omit the preﬁx αand sayU-Kalimullin pair (or just U-K-pair) and denote
+it byKU(A,B). Similarly, if U∈Σ1(Lα), then we say that A,B are a Kalimullin pair (or just K-pair) and
+denoteK(A,B).
+The setWis called a witness to the U-Kalimullin pair.
+Proposition 3.2.8IfA≤αeU, then∀B⊆α.KU(A,B).
+Proof. Take the witness W:=A×α.
+Proposition 3.3. IfAisα-semicomputable, then K(A,A).
+Proof. Deﬁne the witness W∈Σ1(Lα)to the Kalimullin pair K(A,A)to beW:={(x,y)∈α:
+sA(x,y) =x}wheresAis anα-computable selector function for an α-semicomputable set A.
+Deﬁnition 3.4. A,B⊆αare a trivial Kalimullin pair iff K(A,B)andA∈Σ1(Lα)∨B∈Σ1(Lα). If
+A,B are a not a trivial Kalimullin pair, they form a nontrivial Kalimullin pair, denoted by Knt(A,B).
+Deﬁnition 3.5. (Maximal Kalimullin pair)
+A Kalimullin pair K(A,B)ismaximal denoted by Kmax(A,B)iff
+∀C,D[A≤αeC∧B≤αeD∧K(C,D) =⇒A≡αeC∧B≡αeD].
+Remark 3.6. Note that in the deﬁnition of a maximal Kalimullin pair we use α-enumeration reducibility
+instead of a weak α-enumeration reducibility since we want that a maximal Kali mullin pair is deﬁnable
+(given that a Kalimullin pair is deﬁnable) in the structure /an}bracke⊔le{⊔Dαe,≤/an}bracke⊔ri}h⊔where≤is induced by ≤αe.
+Proposition 3.7.9AssumeA,B⊆α∧A/ne}a⊔ionslash∈Σ1(Lα)∧B/ne}a⊔ionslash∈Σ1(Lα)∧ K(A,B)where the witness of
+K(A,B)isW. Then:
+i)A={a:∃b[b/ne}a⊔ionslash∈B∧(a,b)∈W]}.
+ii)B={b:∃a[a/ne}a⊔ionslash∈A∧(a,b)∈W]}.
+8Proposition 2.2 in [14] for α=ω.
+9From [14] and proposition 1.8 in [1].
+9Proof. i):
+0. Assume A,B⊆α∧A/ne}a⊔ionslash∈Σ1(Lα)∧B/ne}a⊔ionslash∈Σ1(Lα)∧K(A,B).
+1. Deﬁne A2:={a:∃b[b/ne}a⊔ionslash∈B∧(a,b)∈W]}.
+2. Assume a∈A.
+3. Assume a/ne}a⊔ionslash∈A2.
+4.∀b[¬(b/ne}a⊔ionslash∈B∧(a,b)∈W)]by 3.
+5.∀b[b∈B∨(a,b)/ne}a⊔ionslash∈W]by 4.
+6.∀b[(a,b)∈W=⇒b∈B]by 5.
+7.A×B⊆Wby 0.
+8.B={b:∃a∈α.(a,b)∈W}by 7.
+9.B≤αeWby 8.
+10.W∈Σ1(Lα)by 0.
+11.B∈Σ1(Lα)by 9, 10.
+12.false by 0, 11.
+13.a∈A2by 3, 12.
+14.A⊆A2by 2, 13.
+15. Assume a∈A2.
+16.∃b[b/ne}a⊔ionslash∈B∧(a,b)∈W]by 1, 15.
+17. Assume a/ne}a⊔ionslash∈A.
+18.b/ne}a⊔ionslash∈B∧a/ne}a⊔ionslash∈Aby 16, 17.
+19.A×B⊆Wby 0.
+20.(a,b)∈Wby 18, 19.
+21.false by 16, 20.
+22.a∈Aby 17, 21.
+23.A2⊆Aby 15, 22.
+24.A=A2by 14, 23. QED of i).
+The proof of ii) is symmetric.
+Corollary 3.8. AssumeA,B⊆α∧A/ne}a⊔ionslash∈Σ1(Lα)∧B/ne}a⊔ionslash∈Σ1(Lα)∧K(A,B). Then:
+i)A≤wαeBandB≤wαeA,
+ii)A≤αeBifB−is megaregular, B≤αeAifA−is megaregular.
+Proof. Follows from proposition 3.7.
+Lemma 3.9. (Kalimullin pair distributivity)
+Suppose that/logicalandtext
+i∈2Ai/ne}a⊔ionslash=∅. Then/logicalandtext
+i∈2K(Ai,B)⇐⇒ K(/circleplustext
+i∈2Ai,B)⇐⇒ K(/producttext
+i∈2Ai,B)
+Proof. Suppose/logicalandtext
+i∈2K(Ai,B). For any i∈2letAi×B⊆Ui∈Σ1(Lα)andAi×B⊆Ui.
+DeﬁneV:={(2a+i,b) : (a,b)∈Ui,i∈2}.
+DeﬁneW:={((a0,a1),b) :∀i∈2.(2ai+i,b)∈V}.
+DeﬁneU∗
+i:={(ai,b) :∃(a0,a1).((a0,a1),b)∈W}.
+Then/logicalandtext
+i∈2Ai×B⊆Ui∈Σ1(Lα)∧Ai×B⊆Ui=⇒
+(/circleplustext
+i∈2Ai)×B⊆V∈Σ1(Lα)∧/circleplustext
+i∈2Ai×B⊆V=⇒
+(/producttext
+i∈2Ai)×B⊆W∈Σ1(Lα)∧/producttext
+i∈2Ai×B⊆W=⇒(by/logicalandtext
+i∈2Ai/ne}a⊔ionslash=∅)/logicalandtext
+i∈2Ai×B⊆U∗
+i∈Σ1(Lα)∧Ai×B⊆U∗
+i.
+Lemma 3.10. Kmax(A,B) =⇒ Knt(A,B)
+10Proof. (Of lemma 3.10)
+1. Assume Kmax(A,B).
+2. Assume B≡αe0.
+3. Assume A≡αe0.
+4.∃C⊆α∧C >αeAby unboudedness of Dαe1.26.
+5.LC⊕RC≡αeCby deﬁnition 2.10.
+6. Assume WLOG LC>αeAby 4, 5.
+7.Kmax(LC,RC)byLCα-semicomputable and RC=LA.
+8.LC≥αeA∧RC≥αeBby 2, 3.
+9.LC≡αeAby 1, 8.
+10.false by 6, 9.
+11.A >αe0by 3, 10.
+12.KA:={x∈α: ΦA
+x(x)↓}.
+13.KA≡αeKA⊕KAby 12.
+14.A≡αeKAby 12.
+15.KA>αeKAby 13, 14.
+16.KA>αeAby 14, 15.
+17.K(KA,B)by 2.
+18.KA≡αeAby 1, 17.
+19.false by 16, 18.
+20.B >αe0by 2, 19.
+21.Knt(A,B)by 11, 20.
+3.2 Deﬁnability of an α-Kalimullin pair
+For this section let Dx,Exbe a pair of α-ﬁnite sets indexed by x < α according to lemma 1.39. For any
+x < α deﬁne
+Vx:={y < α:Dx⊆Dy∧Ex⊆Ey}
+Lemma 3.11. Assume that x∈Y⇐⇒x∈X∧Dx⊆AwhereDxis anα-ﬁnite set with an
+α-computable index x. ThenY≤αeX⊕A.
+Proof. RecallY≤αeX⊕A⇐⇒ ∃W∈Σ1(Lα)∀γ < α[Kγ⊆Y⇐⇒ ∃/an}bracke⊔le{⊔γ,δ/an}bracke⊔ri}h⊔ ∈W.Kδ⊆X⊕A].
+NoteKγ⊆Y⇐⇒ ∀x∈Kγ.x∈Y⇐⇒ ∀x∈Kγ[x∈X∧Dx⊆A]⇐⇒Kγ⊆X∧/uniontext
+x∈KγDx⊆
+A⇐⇒ (By lemma 1.40i) Kγ⊆X∧Ku(γ)⊆A⇐⇒ (By lemma 1.40ii) Kv(γ,u(γ))⊆X⊕A.
+Hence deﬁne W:={/an}bracke⊔le{⊔γ,δ/an}bracke⊔ri}h⊔< α:δ=v(γ,u(γ))}. Asu,v∈Σ1(Lα), soW∈Σ1(Lα). Moreover,
+Kγ⊆Y⇐⇒ ∃/an}bracke⊔le{⊔γ,δ/an}bracke⊔ri}h⊔ ∈W.Kδ⊆X⊕A. Therefore Y≤αeX⊕A.
+Lemma 3.12. AssumeMs∈Σ1(Lα)andXs∈Lα. LetW:={/an}bracke⊔le{⊔a,b/an}bracke⊔ri}h⊔:∃x∈Ms[a∈Dx∧b∈Ex∧x∈
+Φe((Xs∪(Ms∩Vx))⊕U)]}. Assume U+is megaregular. Then W≤αeU.
+Proof. LetSe:= Φe((Xs∪(Ms∩Vx))⊕U). We ﬁrst prove W≤αeSe. NoteKγ⊆W⇐⇒
+∀/an}bracke⊔le{⊔a,b/an}bracke⊔ri}h⊔ ∈Kγ./an}bracke⊔le{⊔a,b/an}bracke⊔ri}h⊔ ∈W⇐⇒ ∀/an}bracke⊔le{⊔a,b/an}bracke⊔ri}h⊔ ∈Kγ.∃x∈Ms[a∈Dx∧b∈Ex∧x∈Se]⇐⇒
+∀/an}bracke⊔le{⊔a,b/an}bracke⊔ri}h⊔ ∈Kγ.∃x∈Ms[/an}bracke⊔le{⊔a,b/an}bracke⊔ri}h⊔ ∈Px∧x∈Se]whereiP:α→α∈Σ1(Lα)is a function of lemma 1.40iv
+andPx:=KiP(x). Deﬁne φ(γ,δ) :⇐⇒ ∀y∈Kγ∃x∈Kδ.y∈Px. Deﬁne V:={/an}bracke⊔le{⊔γ,δ/an}bracke⊔ri}h⊔:Kδ⊆
+Ms∧φ(γ,δ)}. Then continuing Kγ⊆W⇐⇒ ∀y∈Kγ∃x∈Ms[y∈Px∧x∈Se]⇐⇒
+∃δ[Kδ⊆Ms∧Kδ⊆Se∧φ(γ,δ)](WhereKδ∈Lαhas to exist as an image of an α-computable
+function restricted to an Kγ∈Lαby the admissibility of α.)⇐⇒ ∃/an}bracke⊔le{⊔γ,δ/an}bracke⊔ri}h⊔ ∈V.Kδ⊆Se. Note
+φ(γ,δ)⇐⇒ ∃H[H=w(γ,δ)∧∀y∈Kγ∃x∈Kδ./an}bracke⊔le{⊔x,y/an}bracke⊔ri}h⊔ ∈H]wherew:α×α→α∈Σ1(Lα)with
+11Kw(γ,δ):={/an}bracke⊔le{⊔x,y/an}bracke⊔ri}h⊔:x∈Kδ∧y∈Kγ∧y∈Px}is a function of lemma 1.40v. Hence φ(γ,δ)∈Σ1(Lα).
+AsMs∈∆1(Lα)byMs∈∆1(Lα), soV∈Σ1(Lα). Therefore W≤wαeSe.
+NoteVx∈Σ1(Lα). By the assumptions Ms∈Σ1(Lα)andXs∈Lsit is true that Ms∈Σ1(Lα)and
+Xs∈Σ1(Lα). Thus(Xs∪(Ms∩Vx))∈Σ1(Lα). HenceSe≤wαe(Xs∪(Ms∩Vx))⊕U≤αeUby
+fact 1.14 and lemma 1.12 respectively. Hence Se≤wαeUby fact 1.13.
+AsU+is megaregular, so Se≤αeUby proposition 1.36. Hence W≤wαeUby fact 1.13. Finally,
+W≤αeUby the megaregularity of U+again.
+Lemma 3.13. LetI∈Lα. Then exists an index z < α which isα-computable from IstVz=/intersectiontext
+x∈IVx.
+Proof. Deﬁnef(I) =z:⇐⇒Dz=/uniontext
+x∈IDx∧Ez=/uniontext
+x∈IEx. By lemma 1.40i the function fis
+total and α-computable. Also/intersectiontext
+x∈IVx={y < α:/uniontext
+x∈IDx⊆Dy∧/uniontext
+x∈IEx⊆Ey}=Vf(I)=Vzas
+required.
+Lemma 3.14. LetD⊆A⊆αandE⊆B⊆αsatisfying A,B/ne}a⊔ionslash∈Σ1(Lα)andD,E∈Lα. Deﬁne
+Z:=ZD,E:={x < α:D⊆Dx⊆A∧E⊆Ex⊆B}. Then:
+i)Z≡αeA⊕B,
+ii)Z≤wαeA⊕B,
+iii)Z/ne}a⊔ionslash∈Σ1(Lα),
+iv)Zis unbounded if A⊕Bis megaregular.
+Proof. i) First note that for all α-ﬁnite sets Kγ,Kδthere is some x < α stDx=Kγ,Ex=Kδ. Hence if
+we require that Dx(orEx) is ﬁxed to some α-ﬁnite set K∈Lα, still the remaining sets Ex(orDx) include
+allα-ﬁnite sets. Note A≤αeZviaW:={/an}bracke⊔le{⊔γ,δ/an}bracke⊔ri}h⊔:∃x < α[D∪Kγ⊆Dx∧Kδ={x}]} ∈Σ1(Lα).
+Similarly, B≤αeZ. Consequently, A⊕B≤αeZ. DeﬁneID,A:={x < α:D⊆Dx⊆A}. Deﬁne
+IE,B:={x < α:E⊆Ex⊆B}.ID,A≤αeAviaWA:={/an}bracke⊔le{⊔γ,δ/an}bracke⊔ri}h⊔:∀x∈Kγ.D⊆Dx∧/uniontext
+x∈KγDx=
+Kδ} ∈Σ1(Lα). Similarly IE,B≤αeB. Note that Z=ID,A∩IE,B. ThusZ≤αeID,A⊕IE,B≤αeA⊕B.
+Therefore A⊕B≡αeZ.
+ii) Note that ID,A≤wαeAviaΦvw:={/an}bracke⊔le{⊔x,δ/an}bracke⊔ri}h⊔:∃y < α[y/ne}a⊔ionslash∈Dx∧y∈D∧Kδ=∅∨y∈Dx∧Kδ=
+{y}}. Similarly, IE,B≤wαeB. HenceZ=ID,A∪IE,B≤wαeA⊕Bas required.
+iii) IfZ∈Σ1(Lα), thenZ∈Σ1(Lα)andA∈Σ1(Lα),B∈Σ1(Lα)which contradicts the assump-
+tion. Hence Z/ne}a⊔ionslash∈Σ1(Lα).
+iv) From ii) and megaregularity of A⊕B, we have Z≤αeA⊕B. NoteA⊕B=A⊕B. Combining
+this with i) it yields Z≤αA⊕B. HenceZ∈∆1(Lα,A,B). IfZwas bounded, then by proposition 1.34
+using the megaregularity of A⊕B,Zisα-ﬁnite. This contradicts iii). Hence Zhas to be unbounded.
+Deﬁnition 3.15. (Weak halting set)
+Theweak halting set is deﬁned as K(A) :={x < α:x∈Φx(A)}.
+Theorem 3.16.10LetA,B,U⊆α. Let one of the conditions hold:
+i) the projectum of αisα∗=ωandU+is megaregular.
+ii)A⊕B⊕K(U)is megaregular.
+Suppose¬KU(A,B). Then∃X,Y⊆α[Y≤αeX⊕A∧Y≤αeX⊕B∧Y/ne}a⊔ionslash≤wαeX⊕U].
+The following proof is a generalization of the proof for the c ase when α=ωin [14].
+Proof. We perform a construction in α∗stages and deﬁne sets X,Y st∀x < α :
+x∈Y⇐⇒x∈X∧Dx⊆A⇐⇒x∈X∧Ex⊆B (1)
+which guarantees Y≤αeX⊕AandY≤αeX⊕Bby lemma 3.11.
+10Theorem 2.5 in [14] for α=ω.
+12Index the requirements and α-enumeration operators by indices in α∗using proposition 1.22. Aim to
+meet for all e < α∗the requirements
+Re:Y/ne}a⊔ionslash= Φe(X⊕U).
+At each stage s < α∗of the construction aim to deﬁne an α-ﬁnite set Xsand anα-computable set Msso
+that for all s < α∗they satisfy:
+Xs⊆Xs+1 (2)
+Ms+1⊆Ms (3)
+Xs+1−Xs⊆Ms+1 (4)
+∀D,E∈Lα[D⊆A∧E⊆B=⇒ ∃x∈Ms[D⊆Dx⊆A∧E⊆Ex⊆B]] (5)
+Xs∈Lα (6)
+Ns∈Lα (7)
+Is∈Lα (8)
+Ms:= (/intersectiondisplay
+x∈IsVx)−Ns=Vz−Ns (9)
+Ms∈∆1(Lα) (10)
+Pre-construction
+By statement (9), the set Msis deﬁned at every stage s < α∗by the sets NsandIs. Since the set Isis
+α-ﬁnite at the stage sby statement (8), so by lemma 3.13 there is an index zwhich isα-computable from
+IsandVz=/intersectiontext
+x∈IsVx. Hence the equality (/intersectiontext
+x∈IsVx)−Ns=Vz−Nsholds at every stage swhere
+Is∈Lα. Consequently also the set Vzisα-computable at such stage s.
+Since the set Nsisα-ﬁnite by statement (7) and Vzisα-computable at the stage s, so the set Mshas to
+beα-computable at the stage s, hence statement (10) holds.
+When proving at the stage s < α∗that statement (5) holds, we use the fact that AandBare notα-ﬁnite
+by proposition 3.2 since ¬KU(A,B). This given α-ﬁnite sets D,E , enables us to ﬁnd arbitrarily large
+α-ﬁnite supersets of D,E contained in AandBrespectively.
+Constructing X
+The setXwill be constructed in α∗-many stages.
+•Stages= 0. SetX0:=∅,N0:=∅,I0:=∅. Observe statement (5) is true for M0=α. Clearly,
+statements (6) to (8) are satisﬁed.
+•Stages+ 1 = 3e >0,3eis a successor ordinal. Deﬁne Xs+1:=Xs,Ns+1:=Ns,Is+1:=Is.
+Since the sets Xs+1,Ns+1,Is+1are the same as the sets Xs,Ns,Isand statements (2) to (8) hold at
+the stage sby IH, they hold at the stage s+1too.
+•Stages+1 = 3e+1. By induction hypothesis let Xs,Ns,Isbe given and α-ﬁnite by statements (6)
+to (8). Deﬁne Xs+1:=Xs,Ns+1:=Ns∪{e},Is+1:=Is. Trivially, statements (6) to (8) hold at
+the stage s+1by IH at the stage s.
+NoteMs+1=Ms− {e}by statement (9). We claim that the set Ms+1satisﬁes statement (5). Let
+D,E∈Lα∧D⊆A∧E⊆B. By IH on Msthere isx∈Msst[D⊆Dx⊆A∧E⊆Ex⊆B].
+NoteDx∈Lα, but by proposition 3.2 A/ne}a⊔ionslash∈Lα, henceDx⊂A. Letz∈A−Dx. ThenˆD:=
+Dx∪{z} ∈Lα. By IH on Msthere isy∈MsstˆD⊆Dy⊆A∧E⊆Ey⊆B. Ifx/ne}a⊔ionslash=e, then
+13x∈Ms+1:=Ms−{e}. Otherwise x=e/ne}a⊔ionslash=yandy∈Ms+1∧D⊆Dx⊂ˆD⊆Dy⊆A∧E⊆
+Ey⊆B. Therefore in any case the set Ms+1satisﬁes statement (5).
+•Stages+1 = 3e+2. Aim to ﬁnd x∈Msst one of the two following statements is true:
+1:Dx/ne}a⊔ionslash⊆A∧Ex/ne}a⊔ionslash⊆B∧x∈Φe((Xs∪(Ms∩Vx))⊕U),
+2:Dx⊆A∧Ex⊆B∧x/ne}a⊔ionslash∈Φe((Xs∪(Ms∩Vx))⊕U).
+First we prove the existence of such x∈Ms. Assume that ∀x∈Msthe statement 2 is false. Deﬁne
+W:={/an}bracke⊔le{⊔a,b/an}bracke⊔ri}h⊔:∃x∈Ms[a∈Dx∧b∈Ex∧x∈Φe((Xs∪(Ms∩Vx))⊕U)]}.
+ThenW≤αeUby the regularity of U+, lemma 3.12, statement (10) and statement (6).
+We prove A×B⊆W. Let(a,b)∈A×B. By statement (5) for Msit follows ∃x∈Ms[a∈
+Dx⊆A∧b∈Ex⊆B]. Since statement 2 is false, we have x∈Φe((Xs∪(Ms∩Vx))⊕U). Thus
+(a,b)∈W. Since¬KU(A,B), there is a pair (a,b)∈A×Bst(a,b)∈W. Thus there is x∈Ms
+sta∈Dx,b∈Exandx∈Φe((Xs∩(Ms∩Vx))⊕U). HenceDx/ne}a⊔ionslash⊆A,Ex/ne}a⊔ionslash⊆Band statement 1
+is true for x∈Ms. Therefore there is x∈Msst statement 1 or statement 2 is true. Choose such an
+elementx∈Msusing the oracle A⊕B⊕K(U).
+Case 1: If statement 1 is true for x, thenx∈Φe((Xs∪(Ms∩Vx)⊕U). By proposition 1.16 and
+fact 1.15 there is F⊆Xs∪(Ms∩Vx)stF∈Lα∧x∈Φe(F⊕U). Thus deﬁne Xs+1:=Xs∪F,
+Ns+1:=Ns,Is+1:=Is. Note that Ms+1:=Ms. The set Fisα-ﬁnite, by IH Xsisα-ﬁnite and so
+the union Xs+1=Xs∪Fisα-ﬁnite satisfying statement (6). Statements (7) and (8) are true by IH.
+Case 2: Otherwise if statement 2 is true for x, then deﬁne Xs+1:=Xs∪{x},Ns+1:=Ns,Is+1:=
+Is∪{x}. Trivially, the sets Xs+1,Ns+1,Is+1areα-ﬁnite using IH, hence satisfying statements (6)
+to (8). Note Ms+1=Ms∩Vxby statement (9). Ms+1satisﬁes statement (5): if D⊆A,E⊆
+B,D∈Lα,E∈Lα, then by the hypothesis on Ms, there is y∈MsstD∪Dx⊆Dy⊆Aand
+E∪Ex⊆Ey⊆B. Therefore y∈Ms∩Vx=Ms+1.
+Note in both cases Xs+1−Xs⊆Ms+1statement (4) being satisﬁed.
+•Stages= 3e >0,3eis a limit ordinal. If α∗=ω, then this stage does not arise. Hence assume that
+A⊕B⊕K(U)is megaregular.
+DeﬁneXs:=/uniontext
+r<sXr,Ns:=/uniontext
+r<sNr,Is:=/uniontext
+r<sIr. We claim that these sets are α-ﬁnite.
+Deﬁne a partial function f:α ⇀ α on the ordinals smaller than sbyf(r) ={γ < α:Kγ=Xr}.
+Note that by IH for all r < s , the setXrisα-ﬁnite using statement (6). Also during the construction
+we only use the oracle A⊕B⊕K(U). Thus the index f(r)of anα-ﬁnite set Xris alsoA⊕B⊕K(U)-
+computable. Consequently, the function fisΣ1(Lα,A⊕B⊕K(U))deﬁnable. As s < α∗, sosas
+a limit ordinal is an α-ﬁnite set. Therefore by the megaregularity of A⊕B⊕K(U), the setf[s]is
+alsoα-ﬁnite. But then Xs=/uniontext
+γ∈f[s]Kγisα-ﬁnite by proposition 1.8. So statement (6) holds at the
+stagesas required. Applying similar reasoning, using the veracit y of statements (7) and (8) for all
+r < s by IH, we conclude that statements (7) and (8) hold at the stag estoo.
+NoteMs:=/intersectiontext
+r<sMrby statement (9). We prove that statement (5) holds at the sta ges. Note
+thatMs=Vz−Nsby statement (9) for some z < α satisfying both Dz⊆AandEz⊆B.
+Fixα-ﬁnite sets DandEstD⊆AandE⊆B. WLOG let Dz⊆DandEz⊆E. Deﬁne
+Z:={x < α:D⊆Dx⊆A∧E⊆Ex⊆B}. As¬K(A,B)by the assumption, so A/ne}a⊔ionslash∈Σ1(Lα)
+andB/ne}a⊔ionslash∈Σ1(Lα)by proposition 3.2. Note that A⊕Bis megaregular. Hence Zis unbounded by
+lemma 3.14. On the other hand Ns⊆s. ThusZ−Ns/ne}a⊔ionslash=∅. Note{x∈Ms:D⊆Dx⊆A∧E⊆
+Ex⊆B}={x∈Vz−Ns:D⊆Dx⊆A∧E⊆Ex⊆B}=Z−Ns/ne}a⊔ionslash=∅. Therefore
+14∀D,E∈Lα[D⊆A∧E⊆B=⇒ ∃x∈Ms[D⊆Dx⊆A∧E⊆Ex⊆B]]and so the statement
+statement (5) is satisﬁed at the limit stage s.
+Finally, deﬁne X:=/uniontext
+s<α∗Xs.
+Deﬁning Y
+To deﬁne Yﬁrst prove ∀z∈X[Dz⊆A⇐⇒Ez⊆B]: Letz∈X. Then there is a stage s+1 = 3e+2
+stz∈Xs+1−Xs. In case 2 Dz⊆AandEz⊆B. In case 1 there is xstXs+1−Xs⊆Vx,Dx/ne}a⊔ionslash⊆Aand
+Ex/ne}a⊔ionslash⊆B. Asz∈Xs+1−Xs⊆Vx, soDx⊆DzandEx⊆Ez. ThusDz/ne}a⊔ionslash⊆AandEz/ne}a⊔ionslash⊆B. Deﬁne the set
+Y:={z∈X:Dz⊆A}={z∈X:Ez⊆B}.
+Final veriﬁcation
+NoteY≤αeX⊕AandY≤αeX⊕Bas proved under statement (1).
+We prove Y/ne}a⊔ionslash≤wαeX⊕Uby showing Y/ne}a⊔ionslash= Φe(X⊕U)for an arbitrary e < α∗. Consider a stage
+s+1 = 3e+2. In case 1 Xs+1=Xs∪Fand there is xstx∈Φe(F⊕U),Dx/ne}a⊔ionslash⊆AandEx/ne}a⊔ionslash⊆B. Hence
+x∈Φe(X⊕U)−Y. In case 2 there is xstXs+1=Xs∪{x},Ms+1=Ms∩Vx,Dx⊆A,Ex⊆Band
+x/ne}a⊔ionslash∈Φe((Xs∪Ms+1)⊕U).
+Letz∈X. Then∃t.z∈Xt+1−Xt⊆Mt+1by statement (4). If t≥s, thenz∈Ms+1by
+statement (3). If t < s , thenz∈Xsby statement (2). Hence z∈Xs∪Ms+1and thusX⊆Xs∪Ms+1.
+Hencex∈Y−Φe(X⊕U)by fact 1.15. Therefore in both cases Y/ne}a⊔ionslash= Φe(X⊕U)and soY/ne}a⊔ionslash≤wαe
+X⊕U.
+Theorem 3.17.11The statements i) - iv) are equivalent and imply v). Moreover if the projectum of α
+isα∗=ωandU+is megaregular or A⊕B⊕K(U)is megaregular, then all the statements i) - v) are
+equivalent.
+i)KU(A,B), i.e.∃W≤αeU.A×B⊆W∧A×B⊆W,
+ii)∃f(x,y)∈∆1(Lα).∀X⊆α.∀x,y∈α.Φx(A⊕X)∩Φy(B⊕X)⊆Φf(x,y)(X⊕U)⊆Φx(A⊕
+X)∪Φy(B⊕X),
+iii)∃f(x,y)∈∆1(Lα)∀x,y < α[Φx(A) = Φy(B) =⇒Φf(x,y)(U) = Φx(A)],
+iv)∀V1,V2[V1≤αeA∧V2≤αeB=⇒ ∃W≤αeU.V1∩V2⊆W⊆V1∪V2],
+v)∀X⊆α.degαe(X⊕U) = degαe(A⊕X⊕U)∧degαe(B⊕X⊕U).
+Proof. The implications ii) =⇒iii), ii)=⇒iv), ii)=⇒v), iv)=⇒i) are trivial. It remains to prove
+the implications i) =⇒ii) and iii) =⇒i).
+i)=⇒ii):
+Assume∃W≤αeU.A×B⊆W∧A×B⊆Wand letW= Φ(U)for some α-enumeration operator
+Φ.
+Deﬁnefst for any X⊆α,x,y∈α:
+Φf(x,y)(X⊕V) :={z∈α:∃D,E∈Lα[z∈Φx(D⊕X)∩Φy(E⊕X)∧D×E⊆Φ(V)}.
+Thenfisα-computable and satisﬁes the condition ii).
+iii)=⇒ i): Suppose that AandBsatisfy the condition iii) with fbeing computable. Deﬁne a
+computable function gst for every Y⊆αandy < α :
+Φg(y)(Y) =
+
+αify∈Y,
+∅otherwise.
+ThenA,B are aU-Kalimullin pair with a witness W={(m,n) : Φf(g(m),g(n))(U)/ne}a⊔ionslash=∅}.
+11From theorem 2.6 in [14] for DT.
+15Hence i) ⇐⇒ ii)⇐⇒ iii)⇐⇒ iv)=⇒v) for any α. Note v) =⇒i) is the contrapositive of
+theorem 3.16. Therefore i) ⇐⇒ ii)⇐⇒ iii)⇐⇒ iv)⇐⇒ v) ifα∗=ωandU+is megaregular or
+A⊕B⊕K(∅)is megaregular.
+The statement i) iff v) establishes the deﬁnability of a U-Kalimullin pair.
+Proposition 3.18.12LetB⊆α. The set of all AstK(A,B)is closed downwards under α-enumeration
+reducibility as well as closed under join.
+Proof. SupposeK(A0,B)andA1≤αeA0. Hence∃W0∈Σ1(Lα).A0×B⊆W0∧A0×B⊆W0. Let
+V1:=A1×α,V2:=α×B. AsA1≤αeA0, soV1≤αeA0∧V2≤αeB. Hence by theorem 3.17 (i
+implies iv), ∃W1∈Σ1(Lα)stV1∩V2⊆W1⊆V1∪V2. Therefore V1∩V2=A1×B⊆W1. Also
+W1⊆V1∪V2⇐⇒V1∩V2⊆W1and soV1∩V2= (A1×α)∩(α×B) =A1×B⊆W1. Hence
+K(A1,B).
+LetK(A0,B)∧ K(A1,B). IfAi=∅fori∈2thenA0⊕A1≡αeA1−iand soK(A0⊕A1,B).
+Otherwise K(A0⊕A1,B)by lemma 3.9.
+Corollary 3.19. (Deﬁnability of a Kalimullin Pair)13
+Letα∗=ωor assume V=Land letαbe an inﬁnite regular cardinal. Then:
+∀a,b∈ Dαe[K(a,b)⇐⇒ ∀x∈ Dαe.(a∨x)∧(b∨x) =x].
+Proof. Note that if U∈Σ1(Lα), thenU+is megaregular by corollary 1.35. Thus the statement above
+follows from (i⇐⇒v)in theorem 3.17 and from the K-pair being a degree theoretic property by its
+invariance under the αe-reducibility by proposition 3.18.
+Corollary 3.20. (Deﬁnability of an U-Kalimullin Pair)
+AssumeV=Land letαbe an inﬁnite regular cardinal. Then:
+∀a,b,u∈ Dαe[Ku(a,b)⇐⇒ ∀x∈ Dαe.(a∨x∨u)∧(b∨x∨u) =x∨u].
+Proof. Note that since αis an inﬁnite regular cardinal, so A⊕B⊕K(U)is megaregular. Thus the statement
+above follows from (i⇐⇒v)in theorem 3.17 and from the K-pair being a degree theoretic property by
+its invariance under the αe-reducibility by proposition 3.18.
+3.3 Maximal Kalimullin pair and total degrees
+Proposition 3.21. (Maximality of semicomputable megaregular Kalimullin pai rs)14
+LetA⊆αand letA+andA−be both megaregular. If K(A,A)∧A/ne}a⊔ionslash∈Σ1(Lα)∧A/ne}a⊔ionslash∈Π1(Lα), then
+Kmax(A,A).
+Proof. SupposeK(A,A)andK(C,D),A≤αeC,A≤αeD. By proposition 3.18 K(A,D). By corol-
+lary 3.8 and megaregularity of A−we haveD≤αeA. Similarly, K(A,C)and thusC≤αeA=Aby the
+megaregularity of A+.
+Corollary 3.22. Letα∗=ωor assume V=Land letαbe an inﬁnite regular cardinal. Then every
+nontrivial total megaregular degree is a join of a maximal K-pair, i.e.
+∀a∈ T OTmr
+αe−{0}∃b,c∈ Dαe[(a=b∨c)∧Kmax(b,c)].
+12Proposition 1.7 in [1] for α=ω.
+13The case for α=ωproved in [14].
+14Generalized from Maximal K-pairs in [1] for α=ω.
+16Proof. Sinceα∗=ωorαis an inﬁnite regular cardinal, thus a (maximal) Kalimullin pair is deﬁnable by
+corollary 3.19.
+Supposea∈ T OT αe−{0}andais a megaregular degree (at least one or equivalently every s et inais
+megaregular). Then by theorem 2.16, there is A⊆αstA α-semicomputable, A/ne}a⊔ionslash∈Σ1(Lα),A/ne}a⊔ionslash∈Σ1(Lα)
+andA⊕A∈aby the totality of a. AsA α-semicomputable, so K(A,A)by proposition 3.3. K(A,A)is
+nontrivial since A/ne}a⊔ionslash∈Σ1(Lα)andA/ne}a⊔ionslash∈Σ1(Lα). Thus by proposition 3.21 and the megaregularity of Awe
+haveKmax(A,A).
+By inspecting whether a degree which is not quasiregular cou ld be a join of a maximal Kalimullin pair,
+one may establish the following:
+Proposition 3.23. Ifdegα(B)is not a quasiregular degree, then there is Cst0<αC <αBand
+Kmax(C,C).
+Proof. Sincedegα(B)is not a quasiregular degree, then Dis not quasiregular for any D≡αB. SoBis
+not quasiregular.
+Letβ < α be the least ordinal st B∩β/ne}a⊔ionslash∈Lα. DeﬁneA:=B∩β. ThenA⊂BbyBnot being
+quasiregular. By the minimality of β, the setAis quasiregular. Ais bounded, but not α-ﬁnite, hence A
+cannot be α-computable. Thus A >α∅. By theorem 2.16 there is α-semicomputable set CstA≡αC,
+C/ne}a⊔ionslash∈Σ1(Lα)andC/ne}a⊔ionslash∈Π1(Lα). AsCisα-semicomputable, so K(C,C). By proposition 3.21 we have that
+Kmax(C,C).
+4 Acknowledgements
+The author would like to thank Mariya Soskova and Hristo Ganc hev for the explanation of the proof of the
+Kalimullin pair deﬁnability in the classical case, i.e. α=ω.
+The author was supported by Hausdorff Research Institute fo r Mathematics during Hausdorff Trimester
+Program Types, Sets and Constructions .
+References
+[1] Mingzhong Cai, Hristo A Ganchev, Steffen Lempp, Joseph S . Miller, and Mariya I. Soskova. Deﬁning
+totality in the enumeration degrees.
+[2] C-T Chong. Techniques of admissible recursion theory. 1 984.
+[3] Robert A Di Paola. The basic theory of partial α-recursive operators. Annali di Matematica Pura ed
+Applicata , 134(1):169–199, 1983.
+[4] Carl G Jockusch. Semirecursive sets and positive reduci bility. Transactions of the American Mathe-
+matical Society , pages 420–436, 1968.
+[5] Peter Koepke. Turing computations on ordinals. Bulletin of Symbolic Logic , 11(03):377–397, 2005.
+[6] Peter Koepke. α-recursion theory and ordinal computability. BIWOC , page 48, 2007.
+[7] Peter Koepke. Ordinal computability. In Mathematical Theory and Computational Practice , pages
+280–289. Springer, 2009.
+[8] Peter Koepke and Benjamin Seyfferth. Ordinal machines a nd admissible recursion theory. Annals of
+Pure and Applied Logic , 160(3):310–318, 2009.
+17[9] Peter Koepke and Ryan Siders. Register computations on o rdinals. Archive for Mathematical Logic ,
+47(6):529–548, 2008.
+[10] Wolfgang Maass. Contributions to [alpha]-and [beta]- recursion theory. 1978.
+[11] Gerald E Sacks. Degrees of unsolvability . Number 55. Princeton University Press, 1963.
+[12] Gerald E Sacks. Higher recursion theory. 1990.
+[13] Alan L Selman. Arithmetical reducibilities i. Mathematical Logic Quarterly , 17(1):335–350, 1971.
+[14] I Sh. Kalimullin. Deﬁnability of the jump operator in th e enumeration degrees. Journal of Mathemat-
+ical Logic , 3(02):257–267, 2003.
+[15] Richard A Shore. Splitting an ð ˙I˙Zij-recursively enumerable set. Transactions of the American Math-
+ematical Society , 204:65–77, 1975.
+[16] Robert I Soare. Recursively enumerable sets and degrees: A study of computa ble functions and com-
+putably generated sets . Springer Science & Business Media, 1987.
+[17] GAISI Takeuti. Recursive functions and arithmetical functions of ordinal numbers . North-Holland,
+1965.
+18

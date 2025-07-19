@@ -1,0 +1,18 @@
+domain,name,code
+Momentum,Price Momentum (10 days),"((CLOSE - DELAY(CLOSE, 10)) / DELAY(CLOSE, 10))"
+Momentum,Rate of Change (ROC) (10 days),"((CLOSE - DELAY(CLOSE, 10)) / DELAY(CLOSE, 10))"
+Momentum,Moving Average Crossover (10 vs 50 day),"(SMA(CLOSE, 10) - SMA(CLOSE, 50))"
+Momentum,Volume Momentum,"VOLUME - DELAY(VOLUME, 50)"
+Mean Reversion,Mean Reversion (20 days),"(SMA(CLOSE, 20) - CLOSE)"
+Mean Reversion,Moving Average Reversion,"(SMA(CLOSE, 20) - CLOSE)"
+Mean Reversion,"Stochastic Oscillator (%K, 14-day)","(CLOSE - MIN(LOW, 14)) / (MAX(HIGH, 14) - MIN(LOW, 14))"
+Volatility,"Average True Range (ATR, 14-day)","ATR(HIGH, LOW, CLOSE, 14)"
+Volatility,Daily High-Low Range,(HIGH - LOW)
+Volatility,"Normalized Bollinger Band Width (20-day, 2 StdDev)","((SMA(CLOSE, 20) + 2 * STD(CLOSE, 20)) - (SMA(CLOSE, 20) - 2 * STD(CLOSE, 20))) / SMA(CLOSE, 20)"
+Liquidity,"Volume Rate of Change (VROC, 10-day)","((VOLUME / DELAY(VOLUME, 10)) - 1)"
+Liquidity,Trading Volume,VOLUME
+Technical,Moving Average (MA),"SMA(CLOSE, 20)"
+Technical,Exponential Moving Average (MA),"EMA(CLOSE, 20)"
+Technical,Relative Strength Index (RSI),"RSI(CLOSE, 14)"
+Technical,Bollinger Bands (20-day),"(SMA(CLOSE, 20) - 2 * STD(CLOSE, 20)) / SMA(CLOSE, 20)"
+Technical,"Stochastic Oscillator (%K, 14-day)","(CLOSE - MIN(LOW, 14)) / (MAX(HIGH, 14) - MIN(LOW, 14))"

@@ -1,0 +1,1397 @@
+1 
+ Newly Developed Flexible Grid Trading Model Combined ANN and SS O algorithm 
+ 
+ 
+Wei-Chang Yeh 1,*, Yu-Hsin Hsieh 1, Chia-Ling Huang 2 
+1 Department of Industrial Engi neering and Engineering Managemen t, National Tsing Hua University, 
+Hsinchu 300044, Taiwan; W.C. Yeh: yeh@ieee.org; Y.H. Hsieh: kyp ss93003@gmail.com 
+2 Department of International L ogistics and Transportation Manag ement, Kainan University, Taoyuan 
+33857, Taiwan; clhuang@mail.knu.edu.tw 
+* Correspondence: yeh@ieee.org 
+ 
+Abstract : In modern society, the tradi ng methods and strategies used in  financial market have gradually 
+changed from traditional on-site trading to electronic remote t rading, and even online automatic trading 
+performed by a pre-programmed computer programs because the con tinuous development of network and 
+computer computing technology. The quantitative trading, which the main purpose is to automatically 
+formulate people’s investment d ecisions into a fixed and quanti fiable operation logic that eliminates all 
+emotional interference and the influence of subjective thoughts  and applies this logic to financial market 
+activities in order to obtain ex cess profits above average retu rns, has led a lot of attentions in financial 
+market. The development of self- adjustment programming algorith ms for automatically trading in 
+financial market has transformed a top priority for academic re search and financial practice. Thus, a new 
+flexible grid trading model combined with the Simplified Swarm Optimization (SSO) algorithm for 
+optimizing parameters for various market situations as input va lues and the fully connected neural network 
+(FNN) and Long Short-Term Memory (LSTM) model for training a qu antitative trading model to 
+automatically calculate and adjust the optimal trading paramete rs for trading after inputting the existing 
+market situation is developed and studied in this work. The pro posed model provides a self-adjust model 
+to reduce investors’ effort in th e trading market, obtains outp erformed investment return rate and model 
+robustness, and can properly con trol the balance between risk a nd return. 
+ 
+Keywords : Flexible grid trading model, simplified swarm optimization (S SO), artificial intelligence (AI), 
+Fully connected neural network ( FNN), Long Short-Term Memory (L STM) model. 
+ 
+1. Introduction 
+The formulation of financial mar ket trading methods and strateg ies has changed w ith the continuous 
+development of network and computer computing technology from t he late 20th century to the present. 
+More and more financial institutions and major market trading a re gradually changing from traditional on-
+site trading to electronic remote trading, and even automated t rading can be performed in a pre-
+programmed computer programs (algorithmic trading). According t o statistics, the US stock market with 
+the most developed financial development currently has as many as 60 to 70 percent of its trading 2 
+ automated by programmed programs.  In this wave of application o f computer computi ng technology and 
+financial markets, the combina tion of quantitative trading and computer algorithm is particularly 
+prosperous [1]. 
+The main function of the financial market is to provide the cur rent market price of traded commodities 
+so that market participants can benefit from it. Quantitative t rading emerged in the stock market in the late 
+20th century. In recent years, it has been widely applied in automa ted trading systems in the stock, currency, 
+and futures markets. In order to  receive excess returns, statis tics and mathematical models are used to 
+obtain the high probability of the market happening in the futu re and formulate a corresponding set of 
+modeled trading logic for mark et trading by observing a large a mount of historical data in the past. 
+The biggest feature of quantitat ive trading is the use of a fix ed set of logic for tr ading, which is most 
+often used in stock and futures trading market, in order to obt ain a stable and con tinuous excess return 
+above the average return. In addi tion, the aspects considered b y quantitative trading are becoming more 
+and more diverse including market composition, developmental ev aluation of investment targets, market 
+sentiment, etc., which can be used for further analysis and ref erence. With the development of the 
+information age, more and more relevant information has been co mpletely collected and retained, which 
+can provide quantitative trading models for reference and analy sis, make up for the inability of the human 
+brain to quickly digest huge amounts of data and can make decis ions more objectively and not be affected 
+by market sentiment. 
+Nowadays, with the changes of the times, international trade an d the internet have promoted the 
+active free trade market, which reduces trading costs and expan ds the scale and scope of trading, and the 
+relationship between the financial industry and technology is a lso deepening as well as becoming more 
+mature and popular [2, 3]. How to use the increasingly develope d computer computing as an auxiliary tool 
+for financial market trading and even becoming the key to the s uccess of traders’ profits has become the 
+focus of research in the financ ial community in recent years. 
+In the early e-commerce applica tions, more attention was paid t o how to transform the physical 
+trading form into an electronic trading form including inputtin g and storing trading information by the 
+form of electronic files, which is convenient for future search  and analysis. Such simple trading is changed 
+from manual services to electr onic services, whi ch greatly redu ces labor costs. 
+After the preliminary results of electronic finance in recent y ears, financial industry players hope that 
+in addition to using computers to complete simple trading proce dures, they can further use mature 
+computer programs to help people complete more complex trading decisions. Especially in recent years, 
+artificial intelligence has beco me increasingly prosperous, and  there have been many breakthrough 
+developments [4-7]. How to use computer programs to imitate hum an thinking logic, assist trading, and 
+even think faster, wider and deeper than humans has become the direction of development and research in 
+the financial field in recent years. 
+Trading-related programming algor ithms have emerged since the l ate 1980s. In the e arly days, more 
+human or statistical too ls were used for analysis and decision- making, and then computer programs were 
+used for trading. But today, in the past ten to twenty years, m ore and more quantitative trading has modeled 3 
+ the decision-making process and designed it into the trading al gorithm with the trading logic resulting to 
+make the algorithm more intelligent and automatic. And it has b ecome a highly practical and popular 
+research, which has attracted the attention and practice of man y governments and financial institutions [8]. 
+Today, there are many rich and diverse research results in the field of trading algorithm research, such 
+as the use of mean regression to adjust the allocation of stock  investment weights [9],  the use of long short-
+term memory (LSTM) combined with grid trading method (GTM) to p redict market trends for currency 
+trading [10], using box theory combined with support vector mac hine (SVM) to assist stock trading 
+decisions [11], using Ichimoku Kinkohyo to analyze foreign exch ange trading [12], and the use of market 
+trends instead of fixed time series to make trading decision fo r the trading strategy of the execution unit 
+[13]. It is not difficult to see that the use of computer progr ams to assist trading and even directly making 
+trading decisions and executing trading have become an unstoppa ble trend in financial development. 
+The most basic definition of grid trading method is an average pending order within a specific price 
+range to carry out a trading strategy of buying low and selling  high [14]. The principle of grid trading is 
+simple but it can effectively earn spread profits when prices f luctuate. In recent years, this strategy has 
+been often applied to a rbitrage in many financial markets [15-1 6]. 
+Simplified Swarm Optimization (S SO) was proposed by Yeh [17] in  2009 to improve the problem of 
+Particle Swarm Optimization (PSO ) in solving discrete problems with the core concept of simplicity. SSO 
+simplifies the algorithm and improves the efficiency of the sol ution, and has been widely used in solving 
+problems in many different fields [18-29]. Finding the best par ameter combination is one of the SSO 
+applications. Multiple parameters can be considered and adjuste d at the same time to find the best 
+parameter combination, which has been used to adjust the hyperp arameter combination of convolutional 
+neural network [30], optimize the parameters of solar models [3 1-33], and adjust the parameters in 
+artificial neural ne twork (ANN) [34]. 
+Recently, the application of deep learning (DL) and ANN in fina ncial activities has become more and 
+more diverse, which the most widely used is the prediction of t he stock market, exchange rate, and 
+financial index, etc. [35]. At present, there are still many st udies trying to use var ious neural network 
+models to assist people in financial forecasting and decision-m aking [36-38] for making more rational and 
+accurate judgments. 
+To sum up, this study proposed a new grid trading model, adopts  SSO algorithm to find parameters 
+suitable for various market situations as input values and labe ls, trains the fully connected neural network 
+and LSTM model, and finally, a quantitative trading model can a utomatically calculate and adjust the 
+optimal trading parameters for trading after inputting the exis ting market situation. 
+Following the rise of e-commerce and quantitative trading menti oned above, the relationship between 
+people’s economic activities and technology has become more and  more inseparable, and many trading 
+relies on programs to complete. In future trends, programs will  not only help people record trading and 
+complete transfers but even help  people make trading decisions automatically including determining the 
+timing and price of trading. Agai nst the foregoing background, the purpose of this study is to:  
+1. Provide a new set of grid trading algorithms to improve the shortcomings of premature entry and exit 4 
+ of existing grid trading models in the market. 
+2. This trading algorithm can adapt  to change in the external e nvironment as time and market conditions 
+change, and self-adjust the model to reduce investors’ effort i n the trading market. 
+3. Through a set of trading models with logical rules, the irra tional decisions brought about by investors’ 
+subjective trading deci sions are reduced. 
+4. Balance the relationship between risk and profit, and get a great reward under a cert ain reasonable risk. 
+2. Overview of grid trading, SSO, and DL 
+2.1. Grid trading 
+The most basic definition of grid trading method is an average pending order within a specific price 
+range to carry out a trading stra tegy of buying low and selling  high [14]. There are two key factors in grid 
+trading that determine the effectiveness of this strategy. The first is price volatility including both ups and 
+downs. If the price go es up all the way, t hose who hold the spo t make more prof it than grid trading. If the 
+price goes down all the way, spot traders basically cannot have  many profit opportunities but short futures 
+buyers are more able to make profits. If the market goes up and  down, the grid trading strategy has the 
+greatest profitability. The more  frequent the fluctuations, the  greater the profit rate increases. In most 
+markets, prices are highly fluctuating and often have a price m ean reversion [39-41] so that grid trading 
+strategies are now being used by more and more market players. 
+The other key determines the profit size of grid trading is its  parameter setting including grid average, 
+upper bound of the grid, lower bound of the grid, number of gri ds, initial price, stop loss point, stop profit 
+point, etc. The setting of the above parameters should be based  on product price fluctuations, trading costs, 
+risk tolerance, and the amount o f principal as the setting cons iderations, which directly affect the final 
+performance of grid trading. 
+Grid trading is mainly divided into two types: equal-distance g rid and equal-ratio grid. At present, 
+the grid that many people use i n practice is equa l-distance gri d. 
+The setting of equal-distance grid is based on the initial pric e P0, and the setting of upper bound of 
+the grid Gul, the lower bound of the grid Gll, the total number of grids n, and the calculation of the grid 
+spacing Gs by Eq. (1). 
+ 
+ul ll
+sGGGn  (1) 
+ 
+After the setting of the grid model, the trading is based on th is grid to buy and sell financial products 
+with the rise and fall of prices . For an example of the equal-d istance grid, please refer to Figure 1. 5 
+ Price
+Gul
+P0-GsP0+5Gs
+P0+4G s
+P0
+P0-2Gs
+P0-3Gs
+TimeP0+3G s
+P0+2G s
+P0+G sSellSellSell
+Buy
+Buy
+Buy
+Buy
+BuySellSellSellSell
+Buy
+Buy
+Buy
+BuySellSellSellSellSell
+Buy
+Buy
+Buy
+ 
+Figure 1. Schematic diagram of e qual-distance grid trading 
+The grid spacing Gs of equal-ratio grid is a fixed ratio and the equal-ratio grid is calculated at this 
+ratio. For an example of the e qual- ratio grid, please refer to  Figure 2. 
+Price
+Gul
+Gll TimeSellSellSell
+Buy
+Buy
+Buy
+Buy
+BuySellSellSellSell
+Buy
+Buy
+Buy
+BuySellSellSellSellSell
+Buy
+Buy
+Buys PG5
+0
+s PG4
+0
+s PG3
+0
+s PG2
+0
+s PG1
+0
+s PG0
+0
+s PG1
+0
+s PG0
+s PG0
+ 
+Figure 2. Schematic diagram of  equal-ratio grid trading 6 
+ 2.2. SSO 
+Simplified Swarm Optimization (SSO) was proposed by Yeh [17] in  2009 bases on the concepts of 
+personal best ( pbest ) and global best ( gbest ) and adds random numbers resu lting that the solution owns 
+the opportunity to escape from t he local optimal solution and i mprove the diversity of the solution. 
+The major difference between SSO and other heuristic algorithms  is its special update mechanism. 
+There are three particularly important parameter settings inclu ding Cg, Cp, and Cw, where Cg > Cp > Cw. 
+The update mechanism is shown in Eq. (2). According to the corr espondence between the random number 
+ρ and Cg, Cp, and Cw, the next generation solution t
+i,jx is determined, which may be gbest , pbest , the 
+current solution or a rando m number, respectively. 
+ 
+i,jjg
+i,j g pt
+i,j t
+pw
+wgi fρ C
+pi fρCC
+x  
+xi fρCC
+xi fρC1,[ 0 ,
+,[ , )
+,[ , )
+,[ , 1 )    
+       
+     (2) 
+ 
+where, let tt t t
+i,j i, i, i,jx xx x12, ,...,  b e  t h e  ith solution with j variables in the tth generation; ρ is a random 
+number subjects to uniform di stribution between [0, 1].  
+The update method is that when ρ is between [0, Cg), the variable t+
+i,jx1 is replaced by the global 
+best solution gj that is the best performing solution among all the solutions a t present; when ρ is between 
+[Cg, Cp), it is replaced by the best solution in the region pi,j that is the optimal solution in the past 
+generations of the variable; when is between [ Cp, Cw), it maintains the solution of the previous generation 
+t
+i,jx; when is between [ Cw, 1), it is replaced by x that is a random number generated in the upper and lower 
+bounds of the variable. The purpose is to reduce the chance of getting trapped in local optimal solutions, 
+while also increasing the d iversity of solutions. 
+2.3. DL 
+The ANN, Back-propagating method, and Long Shout-Term Memory (L STM) adopted in this study 
+have an overview in this section. 
+2.3.1. ANN 
+In recent years, DL has been widely used in medicine, industry,  transportation and other fields, which 
+can help the completion of speech recognition and machine visio n. It is a machine learning (ML) algorithm 
+based on ANN, which learns  through data features. 7 
+ The computing architecture of ANN was first proposed by WS. McC ulloch and W. Pitts [42], and 
+subsequently it has been continuously improved by many outstand ing scholars [43, 44], and it has become 
+a famous ML model in artificial intelligence (AI). 
+The basic structure of ANN is divided into three parts includin g input layer, hidden layer and output 
+layer. Each node of the input layer corresponds to the input pr edictor variable, each node of the output 
+layer corresponds to the objective variable, and the hidden lay er is sandwiched between input layer and 
+output layer. 
+Except for the nodes in the input layer, each node in the ANN i s connected to several nodes in front 
+o f  i t ,  w h i c h  i s  t h i s  m o d e l  i s  c a l l e d  f u l l y  c o n n e c t e d  n e u r a l  n e t work (FNN), and each node has a 
+corresponding weight. 
+2.3.2. Back-propagating method 
+In DL, the back-propagating method [45] is an extremely importa nt key to make the model complete 
+and is often used to train and optimize ANN. Using the back-pro pagation, the gradient of the loss function 
+to the weight can be efficiently found, and then the gradient d escent method [46] is used to solve each 
+weight. The “loss” in the loss f unction refers to the error of the actual value and the predicted value. The 
+main concept of back-propagation is to return the error resulti ng that the weight can use the error size to 
+perform gradient descent method to obtain and update the more s uitable weight, further reduce the error 
+and optimize the weight. 
+2.3.3. LSTM 
+LSTM is a model generated to improve the short-term memory of r ecurrent neural network (RNN). 
+It is mainly composed of four un its including memory cell, inpu t gate, output gate and forget gate. 
+The input gate controls whether it is input into the memory uni t this time, the memory unit is 
+responsible for storing the calcu lated value, the forget gate c ontrols to clear the memory, and the output 
+gate controls whether to out put the operation result. 
+3. Proposed Approach 
+The approach proposed in this study is presented in sequence. T he initial setting and operation 
+mechanism of grid trading is introduced in Subsection 3.1. Subs ection 3.2 presents the concept and setting 
+method of flexible grid. The use of SSO to obtain the optimal f lexible grid parameters in different 
+situations is shown in Subsection 3.3. As the training basis fo r DL, a neural network is finally trained that 
+can automatically output the suitable grid parameters for tradi ng by inputting recent market information 
+to obtain excess returns from mar ket fluctuations is represente d in Subsection 3.4. 
+3.1. Operation mechanis m of grid trading 
+This section presents in detail how grid trading practices in t his study, including initial parameter 
+setting and calculation, and subse quent operation mechanisms an d processes. 
+3.1.1. Initial parameter setting of grid trading  
+A total of five basic parameters need to be set, namely the tot al investment capital F0, the initial price 8 
+ P0, the upper bound of the grid Gul, the lower bound of the grid Gll, and the total number of grids n, before 
+operating a grid trading model. The total investment capital an d initial price are set as control variables in 
+this study, i.e., when comparing the results, the total investm ent capital and initial pr ice used in any method 
+will be set to the same fixed va lue, and compared on the same s tandard. 
+Before the grid trading model runs, the unit price difference Gs, which is the grid spacing, needs to 
+be calculated us ing Eq. (1) in Section 2 if the grid is an equa l-distance grid. Gs is a certain value in equal-
+distance grid. But it is a fixed r atio in equal-ratio grid, for  example, the value of the next grid iss PG1
+0=110 
+and the next grid iss PG2
+0=121 when P0=100 and Gs=1.1. And this ration can be calculated from Eq. (3) 
+below. 
+ 
+ul llns
+llGGGG1  (3) 
+ 
+In addition, it is also necessary to calculate how much funds s hould be used to purchase the spot 
+before grid trading, i.e., the initial purchase of spot S0, so as to sell for profit when the price rises. And 
+how much funds must be kept on hand to buy sopt when the price falls, here C0 means to start holding 
+cash. Hence, the total investmen t funds are divided into two pa rts that is represente d by the following Eq. 
+(4). The spot and funds held in each subsequent period are repr esented by Sj and Cj, where  j represents the  
+jth period. 
+F0 = S0 + C0  ( 4 )  
+ In order to calculate the initial purchase of spot 
+S0 and the initial holding of cash C0, it is necessary 
+to first calculate the number of upper grids nu and the number of lower grids nl, the sum of which is 
+equivalent to the total number of grids n such as shown in Eq. (5). The values of nu and nl can be obtained 
+by Eqs. (6)-(7), respectively. Her e, the equal-distance grid is  used as an example. 
+ 
+n = nu + nl  ( 5 )  
+ 
+nu = (Gul- P0) / Gs (6) 
+ 
+nl = (P0- Gll) / Gs (7) 
+ After calculating the number of upper grids 
+nu and the number of lower grids nl, and then further use 
+Eqs. (8)-(9) to calculate the initial purchase of spot S0 and the initial holding of cash C0. At this time, the 
+single-cell trading volume Gv is still an unknown value. 9 
+  
+S0 = Gv ∙nu ∙P0  ( 8 )  
+ 
+C0 = Gv ∙[(P0 - Gs) + Gll] / 2 ∙nl  ( 9 )  
+ 
+Finally, substitute Eqs. (8)-(9) into Eq. (4) to get the single -cell trading volume Gv, which can be 
+calculated by Eq. (10). 
+ 
+Gv = F0 / {[( P0 - Gs) + Gll] / 2∙nl + nu ∙P0} (10) 
+ 
+Finally, calculate the price of each grid cell gi, i from 1 to n using Eq. (11) (equal-distance grid) or 
+Eq. (12) (equal-ratio grid). 
+ 
+gi = Gll + Gs ∙(i - 1)  (11) 
+ 
+gi = Gll ∙i
+sG(1 )  (12) 
+3.1.2. Operation mechanism of grid trading 
+The following Figures 3 ( a)-(e) illustrate in detail how the g rid trading model updates and a djusts 
+with the market price after the initial parameters are set, and  how to settle at the end. 
+1. When the grid is initially r unning, the current price is use d as the benchmark, and the above grid price 
+is placed on a sell order, and t he following grid price is plac ed on a buy order as shown in Fig. 3 ( a). 
+BuyCurrent price
+Buy
+BuySell
+SellSell
+ 
+Fig. 3. Grid trading operation chart ( a) 
+ 2. If the price rises until it hits the first grid line, make a  sell action, update the spot volume and funds held, 
+and place a buy order at the original grid position as shown in  Fig. 3 (
+b). 10 
+ BuyCurrent price
+Buy
+BuySell
+SellSell
+ 
+Fig. 3. Grid trading operation chart ( b) 
+ 3. If the price falls back to the initial grid line, make a buy  action, update the spot v olume and funds held, 
+and place a sell order at the original grid position as shown i n Fig. 3 (
+c). 
+BuyCurrent price
+Buy
+BuySell
+SellSell
+ 
+Fig. 3. Grid trading operation chart ( c) 
+ 4. If the price continues to dr op to a grid line, make a buy ac tion, update the spot vol ume and funds held, 
+and place a sell order at the original grid position as shown i n Fig. 3 (
+d). 11 
+ Current price
+Buy
+BuySell
+SellSell
+Sell
+ 
+Fig. 3. Grid trading operation chart ( d) 
+ 5. Continue to trade with the above mechanism. Although the pri ce has returned to the original point of 
+grid trading, it has successfully arbitraged 7 times that is eq uivalent to 7 grids of grid spread profits as 
+shown in Fig. 3 (
+e). 
+Current price
+Buy
+BuySell
+Sell
+BuySellSellSell
+Buy
+Buy
+BuySellSell
+ 
+Fig. 3. Grid trading operation chart ( e) 
+ 6. When the grid trading model is to be closed, there are two w ays to end it. One is to directly keep the 
+current spot and funds held, and the other is to sell the spot at the current price and convert it into cash. 
+The former is recommended to be used when the market price is l ow, and the latter is not recommended. 
+In this study, the grid is clos ed and settled in the second met hod. 
+ 
+For the overall process of grid trading operation, please refer  to the grid trading operation flow chart 
+in following Fig. 4. 
+ 
+ 12 
+ Start
+Set
+F0, P0, Gul, Gll, n
+Make an initial pending order
+Enter new price
+Hit any grid lineNo
+Yes
+Die the price go up
+Yes
+Sell spot, update Sj and Cj , 
+and make pending orders No
+Buy spot, update Sj and Cj , 
+and make pending orders 
+Whether to stop grid trading
+Yes
+EndNo
+ 
+Fig. 4. Grid trading operation flow chart.  
+3.2. Concept and architectur e of flexible grid 
+Based on the equal-distance and equal-ratio grid trading models  used in the financial market today, 
+this study proposes a new and adaptive grid trading model: flex ible grid. Through a more flexible grid 
+structure combined with SSO algorithm and DL, a grid trading mo del that can adjust parameters according 13 
+ to market changes and adapt to various external conditions is c onstructed. 
+Under the framework of the equa l-distance grid trading model, i t can exert its maximum model 
+benefits when the market fluctua tes. Even if the price returns to the original point, it is still possible to 
+arbitrage from the volatile mark et situation based on the adopt ion of the mean reversion strategy in 
+quantitative trading [47]. On the  other hand, equal-ratio grid trading can obtain better returns in the volatile 
+rise based on the combination of t he two strategies of mean rev ersion and rend following [48]. 
+The flexible grid proposed in th is study captures the advantage s of the equal-distance grid and the 
+equal-ratio grid at the same time. It can outperform the tradit ional grid trading structure of the past whether 
+the market is sideways, rising or even falling. 
+When the flexible grid is initially set, it also needs to set i ts total investment capital F0, the initial 
+price P0, the upper bound of the grid Gul, the lower bound of the grid Gll, the number of upper grids nu and 
+the number of lower grids nl. There are two main differences compared with other models in the initial 
+setting: 1. The number of upper grids 
+nu and the number of lower grids nl in Eq. (5) ar e no longer calculated with 
+Eq. (6) and Eq. (7) but c an be set initially. 
+2. The grid is divided into upper and lower parts with the init ial price P0 as the boundary. The upper part 
+and the lower part can set the number of the grids and have the ir own grid spacing ratio. The ratio of 
+the upper grid spacing is Gsu and the lower grid spacing is Gsl. It should be noted here that Gsu must be 
+a number greater than 0 and less than 1, and Gsl must be a number greater than 1. The feature of this 
+is that the upper grid spacing b ecomes smaller and smaller as t he price is higher, i.e., the trading 
+frequency becomes more and more frequent. Similarly, the lower grid spacing becomes smaller and 
+denser when the price is lower 
+ For the specific calculation met hod of grid value, please refer  to Eqs. (13)-(14) and the over structure 
+can refer to Figure 5 below. 
+ 
+usu
+ul 0n
+0G
+GP
+P1
+1
+ (13) 
+ 
+l0l lnsl
+llPGGG1  (14) 
+ 14 
+ Gul
+GllTimeSellSellSellBuy
+BuyBuy
+Buy
+Buy
+SellSellSellSellBuy
+Buy
+Buy
+Buy SellSellSellSellSell
+Buy
+Buy
+Buys PG3
+0
+s PG2
+0
+s PG1
+0
+P
+0
+s PG1
+0
+s PG0
+s PG0Price
+⁝
+sPG0
+⁝Sell
+Buy
+Buy
+BuySellSell
+BuySellSell
+Buy
+Buy
+ 
+Figure 5. Schematic diagram of flexible grid trading. 
+ The core concept in the design process of flexible grid is to p erform more frequent sell actions when 
+the price is high, and buy the cheaper spot more frequently whe n the price is lower. The flexible grid has 
+a similar structure to the equal-distance grid in the middle se ction of the model, while the lower half of 
+the model is more similar to the  equal-ratio grid, and the uppe r half of the model is different from the 
+current common equal-distance grid and equal-ratio grid trading  model with higher mesh density at higher 
+prices. The main purpose of this model is to capture the advant ages of equal-distance grid and equal-ratio 
+grid, and can have better perfor mance than the current existing  model whether the market trend is volatile, 
+continuous rise or fall. 
+However, in order to truly take advantage of the flexible grid model architecture, optimal parameter 
+setting and self-adjustment in line with the market situation a re crucial determinants for the success or 
+failure of the model. Therefore, this study uses a SSO algorith m to determine the appropriate parameters 
+of the flexible grid in different situations that is described in Section 3.3, and input the calculated parameter 
+combination and the corresponding  market situation into the art ificial neural network (ANN) for model 
+training that is presented in Section 3.4. Finally, this study produces a trained DL model, which can 
+automatically adjust to the grid parameters most suitable for t he current market situation by simply 
+inputting the current market situation. 
+3.3. SSO for optimal parameters 
+In this subsection, the SSO algorithm is adopted to adjust the optimal solution of the flexible grid 15 
+ under different market conditions based on the flexible grid co nstructed in the previous subsection. The 
+market situation and the optimal parameters are input into the ANN as the training set for model training 
+in subsection 3.4. 
+3.3.1. Objective and Constraint 
+The main objective pursued by this study is to maximize the inv estment return. Therefore, the market 
+investment commodity price is set by the SSO algorithm after th e j period of update. And the objective 
+model please refer to following Eq. (15). 
+ 
+Max  Sj × Pj × Cj (15) 
+ 
+where Sj, Pj, and Cj represent the spot quantity, th e commodity market price, and t he funds held in the last 
+period after the initia l purchase of spot S0 and initial holding of funds C0 are inputted through the price of 
+a total j-periods. 
+In addition, in the flexible grid model, it is necessary to ens ure that the profit of each trading is greater 
+than the trading cost h% (usually the trading fee rate) so that the following constrai nt Eq. (16) is set, where 
+i is from 0 to n. 
+ 
+s.t.  gi+1 - gi > h% × gi+1 (16) 
+ 
+The calculation of gi can refer to Eqs. (11)- (12). After substituting it, it can be  found that this 
+constraint is actually a const raint on the grid parameters Gul, Gll, nu, and nl. 
+On the other hand, additional c onstraints are placed on the gri d upper and lower bounds Gul, Gll, nu, 
+and nl for experiment 1 and experiment 2 as shown in Eqs. (17)- (19),  where x is from 0 to j. 
+ 
+s.t. (experiment 1)  P0 × 105% < Gul < P0 × 130%  (17) 
+ 
+P0 × 70% < Gll < P0 × 95%  (18) 
+ 
+s.t. (experiment 2)  P0 × 105% < Gul < P0 × 150%  (17) 
+ 
+P0 × 50% < Gll < P0 × 95%  (18) 
+ 
+10 < nl < [P0 × 100/(maximum  Px × 1.3)] – 10 (19) 
+ 
+The above four constraints are to keep the error space and avoi d the overfitting of subsequent ANN 
+training, which cause the price to easily exceed the upper and lower limits of the grid resulting to lose 
+arbitrage opportunities, and contro l the parameters within a re asonable range. 16 
+ 3.3.2. Solution encoding 
+According to subsection 3.3.1, the construction of a grid tradi ng model must be set by the total 
+investment F0, initial price P0, grid upper bound Gul, grid lower bound Gll and total number of grids n. In 
+this study, F0 and P0 are control variables, hence, the parameters to be solved by S SO are Gul, Gll and n. 
+In flexible grid, the total number of grids n can be divided into the number of upper grids nu and the 
+number of lower grids nl. 
+And the solution range ca n refer to Table 1 below. 
+Table 1. Upper and lower bounds of grid trading parameters 
+Scope of use Parameters Variabl e upper bound Variable lower bou nd
+Experiment 1 grid upper bound Gul P0 × 130%  P0 × 105%  
+ grid lower bound Gll P0 × 95%  P0 × 70%  
+Experiment 2 grid upper bound Gul, P0 × 150%  P0 × 105%  
+ grid lower bound Gll P0 × 95%  P0 × 50%  
+In common use number of upper grids nu [P0 × 100/( 𝑚𝑎𝑥𝑖𝑚𝑢𝑚  P𝑥× 1.3)] − 10 10 
+ number of lower grids nl [P0 × 100/( 𝑚𝑎𝑥𝑖𝑚𝑢𝑚  P𝑥× 1.3)] − 10 10 
+ 
+The solution encoding in this st udy please refer to following F igure 6, which x1, x2, x3, and x4 are set 
+as the grid upper bound Gul, the grid lower bound Gll, the number of upper grids nu, and the number of 
+lower grids nl, respectively. 
+ 
+ Gul Gll nu nl 
+X x1 x2 x3 x4 
+Figure 6. Structure of solution encoding 
+ For example, when X = (150, 100, 10, 30), it means the grid upper bound is 150, th e grid lower bound 
+is 100, the number of upper grids is 10, the number of lower gr ids is 30, and the total number of grids is 
+40. 
+3.3.3. Parameter setting and scope of update mechanism 
+This study adopts SSO algorithm t o solve the studied problem, w here 
+ρ is a random number subjects 
+to uniform distribution between [0, 1], and the solution of the  problem is updated according to this random 
+number: when ρ is between [0, Cg), the variable t+
+i,jx1 is replaced by the global best solution gj that is the 
+best performing solution among all the solutions at present; wh en ρ is between [ Cg, Cp), it is replaced by 
+the best solution in the region pi,j that is the optimal solution in the past generations of the va riable; when 
+is between [ Cp, Cw), it maintains the solution of the previous generation t
+i,jx; when is between [ Cw, 1), it 17 
+ is replaced by x that is a random number generated in the upper and lower bound s of the variable. The 
+update mechanism can refer to Eq. (2). 
+The symbols and definitions use d in the SSO operation are shown  as following Table 2. 
+Table 2. Symbols and definitions of SSO 
+Symbols Definitions 
+𝑁𝑣𝑎𝑟 The number of variables: the grid upper bound Gul, grid lower bound Gll 
+and total number of grids n in this study. 
+𝑁sol Total number of solutions. 
+t
+ix tt t t
+iu l i l l i ix GGn( ,, )    represents the ith solution in the tth generation, 
+where t=1, 2,…, Ngen, i=1, 2, …, 𝑁sol. 
+  pg pg p g
+ul ul ll llGGGGnn,,,, ,  pbest  and gbest  of each variable durin g the update process. 
+Cg, Cp, Cw The three key parameters used to determine the update value in  SSO Can 
+be adjusted according to different situations. 
+UB UB  =  (ub1, ub2, …, ubNvar) is the upper bound of e ach variable, i.e., 
+j xub . 
+LB LB = (lb1, lb2, …, lbNvar) is the lower bound of each variable, i.e., j xlb .
+3.4. Training ANN to automatically  adjust flexible grid paramet ers 
+After using SSO to obtain the optimal grid configuration under various market conditions, the market 
+conditions and the calculated grid parameters are used as the q uestions and answers for training ANN 
+training. The market situation is interpreted in terms of the f ollowing values and input into the ANN, 
+namely, the highest price during the period, the lowest price d uring the period, the average market price, 
+the average trading quantity, the price change (initial price m inus final price), the trading quantity change 
+(initial quantity minus final qua ntity), price standard deviati on, and trading quantity s tandard deviation. 
+The output of the ANN outputs the relevant parameters required to construct a grid trading model 
+including upper bound of the gri d, lower bound of t he grid, the  number of upper grids, and the number of 
+lower grids. The specific ANN ar chitecture can refer to the fol lowing Figure 7. 18 
+ the highest price during the period
+the lowest price during the period
+ the average market price
+  the average trading quantity
+ the price change
+ price standard deviation
+trading quantity standard deviationthe trading quantity changeupper bound of the grid
+ lower bound of the grid
+the number of upper grids
+the number of lower grids...
+............
+hidden layer input layer output layer  
+Figure 7. ANN architecture 
+ In the neural network training process, the weights in the ANN nodes continuously adjust themselves 
+through the error value calculated by the loss function until t he training is completed when it converges to 
+a state with the smallest error.  Afterwards, through this train ed neural network, the optimal parameters of 
+the grid trading model can be ge nerated by inputting the recent  market state and trend, and a flexible grid 
+model can be automatically constr ucted for market trading activ ities. 
+In this study, two kinds of neural networks are used for traini ng, namely, Fully-connect Neural 
+Network (FNN) and Long Shout-Term Memory (LSTM) neural network,  which is often used for time 
+series prediction in recent year s, to observe and compare which  neural networks perform better in learning 
+grid parameters. 
+4. Experimental results 
+The data sets used for validati on and comparison in this study are 
+Standard & Poor's 500 (S&P 500), 
+NASDAQ Composite, Dow Jones Industrial Average (DJIA), Euro Sto xx 50, and Shanghai Composite, a total 
+of five large-cap indices from 2011 to 2022.  
+4.1. Verification of flexible gri d performance with fixed param eters 
+First of all, the performance of flexible grid is compared with  equal-distance grid and equal-ratio grid 
+based on the same grid number and upper and lower bounds. The r esults can be found in Tables 3-5. The 
+number of grids is calculated by Eq. (20) to be close to the re al investment situation and to ensure the 
+adequacy of the use of funds. According to the upper and lower bound conditions, each data set is divided 19 
+ into two groups for experiments. The first group uses 1.3 times  the initial price as the upper bound of the 
+grid, and 0.7 times the initial  price as the lower bound of gri d; while the second group uses 1.5 times the 
+initial price as the upper bound of the grid, and 0.5 times the  initial price as t he lower bound of grid. 
+From the results in Tables 3-5, it can be verified that the fle xible grid obviously obtains the best ROI, 
+accumulated wealth and Sharpe ratio through trading with the sa me grid parameters under ten-year 
+fluctuations of five different composite indices. Overall, flex ible grid appropriately delays the entry and 
+exit timing due to its trading str ucture, and obtains a relativ ely high ROI and Sharpe ratio. 
+ 
+Table 3. ROI obtained by flexible grid, equal-distance grid, an d equal-ratio grid  
+Grid type Flexible grid E qual-distance Equal-ratio 
+S&P 500  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓 )   
+31.692 %  
+43.727 %   
+27.934 %  
+39.556 %   
+22.234 %  30.174 %  
+Nasdaq 100  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓 )   
+53.795 %  
+71.888 %   
+49.261 %  
+66.024 %   
+40.369 %  51.180 %  
+Dow Jones Industrial Average  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+21.935 %  
+33.541 %   
+18.332 %  
+29.741 %   
+13.629 %  21.648 %  
+Euro Stoxx 50  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+0.601 %  
+17.499 %   
+-4.122 %  
+12.520 %   
+-7.284 %  7.087 %  
+Shanghai Composite  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+-33.904 %  
+-12.955 %   
+-38.944 %  
+-19.936 %   
+-38.534 %  -18.290 %  
+ 
+Table 4. Accumulated wealth obta ined by flexible grid, equal-di stance grid, and equal-ratio grid  
+Grid type Flexible grid E qual-distance Equal-ratio 
+S&P 500  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓 )   
+13169  
+14373   
+12793  
+13956   
+12223  13017   
+Nasdaq 100  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓 )   
+15380   
+17189    
+14926   
+16602   
+14037   15118   
+Dow Jones Industrial Average  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+12194   
+13354    
+11833   
+12974   
+11363   12165   
+Euro Stoxx 50     20 
+ (𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓) 10060   
+11750  9588   
+11252   9272   
+10709   
+Shanghai Composite  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+6610   
+8705   
+6106   
+8006    
+6147   8171   
+ 
+Table 5. Sharpe ratio obtained by f lexible grid, equal-distance  grid, and equal-ratio grid  
+Grid type Flexible grid E qual-distance Equal-ratio 
+S&P 500  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓 )   
+0.118   
+0.160    
+0.103   
+0.145    
+0.092   0.137  
+Nasdaq 100  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓 )   
+0.187    
+0.234     
+0.172    
+0.219   
+0.161    0.215   
+Dow Jones Industrial Average  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+0.079    
+0.119     
+0.065    
+0.105   
+0.054    0.095    
+Euro Stoxx 50  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+0.002    
+0.046   
+-0.011    
+0.033   
+-0.021    0.023    
+Shanghai Composite  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+-0.082   
+-0.030    
+-0.095    
+-0.047   
+-0.106    -0.053    
+ 
+4.2. SSO parameter setting 
+Part of the dataset is then use d to select appropriate SSO para meters for all subsequent experiments. 
+In the first set of experiments, Cg, Cp, Cw are configured as shown in Table 6. The meaning is to divide 
+the range of random number ρ into four parts according to 7:1:1:1, and the part with ration 7 is assigned 
+to gbest , pbest , t+
+i,jx1 and a new solution in turn in t he experiment to detect what ki nd of the solution has 
+more critical influence on produc ing better quality solutions. 
+ 
+Table 6. Best and worst solutions  under different parameter com binations (Experiment 1) 
+(Cg, Cp, Cw) Maximum scale solution ROI (max)  ROI (min)  
+(0.7,0.8,0.9)  gbest  69.74%  66.83%  
+(0.1,0.8,0.9)  pbest  69.62%  67.18%  21 
+ (0.1,0.2,0.9)  t+
+i,jx1 69.69%  66.01%  
+(0.1,0.2,0.3)  new solution 69.41%  66.69%  
+ 
+It can be found from Table 6 that it can produce a better quali ty solution when gbest  is the largest, 
+and it is robust at the same time. Therefore, the probability o f gbest is set to the maximum in the final 
+parameter configuration. 
+After it is determined that gbest  is set as the maximum probabili ty, the range of random number ρ is 
+then divided into four parts acco rding to 5:3:1:1. Among them, the probability of taking gbest  a s  t h e  
+solution is set to the maximum 0.5 because gbest  has been determined in the previous step as the key factor 
+to generate a good quality solution, and the probability of 0.3  is assigned to pbest , t+
+i,jx1  and a new 
+solution in turn. According to the experimental results, which solution is the second key factor to produce 
+a better solution, the resu lts are shown in Table 7. 
+It can be found from Table 7 that it can produce a better quali ty solu tion when th e new rand om 
+solution is larger, and it is robust at the same time. Therefor e, the probability of the new random solution  
+is set to the next largest in the  final parameter configuration . 
+ 
+Table 7. Best and worst solutions  under different parameter com binations (Experiment 2) 
+(Cg, Cp, Cw) Maximum scale solution ROI (max)  ROI (min)  
+(0.5,0.8,0.9)  pbest  69.77%  66.22%   
+(0.5,0.6,0.9)   t+
+i,jx1 69.77%  66.91%   
+(0.5,0.6,0.7)  new solution 69.86%   67.83%   
+ 
+After it is determined that the  new random solution is set as t he next largest probabi lity, the range of 
+random number ρ is then divided into four parts according to 3:3:3:1. The subs equent steps are analogous 
+to the first two steps, and Table 8 is obtained as follows. It can be found that t+
+i,jx1 and pbest  have little 
+difference in the quality of the solution, thus, both probabili ties are set to the minimum.  
+ 
+Table 8. Best and worst solutions  under different parameter com binations (Experiment 3) 
+(Cg, Cp, Cw) Maximum scale solution ROI (max)  ROI (min)  
+(0.3,0.6,0.7)   pbest  69.85%   67.99%    
+(0.3,0.4,0.7)   t+
+i,jx1 69.90%   67.81%   
+ 22 
+ 4.3. Verification of flexible gri d performance with parameters selected by SSO 
+After setting the SSO parameters, the flexible grid, the equal- distance grid and the equal-ratio grid 
+are connected to the parameters selected by SSO, respectively. And find solutions with 10 runs, 20 
+generations per run, and 100 sets  of solutions per generation. Two sets of experiments, which is same as 
+the previous verification of flexible grid architecture, are al so conducted with the upper and lower bounds 
+of different risk levels. The r esults are shown in Tables 9-11.  
+ 
+Table 9. ROI obtained by flexible grid, equal-distance grid, an d equal-ratio grid with SSO parameters 
+Grid type Flexible grid E qual-distance Equal-ratio 
+S&P 500  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓 )   
+82.859 %   
+90.269 %    
+66.384 %   
+77.198 %    
+58.394 %   60.774 %  
+Nasdaq 100  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓 )   
+111.649 %   
+127.268 %   
+66.384 %   
+110.179 %   
+82.662 %   86.208 %  
+Dow Jones Industrial Average  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+74.509 %   
+80.559 %    
+60.591 %   
+70.063 %    
+51.893 %   54.760 %   
+Euro Stoxx 50  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+77.220 %   
+88.844 %    
+56.650 %   
+72.293 %    
+48.365 %   55.856 %  
+Shanghai Composite  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+58.389 %   
+80.954 %    
+39.178 %   
+58.934 %   
+33.363 %   43.639 %   
+ 
+Table 10. Accumulated wealth obtained by flexible grid, equal-d istance grid, and equal-ratio grid with 
+SSO parameters 
+Grid type Flexible grid E qual-distance Equal-ratio 
+S&P 500  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓 )   
+18286    
+19027     
+16638    
+17720     
+15839    16077   
+Nasdaq 100  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓 )   
+21165    
+22727    
+16638    
+21018   
+18266   18621   
+Dow Jones Industrial Average  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+17451   
+18056     
+16059    
+17006     
+15189   15476   
+Euro Stoxx 50     23 
+ (𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓) 17722    
+18884   15665    
+17229   14837    
+15586  
+Shanghai Composite  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+15839    
+18095     
+13918    
+15893   
+13336    14364   
+ 
+Table 11. Sharpe ratio obtained by flexible grid, equal-distanc e grid, and equal-ratio grid with SSO 
+parameters 
+Grid type Flexible grid E qual-distance Equal-ratio 
+S&P 500  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓 )   
+0.439    
+0.442       
+0.350      
+0.391       
+0.351      
+0.388  
+Nasdaq 100  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓 )   
+0.498    
+0.524     
+0.350    
+0.464   
+0.437   0.462    
+Dow Jones Industrial Average  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+0.377    
+0.412       
+0.310    
+0.344    
+0.301   0.341   
+Euro Stoxx 50  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+0.300      
+0.331    
+0.219      
+0.265     
+0.211      
+0.257  
+Shanghai Composite  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = ( 𝐏𝟎ൈ𝟏.𝟑,𝐏 𝟎ൈ𝟎.𝟕 )  
+(𝑮𝒖𝒍,𝑮𝒍𝒍) = (𝐏𝟎ൈ𝟏.𝟓,𝐏 𝟎ൈ𝟎.𝟓)  
+0.189    
+0.220     
+0.134      
+0.179    
+0.131      
+0.172    
+ 
+From the results in Tables 9-11, it can be verified that in the  application of SSO to solve the grid 
+trading parameters, the flexible grid is still the best model i n terms of ROI, accumulated wealth and Sharpe 
+ratio compared with the equal-distance grid and equal-ratio gri d. In addition, comparing the grid trading 
+results connected with the SSO parameters and the fixed paramet er version, it can be found that the ROI 
+has increased significantly. The  overall ROI results, the flexi ble grid is the be st, the equal-di stance grid is 
+the second, and the equal-ra tio grid is the worst.  
+4.4. Training ANN to automatically  adjust flexible grid paramet ers 
+After confirming the excellent performance of flexible grid usi ng SSO to search for trading 
+parameters, the flexible grid and SSO are adopted to record the  best trading parameters of each index in 
+ten years, and obtain a set of t rading parameters every 30 days . In order to expand the follow-up training 
+and data, the moving pace of the model is set to 5. In each ind ex, about 500 pieces of parameter data are 
+obtained for the training and ve rification of ANN, in which the  data of the first nine years is used as the 24 
+ training set and the data of the last year is used as the valid ation set. 
+Because the data of the training set in this study has temporal  continuity, the data is re-randomly 
+ordered before training in the FNN in order to avoid affecting the training results of the model. In the 
+LSTM neural network, the input tr aining data must be sequential  because the model design, thus, the 
+training data does not need to be  re-ordered randomly. 
+The architecture of the FNN and the LSTM neural network has und ergone many experiments, and 
+the final architecture and hyper-parameter settings are shown i n Tables 12-14. 
+The input parameters include the highest price during the perio d, the lowest price during the period, 
+the average market price, the average trading quantity, the pri ce change, the trading quantity change, price 
+standard deviation, and trading quantity standard deviation, wh ich a total of eight variables to describe a 
+market situation. And the output v ariables are s et to upper bou nd of the grid, lower b ound of the grid, the 
+number of upper grids, and the num ber of lower grids for grid t rading. 
+The number of hidden layers is set to three. The optimizer is s et to adam, which is common in recent 
+years, has fast convergence speed, and has excellent performanc e in searching solution. The excitation 
+function uses sigmoid and relu. And the loss function adopts me an squared error, which is commonly used 
+in regression problems. Table 12. FNN hyper-parameters an d architecture related setting s 
+Item Value set 
+Number of input variables 8 
+Number of hidden layers 3 
+Number of output variables 4 
+Number of hidden layer nodes 500  
+Optimizer adam 
+Excitation function sigmoid 
+Loss function mean squared error 
+Number of generations 300 
+Batch size 40  
+Table 13. LSTM neural network hyper -parameters and architecture  related settings 
+Item Value set 
+Number of input variables 8 
+Number of hidden layers 3 
+Number of output variables 4 
+Number of hidden layer nodes 256, 128, 64  
+Optimizer adam 
+Excitation function relu  
+Loss function mean squared error 
+Number of generations 300 
+Batch size 32 25 
+ After the neural network training set above, the training and c omparison results are presented in 
+Tables 14-15. From the results of the mean square error as show n in Eq. (20) in Table 14: Except for the 
+upper and lower bound of the grid in the Nasdaq 100 index, LSTM  has a smaller mean square error. All 
+four output variables in the other indices have a smaller mean square error, which the mean square errors 
+of the four output variables in ot her indices are all FNN perfo rms better. 
+ 
+N
+i i
+iMSE y yN2
+11()
+  (20)  
+ 
+Table 14. Comparison of mean squa re error between FNN and LSTM models 
+Neural network type FNN LSTM 
+S&P 500  
+upper bound of the grid Gul 
+lower bound of the grid Gll 
+number of upper grids nu 
+number of lower grids nl  
+129510   
+59787  
+207  
+308    
+186366  
+108622  252  442  
+Nasdaq 100  
+upper bound of the grid Gul 
+lower bound of the grid Gll 
+number of upper grids nu 
+number of lower grids nl  
+4725772  
+1681699  
+133  
+246   
+518181  
+1162381  
+296  
+568  
+Dow Jones Industrial Average  
+upper bound of the grid Gul 
+lower bound of the grid Gll 
+number of upper grids nu 
+number of lower grids nl  
+6016533  
+2011354  
+164  
+319   
+24446812  
+19594848  237  402  
+Euro Stoxx 50  
+upper bound of the grid Gul 
+lower bound of the grid Gll 
+number of upper grids nu 
+number of lower grids nl  
+105024  
+33988  
+132  
+199   
+334456  
+106422  202  290  
+Shanghai Composite  
+upper bound of the grid Gul 
+lower bound of the grid Gll 
+number of upper grids nu 
+number of lower grids nl  
+65199  
+33604  
+85  
+214    
+92869  
+26189  
+280  
+459   
+ 
+ 26 
+ The coefficient of determination (R square) of the two models, which is an index to measure the 
+fitness of the regression model and can also be interpreted as the degree of interpret ation of the model, as 
+shown in Table 15 is calculated based on Eq. (21). 
+ 
+ii res i
+tot i iyf SSRSS yy2
+2 1
+2
+1()
+1
+()
+
+ 
+
+ (21) 
+ 
+In Table 15, it can be found that ecept for the Nasdaq 100 inde x, most of the time, FNN has a better 
+fit for the four output variables. 
+ 
+Table 15. Comparison of coeffici ent of determination between FN N and LSTM models  
+Neural network type FNN LSTM 
+S&P 500  
+upper bound of the grid Gul 
+lower bound of the grid Gll 
+number of upper grids nu 
+number of lower grids nl  
+97.410%  
+99.586%  
+94.972%  
+99.392%  90.490%  
+90.490%  97.240%  
+99.469%  
+94.892%  
+Nasdaq 100  
+upper bound of the grid Gul 
+lower bound of the grid Gll 
+number of upper grids nu 
+number of lower grids nl  
+96.415%  
+97.088%  94.942%  94.737%   
+98.075%  
+99.915%  
+99.635%  
+98.019%   
+Dow Jones Industrial Average  
+upper bound of the grid Gul 
+lower bound of the grid Gll 
+number of upper grids nu 
+number of lower grids nl  
+97.704%  
+99.771%  
+99.855%  
+99.559%    
+95.970%  
+93.429%  93.685%  91.285%  
+Euro Stoxx 50  
+upper bound of the grid Gul 
+lower bound of the grid Gll 
+number of upper grids nu 
+number of lower grids nl  
+96.183%  
+99.324%  
+99.297%  
+98.405%   
+94.392%  
+98.063%  96.858%  
+99.760%  
+Shanghai Composite  
+upper bound of the grid Gul 
+lower bound of the grid Gll 
+number of upper grids nu 
+number of lower grids nl  
+97.157%  
+96.749%  
+93.165%  
+99.661%    
+96.577%  
+95.545%  
+93.881%  
+99.003%    27 
+ Furthermore, the following four values of return of investment (ROI), maximum drawdown (MDD), 
+volatility, and Sharpe ratio are used to examine the performanc e of the model in this study. In terms of 
+methods include first buy and last sell (Buy and Sell, B&S), fi rst sell and last buy (Sell and Buy, S&B), 
+grid trading system robot (GTSbot ) [10], Ichimoku equilibrium F igure (IK) [12], Flexible Grid trained 
+with Fully-Connected Neural Networ k (FG-FNN), Flexible Grid tra ined with LSTM (FG-LSTM), equal-
+distance grid, equal-ratio grid, a nd flexible grid, a total of 9 methods for comparison. 
+First of all, the formula of ROI  can refer to Eq. (22), which i s the most common indicator of 
+quantitative investment performance in investment sciences. The  calculation of the ratio of investment 
+income to cost usually presents as an annualized return to tota l return. The trading costs including handling 
+fees have been included in the c alculation results. The results  please refer to Table 16. 
+ 
+ROI = (net profit – investment costs) × 100% (22) 
+ 
+Table 16. Comparison of ROI 
+  S&P  Nasdaq  DJI Euro Stoxx  Shanghai  
+B&S  14.392% 1.519% 9.880% 28.340% -15.581% 
+S&B  -14.392%  -1.519% -9.880% -28.340%  15.581%
+GTSbot  6.408%  4.680% 6.594% 1.191%  -0.466%
+IWOC  24.111%  23.171% 7.143% 32.087%  -18.758%
+FG-FNN  11.520%  11.733% 8.849% 12.977% -3.125%
+FG-LSTM  4.639%  1.823% 2.940% 7.734% -9.283%
+Equal-distance 5.194%  -2.972% 3.480% 10.748%  -4.495%
+Equal-ratio 4.536%  -3.625% 3.276% 10.764%  -4.892%
+Flexible 5.589%  -1.895% 4.270% 11.477%  -4.309%
+ 
+In terms of ROI, the FNN flexible grid achieves the top three r eturns in each index. In particular, the 
+FNN flexible grid has the most ability to control the overall l oss in the downward trend of prices. 
+Second, the comparison is the maximum drawdown, i.e., the amoun t of income that has fallen sharply 
+in all periods, which is one of the indicators for evaluating i nvestment risk. Please refer to Table 17 for the 
+results.  Table 17. Comparison of MDD 
+ 
+S&P  Nasdaq  DJI Euro Stoxx  Shanghai  
+B&S  7.960% 12.570% 7.290% 4.029%  8.529%
+S&B  7.491%  10.370% 6.580% 7.313%  3.103% 
+GTSbot  0.524%   5.335% 1.000% 0.510%  1.126%
+IWOC  10.345%  12.421% 8.606% 5.467%  7.640%
+FG-FNN  6.455%  5.596% 7.491% 2.034%  4.105%28 
+ FG-LSTM  1.580%  49.031% 4.809% 2.966%  3.551%
+Equal-distance 5.252%  8.594% 4.078% 1.513%  4.074%
+Equal-ratio 5.243%  10.096% 4.057% 1.529%  4.059%
+Flexible 4.737%  8.780% 4.163% 4.144%  4.208%
+ 
+In terms of the maximum drawdown, it can be found that the meth od with a larger return on investment 
+has a relatively higher maximum drawdown, which verifies the th eory of high risk and high return in 
+investment science. There are two reasons for the performance o f the FNN flexible grid on the MDD: The risk 
+is relatively high in the case of a relatively high return on i nvestment. In addition, the parameters of each period 
+are calculated by the neural network. If the parameters predict ed on one period are particularly poor, it is likely 
+to cause a large drop in a single period. Whether this MDD cond ition can be regarded as a single condition of 
+outliers is yet to be verified by volatility. 
+In quantitative trading, risk and model stability are assessed through its volatility. The calculation method 
+refers to Eq. (23) and the results are shown in Table 18. 
+ 
+Vol = σ[return ] (23) 
+ 
+It can be found from Table 18 that the performance of FNN flexi ble grid on volatility is the top three in 
+each index, i.e., the performance of FNN flexible grid is very stable compared with other methods. It can also 
+be speculated that the poor performance on the MDD may be a sin gle event, and it can be regarded as a robust 
+investment model in most cases. The LSTM flexible grid is the b est among all models in the S&P and Nasdaq 
+data sets and is a less risky and more robust investment model.  
+ 
+Table 18. Comparison of volatility 
+  S&P  Nasdaq  DJI Euro Stoxx  Shanghai  
+B&S  0.06126 0.07671 0.03568 0.06221  0.01840
+S&B  0.06126  0.07671 0.03568 0.06221  0.01840
+GTSbot  0.01710  0.03589 0.01795 0.00267  0.00190
+IWOC  0.07689  0.08398 0.04564 0.07337  0.03568
+FG-FNN  0.01687  0.02076 0.02149 0.01730  0.01414
+FG-LSTM  0.01672   0.01637 0.02203 0.01679  0.02030
+Equal-distance 0.02450  0.03579 0.02129 0.01786  0.01590
+Equal-ratio 0.02473  0.03629 0.02155 0.01828  0.01629
+Flexible 0.02503  0.03665 0.02162 0.01862  0.01624
+ 
+Finally, in terms of the Sharpe ratio, which is a model perform ance indicator that calculates the ratio 
+between investment return and risk. It can also be interpreted as the reward that can be exchanged for each 
+unit of risk. The calculation m ethod refers to Eq. (24) and the  results are as shown in Table 19. 29 
+  
+Sharpe = return /σ[return ]  (24) 
+ 
+Table 19. Comparison of Sharpe ratio 
+  S&P  Nasdaq  DJI Euro Stoxx  Shanghai 
+B&S  2.349  0.198 2.769 4.556  -8.466
+S&B  -2.349  -0.198 -2.769 -4.556  8.466
+GTSbot  3.748  1.304 3.673 4.466  -2.446
+IWOC  3.136  2.759 1.565 4.373  -5.258
+FG-FNN  6.828  5.651 4.119 7.499  -2.210
+FG-LSTM  2.774     1.114 1.335 4.606  -4.573
+Equal-distance 2.120  -0.830 1.634 6.017  -2.827
+Equal-ratio 1.834  -0.999 1.520 5.887  -3.004
+Flexible 2.233  -0.517 1.975 6.165  -2.653
+ 
+From Table 19, it can be found that the Sharpe ratio of FNN fle xible grid is the best among all methods 
+on the four indices. In the falling market situation, in additi on to short selling, its Sharpe ratio is also the 
+largest. From this, it can be found that the FNN flexible grid can obtain the highest reward for each unit 
+of risk. 
+5. Conclusions 
+In addition to proposing a new grid trading architecture, this study effectively improves the ROI of 
+the original model, improves the drawbacks of premature entry a nd exit, and utilizes SSO algorithm and 
+ANN to assist grid trading for parameter selection and providin g the model the ability to adapt to the 
+market. 
+In terms of model performance, f ive major market indices are us ed as verification data, which cover 
+the United States, Europe and China. The FNN flexible grid perf orms very well in Sharpe ratio. It has 
+excellent investment return rat e and model robustness, and can properly control the ba lance between risk 
+and return. 
+This study proves that the technology combined with AI in can b ring breakthroughs to the original 
+grid trading model in quantitative trading, and can adapt to va rious rapidly changing market situations. In 
+the future, looking forward to mo re related extended research r esulting that the grid trading model can be 
+more accurately close to human decision-making or even better t han human judgment when adjusting 
+parameters to eliminate human impulses and market emotions, and  make rational market trading decisions 
+to obtain better inve stment benefits. 
+  30 
+ Acknowledgments 
+This research was supported in pa rt by the National Science and  Technology Council, R.O.C (MOST 
+107-2221-E-007-072-MY3, MOST 110-2221-E-007-107-MY3, MOST 109-2 221-E-424-002 and MOST 
+110-2511-H-130-002). This article was once submitted to arXiv a s a temporary submission that was just 
+for reference and did not  provide the copyright. 
+References 
+[1] J. IOSCO, Regulatory Issues Ra ised by the Impact of Technologic al Changes on Market Integrity 
+and Efficiency, Consultation Report, 2011. 
+[2] F. Allen, J. McAndrews, P. Straha n, E-finance: an introduction.  Journal of financial services 
+research 22(1) (2002) 5-27. 
+[3] M. Shahrokhi, E‐finance: status , innovations, resources and fut ure challenges, Man agerial Finance, 
+2008. 
+[4] A.M. Turing, Computing machiner y and intelligence, in Parsing t he turing test, Springer (2009) 23-
+65. 
+[5] M. Hutson, How researchers are te aching AI to learn like a chil d, Science 10, 2018. 
+[6] M. Minsky, S.A. Papert, Perceptr ons: An introduction to computa tional geometry, MIT press, 2017. 
+[7] Silver, D., et al., Mastering the  game of Go with deep neural n etworks and tree search. nature 
+529(7587) (2016) 484-489. 
+[8] I. Aldridge, High-frequency tra ding: a practical guide to algor ithmic strategies and trading systems, 
+John Wiley & Sons 604, 2013. 
+[9] Z.R. Lai, P.Y. Yang , L. Fang, X. Wu, Reweighted pri ce relative tracking system for  automatic 
+portfolio optimization, IEEE Transactions on Systems, Man, and Cybernetics: Systems 50(11) 
+(2018) 4349-4361. 
+[10] F. Rundo, F. Trenta, A. L. d. Stallo, S. Battiato, Grid trading  system robot (gtsbot): A novel 
+mathematical algorithm for trading fx market, Applied Sciences 9(9) (2019) 1796. 
+[11] Q. Wen, Z. Yang, Y . Song, P. Jia, Automatic stock decision supp ort system based on box theory and 
+SVM algorithm, Expert systems w ith Applications 37(2) (2010) 10 15-1022. 
+[12] S. Deng, A. Sakurai, Short-term foreign exchange rate trading b ased on the support/resistance level 
+of Ichimoku Kinkohyo, 2014 Internati onal Conference on Informat ion Science, Electronics and 
+Electrical Engineering, IEEE, 2014. 
+[13] A. Ye, V . L. R. Chinthalapati, A. Serguieva, E. Tsang, Developi ng sustainable tra ding strategies 
+using directional changes with high frequency data, 2017 IEEE I nternational Conference on Big 
+Data, 2017. 
+[14] A. DuPoly, The Expert4x, No st op, Hedged, Grid Trading System a nd The Hedged, Multi-
+Currency, Forex Trading System, 2008. 
+[15] W. C. Yeh, S. C. Wei, Economic-ba sed resource allocation for re liable Grid-computing service 
+based on Grid Bank, Future Genera tion Computer Systems 28 (7) ( 2012.) 989-1002. 
+[16] S. C. Wei, W. C. Yeh, Resour ce allocation decision model for de pendable and cost-effective grid 31 
+ applications based on Grid Bank, F uture Generation Computer Sys tems 77 (2017) 12-28. 
+[17] W. C. Yeh, A two-stage discrete pa rticle swarm optimization for  the problem of multiple multi-level 
+redundancy allocation in series sy stems, Expert Systems with Ap plications 36(5) (2009) 9192-
+9200. 
+[18] W. C. Yeh, Novel swarm optimizat ion for mining classification r ules on thyroid gland data, 
+Information Sciences 197 (2012) 65-76. 
+[19] W. C. Yeh, W. W. Chang, Y . Y . Chu ng, A new hybrid approach for mining breast cancer pattern 
+using discrete particle swarm opt imization and statistical meth od, Expert Systems with Applications 
+36(4) (2009) 8204-8211. 
+[20] W. C. Yeh, Z. Liu, Y .C. Yang, S.Y . Tan, Solving Dual-Channel Su pply Chain Pricing Strategy 
+Problem with Multi-Level Progr amming Based on Improved Simplifi ed Swarm Optimization, 
+Technologies2022(10) (2022) doi .org/10.3390/technologies1003007 3 
+[21] H.C.S. Lin, C.L. Huang, W.C. Yeh, A Novel Constraints Model of Credibility-Fuzzy for Reliability 
+Redundancy Allocation Problem by Si mplified Swarm Optimization,  Applied Sciences 11 (10765) 
+(2021) doi: 10.3390/app112210765 
+[22] W.C. Yeh, P.J. Lai, W.C. Lee, M.C. Chuang, Parallel-machine sch eduling to minimize makespan 
+with fuzzy processing times a nd learning effects, Information S ciences 269 (2014) 142-158. 
+[23] W.C. Yeh, W. Zhu, S.Y . Tan, G.G. Wang, Y .H. Yeh, Novel General Active Reliability Redundancy 
+Allocation Problems and Algorithm , Reliability Engineering & Sy stem Safety, 218 (2021) 108167. 
+[24] W.C. Yeh, S.Y . Tan, Simplified Swa rm Optimization for the Heter ogeneous Fleet Vehicle Routing 
+Problem with Time-Varying Contin uous Speed Function, Electronic s, 2021 (10) (2021) 
+doi:10.3390/electronics10151775 
+[25] C. Bae, W.C. Yeh, N. Wahid, Y .Y . Chung, Y . Liu, A New Simplifie d Swarm Optimization (SSO) 
+using Exchange Local Search Schem e, International Journal of In novative Computing, Information 
+and Control 8 (6) (2012) 4391-4406.  
+[26] W.C. Yeh, Y .Z. Su, X.Z. Gao, C.F . Hu, J. Wang, C.L. Huang, Simp lified Swarm Optimization for 
+Bi-Objection Active Reliabilit y Redundancy Allocation Problems,  Applied Soft Computing 106 
+(2021) 107321. 
+[27] M. Wang, W.C. Yeh, T.C. Chu, X. Zhang, C.L. Huang, J. Yang, Sol ving multi-objective fuzzy 
+optimization in wireless smart sensor networks under uncertaint y using a hybrid of IFR and SSO 
+algorithm, Energies 11 (9) (2018) 2385. 
+[28] W.C. Yeh, Simplified swarm optimization in disassembly sequenci ng problems with learning 
+effects, Computers & Operati ons Research 39 (9 ) (2012) 2168-217 7. 
+[29] W.C. Yeh, A novel boundary swarm optimization method for reliab ility redundancy allocation 
+problems, Reliability Engineer ing & System Safety 192 (2019) 10 6060. 
+[30] W.C. Yeh, Orthogonal simplified swa rm optimization for the seri es–parallel redundancy allocation 
+problem with a mix of components, Knowledge-Based Systems 64(20 14) 1-12. 
+[31] W. Zhu, W.C. Yeh, L. Cao, Z. Zhu, D. Chen, J. Chen, A. Li, Y . L in, Faster evolutionary 32 
+ convolutional neural networks ba sed on iSSO for lesion recognit ion in medical images, Basic & 
+Clinical Pharmacology & Toxicology 124 (2019) 329-329. 
+[32] W.C. Yeh, P. Lin, C.L. Huang, Simplified swarm optimisation for  the solar cell models parameter 
+estimation problem, IET Renewab le Power Generation 11 (8) (2017 ) 1166-1173. 
+[33] P. Lin, S. Cheng, W.C. Yeh, Z. Chen, L. Wu, Parameters extracti on of solar cell models using a 
+modified simplified swarm optimi zation algorithm, Solar Energy 144 (2017) 594-603. 
+[34] W.C. Yeh, New Parameter-Free Si mplified Swarm Optimization for Artificial Neural Network 
+Training and Its Application in t he Prediction of Time Series, IEEE Transactions on Neural 
+Networks and Learning Syst ems 24 (4) (2013) 661-665. 
+[35] W. Huang, K. K. Lai, Y . Nakamori, S. Wang, L. Yu, Neural networ ks in finance and economics 
+forecasting, International Journal of Information Technology & Decision Making 6(01) (2007) 113-
+140. 
+[36] S. Qi, K. Jin, B. Li, Y . Qian, Th e exploration of internet fina nce by using neural network, Journal of 
+Computational and Applie d Mathematics 369 (2020) 112630. 
+[37] S. Siami-Namini, A.S. Namin, Forecasting economics and financia l time series: ARIMA vs. LST,. 
+arXiv preprint arXiv:1803.06386, 2018. 
+[38] J. Cao, Z. Li, J. Li, Financial time series forecasting model b ased on CEEMDAN and LST, Physica 
+A: Statistical Mech anics and its Appli cations 519 (2019) 127-13 9. 
+[39] N. Jegadeesh, Evidence of predicta ble behavior of security retu rns, The Journal of finance 45(3) 
+(1990) 881-898. 
+[40] N. Jegadeesh, Seasonality in stoc k price mean reversion: Eviden ce from the US and the UK, The 
+Journal of Finance 46(4) (1991) 1427-1444. 
+[41] B. Li,  P. Zhao, S. C. H. HOI, V . Gopalkrishnan,  PAMR: Passive aggressive mean reversion strategy 
+for portfolio selection, Mach ine learning 87(2) (2012) 221-258.  
+[42] W.S. McCulloch, W. Pitts, A logical calculus of the ideas imman ent in nervous activity, The bulletin 
+of mathematical biophysic s 5(4) (1943) 115-133. 
+[43] F. Rosenblatt, The perceptron: a probabilistic model for inform ation storage and organization in the 
+brain, Psychological review 65(6) (1958) 386. 
+[44] P. Werbos, Beyond regression:new tools for prediction and analy sis in the behavioral sciences, Ph. 
+D. dissertation, Harvard University, 1974. 
+[45] D.E. Rumelhart, G.E. Hinton, R.J. Williams, Learning representa tions by back-propagating errors. 
+Nature 323(6088) (1986) 533-536. 
+[46] S. Ruder, An overview of gradient  descent optimization algorith ms, arXiv preprint 
+arXiv:1609.04747, 2016. 
+[47] J.M. Poterba, L.H. Summers, Mea n reversion in stock prices: Evi dence and implications, Journal of 
+financial economics 22(1) (1988) 27-59. 
+[48] B. Hurst, Y .H. Ooi, L.H. Peders en, A century of evidence on tre nd-following investing, The Journal 
+of Portfolio Management 44(1) (2017) 15-29. 

@@ -1,0 +1,858 @@
+arXiv:1708.02984v1  [q-fin.PM]  9 Aug 2017Decoding Stock Market with Quant Alphas
+Zura Kakushadze§†1and Willie Yu♯2
+§Quantigic/circleRSolutions LLC
+1127 High Ridge Road #135, Stamford, CT 069053
+†Free University of Tbilisi, Business School & School of Phys ics
+240, David Agmashenebeli Alley, Tbilisi, 0159, Georgia
+♯Centre for Computational Biology, Duke-NUS Medical School
+8 College Road, Singapore 169857
+(April 25, 2017)
+Abstract
+We give an explicit algorithm and source code for extracting expected
+returns for stocks from expected returns for alphas. Our alg orithm altogether
+bypasses combining alphas with weights into “alpha combos” . Simply put,
+we have developed a new method for trading alphas which does n ot involve
+combining them. This yields substantial cost savings as alp ha combos cost
+hedge fundsaround 3% of the P&L, while alphas themselves cos t around 10%.
+Also, the extra layer of alpha combos, which our new method av oids, adds
+noise and suboptimality. We also arrive at our algorithm ind ependently by
+explicitly constructing alpha risk models based on positio n data.4Forecasting
+stock returns with quant alphas has implications for the inv estment industry.
+1Zura Kakushadze, Ph.D., is the President of Quantigic/circleRSolutions LLC, and a Full Professor
+at Free University of Tbilisi. Email: zura@quantigic.com
+2Willie Yu, Ph.D., is a Research Fellow at Duke-NUS Medical School. Email: willie .yu@duke-
+nus.edu.sg
+3DISCLAIMER: This address is used by the corresponding author fo r no purpose other than
+to indicate his professional aﬃliation as is customary in publications. I n particular, the contents
+of this paper are not intended as an investment, legal, tax or any ot her such advice, and in no
+way represent views of Quantigic/circleRSolutions LLC, the website www.quantigic.com or any of their
+other aﬃliates.
+4This is the last paper in the trilogy, which contains “Factor Models for Alpha Streams”
+[Kakushadze, 2014] and “How to Combine a Billion Alphas” [Kakushadze and Yu, 2017a].1 Introduction and Summary
+Not long ago quant trading workshops featured “man v. machine” d ebates. Well,
+it is a foregone conclusion. Quantitative alpha5mining is now done by machines.
+Human’s role in this process has essentially shifted to coding up variou s machine
+learning, data mining, clustering and other similar algorithms. Hardwa re is cheap,
+so mining millions of alphas is no longer a dream but the reality. Unsurpris ingly,
+these exponentially proliferating alphas are ever fainter and more e phemeral.
+A typical such alpha cannot even be traded on its own – its signal is to o weak to
+make any money after trading costs.6So, quant traders follow an ancient “there is
+strength in numbers” wisdom and combine a large number of these fa int alphas into
+a single “mega-alpha” with some nontrivial weights. The game then be comes how
+to pick these weights optimally. This is essentially an alpha portfolio optimization
+problem. And it is a nontrivial one. Ostensibly, it is similar to a stock por tfolio opti-
+mization problem [Markowitz, 1952], [Sharpe, 1994]. However, there is animportant
+detail that makes all the diﬀerence: the number of alphas can be hu ge, in hundreds
+of thousands, millions or even billions. The available history (lookback) , however,
+naturally is much shorter,7precisely due to the ephemerality of these alphas.8
+There are various ways of approaching this problem of combining a lar ge number
+of alphas. If the only available information is the time series of alpha re turns, then
+the playing ﬁeld is limited. As discussed in [Kakushadze and Yu, 2017a], m odeling
+thealpha portfolio risk via a statistical risk model9based solely onthistime series or
+its extension via adding a few “style” risk factors10at the end of the day invariably
+leads to a simple answer that the alpha weights are11proportional to residuals of a
+(weighted) regression. Simply put, it is the size of the available data ( in this case,
+the lookback) that determines how much of the alpha risk space we c an cover.
+So, to hedge more directions in the risk space, we need more data. A nd such
+data is available [Kakushadze, 2014]: the position data of the underly ing tradable
+instruments; e.g., if our alpha is a dollar-neutral portfolio of, say, 2 ,000 most liquid
+US stocks, a time series of the positions that this alpha instructs us to take. The
+question is, how can we use this position data? E.g., can we improve alph a weights?
+5Here“alpha”–followingthe commontraderlingo–generallymeansany reasonable“expected
+return” that one may wish to trade on and is not necessarily the sam e as the “academic” alpha.
+In practice, often the detailed information about how alphas are co nstructed may not even be
+available, e.g., the only data available could be the position data, so “alp ha” then is a set of
+instructions to achieve certain stock (or some other instrument) holdings by some times t1,t2,...
+6This includes transaction costs (exchange, broker-dealer, SEC, etc., fees) as well as slippage.
+7E.g., with daily observations, there are T∼250 datapoints in a (generous) 1 year lookback.
+8Additional considerationssuch as optimizing the turnoverof the “m ega-alpha”,trading which
+(as opposed to the individual alphas) oﬀers an automatic beneﬁt of internal crossing of trades (i.e.,
+tradingcost reduction), and scalability(i.e., howmuch capital this “m ega-alpha”can absorbbefore
+its market impact results in diminishing returns) add further complex ity to the problem.
+9For a recent discussion of statistical risk models, see [Kakushadze and Yu, 2017b].
+10E.g., turnover, etc. See [Kakushadze, 2014] and [Kakushadze and Yu, 2017a] for details.
+11Up to corrections suppressed by powers of 1 /N, whereNis the number of alphas.
+1One idea set forth in [Kakushadze, 2014] (and further discussed in [Kakushadze
+and Yu, 2017a]) is to use the position data for the underlying tradab le instruments
+to build risk models for alpha portfolios– albeit without an explicit impleme ntation.
+In this paper we ﬁll this gap – although the result is not what one would expect
+based on the intuition from risk modeling for stocks – and discuss alph a risk models
+in detail. We do this to give an alternative – and compelling – way of arrivin g at our
+main result, which we ﬁrst set forth without any reference to alpha portfolio risk.
+Our idea is simple. We have a large number Nof alphas – say, N= 1,000,000.
+Let us assume that these alphas are all trading the same underlying Minstruments
+– say,M= 3,000 most liquid US stocks.12To determine the weights with which
+individual alphas contribute to the “mega-alpha” (i.e., the alpha port folio), we need
+expected returns for individual alphas. Then we can ask the followin g question:
+Can we forecast expected returns for the underlying tradabl es (stocks) using the
+expected returns for alphas? Put diﬀerently, can we decode the stock market using
+alphas? The answer is aﬃrmative. And this is where the position data c omes in.
+Now, if we can forecast stock expected returns using alpha expec ted returns,
+then we no longer need to combine alphas. We can trade a stock port folio directly
+based on stock expected returns. And we can do all the risk manag ement directly
+on this stock portfolio as opposed to doing it in two steps, by ﬁrst ma naging the
+alpha portfolio risk, and then managing the risk of the stock portfo lio corresponding
+to the “mega-alpha”. I.e., we will not need the extra step of constr ucting the alpha
+portfolio – and intuitively it is clear that a priori this extra layer could b e a source
+of additional noise and suboptimality. So, we should just get rid of it if we can.13
+In Section 2 we give an explicit algorithm for extracting stock expect ed returns
+fromalphaexpected returns. Wegivethesourcecodeforthisalgo rithminAppendix
+A.14The stock expected returns are nothing but coeﬃcients in a weight ed regres-
+sion of alpha expected returns over the position data. Subtleties a rise when the
+individual alpha portfolios are subject to linear constraints, e.g., do llar neutrality
+or sector/(sub-)industry neutrality, and we discuss how to deal with them. We also
+discuss how to choose the regression weights (other than inverse alpha variances).
+In Section 3 we give an explicit algorithm for building risk models for alpha
+portfolios using the position data for the underlying tradables. The source code
+therefor is subsumed in Appendix A. Following [Kakushadze and Yu, 20 17a], we
+then show that, when N≫1, optimization using this risk model reduces to the
+weighted regression in Section 2. A neat subtlety is that in the “leadin g” order in
+the powers of 1 /Nthe stock expected returns vanish, and it is the “next-to-leading ”
+order that reproduces the results of Section 2. We brieﬂy conclud e in Section 4.
+12Eachalphamayhaveitsownuniverseofstocks. What isimportanthe reis thattheir universes
+have a substantial overlap. If they do not, we can always exclude t he alphas with small overlap.
+13Thereby turning an underconstrained T≪Nproblem into a much easier N≫Mproblem.
+14The source code given in Appendix A hereof is not written to be “fanc y” or optimized for
+speed or in any other way. Its sole purpose is to illustrate the algorit hms described in the main
+text in a simple-to-understand fashion. Some important legalese is r elegated to Appendix B.
+22 Stock Returns from Alphas
+For deﬁniteness – and the underlying instruments are not critical h ere – let us focus
+on alphas that trade (largely) overlapping portfolios of US stocks. Let the number
+of all stocks traded be M, and let the number of alphas be N≫M. Let the realized
+returns for alphas be ρis(i= 1,...,N), and the realized returns for stocks be RAs
+(A= 1,...,M), where the index s= 1,...,Tlabels trading days (for deﬁniteness,
+lets= 1 correspond to the most recent date). Then we have
+ρis=M/summationdisplay
+A=1PiAsRAs (1)
+Here on each day labeled by sfor each alpha labeled by ithe quantities PiAsare
+nothing but the properly normalized stock positions in the correspo nding alpha
+portfolio. The normalization condition is given by
+M/summationdisplay
+A=1|PiAs|= 1 (2)
+The stock positions PiAs, a.k.a. the desired holdings, are “previsible”, i.e., they
+are known in advance of commencing the trading that is supposed to achieve these
+positions. Under the hood, alphas analyze historical and real-time d ata up to the
+timethesepositionsarecalculated. Anotherwayofphrasingthisist hatthepositions
+PiAsare known out-of-sample. This has implications for stock expected returns.
+2.1 How to Extract Stock Expected Returns?
+Above we discussed the relation (1) between the realized returns f or stocksRAsand
+the realized returns for alphas ρis. These are ex-post returns. These returns are
+not known in advance of commencing the trading that is supposed to achieve the
+positionsPiAs. What is known ex-ante, i.e., what is forecast based on the historica l
+data, are expectedreturns for alphas, call them ηis. These expected returns are also
+“previsible” (or out-of-sample) by construction. E.g., a simple way t o construct
+them is via moving averages based on prior ddays’ worth of realized returns:15
+ηis=1
+ds+d/summationdisplay
+s′=s+1ρis′ (3)
+In this example – and this is a reasonable approach – the bet is that, if an alpha
+on average has made money for the past ddays (say,d= 10), then we expect (i.e.,
+hope) that it should (on average) continue to make money moving fo rward, at least
+15We emphasize that this is only an example and there are other ways of constructing ηis.
+3for the foreseeable future (and this expectation, as discussed a bove, is ephemeral).
+This is an example of a “momentum” strategy (in this case for alphas, not stocks).
+So, suppose, one way or another, we have computed our alpha exp ected returns
+ηis. Can we use them to reasonably deﬁne – call them EAs– expected returns for
+stocks? Sure we can, via a linear model:
+ηis=ǫis+M/summationdisplay
+A=1PiAsEAs (4)
+I.e., we mimic (1), except that here, for each date s, we haveNdatapoints ηisand
+many fewer MunknownsEAs. The ﬁt (4) via a linear model has errors ǫis. And a
+standard way to ﬁx EAsis by minimizing the least squares of these errors (for each
+value ofs):16
+N/summationdisplay
+i=1ǫ2
+is→min (5)
+This is the same as running – for each value of s– a linear cross-sectional (i.e.,
+across the index i) regression of ηisover theN×Mloadings matrix PiAs(without
+the intercept and with unit weights – see below). Then ǫisare the residuals of this
+regression, whereas EAsare the regression coeﬃcients given by
+EAs=N/summationdisplay
+i=1M/summationdisplay
+B=1YABsPiBsηis (6)
+where for each value of stheM×MmatrixYABsis the inverse of the M×Mmatrix
+XABs=N/summationdisplay
+i=1PiAsPiBs (7)
+So,assuming this matrix is invertible, we can calculate the expected returns for
+stocksEAsusing the expected returns for alphas ηis. The invertibility assumption
+may not necessarily hold and we discuss how to deal with this below in de tail.
+2.1.1 Stock Portfolio
+However, let us for now assume the invertibility of XABs. Then, as advertised above,
+we have extracted the expected returns for stocks EAsand we can directlyconstruct
+a stock portfolio we wish to trade without any reference to a “mega -alpha”, alpha
+weights, alpha combos, or alpha portfolios. Thus, if we have a good r isk model
+for our stock portfolio, i.e., a positive-deﬁnite (and thus invertible) and reasonably
+stableM×Mrisk model covariance matrix Φ ABfor stocks,17, then, now that we
+16Here – again, for each value of s– the minimization is w.r.t. the M-vectorEAs.
+17We discuss how to construct this risk model below.
+4have the stock expected returns EAs, we can construct our stock portfolio weights
+wAsvia, e.g., maximizing its Sharpe ratio [Sharpe, 1994]:18
+wAs=γM/summationdisplay
+B=1Φ−1
+ABEAs (8)
+where the overall normalization coeﬃcient γis ﬁxed via the normalization condition
+M/summationdisplay
+A=1|wAs|= 1 (9)
+We can further add bells and whistles to our stock portfolio optimizat ion, such as
+position and liquidity bounds on the stock weights wAs, dollar-neutrality and other
+linear constraints, as well as any other standard risk management conditions (which
+we will not delve into it here). The key is ﬁxing the stock expected ret urnsEAs.
+2.1.2 Weighted Regression
+Speaking of which, above we ﬁxed them by minimizing the least squares (5). While
+this is a reasonable approach, it may not be optimal. The reason why is that the re-
+alized alpha returns ρisandthereby expected alpha returns ηishave cross-sectionally
+skewed historical volatilities [Kakushadze & Tulchinsky, 2016], [Kakus hadze, 2016b].
+This then invariably implies that the residuals ǫisalso have cross-sectionally skewed
+historical volatilities. So, (5) receives oversized contributions fro m volatile alphas.
+This can be rectiﬁed by running least-squares on appropriately nor malized errors:
+N/summationdisplay
+i=1/tildewideǫ2
+is=N/summationdisplay
+i=1visǫ2
+is→min (10)
+Here/tildewideǫis=ǫis/ξisandvis= 1/ξ2
+is. The normalizations ξisshould be chosen such
+that they take care of the aforementioned skewness. The simples t choice is to use
+historical alpha volatilities ξis=σis, whereσiscan be computed, e.g., based on prior
+ddays’ worth of historical data (Var( ·,d) is ad-day moving serialvariance):
+σ2
+is= Var(ηis,d) =1
+d−1s+d/summationdisplay
+s′=s+1(ηis′−ηis)2(11)
+ηis=1
+ds+d/summationdisplay
+s′=s+1ηis′ (12)
+Here two questions arise naturally. First, should we compute σ2
+isbased on the
+expected returns ηisor the realized returns ρis? Second, should we set ξis=σisor
+18Here Φ−1
+ABis the matrix inverse to Φ AB. More generally, we can have a diﬀerent covariance
+matrix Φ ABsfor each date sin (8) – albeit this can increase noise. This is not critical here.
+5should we compute ξissome other way, e.g., as volatilities of the residuals rather
+than of the (expected or realized) returns for alphas? We will come back to this
+below. For now let us simply assume that we have some way of computin gξis.
+Then (10) is equivalent (for each value of s) to running a weighted regression
+(without the intercept) of ηisover the loadings matrix PiAswith the weights vis.
+The stock expected returns EAsare the regression coeﬃcients given by
+EAs=N/summationdisplay
+i=1M/summationdisplay
+B=1YABsvisPiBsηis (13)
+where for each value of stheM×MmatrixYABsis the inverse of the M×Mmatrix
+XABs=N/summationdisplay
+i=1visPiAsPiBs (14)
+As above, invertibility of XABsis not given. But ﬁrst we discuss regression weights.
+2.1.3 Regression Weights
+So, what should theregression weights be? Since these weights are meant to normal-
+izetheregressionresiduals in(10), it isnatural toset ξ2
+istomoving serial variances of
+the time series of the regression residuals ǫis. However, let us ﬁrst discuss why using
+historical alpha volatilities, which would be a simple choice, may be subop timal.
+Let us ﬁrst look at historical volatilities of the realized alpha returns (1). When
+computing serial variances, we would be muddling up non-factorized contributions
+from the realized stock returns RAsand the fact that the desired holdings PiAsalso
+change from one date sto another. However, this position data is “previsible”,
+it is ﬁxed by how the alphas are constructed, and should not contrib ute into the
+measure of uncertainty (i.e., volatility) we use to normalize the regre ssion residuals.
+On the other hand, the realized alpha returns know nothing about t he uncertainty
+stemming from forecasting the alphas, which is encoded in the time se ries of the
+expected alpha return (4). So, using ηisis more reasonable, but we still must not
+muddle up the weights based on ηiswith thes-dependence of the desired holdings
+PiAs. And this is achieved precisely by regressing ηisoverPiAs(for each date s),
+which produces the regression residuals ǫis, and setting
+ξ2
+is= Var(ǫis,d) (15)
+Var(·,d) is deﬁned in (11). So, the regression with unit weights ﬁxes vis= 1/ξ2
+is.
+2.2 Linear Constraints
+There may be additional linear constraints on stock positions stemm ing from all
+alphas being subject to the same risk management restrictions. E.g ., suppose all
+6alphas are dollar-neutral. Then we have:
+M/summationdisplay
+A=1PiAs≡0 (16)
+More generally, we can have plinear constraints (typically, p≪M, so we assume
+that this holds)
+M/summationdisplay
+A=1PiAsQAα≡0, α= 1,...,p (17)
+Without loss of generality we can assume that: i) the pcolumns of the matrix QAα
+are linearly independent;19and ii) the constraints (17) do not imply that PiAs≡0
+for any given value of A(or else none of the alphas trade the stock labeled by Aand
+we can simply drop it out of the universe). Furthermore, to keep it s imple, we will
+assume that if there is a subset of N1alphas (N1< N) for which – but not for all
+alphas – we have additional linear constraints other than (17), the nN1≪N.
+If we havep>0 linear constraints, our alphas do not depend on plinear combi-
+nations of the stock returns. We can decompose
+RAs=R′
+As+p/summationdisplay
+α=1QAαRαs (18)
+M/summationdisplay
+A=1QAαR′
+As≡0 (19)
+where
+Rαs=M/summationdisplay
+A=1/tildewideQαARAs (20)
+and (in matrix notations) /tildewideQ= (QTQ)−1QT. Note that the matrix QTQis nonsin-
+gular as the columns of QAαare linearly independent. So, the alpha returns
+ρis=M/summationdisplay
+A=1PiAsR′
+As (21)
+knownothingaboutthereturns Rαsfortherisk factors deﬁnedbythe factor loadings
+matrixQAα. E.g., in the case of a single dollar-neutrality constraint (16) we have
+QAα≡1 (α= 1), and the corresponding return Rαs=1
+M/summationtextM
+A=1RAsis nothing
+but the average stock portfolio return, which for large Mcan be thought of as an
+equally-weighted broad-market return. Dollarneutrality hedges a gainst market risk.
+19The constraints (17) are invariant under SO(p) rotations Q→Q U, whereUαβis an orthog-
+onal matrix: UUT=UTU= 1.
+7Based on the foregoing, intuitively it is clear that in the presence of lin ear con-
+straints (17) we cannot forecast all stock expected returns us ing alpha expected
+returns, but only M−plinear combinations thereof as the alpha portfolios are neu-
+tral under the remaining plinear combinations. So, we need to reduce the number
+of stock returns from MtoM−p. There are various ways of achieving this goal.
+2.3 Elimination Method
+Thus, we can build a portfolio of M−pstocks as follows. At each step r≤M
+we have three sets Π r,/tildewideΠrand Υ r. At stepr= 1 we start with Π 1={A|A= 1},
+/tildewideΠ1={A|A= 2,3,...,M}, and Υ 1={α|α= 1,...,p}. At each step r, where
+r < M, we deﬁne Π′
+r= Πr∪{B}, whereB= min(/tildewideΠr). If there is no β∈Υrsuch
+that /summationdisplay
+A∈Π′rPiAsQAβ≡0 (22)
+then we deﬁne Π r+1= Π′
+r(i.e., we add Bto Πr),/tildewideΠr+1=/tildewideΠr\{B}(i.e., we delete
+Bfrom/tildewideΠr) and Υ r+1= Υr. If suchβdoes exist, then we deﬁne Π r+1= Πr,
+/tildewideΠr+1=/tildewideΠr\{B}and Υ r+1= Υr\{β}(i.e., we delete βfrom Υ r). At stepr=Mwe
+end up with the subset Π M⊂ {1,...,M}such that there are no linear constraints
+onPiAsforA∈ΠM. The subset J= ΠMhas|J|=M−pelements. Its complement
+/tildewideJ={1,...,M}\Jhas|/tildewideJ|=pelements. Moving forward we will use the lower case
+charactersa,b,...(from the beginning of the Latin alphabet) to label the stocks
+corresponding to the subset J, and the characters µ,ν,...(from the middle of the
+Greek alphabet)20to label the stocks corresponding to the subset /tildewideJ. Then we can
+rewrite (19) via/summationdisplay
+µ∈/tildewideJqµαR′
+µs=−/summationdisplay
+a∈JKaαR′
+as (23)
+where (in matrix notations) qµα=QµαandKaα=Qaα. Therefore, we have
+R′
+µs=−/summationdisplay
+a∈JχµaR′
+as (24)
+ρis=/summationdisplay
+a∈JSiasR′
+as (25)
+where (in matrix notations) χ= (qqT)−1qKTand
+Sias=Pias−/summationdisplay
+µ∈/tildewideJPiµsχµa (26)
+So, (25) now looks like there are no linear constraints, except that the stock universe
+is smaller (M−pstocks instead of M), the stock “positions” are now given by Sias
+20Not to be confused with the characters α,β,... from the beginning of the Greek alphabet we
+use inQAα.
+8(instead of PiAs), and theM−preturns are R′
+as. The remaining preturnsR′
+µsare
+ﬁxed via (24), and the MreturnsR′
+Asare not the same as the original returns RAs
+but are projected onto an ( M−p)-dimensional hyperplane via (19). The directions
+Rαsperpendicular to this hyperplane are unattainable, but we can solve forR′
+As.
+2.4 Principal Components
+There isa formallysimpler method fordealing with linear constraints. T he practical
+issue is that (for each value of s) theM×Mmatrix (14) is singular in the presence
+of linear constraints (17). This can be dealt with as follows. Let us de compose the
+matrixXABsusing its principal components V(C)
+As:
+XABs=M/summationdisplay
+C=1λ(C)
+sV(C)
+AsV(C)
+Bs (27)
+Let us label the positive eigenvalues via λ(a)
+s,a∈J,|J|=M−p, and the null
+eigenvalues via λ(µ)
+s,µ∈/tildewideJ,|/tildewideJ|=p. We can regularize the matrix XABsvia
+XABs=/summationdisplay
+a∈Jλ(a)
+sV(a)
+AsV(a)
+Bs+/summationdisplay
+µ∈/tildewideJλ0V(µ)
+AsV(µ)
+Bs (28)
+where at the end of the day we will take λ0→0+. Note that, by deﬁnition, we have
+M/summationdisplay
+A=1V(a)
+AsQAα≡0 (29)
+M/summationdisplay
+A=1V(µ)
+AsPiAs≡0 (30)
+The inverse of XABsis given by
+YABs=/summationdisplay
+a∈J[λ(a)
+s]−1V(a)
+AsV(a)
+Bs+/summationdisplay
+µ∈/tildewideJλ−1
+0V(µ)
+AsV(µ)
+Bs (31)
+Plugging this into (13), we get
+EAs=N/summationdisplay
+i=1M/summationdisplay
+B=1/summationdisplay
+a∈J[λ(a)
+s]−1V(a)
+AsV(a)
+BsvisPiBsηis (32)
+This expression is independent of the regulator λ0, which we can safely take to 0.
+Note that
+M/summationdisplay
+A=1EAsQAα≡0 (33)
+Once again, only the directions orthogonal to the linear constraint s are attainable.
+93 Alpha Risk Models
+The formulas (32), (8) and (9) express the stock portfolioweight s via alpha expected
+returns, without any reference to alpha portfolio weights. We will n ow derive this
+result in a seemingly unrelated way, by constructing risk models for a lpha portfolios.
+So, as it is normally done in practice, let us combine our Nalphas with some
+weightswis, which we need to ﬁx somehow. Let us look at the risk of the underly-
+ing stock portfolio corresponding to these alpha weights. The corr esponding stock
+weights are given by
+wAs=N/summationdisplay
+i=1PiAswis (34)
+On a given date s, the (expected) stock portfolio variance is given by
+M/summationdisplay
+A,B=1ΦABwAswBs=N/summationdisplay
+i,j=1wiswjsFijs (35)
+Fijs=M/summationdisplay
+A,B=1PiAsΦABPjBs (36)
+where, asabove, Φ ABisapositive-deﬁnite (andreasonablystable) M×Mriskmodel
+covariance matrix for stocks.21Even though Φ ABis invertible, the N×Nmatrix
+Fijs(for each value of s) is singular – there are many more alphas than stocks. In
+fact, the l.h.s. is nothing but an incomplete factor model withMfactors, the factor
+loadings matrix PiAs, and the factor covariance matrix Φ AB. What is missing is
+the speciﬁc (a.k.a. idiosyncratic) risk on the diagonal. Once we add th e speciﬁc
+risk, call it ζ2
+is, we have an M-factor model with a positive-deﬁnite model covariance
+matrix for our Nalphas:22
+Γijs=ζ2
+isδij+Fijs (37)
+We will discuss what ζisshould be in a moment. For now, let us assume we know
+how to compute them and ﬁgure out what the weights wisare based on the alpha
+expected returns ηisand the alpha portfolio risk modeled by Γ ijs. As for stocks, let
+us ﬁxwisby maximizing the Sharpe ratio [Sharpe, 1994] of the alpha portfolio:
+wis=κN/summationdisplay
+j=1Γ−1
+ijsηjs (38)
+Here, for each date s, Γ−1
+ijsis theN×Nmatrix inverse to Γ ijs, and the overall
+21The comment in footnote 18 applies to (36) as well.
+22We can think about the speciﬁc risk in the matrix Γ ijsin (37) as modeling the uncertainty
+in the alpha expected returns other than that due to stock volatilit y. The latter is modeled by the
+factor risk Fijs. We will come back to addressing whether the former should be diago nal below.
+10normalization coeﬃcient κis ﬁxed via the normalization condition
+N/summationdisplay
+i=1|wis|= 1 (39)
+We will see momentarily that the alpha weights wisreduce to a familiar form.
+3.1 Large NLimit
+For our purposes here it is convenient to rewrite Γ ijsvia Γijs=ζisζjsγijs, where
+γijs=δij+M/summationdisplay
+A=1βiAsβjAs (40)
+andβiAs=/tildewideβiAs/ζis. Here/tildewideβiAs=/summationtextM
+B=1PiBsφBA, andφis the Cholesky decompo-
+sition of Φ, so (in matrix notations) φ φT= Φ. We then have
+wis=κ
+ζisN/summationdisplay
+j=1γ−1
+ijηjs
+ζjs=κ
+ζis/bracketleftBigg
+ηis
+ζis−N/summationdisplay
+j=1M/summationdisplay
+A,B=1βiAsQ−1
+ABsβjBsηjs
+ζjs/bracketrightBigg
+(41)
+where (for each date s)Q−1
+ABsis theM×Mmatrix inverse to QABs=δAB+qABs,
+andqABs=/summationtextN
+i=1βiAsβiBs. The diagonal elements of this matrix are QAAs=
+1+/summationtextN
+i=1β2
+iAs. In a moment we will argue that all qAAs=/summationtextN
+i=1β2
+iAs≫1. Then we
+can expand Q−1
+ABsas follows:
+Q−1
+ABs=q−1
+ABs−M/summationdisplay
+C=1q−1
+ACsq−1
+CBs+O(q−3) (42)
+Here (for each date s)q−1
+ABsis theM×Mmatrix inverse to qABs. The ﬁrst term
+in (42) gives the leading contribution of order 1 /NintoQ−1
+ABs, the second term
+is the next-to-leading contribution of order 1 /N2, and the remaining terms in the
+expansion, which we schematically denoted as O(q−3), are of order 1 /N3, 1/N4, etc.
+As we will see in a moment, we need to keep not just the leading term q−1
+ABs, but
+also the next-to-leading (second) term in (42), and we can safely d iscard the rest.23
+So, why are all qAA≫1? This is the case when [Kakushadze and Yu, 2017a]:
+i)Nis large, and ii) there is no “clustering” in the vectors βiA. That is, we do not
+have vanishing or small values of β2
+iAfor most values of the index iwith only a small
+subset thereof having β2
+iA∼>1. Without such “clustering”, which is not observed in
+practice, to have qAA∼<1, we would have to have β2
+iA≪1, i.e.,γijand, therefore, Γ ij
+would be almost diagonal. Such a risk model would not describe realistic alphas.24
+23One caveat here is that qABsis (for now) assumed to be invertible. We will relax this below.
+24In practice, alphas are not too highly correlated – this is because on e does not wish to trade
+highly correlated alphas. However, empirically the average correlat ion between alphas is not tiny
+either (deﬁnitely, not of order 1 /N) [Kakushadze, 2016b].
+113.2 Stock Portfolio
+Let us now plug (41) and (42) into (34). Straightforward algebra y ields:
+wAs=κN/summationdisplay
+i=1M/summationdisplay
+B,C=1Φ−1
+AB/tildewideYBCs/tildewidevisPiCsηis+... (43)
+where the ellipses stand for subleading terms corresponding to the O(q−3) contribu-
+tions in (42), /tildewidevis= 1/ζ2
+is, and/tildewideYABsis the inverse of the matrix
+/tildewideXABs=N/summationdisplay
+i=1/tildewidevisPiAsPjAs (44)
+I.e., here we have the exact same result as that given by (13), (8) a nd (9) provided
+that we identify ζiswithξis. More precisely, this identiﬁcation is up to an overall
+(s-dependent) constant, which does not aﬀect the ﬁnal result. Th is overall normal-
+ization constant plays the role of the relative normalization between the speciﬁc
+risk and factor risk in (37) and is nontrivial to ﬁx as it depends on the normaliza-
+tion used in constructing the stock risk model covariance matrix Φ AB. However,
+the beauty of the large Nlimit is that we do not need to know this normalization
+constant as it only aﬀects the subleading terms suppressed by pow ers of 1/N(i.e.,
+the terms corresponding to the ellipses in (43)). Also, note that th e leading con-
+tribution in (43) comes from the next-to-leading (second) term in ( 42). There is a
+simple reason for this. Suppose we kept only the leading (ﬁrst) term in (42). We
+would then get wAs≡0. Indeed, keeping the leading term in (42) reduces (41) to
+a weighted cross-sectional regression [Kakushadze and Yu, 2017 a] ofηisoverPiAs
+(with the weights 1 /ζ2
+is). Thenwisare automatically orthogonal to PiAs, sowAs
+(given by (34)) automatically vanish, even though wisdo not! This is because the
+alpha portfolio is perfectly hedged against the risk factors, which a re nothing but
+the stock returns. So, the combined alpha portfolio has exactly ze ro stock holdings.
+To obtain a nontrivial stock portfolio, we must relax this perfect he dge, i.e., move
+away from the exact regression to optimization. Keeping the next- to-leading term
+in (42) accomplishes exactly that. And, happily, precisely because Nis large, all the
+other terms are suppressed and we do not even need to ﬁx the rela tive normalization
+between the speciﬁc and factor risks, which only aﬀects these sup pressed terms.
+One loose end we need to tie up is that above we assumed that qABis invertible.
+This is the case if we do not have linear constraints. In the presence of linear
+constraints (17) qABis singular. It can be regularized as in Subsection 2.4 and then
+the rest of the argument goes through. The net result is that
+wAs=κN/summationdisplay
+i=1M/summationdisplay
+B,C=1/summationdisplay
+a∈JΦ−1
+AB[λ(a)
+s]−1V(a)
+BsV(a)
+CsvisPiCsηis+... (45)
+where the notations are the same as in Subsection 2.4 (ellipses = suble ading terms).
+123.3 A Tweak
+In the alpha risk model (37) we treat the position data PiAsas the factor loadings
+matrix (for each date s) and thereby stock returns are identiﬁed with the risk factor
+returns. The remainder of the risk is assumed to be diagonal speciﬁ c risk, and ζ2
+is
+are identiﬁed – up to an overall ( s-dependent) normalization factor , which we do not
+need tocompute forthereasons discussed above25– withthed-daymoving variances
+ξ2
+isof the regression residuals (see above). This is equivalent (for eac h dates) to
+modeling the ( d-day moving) sample covariance matrix
+Ξijs= Cov(ǫis,ǫjs,d) =1
+d−1s+d/summationdisplay
+s′=s+1(ǫis′−ǫis)(ǫjs′−ǫjs) (46)
+ǫis=1
+ds+d/summationdisplay
+s′=s+1ǫis′ (47)
+of the regression residuals ǫisvia a diagonal matrix diag(Ξ ijs) = Ξ iisδij=ξ2
+isδij.
+There are other possibilities here. We can approximate Ξ ijsvia a non-diagonal
+matrix/tildewideΞijsso long as it is positive-deﬁnite. Generally, the rank of the N×Nmatrix
+Ξijsequalsd−1≪N. Let its principal components with positive eigenvalues θ(r)
+s
+beU(r)
+is,r= 1,...,d−1. Let us order the eigenvalues in the descending order:
+θ(1)
+s>θ(2)
+s>···>θ(d−1)
+s. Then we can construct /tildewideΞijsas aKs-factor statistical risk
+model (see, e.g., [Kakushadze and Yu, 2017b]) using the ﬁrst Ks<d−1 principal
+components:
+/tildewideΞijs=/tildewideξ2
+isδij+Ks/summationdisplay
+r=1θ(r)
+sU(r)
+isU(r)
+js (48)
+/tildewideξ2
+is=ξ2
+is−Ks/summationdisplay
+r=1θ(r)
+s/bracketleftBig
+U(r)
+is/bracketrightBig2
+(49)
+Alternatively, we can model the sample correlation matrix Ψ ijs= Ξijs/ξisξjs(Ψiis≡
+1) via aKs-factor statistical risk model:
+/tildewideΞijs=ξisξjs/tildewideΨijs (50)
+/tildewideΨijs=/tildewideψ2
+isδij+Ks/summationdisplay
+r=1φ(r)
+sS(r)
+isS(r)
+js (51)
+/tildewideψ2
+is= 1−Ks/summationdisplay
+r=1φ(r)
+s/bracketleftBig
+S(r)
+is/bracketrightBig2
+(52)
+25So, without aﬀecting the ﬁnal result, here we will set it to 1 for nota tional simplicity. This is
+equivalent to assuming that the stock risk model covariance matrix ΦABis properly normalized,
+albeit, once again, this overall normalization is immaterial at the end o f the day.
+13Hereφ(r)
+s(r= 1,...,d−1) are the positive eigenvalues of the sample correlation
+matrix Ψ ijs(φ(1)
+s>φ(2)
+s>···>φ(d−1)
+s) andS(r)
+isare the corresponding eigenvectors.
+Following [Kakushadze and Yu, 2017b], the number of factors Kscanbe ﬁxed us-
+ing the eﬀective rank (or eRank) [Roy and Vetterli, 2007]: Ks= ﬂoor(eRank( Aijs))
+orKs= round(eRank( Aijs)), where Astands for the sample covariance matrix Ξ
+or the sample correlation matrix Ψ. Here we can simplify things a bit and have
+uniformKfor all values of s, e.g.,K= min(Ks). In the discussion below, for the
+sake of deﬁniteness, let us assume uniform Ks≡Kin the factor models (48) based
+on the principal components of the sample covariance matrix (this is not critical).
+So, now our alpha risk model covariance matrix instead of (37) is give n by
+/tildewideΓijs=/tildewideΞijs+Fijs=/tildewideξ2
+isδij+/summationdisplay
+/tildewideA,/tildewideB∈H/tildewidePi/tildewideAs/tildewideΦ/tildewideA/tildewideB/tildewidePj/tildewideBs(53)
+where the set H={A}∪{r}(so|H|=M+K) is the union of the values of the
+indicesA,B,···= 1,...,Mand the eigenvalue label r= 1,...,K, and/tildewidePiAs=PiAs,
+/tildewidePirs= [θ(r)
+s]1/2U(r)
+is. Also,/tildewideΦAB= ΦAB,/tildewideΦrr′=δrr′, and other components vanish.
+Now, the regression residuals ǫisby deﬁnition are orthogonal to PiAs, so we have/summationtextN
+i=1ǫisPiAs≡0. This implies that/summationtextN
+i=1U(r)
+isPiAs≡0. Straightforward algebra
+then yields a simple result: the stock portfolio weights are still given b y (45) with
+the only diﬀerence that now vis= 1//tildewideξ2
+is(as opposed to vis= 1/ξ2
+is). I.e., the eﬀect of
+modeling the matrix Ξ ijsvia its principal components simply reduces to modifying
+the regression weights. So, the choice of visencodes the diﬀerence between models!26
+4 Concluding Remarks
+Asmentionedabove, thereisanoverall normalizationcoeﬃcient bet ween thespeciﬁc
+risk and factor risk terms in (37) (and thereby also in (53)). In fac t, this overall nor-
+malization generally is s-dependent. It is related to the fact that the normalization
+of the stock risk model covariance matrix Φ ABa priori is not the same as that of the
+resultant expected stock returns. However, as discussed abov e, for alpha portfolio
+optimization purposes we do not need to determine this overall norm alization. This
+is because we are not actually inverting Γ ijs; instead, we are running a regression
+over the position data PiAswith the weights visdetermined via the speciﬁc risks ξis.
+This is diﬀerent from the risk model building for stocks,27where one constructs a
+full multifactor risk model matrix Φ ABwith no undetermined normalization factors,
+etc. So, why is there such a glaring diﬀerence between stock and alp ha risk models?
+The answer is simple. In stock risk models the industry-based risk fa ctors play a
+26Here one may wonder how to control the stock portfolio turnover as high turnover alphas
+may increase it. A simple method is to suppress the weights visfor high turnover alphas.
+27For a general discussion and references, see, e.g., [Grinold and Kah n, 2000]. For a detailed
+construction (including important details overlooked in prior literatu re and commercial oﬀerings)
+and explicit implementation complete with source code, see [Kakushad ze and Yu, 2016].
+14dominant role, notably, by their ubiquity (as opposed to style facto rs or principal
+components – see [Kakushadze and Yu, 2016]). For the industry-b ased risk factors
+the corresponding factor loadings matrix Ω AI(whereIlabels industries) does, in
+fact, have a “clustering” structure; e.g., for binary industry clas siﬁcations Ω AI= 1
+if the stock labeled by Abelongs to the industry labeled by I, otherwise Ω AI= 0.
+Therefore, Sharpe ratio maximization based on such Φ ABdoesnotreduce to a
+regression.28In some sense, alpha risk models are “simpler” than stock risk models .
+Speaking of stock risk models, what should we use for Φ AB? Oﬀ-the-shelf com-
+mercial risk models might appear as a natural choice. However, for the reasons
+discussed in detail in [Kakushadze and Liew, 2015], for short-horizo n trading appli-
+cations custom-built risk models are preferable, especially when ope n source code
+for heterotic risk models [Kakushadze, 2015] and heterotic CAPM [K akushadze
+and Yu, 2016] is freely available. This paper for alphas is in some sense analogous
+to [Kakushadze and Yu, 2016]for stocks: it provides source code for extracting stock
+returns from alphas directly, bypassing “alpha combos” altogethe r. The implication
+goes beyond by-now-standard quant trading based on ephemera l alphas. These ex-
+pected returns can be used for other purposes. For instance, k nowing short-horizon
+stock expected returns can be useful to institutional portfolio m anagers in gauging
+when to execute their (typically, large) orders and thereby poten tially mitigate at
+least some market impact eﬀects. In this regard it is important to ke ep in mind
+that constrained alphas yield accordingly constrained stock expec ted returns. E.g.,
+if all alphas are dollar-neutral, the resulting stock expected retur ns are demeaned:
+we cannot forecast the overall movement of the broad market us ing dollar-neutral
+portfolios.29Thus, developing a large number of unconstrained alphas is warrant ed.
+For quant trading, apart from reducing noise and suboptimality intr oduced by
+alpha combos, one immediate beneﬁt of our new method is that hedge funds no
+longer need to pay (about 3% of the P&L) for alpha combos (on top o f about 10%
+for alphas). At the end, the diﬀerence between diﬀerent models (o r alpha combos)
+reduces to picking the regression weights vis(which may include, e.g., turnover
+suppression, etc. – see fn. 26). Why would anyone want to pay for that? Albeit,
+paraphrasing, avaritia caecus est ... In any event, let us ﬁnally note that we present
+no backtests in this paper as the position and other data are highly p roprietary.
+Acknowledgements
+ZK would like to thank Daniele Bernardi for an invitation to give a keyno te talk
+“HowtoCombineaBillionAlphas” atQuant2017, March2-3, Venice, It aly: walking
+around in beautiful Venice served as a muse and an inspiration for th is paper.
+28In contrast, Shape ratio maximization using stock risk models based solely on style factors
+and/or principal components always reduces to a regression (ass umingM≫1). This also applies
+to the so-called “shrinkage” models [Ledoit and Wolf, 2004], which are special cases of principal
+components based models [Kakushadze and Yu, 2017b].
+29Notwithstanding that dollar neutrality does not necessarily equal m arket neutrality.
+15A R Code for Stock Expected Returns
+In this appendix we give the R source code30for extracting stock expected returns
+from alpha expected returns. The code below is essentially self-exp lanatory and
+straightforward as it simply follows the algorithms and formulas in Sec tions 2 and
+3. The entry function is stk.exp.ret(ret, hld, k, tol = 1e-8) . Hereretis an
+N×dmatrixηisof alpha expected returns, where the most recent date corresp onds
+tos= 1;hldis a 3-dimensional N×M×darrayPiAsof stock positions; kis the
+input (see below) number of principal components Kused in modeling the matrix
+/tildewideΞijs;tolis used in dealing with rounding errors (to wit, to distinguish null eigen-
+values). Internally the function stk.exp.ret() calls the function calc.spec.var() ,
+which internally calls the function calc.erank() . ForK= 0 orK≥d−2 the
+code setsK= 0, i.e., no principal components are used. For K <0 the code
+setsKusing eRank (truncated to an integer – it is straightforward to cha nge it to
+rounding). For 0 < K < d −2 the code uses this input value for the number of
+principal components. Internally the function calc.spec.var() also calls the func-
+tionqrm.calc.eigen.eff() given in Appendix C of [Kakushadze and Yu, 2017b],
+which provides a much more eﬃcient method ( notbased on power iterations) for
+computing eigenpairs than the internal R function (which is based on power itera-
+tions [Mises and Pollaczek-Geiringer, 1929]).31The function stk.exp.ret() returns
+the vectorEi=Ei,s=1of the stock expected returns for the most recent date s= 1.
+The codeonlyuses datawith s>1 tocompute the regression weights out-of-sample.
+calc.erank <- function (x, excl.first)
+{
+take <- x > 0
+x <- x[take]
+if(excl.first)
+x <- x[-1]
+p <- x / sum(x)
+h <- - sum(p * log(p))
+er <- exp(h)
+if(excl.first)
+er <- er + 1
+return(er)
+}
+calc.spec.var <- function (x, k, do.trunc = T)
+{
+m <- ncol(x) - 1
+if(k == 0 | k >= m)
+30The R Project for Statistical Computing, www.r-project.org.
+31Forlarge NusingtheinternalRfunction eigen() herewouldbecomputationallyprohibitive.
+16return(apply(x, 1, var))
+x.e <- qrm.calc.eigen.eff(x)
+x.val <- x.e$values
+x.vec <- x.e$vectors
+if(k < 0)
+{
+k <- calc.erank(x.val, excl.first = F)
+if(do.trunc)
+k <- trunc(k)
+else
+k <- round(k)
+}
+if(length(take <- (k+1):m) == 1)
+return(x.vec[, take]^2 * x.val[take])
+return(colSums(t(x.vec[, take])^2 * x.val[take]))
+}
+stk.exp.ret <- function (ret, hld, k, tol = 1e-8)
+{
+n <- nrow(ret)
+d <- ncol(ret)
+res <- matrix(NA, n, d - 1)
+for(s in 2:d)
+res[, s - 1] <- residuals(lm(ret[, s] ∼-1 + hld[, , s]))
+v <- 1 / calc.spec.var(res, k)
+x <- t(hld[, , 1]) %*% (v * hld[, , 1])
+x.e <- eigen(x)
+x.val <- x.e$values
+x.vec <- x.e$vectors
+take <- x.val > tol * x.val[1]
+x.val <- x.val[take]
+x.vec <- x.vec[, take]
+stk <- colSums(hld[, , 1] * v * ret[, 1])
+stk <- colSums(x.vec * stk) / x.val
+stk <- colSums(t(x.vec) * stk)
+return(stk)
+}
+17B DISCLAIMERS
+Wherever thecontext so requires, themasculine gender includes t hefeminine and/or
+neuter, and the singular form includes the plural and vice versa . The author of this
+paper (“Author”) and his aﬃliates including without limitation Quantigic/circleRSolu-
+tions LLC (“Author’s Aﬃliates” or “his Aﬃliates”) make no implied or exp ress
+warranties or any other representations whatsoever, including w ithout limitation
+implied warranties of merchantability and ﬁtness for a particular pur pose, in con-
+nection with or with regard to the content of this paper including with out limitation
+any code or algorithms contained herein (“Content”).
+The reader may use the Content solely at his/her/its own risk and th e reader
+shall have no claims whatsoever against the Author or his Aﬃliates an d the Author
+and his Aﬃliates shall have no liability whatsoever to the reader or any third party
+whatsoever for any loss, expense, opportunity cost, damages o r any other adverse
+eﬀects whatsoever relating to or arising from the use of the Conte nt by the reader
+including without any limitation whatsoever: any direct, indirect, incid ental, spe-
+cial, consequential or any other damages incurred by the reader, however caused
+and under any theory of liability; any loss of proﬁt (whether incurre d directly or
+indirectly), any loss of goodwill or reputation, any loss of data suﬀe red, cost of pro-
+curement of substitute goods or services, or any other tangible o r intangible loss;
+any reliance placed by the reader on the completeness, accuracy o r existence of the
+Content or any other eﬀect of using the Content; and any and all o ther adversities
+or negative eﬀects the reader might encounter in using the Conten t irrespective of
+whether the Author or his Aﬃliates is or are or should have been awar e of such
+adversities or negative eﬀects.
+The R code included in Appendix A hereof is part of the copyrighted R c ode
+of Quantigic/circleRSolutions LLC and is provided herein with the express permission of
+Quantigic/circleRSolutions LLC. The copyright owner retains all rights, title and inter est
+in and to its copyrighted source code included in Appendix A hereof an d any and
+all copyrights therefor.
+References
+Grinold, R.C. and Kahn, R.N. Active Portfolio Management . New York, NY:
+McGraw-Hill, 2000.
+Kakushadze, Z. (2014) Factor Models for Alpha Streams. The Journal of In-
+vestment Strategies 4(1): 83-109.
+Available online: http://ssrn.com/abstract=2449927.
+Kakushadze, Z. and Liew, J.K.-S. (2015) Custom v. Standardized R isk Models.
+Risks3(2): 112-138. Available online: http://ssrn.com/abstract=2493 379.
+18Kakushadze, Z. (2015) Heterotic Risk Models. Wilmott Magazine 2015(80): 40-
+55. Available online: http://ssrn.com/abstract=2600798.
+Kakushadze, Z. (2016a) Shrinkage = Factor Model. Journal of Asset Manage-
+ment17(2): 69-72. Available online: http://ssrn.com/abstract=26857 20.
+Kakushadze, Z. (2016b) 101 Formulaic Alphas. Wilmott Magazine 2016(84):
+72-80. Available online: http://ssrn.com/abstract=2701346.
+Kakushadze, Z. and Tulchinsky, I. (2016) Performance v. Turno ver: A Story
+by 4,000 Alphas. The Journal of Investment Strategies 5(2): 75-89.
+Available online: http://ssrn.com/abstract=2657603.
+Kakushadze, Z. and Yu, W. (2016) Multifactor Risk Models and Hete rotic
+CAPM.The Journal of Investment Strategies 5(4): 1-49.
+Available online: http://ssrn.com/abstract=2722093.
+Kakushadze, Z. and Yu, W. (2017a) How to Combine a Billion Alphas. Journal
+of Asset Management 18(1): 64-80.
+Available online: http://ssrn.com/abstract=2739219.
+Kakushadze, Z. and Yu, W. (2017b) Statistical Risk Models. The Journal of
+Investment Strategies 6(2): 1-40.
+Available online: http://ssrn.com/abstract=2732453.
+Ledoit, O. and Wolf, M. (2004) Honey, IShrunk the Sample Covarian ce Matrix.
+The Journal of Portfolio Management 30(4): 110-119.
+Markowitz, H. (1952) Portfolio selection. The Journal of Finance 7(1): 77-91.
+Mises, R.V. and Pollaczek-Geiringer. H. (1929) Praktische Verfahr en der
+Gleichungsauﬂ¨ osung. ZAMM – Zeitschrift f¨ ur Angewandte Mathematik und
+Mechanik 9(2): 152-164.
+Roy, O. and Vetterli, M. (2007) The eﬀective rank: A measure of eﬀ ective
+dimensionality. In: Proceedings – EUSIPCO 2007, 15th European Signal Pro-
+cessing Conference. Pozna´ n, Poland (September 3-7), pp. 606-610.
+Sharpe, W.F. (1994) The Sharpe Ratio. The Journal of Portfolio Management
+21(1): 49-58.
+19

@@ -1,0 +1,597 @@
+ASYNCHRONOUS DEEPDOUBLE DUELLING Q-L EARNING FOR
+TRADING -SIGNAL EXECUTION IN LIMIT ORDER BOOK
+MARKETS
+Peer Nagy
+Oxford-Man Institute of Quantitative Finance
+Department of Engineering Science
+University of Oxford
+peer.nagy@eng.ox.ac.ukJan-Peter Calliess
+Oxford-Man Institute of Quantitative Finance
+Department of Engineering Science
+University of Oxford
+Stefan Zohren
+Oxford-Man Institute of Quantitative Finance
+Department of Engineering Science
+University of Oxford
+September 26, 2023
+ABSTRACT
+We employ deep reinforcement learning (RL) to train an agent to successfully translate a high-
+frequency trading signal into a trading strategy that places individual limit orders. Based on the
+ABIDES limit order book simulator, we build a reinforcement learning OpenAI gym environment and
+utilise it to simulate a realistic trading environment for NASDAQ equities based on historic order book
+messages. To train a trading agent that learns to maximise its trading return in this environment, we
+use Deep Duelling Double Q-learning with the APEX (asynchronous prioritised experience replay)
+architecture. The agent observes the current limit order book state, its recent history, and a short-term
+directional forecast. To investigate the performance of RL for adaptive trading independently from a
+concrete forecasting algorithm, we study the performance of our approach utilising synthetic alpha
+signals obtained by perturbing forward-looking returns with varying levels of noise. Here, we find
+that the RL agent learns an effective trading strategy for inventory management and order placing
+that outperforms a heuristic benchmark trading strategy having access to the same signal.
+Keywords limit order books ·quantitative finance ·reinforcement learning ·LOBSTER ·algorithmic trading
+1 Introduction
+Successful quantitative trading strategies often work by generating trading signals, which exhibit a statistically significant
+correlation with future prices. These signals are then turned into actions, aiming to assume positions in order to gain
+from future price changes. The higher the signal frequency and strategy turnover, the more critical is the executionarXiv:2301.08688v2  [q-fin.TR]  25 Sep 2023APREPRINT - SEPTEMBER 26, 2023
+component of the strategy, which translates the signal into concrete orders that can be submitted to a market. Such
+markets are oftentimes organised as an order ledger represented by a limit order book (LOB) .
+Limit order book prices have been shown to be predictable over short time periods, predicting a few successive ticks
+into the future with some accuracy. This has been done by either utilising the recent history of order book states
+[1,2], order-flow data [ 3], or market-by-order (MBO) data directly as features [ 4]. However, given the short time
+horizons over which these predictions are formed, and correspondingly small price movements, predictability does not
+directly translate into trading profits. Transaction costs, strategy implementation details, and time delays add up to the
+challenging problem of translating high-frequency forecasts into a trading strategy that determines when and which
+orders to send to the exchange. In addition, different predictive signals have to be traded differently to achieve optimal
+results, depending on the forecast horizon, signal stability, and predictive power.
+In this paper, we use asynchronous off-policy reinforcement learning (RL), specifically Deep Duelling Double Q-
+learning with the APEX architecture [ 5], to learn an optimal trading strategy, given a noisy directional signal of
+short-term forward mid-quote returns. For this purpose, we developed an OpenAI gym [ 6] limit order book environment
+based on the ABIDES [ 7] market simulator, similar to [ 8]. We use this simulator to replay NASDAQ price-time priority
+limit order book markets using message data from the LOBSTER data set [9].
+If a financial trader wants to transact a number of shares of a financial security, such as shares of cash equities,
+for example Apple stock, they need to send an order to an exchange. Most stock exchanges today accept orders
+electronically and in 2022 in US equity markets approximately 60 - 73% of orders are submitted by algorithms, not
+human traders [ 10]. A common market mechanism to efficiently transact shares between buyers and sellers is the limit
+order book (LOB) . The LOB contains all open limit orders for a given security and is endowed with a set of rules to
+clear marketable orders. A more detailed introduction to LOBs can be found in section 3.1.
+High-frequency trading (HFT) is an industry with high barriers to entry and a regulatory landscape varying by
+geographical region. Generally, trading on both sides of the LOB simultaneously by submitting both limit buy and
+limit sell orders is the purview of market makers . While their principal role is to provide liquidity to the market, they
+also frequently take directional bets over short time periods. Transaction costs for such trading strategies consist of
+two main components, explicit costs , such as trading fees, and implicit costs , such as market impact [ 11]. Trading fees
+vary by institution but can be negligible for institutional market makers, with some fee structures even resulting in zero
+additional costs if positions are closed out at the end of the day. The main consideration of transaction costs should
+thus be given to market impact. Our simulation environment models direct market impact by injecting new orders into
+historic order flow, thereby adding to or consuming liquidity in the market. One limitation of this approach is that
+indirect market impact and, generally, the reactions of other market participants are not modelled.
+We study the case of an artificial or synthetic signal, taking the future price as known and adding varying levels of noise,
+allowing us to investigate learning performance and to quantify the benefit of an RL-derived trading policy compared to
+a baseline strategy using the same noisy signal. This is not an unrealistic setup when choosing the correct level of noise.
+Practitioners often have dedicated teams researching and deriving alpha signals, often over many years, while other
+teams might work on translating those signals into profitable strategies. Our aim is to focus on the latter problem, which
+becomes increasingly more difficult as signals become faster. It is thus interesting to see how an RL framework can be
+used to solve this problem. In particular, we show that the RL agent learns policies superior to the baselines, both in
+terms of strategy return and Sharpe ratio. Machine learning methods, such as RL, have become increasingly important
+to automate trade execution in the financial industry in recent years [ 12], underlining the practical use of research in
+this area.
+We make a number of contributions to the existing literature. By defining a novel action and state space in a LOB
+trading environment, we allow for the placement of limit orders at different prices. This allows the agent to learn
+a concrete high-frequency trading strategy for a given signal, trading either aggressively by crossing the spread, or
+conservatively, implicitly trading off execution probability and cost. In addition to the timing and level placement of
+2APREPRINT - SEPTEMBER 26, 2023
+limit orders, our RL agent also learns to use limit orders of single units of stock to manage its inventory as it holds
+variably sized long or short positions over time. More broadly, we demonstrate the practical use case of RL to translate
+predictive signals into limit order trading strategies, which is still usually a hand-crafted component of a trading system.
+We thus show that simulating limit order book markets and using RL to further automate the investment process is a
+promising direction for further research. To the best of our knowledge, this is also the first study applying the APEX [ 5]
+algorithm to limit order book environments.
+The remaining paper is structured as follows: Section 2 surveys related literature, section 3 explains the mechanics
+of limit order book markets and the APEX algorithm, section 4 details the construction of the artificial price signal,
+section 5 showcases our empirical results, and section 6 concludes our findings.
+2 Related Work
+Reinforcement learning has been applied to learn different tasks in limit order book market environments, such as
+optimal trade execution [ 13,14,15,16,17], market making [ 18,19], portfolio optimisation [ 20] or trading [ 21,22,23].
+The objective of optimal trade execution is to minimise the cost of trading a predetermined amount of shares over a
+given time frame. Trading direction and the number of shares is already pre-defined in the execution problem. Market
+makers, on the other hand, place limit orders on both sides of the order book and set out to maximise profits from
+capturing the spread, while minimising the risk of inventory accumulation and adverse selection. We summarise using
+the term “RL for trading” such tasks which maximise profit from taking directional bets in the market. This is a hard
+problem for RL to solve as the space of potential trading strategies is large, leading to potentially many local optima in
+the loss landscape, and actionable directional market forecasts are notoriously difficult due to arbitrage in the market.
+The work of [ 21] is an early study of RL for market microstructure tasks, including trade execution and predicting price
+movements. While the authors achieve some predictive power of directional price moves, forecasts are determined
+to be too erroneous for profitable trading. The most similar work to ours is [ 23] that provides the first end-to-end
+DRL framework for high-frequency trading, using PPO [ 24] to trade Intel stock. To model price impact, [ 23] use an
+approximation, moving prices proportionately to the square-root of traded volume. The action space is essentially
+limited to market orders, so there is no decision made on limit prices. The trained policy is capable of producing a
+profitable trading strategy on the evaluated 20 test days. However, this is not compared to baseline strategies and the
+resulting performance is not statistically tested for significance. In contrast, we consider a larger action space, allowing
+for the placement of limit orders at different prices, thereby potentially lowering transaction costs of the learned HFT
+strategy. For a broader survey of deep RL (DRL) for trading, including portfolio optimisation, model-based and
+hierarchical RL approaches the reader is referred to [19].
+One strand of the literature formulates trading strategies in order-driven markets, such as LOBs, as optimal stochastic
+control problems, which can often even be solved analytically. A seminal work in this tradition is Almgren and Chriss
+[25], which solves a simple optimal execution problem. More recently, Cartea et al. [26] use order book imbalance,
+i.e. the relative difference in volume between buy and sell limit orders, to forecast the direction of subsequent market
+orders and price moves. They find that utilising this metric can thereby improve the performance of trading strategies.
+In addition to market orders, LOB imbalance has also been found to be predictive of limit order arrivals, and illegal
+manipulation of the LOB imbalance by spoofing can be a profitable strategy [ 27]. Stochastic models, assuming
+temporary and permanent price impact functions have also found that using order flow information can reduce trading
+costs when trading multiple assets [ 28,29]. In contrast to the stochastic modelling literature, we employ a purely
+data-driven approach using simulation. This allows us to make fewer assumptions about market dynamics, such as
+specific functional forms and model parameters. The stochasticity of the market is captured in large samples of concrete
+data realisations.
+3APREPRINT - SEPTEMBER 26, 2023
+3 Background
+3.1 Limit Order Book Data
+Limit order books (LOBs) are one of the most popular financial market mechanisms used by exchanges around the
+world [ 30]. Market participants submit limit buy or sell orders, specifying a maximum (minimum) price at which they
+are willing to buy (sell), and the size of the order. The exchange’s LOB then keeps track of unfilled limit orders on the
+buy side (bids) and the sell side (asks). If an incoming order is marketable, i.e. there are open orders on the opposing
+side of the order book at acceptable prices, the order is matched immediately, thereby removing liquidity from the book.
+The most popular matching prioritisation scheme is price-time priority. Here, limit orders are matched first based on
+price, starting with the most favourable price for the incoming order, and then based on arrival time, starting with the
+oldest resting limit order in the book, at each price level.
+Figure 1: Example Limit Order Book Snapshot of Apple Stock (AAPL) on 01 February 2012 at 10 am. Displayed are
+the 5 best bid (blue) and ask levels (red). Ask sizes are shown as negative values to indicate limit sellorders. AAPL is
+an example of a small-tick stock since the minimum tick size of ¢1 is small compared to the stock price. For a given
+number of orders, this results in sparser books with more empty price levels. (NASDAQ data from LOBSTER [9])
+Figure 1 shows an example snapshot of an Apple LOB, traded at the NASDAQ exchange, on Wednesday 01 February
+2012 at 10 am. Shown are the best 5 price levels on the bid and ask side and the aggregated available volume at each
+price. In this example, the best bid lies at $457.21 for 100 shares, which is the maximum instantaneous price a potential
+seller would be able to trade at, for example using a market order. Conversely, a potential buyer could receive up to
+1000 shares at a price of $457.29. Trading larger quantities on either side would use up all volume at the best price and
+consume additional liquidity at deeper levels. Submitting a buy limit order at a price below the best ask would not be
+marketable immediately and instead enter the LOB as new volume on the bid side. For a more comprehensive review of
+limit order book dynamics and pertaining models, we refer the reader to [30].
+In this paper, we consider equity limit order book data from the NASDAQ exchange [ 9], which also uses a price-time
+priority prioritisation. Our market simulator keeps track of the state of the LOB by replaying historical message data,
+consisting of new incoming limit orders, order cancellations, or modifications. The RL agent can then inject new
+messages into the order flow and thereby, change the LOB state from its observed historical state.
+Our simulator reconstructs LOB dynamics from message data, so every marketable order takes liquidity from the book
+and thus has a direct price impact. Beyond that, we make no further assumptions on permanent market impact or
+reactions of other agents in the market, which we leave to future work.
+4APREPRINT - SEPTEMBER 26, 2023
+3.2 Deep Reinforcement Learning
+We model the trader’s problem as a Markov Decision Process (MDP) [ 31,32], described by the tuple ⟨S,A,T, r, γ⟩.S
+denotes a state space, Aan action space, Ta stochastic transition function, ra reward function, and γa discount factor.
+Observing the current environment state st∈ S at time t, the trader takes action at∈ A, which causes the environment
+to transition state according to the stochastic transition function T(st+1|st, at). After transitioning from sttost+1, the
+agent receives a reward rt+1=r(st, at, st+1).
+Solving the MDP amounts to finding an optimal policy π∗:S → A , which maximises the discounted expected sum
+of future rewardsPT
+i=t+1γi−tEtribetween current time tand terminal time T, given a discount factor γ∈(0,1].
+As the transition kernel Tis unknown, we use reinforcement learning (RL) to learn an optimal policy from observed
+trajectories of state-action transitions. RL algorithms fall broadly within two categories: value-based methods, which
+learn representations of value functions, and policy-based methods, which learn explicit representations of the agent’s
+policy.1In this paper, we are using a value-based RL algorithm, based on Q-learning , which explicitly approximates
+the action-value function Q∗for the optimal policy π∗. The action-value function for a given policy πis defined
+recursively as Qπ(s, a) =Etrt+1+γmax a′Qπ(st+1, a′). One benefit of this class of algorithms is that they are
+off-policy learners, which means that they approximate the optimal value function Q∗using transitions sampled from
+the environment using a, potentially sub-optimal, exploratory policy π. This allows for computational efficiency due to
+asynchronous sampling and learning steps, as described in the next section. Modern Deep RL algorithms, such as DQN
+[33], use neural networks as function approximators, in this case, of the Q-function. This way algorithms make use
+of the generalisation abilities provided by deep learning, necessitated by large or continuous state spaces. Network
+parameters are updated using temporal difference learning with gradient-based optimisers, such as stochastic gradient
+descent or the popular Adam optimizer [ 34]. For a comprehensive treatment of RL, we refer the interested reader to
+Sutton and Barto [35], and for a survey of recent progress in RL for financial applications to Hambly et al. [36].
+3.3 Double DQN with Distributed Experience Replay
+We use Deep Double Q-learning [ 37] with a duelling network architecture [ 38] to approximate the optimal Q-function
+Q∗(s, a) =E[rt+1+γmax a′Q∗(st+1, a′)|at=a, st=s]. To speed up the learning process we employ the APEX
+training architecture [ 5], which combines asynchronous experience sampling using parallel environments with off-policy
+learning from experience replay buffers. Every episode iresults in an experience trajectory τi={st, at}T
+t=1, many
+of which are sampled from parallel environment instances and are then stored in the replay buffer. The environment
+sampling is done asynchronously using parallel processes running on CPUs. Experience data from the buffer is then
+sampled randomly and batched to perform a policy improvement step of the Q-network on the GPU. Prioritised sampling
+from the experience buffer has proven to degrade performance in our noisy problem setting, hence we are sampling
+uniformly from the buffer.2After a sufficient number of training steps, the new policy is then copied to every CPU
+worker to update the behavioural policy.
+Double Q-learning [ 39,37] stabilises the learning process by keeping separate Q-network weights for action selection
+(main network) and action validation (target network). The target network weights are then updated gradually in the
+direction of the main network’s weight every few iterations. Classical Q-learning without a separate target network
+can be unstable due to a positive bias introduced by the max operator in the definition of the Q-function, leading to
+exploding Q-values during training. The duelling network architecture [ 38] additionally uses two separate network
+branches (for both main and target Q-networks). One branch estimates the value function V(s) = max aQ(s, a), while
+1Actor-critic algorithms fall between the two as they keep explicit representations of both policy (actor) and value functions
+(critic).
+2In many application domains prioritised sampling, whereby we resample instances more frequently where the model initially
+performs poorly tends to aide learning. However, in our low signal-to-noise application domain, we noted poor performance.
+Investigating the matter, we found that prioritised sampling caused more frequent resampling of highly noisy instances where
+learning was particularly difficult, thus degrading performance.
+5APREPRINT - SEPTEMBER 26, 2023
+the other estimates the advantage function A(s, a) =Q(s, a)−V(s). The benefit of this architecture choice lies therein
+that the advantage of individual actions in some states might be irrelevant, and the state value, which can be learnt more
+easily, suffices for an action-value approximation. This leads to faster policy convergence during training.
+4 Framework
+4.1 Artificial Price Signal
+The artificial directional price signal dt∈∆2={x∈R3:x1+x2+x3= 1, xi≥0fori= 1,2,3}the agent
+receives is modelled as a discrete probability distribution over 3 classes, corresponding to the averaged mid-quote price
+decreasing, remaining stable, or increasing over a fixed future time horizon of h∈N+seconds. To achieve realistic
+levels of temporal stability of the signal process, dtis an exponentially weighted average, with persistence coefficient
+ϕ∈(0,1), of Dirichlet random variables ϵt. The Dirichlet parameters αdepend on the realised smoothed future return
+rt+h, specifically on whether the return lies within a neighbourhood of size karound zero, or above or below. Thus we
+have:
+dt=ϕdt−1+ (1−ϕ)ϵt
+ϵt=Dirichlet (α(rt+h))
+rt+h=pt+h−pt
+ptwhere pt+h=1
+hhX
+i=1pt+i(1)
+and prices ptrefer to the mid-quote price at time t. The Dirichlet distribution is parametrised, so that, in expectation,
+the signal dtupdates in the direction of future returns, where aHandaLdetermine the variance of the signal. The
+Dirichlet parameter vector is thus:
+α(rt+h) =
+
+(aH, aL, aL)ifrt+h<−k
+(aL, aH, aL)if−k≤rt+h< k
+(aL, aL, aH)ifk≤rt+h.(2)
+4.2 RL Problem Specification
+At each time step t, the agent receives a new state observation st.stconsists of the time left in the current episode
+T−tgiven the episode’s duration of T, the agent’s cash balance Ct, stock inventory Xt, the directional signal dt∈∆2,
+encoded as probabilities of prices decreasing, remaining approximately constant, or increasing; and price and volume
+quantities for the best bid and ask (level 1), including the agent’s own volume posted at bid and ask: ob,tandoa,t
+respectively. In addition to the most current observable variables at time t, the agent also observes a history of the
+previous lvalues, which are updated whenever there is an observed change in the LOB. Putting all this together, we
+obtain the following state observation:
+st=
+T−u
+Cu
+Xu
+(d1
+u, d2
+u, d3
+u)′
+(pa,u, va,u, oa,u, pb,u, vb,u, ob,u)′
+
+u={t−l,...,t}.
+6APREPRINT - SEPTEMBER 26, 2023
+After receiving the state observation, the agent then chooses an action at. It can place a buy or sell limit order of a
+single share at bid, mid-quote, or ask price; or do nothing and advance to the next time step. Actions, which would
+immediately result in positions outside the allowed inventory constraints [posmin, pos max]are disallowed and do not
+trigger an order. Whenever the execution of a resting limit order takes the inventory outside the allowed constraints, a
+market order in the opposing direction is triggered to reduce the position back to posminfor short positions or posmax
+for long positions. Hence, we define
+at∈ A= ({−1,1} × {− 1,0,1})∪ {skip}
+so that in total there are 7 discrete actions available, three levels for both buy and sell orders, and a skip action.
+For the six actions besides the “skip” action, the first dimension encodes the trading direction (sell or buy) and the
+second dimension the price level (bid, mid-price, or ask). For example, a= (1,0)describes the action to place a buy
+order at the mid price, and a= (−1,1)a sell order at best ask. Rewards Rt+1consist of a convex combination of a
+profit-and-loss-based reward Rpnl
+t+1and a directional reward Rdir
+t+1.Rpnl
+t+1is the log return of the agent’s mark-to-market
+portfolio value Mt, encompassing cash and the current inventory value, marked at the mid-price. The benefit of
+log-returns is that they are additive over time, rather than multiplicative like gross returns, so that, without discounting
+(γ= 1) the total profit-and-loss returnPT
+s=t+1Rpnl
+s=MT−Mt. The directional reward term Rdir
+t+1incentivizes the
+agent to hold inventory in the direction of the signal and penalises the agent for inventory positions opposing the signal
+direction. The size of the directional reward can be scaled by the parameter κ >0.Rdir
+t+1is positive if the positive
+prediction has a higher score than the negative ( dt,3> dt,1) and the current inventory is positive; or if dt,3< dt,1and
+Xt<0. Further, if the signal [−1,0,1]·dthas an opposite sign than inventory Xt,Rdir
+t+1is negative. This can be
+summarised as follows:
+Mark-to-Market Value Mt=Ct+Xtpm
+t
+∆Mt= ∆Ct+Xt−1∆pm
+t+ ∆xtpm
+t
+PnL Reward Rpnl
+t+1= ln( Mt)−ln(Mt−1)
+Directional Reward Rdir
+t+1=κ[−1,0,1]·dtXt
+Total Reward rt+1=wdirRdir
+t+1+ (1−wdir)Rpnl
+t+1(3)
+The weight on the directional reward wdir∈[0,1)is reduced every learning step by a factor ψ∈(0,1),
+wdir←ψwdir
+so that initially the agent quickly learns to trade in the signal direction. Over the course of the learning process, Rpnl
+t
+becomes dominant and the agent maximises its mark-to-market profits.
+5 Experimental Results
+We train all RL policies using the problem setup discussed in section 4.2 on 4.5 months of Apple (AAPL) limit order
+book data (2012-01-01 to 2012-05-16) and evaluate performance on 1.5 months of out-of-sample data (2012-05-17 to
+2012-06-31). We only use the first hour of every trading day (09:30 to 10:30) as the opening hour exhibits higher-than-
+average trading volume and price moves. Each hour of the data corresponds to a single RL episode. After analysing the
+results, we also performed a robustness check by repeating the training and analysis pipeline on more recent AAPL data
+from 2022. Results are reported in section 5.2 and confirm the main conclusions based on earlier data.
+7APREPRINT - SEPTEMBER 26, 2023
+Our neural network architecture consists of 3 feed-forward layers, followed by an LSTM layer, for both the value- and
+advantage stream of the duelling architecture. The LSTM layer allows the agent to efficiently learn a memory-based
+policy with observations including 100 LOB states.
+We compare the resulting learned RL policies to a baseline trading algorithm, which receives the same artificially
+perturbed high-frequency signal of future mid-prices. The baseline policy trades aggressively by crossing the spread
+whenever the signal indicates a directional price move up or down until the inventory constraint is reached. The signal
+direction in the baseline algorithm is determined as the prediction class with the highest score (down, neutral, or up).
+When the signal changes from up or down to neutral, indicating no immediate expected price move, the baseline strategy
+places a passive order to slowly reduce position size until the inventory is cleared. This heuristic utilises the same action
+space as the RL agent and yielded better performance than trading using only passive orders (placed at the near touch),
+or only aggressive orders (at the far touch).
+Figure 2: A short snapshot of simulation results (AAPL on 2012-06-14), comparing the RL policy (second panel) with
+the baseline (first panel). The first two panels plot the best bid, ask, and mid-price, overlaying trading events of buy
+orders (green) and sell orders (red). Circles mark new unmarketable limit orders entering the book. Crosses mark order
+executions (trades) and triangles order cancellations. Open orders are connected by lines to either cancellations or
+trades. Since we are simulating the entire LOB, trading activity can be seen to affect bid and ask prices. The third panel
+plots the evolution of the inventory position of both strategies, and the last panel the trading profits over the period in
+USD.
+Figure 2 plots a 17 second simulation window from the test period, comparing the simulated baseline strategy with
+the RL strategy. It can be seen that prices in the LOB are affected by the trading activity as both strategies inject new
+order flow into the market, in addition to the historical orders, thereby consuming or adding liquidity at the best bid and
+ask. During the plotted period, the baseline strategy incurs small losses due to the signal switching between predicting
+decreasing and increasing future prices. This causes the baseline strategy to trade aggressively, paying the spread with
+8APREPRINT - SEPTEMBER 26, 2023
+every trade. The RL strategy, on the other hand, navigates this difficult period better by trading more passively out of its
+long position, and again when building up a new position. Especially in the second half of the depicted time period, the
+RL strategy adds a large number of passive buy orders (green circles in the second panel of figure 2). This is shown
+by the green straight lines, which connect the orders to their execution or cancellation, some of which occur after the
+depicted period.
+5.1 Oracle Signal
+The RL agent receives a noisy oracle signal of the mean return h= 10 seconds into the future (see equation 4.1). It
+chooses an action every 0.1s, allowing a sufficiently quick build-up of long or short positions using repeated limit
+orders of single stocks. The algorithm is constrained to keep the stock inventory within bounds of [posmin, pos max] =
+[−10,10]. To change the amount of noise in the signal, we vary the aHparameter of the Dirichlet distribution, keeping
+aL= 1constant in all cases. To keep the notation simple, we hence drop the Hsuperscript and refer to the variable
+Dirichlet parameter aHsimply as a. We consider three different noise levels, parametrising the Dirichlet distribution
+witha= 1.6(low noise), a= 1.3(mid noise), and a= 1.1(high noise). A fixed return classification threshold
+k= 4·10−5was chosen to achieve good performance of the baseline algorithm, placing around 85% of observations
+in the up or down category. The signal process persistence parameter is set to ϕ= 0.9.
+Figure 3: Account curves, trading the noisy oracle signal in the test set, comparing the learned RL policies (solid lines)
+with the baseline trading strategy (dashed). The black line shows the performance of the buy & hold strategy over the
+same period. Different colours correspond to different signal noise levels. The RL policy is able to improve the trading
+performance across all signal noise levels.
+Out-of-sample trading performance is visualised by the account curves in figure 3. The curves show the evolution of
+the portfolio value for a chronological evaluation of all test episodes. Every account curve shows the mean episodic
+log-return µand corresponding Sharpe ratio Snext to it. We show that all RL-derived policies are able to outperform
+their respective baseline strategies for the three noise levels investigated. Over the 31 test episodes, the cumulative RL
+algorithm out-performance over the baseline strategy ranges between 14.8 ( a= 1.3) and 32.2 ( a= 1.1) percentage
+points (and 20.7 for a= 1.6). In the case of the signal with the lowest signal-to-noise ratio (a=1.1), for which the
+baseline strategy incurs a loss for the test period, the RL agent has learned a trading strategy with an approximately
+zero mean return. Temporarily, the strategy even produces positive gains. Overall, it produces a sufficiently strong
+performance to not lose money while still trading actively and incurring transaction costs. Compared to a buy-and-hold
+strategy over the same time period, the noisy RL strategy similarly produces temporary out-performance, with both
+account curves ending up flat with a return around zero. Inspecting Sharpe ratios, we find that using RL to optimise the
+trading strategy is able to increase Sharpe ratios significantly. The increase in returns of the RL strategies is hence not
+simply explained by taking on more market risk.
+9APREPRINT - SEPTEMBER 26, 2023
+(a) Episodic mean strategy return of buy & hold, baseline, and
+RL strategies for high ( a= 1.1), mid ( a= 1.3), and low noise
+(a= 1.6) in 31 evaluation episodes. The grey dashed lines con-
+nect mean log returns across strategies for all individual episodes.
+The blue line connects the mean of all episodes with 95% boot-
+strapped confidence intervals.
+(b) Turnover per episode: comparison between baseline and RL
+strategy. Lower noise results in a more persistent signal, decreas-
+ing baseline turnover, but a higher quality signal, resulting in the
+RL policy to increase trading activity and turnover.
+Figure 4: Mean return and turnover of the baseline and RL trading strategies.
+Figure 4a compares the mean return between the buy & hold, baseline, and RL policies for all out-of-sample episodes
+across the three noise levels. A single dashed grey line connects the return for a single test episode across the three
+trading strategies: buy & hold, baseline, and the RL policy. The solid blue lines representing the mean return across all
+episodes. Error bars represent the 95% bootstrapped confidence intervals for the means. Testing for the significance of
+the differences between RL and baseline returns across all episodes (t-test) is statistically significant ( p≪0.1) for all
+noise levels. Differences in Sharpe ratios are similarly significant. We can thus conclude that the high frequency trading
+strategies learned by RL outperform our baseline strategy for all levels of noise we have considered.
+It is also informative to compare the amount of trading activity between the baseline and RL strategies (see figure
+4b). The baseline turnover decreases with an increasing signal-to-noise ratio (higher a), as the signal remains more
+stable over time, resulting in fewer trades. In contrast, the turnover of the RL trading agent increases with a higher
+signal-to-noise ratio, suggesting that the agent learns to trust the signal more and reflecting that higher transaction
+costs, resulting from the higher trading activity, can be sustained, given a higher quality signal. In the high noise
+case ( a= 1.1), the RL agent learns to reduce trading activity relative to the other RL strategies, thereby essentially
+filtering the signal. The turnover is high in all cases due to the high frequency of the signal and the fact that we are only
+trading a small inventory. Nonetheless, performance is calculated net of spread-based transaction costs as our simulator
+adequately accounts for the execution of individual orders.
+a=1.1 a=1.3 a=1.6
+action skipped [%] 24.5 43.8 7.8
+sell levels (bid, mid, ask) [%] (95.4, 3.1, 1.5) (94.6, 2.8, 2.65) (97.2, 1.9, 0.9)
+buy levels (bid, mid, ask) [%] (1.1, 1.3, 97.5) (1.6, 52.9, 45.5) (1.7, 13.0, 85.3)
+Table 1: Actions taken by RL policy for the three different noise levels: the first row shows how often the policy
+chooses the “skip” action. Not choosing this action does however not necessarily result in an order being placed, e.g. if
+inventory constraints are binding. The last two rows show the relative proportion of limit order placement levels for sell
+orders, and buy orders, respectively.
+Table 1 lists action statistics for all RL policies, including how often actions are skipped, and the price levels at which
+limit orders are placed, grouped by buy and sell orders. With the least informative signal, the strategy almost exclusively
+uses marketable limit orders, with buy orders being placed at the bid and sell orders at the ask price. With better signals
+10APREPRINT - SEPTEMBER 26, 2023
+being available ( a= 1.3anda= 1.6), buy orders are more often placed at the mid-quote price, thereby trading less
+aggressively and saving on transaction costs. Overall, the strategies trained on different signals all place the majority of
+sell orders at the best bid price, with the amount of skipped actions varying considerably across the signals.
+5.2 Robustness Evaluation on Recent Data
+Figure 5: Robustness check: account curves for second evaluation period 2022-11-14 to 2022-12-31, comparing RL
+performance to baselines for three noise levels. Across all noise levels, the RL strategies produce a similar level of
+out-performance during this period than during the original period in 2012. For a high noise signal ( a= 1.1), neither
+the baseline nor the RL policies are profitable. In this case, our RL strategy performs similarly to the baseline and does
+not learn to stop trading completely. This supports the hypothesis that similar micro-structure effects can be utilised in
+more recent periods, during a different macroeconomic landscape.
+To evaluate our results on more recent LOB data, we also trained RL policies using 4.5 months of AAPL LOB data from
+the second half of 2022 (2022-07-01 to 2022-11-13) and evaluated on 1.5 months of held-out test data (2022-11-14
+to 2022-12-31). Figure 5 shows account curves over the evaluation period for all 3 noise levels. For low ( a= 1.6)
+and medium ( a= 1.3) noise levels, the RL policies, again, beat the baselines by a significant margin and increase
+profits significantly. For a low-quality signal with high noise levels ( a= 1.1), the RL policy performs similarly to the
+losing baseline strategy and also doesn’t make a profit. Interestingly, the strategy also does not learn to stop trading
+altogether, which would represent a superior policy in this case. This could be due to a common problem with RL:
+effective exploration. The local optimum of not trading could not be found using an epsilon-greedy exploration policy
+in this case. Overall, even though macroeconomic and financial market conditions in 2022 differed markedly from
+2012, our results support the conclusion that the RL policies can utilise similar market micro-structure effects in both
+periods to improve the execution of a trading strategy based on a price forecast signal.
+6 Conclusions
+Using Deep Double Duelling Q-learning with asynchronous experience replay, a state-of-the-art off-policy reinforcement
+learning algorithm, we train a limit order trading strategy in an environment using historic market-by-order (MBO)
+exchange message data. For this purpose we develop an RL environment based on the ABIDES [ 7] market simulator,
+which reconstructs order book states dynamically from MBO data. Observing an artificial high-frequency signal of
+the mean return over the following 10 seconds, the RL policy successfully transforms a directional signal into a limit
+order trading strategy. The policies acquired by RL outperform our baseline trading algorithm, which places marketable
+limit orders to trade into positions and passive limit orders to exit positions, both in terms of mean return and Sharpe
+ratio. We investigate the effect of different levels of noise in the alpha signal on the RL performance. Unsurprisingly,
+more accurate signals lead to higher trading returns but we also find that RL provides a similar added benefit to trading
+performance across all noise levels investigated.
+11APREPRINT - SEPTEMBER 26, 2023
+The task of converting high-frequency forecasts into tradeable and profitable strategies is difficult to solve as transaction
+costs, due to high portfolio turnover, can have a prohibitively large impact on the bottom line profits. We suggest that
+RL can be a useful tool to perform this translational role and learn optimal strategies for a specific signal and market
+combination. We have shown that tailoring strategies in this way can significantly improve performance, and eliminates
+the need for manually fine-tuning execution strategies for different markets and signals. For practical applications,
+multiple different signals could even be combined into a single observation space. That way the problem of integrating
+different forecasts into a single coherent trading strategy could be directly integrated into the RL problem.
+A difficulty for all data-driven simulations of trading strategies relying on market micro-structure is accurately estimating
+market impact. We address this partially by injecting new orders into historical order streams, thereby removing liquidity
+from the LOB. If liquidity at the best price is used up, this would automatically increase transaction costs by consuming
+deeper levels of the book. This mechanism accurately models temporary direct market impact, but cannot take account
+of the indirect or permanent component due to other market participants’ reactions to our orders. By only allowing to
+trade a single stock each time step, we posed the problem in a way to minimise the potential effect indirect market
+impact would have on the performance of the RL strategy. The strategy trades small quantities on both sides of the book
+without accumulating large inventories. Such trading strategies are capacity constrained by the volume available in the
+book at any time and belong to a different class than impact constrained strategies, which build up large inventories
+by successively submitting orders in only one direction. Furthermore, we measure trading performance relative to
+a baseline strategy, which makes the same assumptions on market impact. However, accurately modelling the full
+market impact of high-frequency trading in LOB markets in a data-driven approach is an interesting direction for
+future research and would allow evaluating strategies with larger order sizes. Recent attempts in this vein have used
+agent-based models [40] or generative models [41, 42, 43].
+We chose to focus our investigations in this paper on AAPL stock as a challenging test case of a small-tick stock, i.e.
+one where the minimum tick size is small relative to the stock price, with a high trading volume. Showing that we can
+train an RL agent to improve the profitability of an alpha signal in this example, indicates that similar performance
+improvements could be possible in larger-tick stocks with less trading activity. Although results are limited to a single
+company due to computational constraints, functional relationships in the micro-structure of the market have been
+found to be stable over time and across companies in prior work. In a large-scale study of order flow in US equity LOBs
+Sirignano and Cont [44] found a universal andstationary relationship between order flow and price changes, driven
+by robust underlying supply and demand dynamics. Similarly, supervised training of deep neural networks to predict
+the mid-price direction a few ticks into the future has been shown to work for a wide range of stocks [ 1]. In contrast
+to lower-frequency trading strategies, whose performance often varies with market conditions, such as the presence
+of price trends or macroeconomic conditions, high-frequency strategies do not suffer the same degree of variability.
+Nonetheless, a systematic investigation of potential changes in LOB dynamics due to crisis periods or rare events could
+be an interesting avenue for future research.
+While we here show an interesting use case of RL in limit order book markets, we also want to motivate the need for
+further research in this area. There are many years of high-frequency market data available, which ought to be utilised
+to make further progress in LOB-based tasks and improve RL in noisy environments. This, together with the newest
+type of neural network architectures, such as attention-based transformers [ 45,46], enables learning tasks in LOB
+environments directly from raw data with even better performance. For the task we have considered in this paper, future
+research could enlarge the action space, allowing for the placement of limit orders deeper into the book and larger order
+sizes. Allowing for larger sizes however would require a realistic model of market impact, considering the reaction of
+other market participants.
+12APREPRINT - SEPTEMBER 26, 2023
+References
+[1]Zihao Zhang, Stefan Zohren, and Stephen Roberts. DeepLOB: Deep convolutional neural networks for limit order
+books. IEEE Transactions on Signal Processing , 67(11):3001–3012, 2019.
+[2]Zihao Zhang and Stefan Zohren. Multi-horizon forecasting for limit order books: Novel deep learning approaches
+and hardware acceleration using intelligent processing units. arXiv preprint arXiv:2105.10430 , 2021.
+[3]Petter N Kolm, Jeremy Turiel, and Nicholas Westray. Deep order flow imbalance: Extracting alpha at multiple
+horizons from the limit order book. Available at SSRN 3900141 , 2021.
+[4]Zihao Zhang, Bryan Lim, and Stefan Zohren. Deep learning for market by order data. Applied Mathematical
+Finance , 28(1):79–95, 2021.
+[5]Dan Horgan, John Quan, David Budden, Gabriel Barth-Maron, Matteo Hessel, Hado van Hasselt, and David
+Silver. Distributed prioritized experience replay. arXiv preprint arXiv:1803.00933 , 2018.
+[6]Greg Brockman, Vicki Cheung, Ludwig Pettersson, Jonas Schneider, John Schulman, Jie Tang, and Wojciech
+Zaremba. Openai gym. arXiv preprint arXiv:1606.01540 , 2016.
+[7]David Byrd, Maria Hybinette, and Tucker Hybinette Balch. Abides: Towards high-fidelity market simulation for
+AI research. Proceedings of the 2020 ACM SIGSIM Conference on Principles of Advanced Discrete Simulation ,
+pages 11–22, 2020.
+[8]Selim Amrouni, Aymeric Moulin, Jared Vann, Svitlana Vyetrenko, Tucker Balch, and Manuela Veloso. ABIDES-
+gym: gym environments for multi-agent discrete event simulation and application to financial markets. In
+Proceedings of the Second ACM International Conference on AI in Finance , pages 1–9. ACM, 2021.
+[9]Ruihong Huang and Tomas Polak. Lobster: Limit order book reconstruction system. Available at SSRN 1977207 ,
+2011.
+[10] Mordor Intelligence. Algorithmic trading market share, size & trading statistics. 2022. https://www.
+mordorintelligence.com/industry-reports/algorithmic-trading-market Accessed: 2023-08-02.
+[11] Larry Harris. Trading and exchanges: Market microstructure for practitioners . OUP USA, 2003.
+[12] Peer Nagy, James Powrie, and Stefan Zohren. Machine learning for microstructure data-driven execution
+algorithms. In The Handbook on AI and Big Data Applications in Investments . CFA Institute Research Foundation,
+forthcoming 2023.
+[13] Yuriy Nevmyvaka, Yi Feng, and Michael Kearns. Reinforcement learning for optimized trade execution. In
+Proceedings of the 23rd international conference on Machine learning , pages 673–680, 2006.
+[14] Brian Ning, Franco Ho Ting Lin, and Sebastian Jaimungal. Double deep Q-learning for optimal execution. Applied
+Mathematical Finance , 28(4):361–380, 2021.
+[15] Kevin Dabérius, Elvin Granat, and Patrik Karlsson. Deep execution-value and policy based reinforcement learning
+for trading and beating market benchmarks. Available at SSRN 3374766 , 2019.
+[16] Michäel Karpe, Jin Fang, Zhongyao Ma, and Chen Wang. Multi-agent reinforcement learning in a realistic limit
+order book market simulation. In Proceedings of the First ACM International Conference on AI in Finance . ACM,
+2020.
+[17] Matthias Schnaubelt. Deep reinforcement learning for the optimal placement of cryptocurrency limit orders.
+European Journal of Operational Research , 296(3):993–1006, 2022.
+[18] Jacob D Abernethy and Satyen Kale. Adaptive market making via online learning. In Advances in Neural
+Information Processing Systems , volume 26, 2013.
+[19] Pankaj Kumar. Deep reinforcement learning for market making. In Proceedings of the 19th International
+Conference on Autonomous Agents and MultiAgent Systems , pages 1892–1894, 2020.
+13APREPRINT - SEPTEMBER 26, 2023
+[20] Pengqian Yu, Joon Sern Lee, Ilya Kulyatin, Zekun Shi, and Sakyasingha Dasgupta. Model-based deep reinforce-
+ment learning for dynamic portfolio optimization. arXiv preprint arXiv:1901.08740 , 2019.
+[21] Michael Kearns and Yuriy Nevmyvaka. Machine learning for market microstructure and high frequency trading.
+High Frequency Trading: New Realities for Traders, Markets, and Regulators , 2013.
+[22] Haoran Wei, Yuanbo Wang, Lidia Mangu, and Keith Decker. Model-based reinforcement learning for predictions
+and control for limit order books. arXiv preprint arXiv:1910.03743 , 2019.
+[23] Antonio Briola, Jeremy Turiel, Riccardo Marcaccioli, and Tomaso Aste. Deep reinforcement learning for active
+high frequency trading. arXiv preprint arXiv:2101.07107 , 2021.
+[24] John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. Proximal policy optimization
+algorithms. arXiv preprint arXiv:1707.06347 , 2017.
+[25] Robert Almgren and Neil Chriss. Optimal execution of portfolio transactions. Journal of Risk , 3:5–40, 2001.
+[26] Alvaro Cartea, Ryan Donnelly, and Sebastian Jaimungal. Enhancing trading strategies with order book signals.
+Applied Mathematical Finance , 25(1):1–35, 2018.
+[27] Álvaro Cartea, Sebastian Jaimungal, and Yixuan Wang. Spoofing and price manipulation in order-driven markets.
+Applied Mathematical Finance , 27(1-2):67–98, 2020.
+[28] Álvaro Cartea, Luhui Gan, and Sebastian Jaimungal. Trading co-integrated assets with price impact. Mathematical
+Finance , 29(2):542–567, 2019.
+[29] Álvaro Cartea and Sebastian Jaimungal. Incorporating order-flow into optimal execution. Mathematics and
+Financial Economics , 10:339–364, 2016.
+[30] Martin D Gould, Mason A Porter, Stacy Williams, Mark McDonald, Daniel J Fenn, and Sam D Howison. Limit
+order books. Quantitative Finance , 13(11):1709–1742, 2013.
+[31] Richard Bellman. A Markovian decision process. Journal of mathematics and mechanics , pages 679–684, 1957.
+[32] Martin L Puterman. Markov decision processes. Handbooks in operations research and management science , 2:
+331–434, 1990.
+[33] V olodymyr Mnih, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis Antonoglou, Daan Wierstra, and
+Martin Riedmiller. Playing atari with deep reinforcement learning. arXiv preprint arXiv:1312.5602 , 2013.
+[34] Diederik P Kingma and Jimmy Ba. Adam: A method for stochastic optimization. arXiv preprint arXiv:1412.6980 ,
+2014.
+[35] Richard S Sutton and Andrew G Barto. Reinforcement learning: An introduction . MIT press, 2018.
+[36] Ben Hambly, Renyuan Xu, and Huining Yang. Recent advances in reinforcement learning in finance. Mathematical
+Finance , 33(3):437–503, 2023.
+[37] Hado Van Hasselt, Arthur Guez, and David Silver. Deep reinforcement learning with double Q-learning. In
+Proceedings of the AAAI conference on artificial intelligence , volume 30, 2016.
+[38] Ziyu Wang, Tom Schaul, Matteo Hessel, Hado van Hasselt, Marc Lanctot, and Nando de Freitas. Dueling
+network architectures for deep reinforcement learning. In International Conference on Machine Learning , pages
+1995–2003. PMLR, 2016.
+[39] Hado Hasselt. Double Q-learning. Advances in Neural Information Processing Systems , 23, 2010.
+[40] David Byrd, Maria Hybinette, and Tucker Hybinette Balch. Abides: Towards high-fidelity multi-agent market
+simulation. In Proceedings of the 2020 ACM SIGSIM Conference on Principles of Advanced Discrete Simulation ,
+pages 11–22, 2020.
+14APREPRINT - SEPTEMBER 26, 2023
+[41] Andrea Coletta, Matteo Prata, Michele Conti, Emanuele Mercanti, Novella Bartolini, Aymeric Moulin, Svitlana
+Vyetrenko, and Tucker Balch. Towards realistic market simulations: a generative adversarial networks approach.
+InProceedings of the Second ACM International Conference on AI in Finance , pages 1–9, 2021.
+[42] Andrea Coletta, Aymeric Moulin, Svitlana Vyetrenko, and Tucker Balch. Learning to simulate realistic limit order
+book markets from data as a world agent. In Proceedings of the Third ACM International Conference on AI in
+Finance , pages 428–436, 2022.
+[43] Andrea Coletta, Joseph Jerome, Rahul Savani, and Svitlana Vyetrenko. Conditional generators for limit order
+book environments: Explainability, challenges, and robustness. arXiv preprint arXiv:2306.12806 , 2023.
+[44] Justin Sirignano and Rama Cont. Universal features of price formation in financial markets: perspectives from
+deep learning. Quantitative Finance , 19(9):1449–1459, 2019.
+[45] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Lukasz Kaiser, and
+Illia Polosukhin. Attention is all you need. Advances in Neural Information Processing Systems , 30, 2017.
+[46] Rewon Child, Scott Gray, Alec Radford, and Ilya Sutskever. Generating long sequences with sparse transformers.
+arXiv preprint arXiv:1904.10509 , 2019.
+[47] Eric Liang, Richard Liaw, Robert Nishihara, Philipp Moritz, Roy Fox, Ken Goldberg, Joseph Gonzalez, Michael
+Jordan, and Ion Stoica. Rllib: Abstractions for distributed reinforcement learning. In International Conference on
+Machine Learning , pages 3053–3062. PMLR, 2018.
+15APREPRINT - SEPTEMBER 26, 2023
+7 Appendix
+We use the RLlib library [ 47] for a reference implementation of the APEX algorithm. Table 2 shows a selection of
+relevant parameters we used for RL training.
+Paramter Value
+timesteps_total 300e6
+framework torch
+num_gpus 1
+num_workers 42
+batch_mode truncate_episode
+gamma .99
+lr_schedule [[0,2e-5], [1e6, 5e-6]]
+buffer_size 2e6
+learning_starts 5000
+train_batch_size 50
+rollout_fragment_length 50
+target_network_update_freq 5000
+n_step 3
+prioritized_replay False
+Table 2: Selected RL parameters for APEX algorithm using RLlib [47] library for training.
+Figure 6 shows confusion matrices interpreting the oracle signal scores as probabilities over the three classes: down,
+stationary, and up. The predicted class is thus the one with the highest score.
+Figure 6: Confusion matrices of the artificial oracle signal for three noise levels, from low to high noise.
+16

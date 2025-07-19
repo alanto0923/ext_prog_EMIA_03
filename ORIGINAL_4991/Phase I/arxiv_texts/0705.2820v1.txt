@@ -1,0 +1,115 @@
+arXiv:0705.2820v1  [q-fin.TR]  21 May 2007Entropy Oriented Trading: A Trading Strategy
+Based on the Second Law of Thermodynamics
+Yoichi Hirai∗
+March 1, 2022
+Abstract
+The author proposes a ﬁnance trading strategy named Entropy Ori-
+ented Trading and apply thermodynamics on the strategy. The state
+variables are chosen so that the strategy satisﬁes the secon d law of ther-
+modynamics. Using the law, the author proves that the rate of investment
+(ROI) of the strategy is equal to or more than the rate of price change.
+1 Deﬁnition of the Strategy
+An EntropyOriented Trading strategy has ntarget types of asset A0,···,An−1.
+It has constant weights for the assets ( w0,w1,···,wn−1), where the weights are
+positive and the sum of them is one. The price and the held amount of t heith
+asset are written as piandhirespectively. The value of the ith asset is
+Ui=pihi.
+The total value of assets is
+T=n−1/summationdisplay
+i=0Ui.
+The prices pichange according to time. On a point of time, a strategy can
+trade assets AiandAj. It can change the held amounts ( hi,hj) to (h′
+i,h′
+j)
+only if the total asset is not changed. We deﬁne the traded amount of value
+Qij=pih′
+i−pihiand express the trade condition
+Qij+Qji= 0. (1)
+Multiple trades may occur at the same time. In that case, the sum Qi=/summationtextn−1
+j=0Qijis the value of the bought amount of the asset Ai. The value of Qiis
+negative if asset Aiis sold.
+∗Department of Information Science, The Univ. of Tokyo (unde rgraduate), yh@pira.jp .
+1An Entropy Oriented Trading strategy tries to keep the distributio n of asset
+equal to the weights, so in equilibrium, the equation (2) hold:
+Ui=wiT. (2)
+When the price change is slow enough (or the strategy trades freq uently
+enough), the equation (2) holds. Otherwise, Ti=Ui/wican be diﬀerent from
+T. In this case, the strategy trades to make all Ti’s equal.
+We can assume that when Ti> Tj, an Entropy Oriented Trading strategy
+does not trade selling Ajand buying Ai. This means
+ifTi> Tj, Qij≤0. (3)
+A trade involving AiandAjis reversible only if Ti=Tj.
+2 Analysis of the Strategy
+To analyse this strategy with thermodynamics, we have to choose t he state
+variables and the equation of state. The state variables are pi,hi,Tiand the
+equation of state is
+wiTi=pihi (4)
+and we take the internal energy as Ui=wiTi. Note that the T-based trading
+restriction (3) is analogous to the second law of thermodynamics.
+We ﬁrst analyse the case in which the equation (2) always holds and th en
+analyse the more general case. In both cases, we assume that we can consider a
+transformation of system as a continuous sequence of inﬁnitesima l transforma-
+tions.
+2.1 On Reversible Transformations
+When the equation (2) always holds, Ti=Tjholds for any iandj, so that all
+trades are reversible. The equation of state becomes
+wiT=pihi. (5)
+Taking the diﬀerential of (5), we have
+widT=hidpi+pidhi.
+The amount pidhi= d′Qiis the change of Uidue to the trades occurring at
+the given point of time, whereas the amount hidpi=wiTdpi/piis the change
+of the value of Uidue to the price change.
+Integrating this from the state Cto the state Dyields:
+wi/integraldisplayD
+CdT
+T=wi/integraldisplayD
+Cdp
+p+/integraldisplayD
+Cd′Qi
+T.
+2Now we take the summation for i. For simplicity, we introduce weighted ge-
+ometric average of prices P=/producttextn−1
+i=0pwi
+i. Since the trade condition (1) states/summationtextn−1
+i=0d′Qi/T= 0, we can omit the term/integraltextD
+Cd′Qi/Tand get
+ln/parenleftbiggT(D)
+T(C)/parenrightbigg
+= ln/parenleftbiggP(D)
+P(C)/parenrightbigg
+,
+stating that the rate of investment is equal to the price change ra te.
+We take an arbitary equilibrium state Oand deﬁne the entropy Si(C) as
+Si(A) =/integraldisplayA
+Od′Qi
+Ti, (6)
+where the integral is taken along a reversible transformation. We a lso deﬁne the
+total entropy S(A) =/summationtextn−1
+i=0Si(A).Note that the total entropy Sis constant in
+reversible transformations.
+2.2 On Irreversible Transformations
+In irreversible transformations, the amount Tican be diﬀerent for diﬀerent i
+because of delay of trades. Taking the diﬀerential of the equation of state (4)
+yieldswidTi=pidhi+hidpi. Dividing this by Tand taking the integral from
+a stateCto another state D, we get
+wiln/parenleftbiggTi(D)
+Ti(C)/parenrightbigg
+=wiln/parenleftbiggpi(D)
+pi(C)/parenrightbigg
++/integraldisplayD
+Cd′Qi
+Ti.
+We assume that the states CandDare in equilibrium so that for any i
+Ti(C) =T(C) andTi(D) =T(D). We take summation for iand see
+ln/parenleftbiggT(D)
+T(C)/parenrightbigg
+= ln/parenleftbiggP(D)
+P(C)/parenrightbigg
++(S(D)−S(C)). (7)
+The trading restriction (3) means Qij/Ti+Qji/Tj≥0. From this we can
+obtain ∆ S=S(D)−S(C)≥0. Especially, when a irreversible trade occurs
+between AiandAj, the entropy increases by Qij/Ti+Qji/Tj>0.
+The equation (7) states that the return of investment is the prod uct of the
+rate of price change and exp(∆ S), which is equal to or more than one:
+∆(lnT) = ∆(ln P)+∆S,where ∆ S≥0.
+3

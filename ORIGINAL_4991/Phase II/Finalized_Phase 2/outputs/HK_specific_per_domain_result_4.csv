@@ -1,0 +1,73 @@
+domain,name,code
+Momentum,Price Momentum,"(CLOSE - DELAY(CLOSE, 14))"
+Momentum,Volume Momentum,"(VOLUME - DELAY(VOLUME, 14))"
+Momentum,RSI Momentum,"(RSI - DELAY(RSI, 14))"
+Momentum,Moving Average Convergence Divergence (MACD) Momentum,"(MACD - DELAY(MACD, 14))"
+Momentum,Rate of Change (ROC) Momentum,"(CLOSE - DELAY(CLOSE, 14)) / CLOSE"
+Momentum,Ultimate Oscillator Momentum,"(ulto - DELAY(ulto, 14)) / 70"
+Momentum,Bollinger Band Momentum,"(CLOSE - HIGHEST(HIGH, 14)) / (HIGHEST(HIGH, 14) - LOWEST(LOW, 14))"
+Mean Reversion,Mean Reversion (20 days),"(MEAN(CLOSE, 20) - CLOSE)"
+Mean Reversion,Z-score Mean Reversion,"(CLOSE - MEAN(CLOSE, 20)) / STD(CLOSE, 20)"
+Mean Reversion,Bollinger Bands,(CLOSE - LOWER_BAND) / (UPPER_BAND - LOWER_BAND)
+Mean Reversion,Exponential Moving Average Crossover,"(EMA(CLOSE, 50)) > (EMA(CLOSE, 200))"
+Mean Reversion,Relative Strength Index (RSI),RSI(CLOSE) < 30 OR RSI(CLOSE) > 70
+Mean Reversion,Stochastic Oscillator,(CLOSING High - LOW) / (HIGH - LOW) < 20
+Mean Reversion,Ichimoku Cloud,(BASE LINE + LAGGING SPAN) > (PRICE + LEADING SPAN)
+Volatility,Standard Deviation,"STD(CLOSE, 20)"
+Volatility,Average True Range (ATR),ATR(14)
+Volatility,Bollinger Band Width,"(UPPER_BAND - LOWER_BAND) / SMA(CLOSE, 20)"
+Volatility,Keltner Channel,(HIGH + HIGH+14 - LOW - LOW-14) / CLOSE
+Volatility,Stochastic Oscillator,(CLOSE-LOW)/CLOSE*100
+Volatility,Relative Strength Index (RSI),100-100/(1+RS)
+Volatility,Moving Average Convergence Divergence (MACD),"(EMA(CLOSE, 12) - EMA(CLOSE, 26)) / SMA(CLOSE, 9)"
+Volatility,Bollinger Bands,"SMA(CLOSE, 20) +/- 2 * STD(CLOSE, 20)"
+Volatility,VIX Index,VIX
+Fundamental,Price-to-Earnings Ratio (P/E),(CLOSE / EPS)
+Fundamental,Price-to-Book Ratio (P/B),(CLOSE / BOOK_VALUE)
+Fundamental,Dividend Yield,(DIVIDENDS / CLOSE)
+Fundamental,Return on Equity (ROE),(NET_INCOME / EQUITY)
+Fundamental,Price-to-Sales Ratio (P/S),(CLOSE / SALES)
+Fundamental,Interest Coverage Ratio,(EBIT / INTEREST EXPENSES)
+Fundamental,Debt-to-Equity Ratio,(DEBT / EQUITY)
+Fundamental,Current Ratio,(CURRENT_ASSETS / CURRENT_LIABILITIES)
+Fundamental,Return on Assets (ROA),(NET_INCOME / TOTAL_ASSETS)
+Fundamental,Price-to-Cash Flow Ratio (P/CF),(CLOSE / OPERATING_CASH_FLOW)
+Liquidity,Order Book Depth,(BID + ASK) / (CLOSE * 100)
+Liquidity,Volume-to-Price Ratio,(VOLUME / PRICE) * 24
+Liquidity,Ask-Ask Spread (AAS),ASK - BID
+Liquidity,Bid-Ask Volume Ratio,(BID_VOLUME / ASK_VOLUME) * 24
+Liquidity,Market Makers' Liquidity Contribution,(VOLUME - (ASK_VOLUME + BID_VOLUME)) / VOLUME
+Liquidity,Average True Range (ATR) of Order Book Prices,"ATR = (MAX(HIGH, LOW) - MIN(HIGH, LOW)) * 0.15"
+Quality,Gross Profit Margin,(GROSS_PROFIT / REVENUE)
+Quality,Operating Profit Margin,(OPERATING_INCOME / REVENUE)
+Quality,Net Profit Margin,(NET_INCOME / REVENUE)
+Quality,Return on Equity (ROE),(NET_INCOME / EQUITY)
+Quality,Debt-to-Equity Ratio,(DEBT / EQUITY)
+Quality,Current Ratio,(CURRENT_ASSETS / CURRENT LiABILITIES)
+Quality,Price-to-Earnings (P/E) Ratio,(STOCK_PRICE / EARNINGS_PER_SHARE)
+Growth,Earnings Growth Rate,"(EPS / DELAY(EPS,1) - 1)"
+Growth,Revenue Growth Rate,"(REVENUE / DELAY(REVENUE, 1) - 1)"
+Growth,EBITDA Growth Rate,"(EBITDA / DELAY(EBITDA, 1) - 1)"
+Growth,Book Value Growth Rate,"(BV / DELAY(BV, 1) - 1)"
+Growth,Dividend Yield,(DIVIDEND/YTSD / CURRENT_PRICE - 1)
+Growth,Price-to-Earnings Ratio,(CURRENT_PRICE / EPS)
+Growth,Gross Margin,(GM / REVENUE)
+Growth,Operating Margin,(OPM / REVENUE)
+Growth,Return on Equity,(ROE / TOTAL_EQITY)
+Growth,Price-to-Book Ratio,(CURRENT_PRICE / BV)
+Technical,Moving Average (MA),"SMA(CLOSE, 20)"
+Technical,Exponential Moving Average (EMA),"EMA(CLOSE, 20)"
+Technical,Relative Strength Index (RSI),RSI(14)
+Technical,Bollinger Bands (BB),"BB(MA, 20, 2)"
+Technical,Stochastic Oscillator (STOCH),"STOCH(CLOSE, HIGH, LOW, 14, 3, 3)"
+Technical,Momentum Indicator (MOM),"MOM(CLOSE, 20)"
+Technical,MACD (Moving Average Convergence Divergence),"MACD(CLOSE, 12, 26, 9)"
+Macro Economics,GDP Growth Rate,"GDP_GROWTH_RATE - DELAY (GDP, n)"
+Macro Economics,Inflation Rate,"CPI_INFLATION_RATE - DELAY (CPI, n)"
+Macro Economics,Unemployment Rate,"UNEMPLOYMENT_RATE - DELAY(UNEMPLOYMENT_RATE, n)"
+Macro Economics,Interest Rate,"INTEREST_RATE - DELAY (MONetary Base, n)"
+Macro Economics,Exchange Rate,"EXCHANGE_RATE - DELAY (US Dollar Index, n)"
+Macro Economics,Consumer Price Index,"CPI - DELAY (Producer Price Index, n)"
+Macro Economics,Fiscal Policy,"GOVERNMENT_SPENDING - DELAY (Government Revenue, n)"
+Macro Economics,Monetary Policy,"MONETARY_BASE - DELAY (Money Supply, n)"
+Macro Economics,Economic Indicators,"OECD_INDICATORS - DELAY (Structural and Demographic indicators, n)"

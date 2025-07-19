@@ -1,0 +1,71 @@
+domain,name,code
+Momentum,Price Momentum,"(CLOSE - DELAY(CLOSE, 14))"
+Momentum,Volume Momentum,"(VOLUME - DELAY(VOLUME, 14))"
+Momentum,RSI Momentum,"(RSI - DELAY(RSI, 14))"
+Momentum,Rate of Change Momentum,(CLOSE - PREVIOUS(CLOSE))
+Momentum,Acceleration Momentum,"(CLOSE - DELAY(CLOSE, 2))"
+Momentum,On Balance Volume Momentum,"(VOLUME - DELAY(VOLUME, 1)) * (PRICE > PREVIOUS(PRICE) ? 1 : -1)"
+Mean Reversion,Mean Reversion (20 days),"(MEAN(CLOSE, 20) - CLOSE)"
+Mean Reversion,Z-score Mean Reversion,"(CLOSE - MEAN(CLOSE, 20)) / STD(CLOSE, 20)"
+Mean Reversion,Bollinger Bands,(CLOSE - LOWER_BAND) / (UPPER_BAND - LOWER_BAND)
+Mean Reversion,Exponential Moving Average (EMA),"(CLOSE - EMA(CLOSE, 50)) * 2"
+Mean Reversion,Relative Strength Index (RSI),"(100 - (100 / (1 + RS(CLOSE, 14)))) / 2"
+Mean Reversion,Stochastic Oscillator,"STOCH((LOW * 3) - LOW, (HIGH * 3) - HIGH)"
+Volatility,Standard Deviation,"STD(CLOSE, 20)"
+Volatility,Average True Range (ATR),ATR(14)
+Volatility,Bollinger Band Width,"(UPPER_BAND - LOWER_BAND) / SMA(CLOSE, 20)"
+Volatility,Moving Average Convergence Divergence (MACD),(12-period EMA - 26-period EMA) / (12-period EMA + 26-period EMA)
+Volatility,Relative Strength Index (RSI),100 - (100 / (1 + RSI(14))
+Volatility,Stochastic Oscillator,(Close - Low) / (High - Low)
+Volatility,Bollinger Bands Standard Deviation,"STD(BOLLINGER_BAND, 20)"
+Volatility,Exponential Moving Average (EMA) Spread,(12-period EMA - 26-period EMA) / 2
+Volatility,On Balance Volume (OBV),SUM(CASE WHEN Close > Open THEN volume ELSE 0 END)
+Volatility,Force Index,(Close - Open) * VOLUME
+Fundamental,Price-to-Earnings Ratio (P/E),(CLOSE / EPS)
+Fundamental,Price-to-Book Ratio (P/B),(CLOSE / BOOK_VALUE)
+Fundamental,Dividend Yield,(DIVIDENDS / CLOSE)
+Fundamental,Price-to-Sales Ratio (P/S),(CLOSE / SALES)
+Fundamental,Return on Equity (ROE),(NET_INCOME / TOTAL_EQITY)
+Fundamental,Debt-to-Equity Ratio,(DEBT / TOTAL_EQITY)
+Fundamental,Current Ratio,(CURRENT_ASSETS / CURRENT_liABILITYs)
+Fundamental,Price-to-Book Value Growth Rate,(P/B / GROWTH_RATE)
+Fundamental,EBITDA Margin,(EBITDA / SALES)
+Liquidity,Trading Volume,VOLUME
+Liquidity,Average Trading Volume,(HIGH + LOW) / 2 / CLOSE
+Liquidity,Volume Rate of Change (VROC),"(VOLUME - DELAY(VOLUME, 14)) / DELAY(VOLUME, 14)"
+Liquidity,Open Interest,OI
+Liquidity,Volume Imbalance,"(VOLUME - DELAY(VOLUME, 10)) / DELAY(VOLUME, 14)"
+Liquidity,Average True Range (ATR),ATR = ((HIGH - LOW) + abs(HIGH - PREVIOUS HIGH) + abs(LOW - PREVIOUS LOW)) / 14
+Quality,Return on Equity,(REVENUE / EQUITY)
+Quality,Debt to Equity Ratio,(DEBT / EQUITY)
+Quality,Current Ratio,(CURRENT_ASSETS / CURRENT_DEBT)
+Quality,Price to Book Ratio,(SHARE_PRICE / BOOK_VALUE)
+Quality,Operating Cash Flow Margin,(OPERATING_CASH_FLOW / REVENUE)
+Quality,Net Working Capital Margin,(NET_WORKING_CAPITAL / REVENUE)
+Quality,Return on Assets,(REVENUE / ASSETS)
+Growth,Earnings Growth Rate,"(EPS / DELAY(EPS,1) - 1)"
+Growth,Revenue Growth Rate,"(REVENUE / DELAY(REVENUE, 1) - 1)"
+Growth,EBITDA Growth Rate,"(EBITDA / DELAY(EBITDA, 1) - 1)"
+Growth,Price-to-Earnings Ratio (P/E),(PS / EPS)
+Growth,Dividend Yield,(DIVIDEND / STOCK PRICE)
+Growth,Return on Equity (ROE),(net income / equity) * 100
+Growth,Enterprise Value to Earnings Before Interest and Taxes (EV/EBITDA),(ENTERPRISE VALUE / EBITDA)
+Growth,Short-Term Debt to Equity Ratio,(short-term debt / equity) * 100
+Growth,Long-Term Debt to Equity Ratio,(long-term debt / equity) * 100
+Technical,Moving Average (MA),"SMA(CLOSE, 20)"
+Technical,Exponential Moving Average (EMA),"EMA(CLOSE, 20)"
+Technical,Relative Strength Index (RSI),RSI(14)
+Technical,Bollinger Bands (BB),"MA(CLOSE, 20) - 2*STDDEV(CLOSE, 20)"
+Technical,Momentum Indicator (MO),(CLOSE - PREVIOUS CLOSE) / PREVIOUS CLOSE
+Technical,Rate of Change (ROC),(CLOSE - PREVIOUS CLOSE) / PREVIOUS CLOSE * 100
+Technical,Stochastic Oscillator (STOCH),100 - ((CLOSE - LOW) / (HIGH - LOW)) * 100
+Technical,MACD (Moving Average Convergence Divergence),"(EMA(CLOSE, 12) - EMA(CLOSE, 26)) - ((EMA(CLOSE, 12) - EMA(CLOSE, 26))) / (EMA(CLOSE, 26) + EMA(CLOSE, 12))"
+Technical,On Balance Volume (OBV),SUM((BUY - SELL) * VOLUME)
+Macro Economics,GDP Growth Rate,"GDP - DELAY (GDP, n)"
+Macro Economics,Inflation Rate,"CPI - DELAY (GDP, n)"
+Macro Economics,Unemployment Rate,"UNEMPLOYMENT_RATE - DELAY(UNEMPLOYMENT_RATE, n)"
+Macro Economics,Interest Rates,"INTEREST_RATE - DELAY (CPI, n)"
+Macro Economics,Exchange Rate,"EXCHANGE_RATE - DELAY (GDP, n)"
+Macro Economics,Global Economic Index,"GLOBAL_ECONOMIC_INDEX - DELAY (CPI, n)"
+Macro Economics,Consumer Confidence Index,"CONSUMER_CONFIDENCE_INDEX - DELAY (UNEMPLOYMENT_RATE, n)"
+Macro Economics,Business Cycle Index,"BUSINESS_CYCLE_INDEX - DELAY (GDP, n)"

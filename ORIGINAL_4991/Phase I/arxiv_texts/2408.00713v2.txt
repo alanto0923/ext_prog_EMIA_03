@@ -1,0 +1,701 @@
+Reinforcement Learning applied to Insurance Portfolio Pursuit
+Edward James Young∗1,2, Alistair Rogers1, Elliott Tong1, and James Jordon†1
+1Accenture (UK) Limited
+2University of Cambridge, Computational and Biological Learning (CBL) group.
+Abstract
+When faced with a new customer, many factors contribute to an insurance firm’s decision of what
+offer to make to that customer. In addition to the expected cost of providing the insurance, the firm must
+consider the other offers likely to be made to the customer, and how sensitive the customer is to differences
+in price. Moreover, firms often target a specific portfolio of customers that could depend on, e.g., age,
+location, and occupation. Given such a target portfolio, firms may choose to modulate an individual
+customer’s offer based on whether the firm desires the customer within their portfolio. We term the
+problem of modulating offers to achieve a desired target portfolio the portfolio pursuit problem . Having
+formulated the portfolio pursuit problem as a sequential decision making problem, we devise a novel
+reinforcement learning algorithm for its solution. We test our method on a complex synthetic market
+environment, and demonstrate that it outperforms a baseline method which mimics current industry
+approaches to portfolio pursuit.
+1 Introduction
+Background
+Competition among the commercial insurance market has been intensified by the emergence of price compar-
+ison websites (PCW) as a core means by which customers and insurance firms interact. When a customer’s
+details are entered into the website, many firms simultaneously decide what offers to make to the customer
+on the basis of those details. Since the customer can directly compare competing offers, firms must care-
+fully calibrate their offers to maximise a trade-off between potential profit and the probability of acceptance.
+While both of these aims are local to each individual customer, firms may also wish to modulate the offers
+they make in order to pursue longer-term goals, realised over many customers. For example, the firm may
+wish to maintain a certain frequency with which new offers are accepted, to ensure they have the reserves
+necessary to pay out claims and avoid liquidity issues (Krasheninnikova et al., 2019). Alternatively, a firm
+may wish to break into a new segment of the market, and be content with making lower-than-optimal offers
+in order to attract a particular customer base. Goals such as these define a higher-level strategy that is
+crucial to the long-term success of the firm. Decisions regarding content of the long-term goals - the What?
+of the strategy - are typically made at a managerial level, and involve complex domain-expert knowledge and
+understanding of current market conditions. At present, the implementation of the pursuit of the goals - the
+How? of the strategy - also makes use of domain-expect knowledge. In this paper, we present a data-driven
+machine learning methodology for implementing higher-level strategies in the context of consumer insurance
+markets.
+The problem of what offer to make to a customer on a PCW can be divided into two sub-problems: the
+cost-estimation problem and the bidding problem . The cost-estimation problem can be summarised as the
+problem of estimating the total cost of insuring a given customer from the features available through the
+PCW. This is a well-studied supervised-learning problem (de Jong and Heller, 2008). We will not provide
+any further comment on the cost-estimation problem in the remainder of this paper; we take the solution to
+∗Corresponding author - ey245@cam.ac.uk, edwardjamesyoung3@gmail.com
+†Senior author - james.jordon@accenture.com
+1arXiv:2408.00713v2  [cs.LG]  2 Aug 2024this problem as given. Instead, we focus on the bidding problem - what offer ought we to make to a customer,
+given an estimate of the cost of insuring them? The optimal price to offer a customer depends not only on
+the estimated cost of insuring them, but additionally on, (1) the offers that other insurers on the PCW will
+make to the customer; (2) the customer’s sensitivity to price differentials; and, (3) whether the customer is
+the type of client the insurance firm wishes to insure. Our work focuses on this third aspect the bidding
+problem.
+Throughout our paper, we use the term portfolio to refer to the set of customers who accept an insurance
+firm’s offers over some specified period of time (for example a day, week, or month). The problem of portfolio
+optimisation is that of deciding what the ideal portfolio would look like; how many of each different type of
+customer the insurance firm wishes to have concurrently insured. This may depend on aspects such as the
+kind of brand and reputation the firm wishes to cultivate, the desire to maintain a diverse customer base
+so as to protect against correlated risk or systematic model inaccuracies, or the necessity to avoid insuring
+too many customers and being unable to settle all the incoming claims. We take the firm’s solution to the
+problem of portfolio optimisation also as given; that is, we suppose that the insurance firm already has a
+specification for the distribution of customers it would like to insure over some relevant future time-period.
+However, unlike in the stock market, where an investor can easily achieve their desired portfolio of stocks
+by simply investing and divesting, an insurance firm cannot arbitrarily add and remove customers from its
+portfolio. Rather, the firm must wait until a desired customer is asking for a quote, and then modulate the
+offer made to the customer in order to increase the likelihood that the offer is accepted. In deciding how to
+modulate the offer, the firm must carefully balance the value of having the customer in the portfolio against
+the profit they expect to make from insuring the customer. It would not be effective to, for example, make
+desired customers offers at which the firm is, on average, guaranteed a substantial loss. We term the problem
+of how to modulate offers made to customers in order to achieve a desired portfolio the problem of portfolio
+pursuit .
+It is to the problem of portfolio pursuit to which we make our contribution. Note that – unlike the cost-
+estimation, bidding, and portfolio optimisation problems – portfolio pursuit is intrinsically sequential in
+nature. If we wish to insure no more than 500 customers over the next week, the offers we ought to make to
+customers on Sunday depend heavily on our success rate for Monday through Saturday. As such, we cast the
+portfolio pursuit problem as a Markov Decision Process (MDP), and derive a novel Reinforcement Learning
+(RL) algorithm for its solution. Our decomposition into the four sub-problems given above - cost-estimation,
+pricing, portfolio optimisation, and portfolio pursuit - additionally enables us to develop a methodology which
+is minimally disruptive, in the sense that it can be integrated naturally with arbitrary solutions to the other
+three sub-problems. Indeed, our algorithm requires only a slight adjustment to existing methodologies for
+the bidding problem.
+Previous work
+To our knowledge, our paper is the first work to articulate a general mathematical formalism of the portfolio
+pursuit problem in insurance as a sequential decision making problem, and attempt to address it using rein-
+forcement learning. Treetanthiploet et al. (2023) and Krasheninnikova et al. (2019) both apply reinforcement
+learning to other aspects of bid optimisation in the context of insurance. Like us, Treetanthiploet et al. (2023)
+considers the new business market for insurance. They have no notion of a desired portfolio, thus making
+each decision purely local. As such, they treat the problem as a contextual bandit, with no sequential aspect
+(beyond learning). In contrast, Krasheninnikova et al. (2019) examine the problem of pricing at renewal.
+While they consider the customer portfolio (thereby making the problem sequential), they restrict themselves
+only to constraints on the size of the portfolio, formulating it as a constrained Markov Decision Process. We
+have built upon their work by additionally factoring in the internal structure of customer portfolios, thereby
+giving a more general and flexible approach to portfolio pursuit.
+Many previous works have attempted to apply reinforcement learning to the portfolio optimisation problem
+in the context of other markets, such as the stock market (Hieu, 2020; Benhamou et al., 2021; Yang, 2023)
+and the cryptocurrency market (Jiang et al., 2017). However, as noted above, this situation is fundamentally
+different from the case considered here. In these other markets, the relevant financial products can typically
+be purchased very quickly, allowing one to shift funds between them more or less freely (subject to transaction
+2costs). This is in contrast to customers, who arrive sequentially and over a prolonged period. Furthermore,
+while purchasing cryptocurrency or a stock is a fairly simple transaction, bidding for a customer is not, since
+it involves attempting to out-compete alternative offers while accounting for stochasticity in a customer’s
+decision. As such, this previous literature is not directly applicable to the problem under consider here.
+Our contribution
+We propose a novel reinforcement learning algorithm for the portfolio pursuit problem over long time horizons.
+We cast this as an MDP, and give a novel algorithm for its solution. We take a model-based approach, allowing
+our algorithm to be trained entirely offline, thereby protecting against risk in deployment. The methodology
+we use can be integrated naturally into existing machine learning pipelines for insurance pricing. Unlike
+previous research addressing using RL for the purposes of insurance pricing (Krasheninnikova et al., 2019;
+Treetanthiploet et al., 2023), our insurance agent acts in a realistic agent-based environment (Macal, 2016;
+England et al., 2022). This environment includes randomly generated customers along with a collection of
+other insurance agents that iteratively change their pricing strategies over time, creating a dynamic, non-
+stationary environment. The full code implementing both the market environment and our reinforcement
+learning solution is available in the code repository accompanying this paper.
+The rest of this paper is organised as follows. In Sec. 2 we give a mathematical formulation of the portfolio
+pursuit problem . In Sec. 3 we describe our solution to the problem. We begin by describing a standard
+pipeline for solving the bidding problem, and the models used within that pipeline. We then outline a
+baseline methodology intended to mimic a naive approach to portfolio pursuit that may currently be used
+within industry. Lastly, we specify our approach, giving the full algorithm used for training, and compare the
+method to existing RL algorithms. In Sec. 4 we show the performance of our method against the baseline,
+demonstrating that our method is able to generate more profit than the baseline methodology while not
+compromising the quality of the final portfolio. Finally, in Sec. 5 we outline some limitations of our method
+and give opportunities for future research.
+2 Problem formulation
+2.1 Portfolio pursuit as a Markov Decision Process
+In our market environment, an epoch consists of Tinteractions between a customer and the insurance
+agent. The customers s1, . . . , s Tthemselves are drawn independently from the same underlying customer
+distribution. At each step, in response to the current customer features, the insurer takes an action at∈[1,2].
+The action acorresponds to an offer of C(s)×a, where C(s) is the expected cost of serving the customer1.
+In response to the offer made by the insurer, and the offers made by other insurers within the market, the
+customer either accepts the offer or rejects it. If the offer is rejected ( yt= 0) then no profit is obtained by
+the insurer. If the offer is accepted ( yt= 1) then an (expected) profit of Profit( st, at) is obtained. The profit
+is simply Profit( s, a) =C(s)a−C(s) =C(s)(a−1). When the offer is accepted ( yt= 1) then the customer is
+added to the insurer’s portfolio2. The portfolio at the t-th time-step is ρt, and the insurer’s portfolio before
+the first customer ρ1is initialised as empty3,i.e.,ρ1={}.
+The performance of the insurer at the final time step is evaluated according to the net profit achieved minus
+1As noted in the introduction, we assume this as given. In practice, the expected cost of serving a customer is not known
+in advance, but must instead be estimated using historic claims data. However, this estimation problem is distinct from the
+problem of how to price insurance, given this estimate, which is what this paper focuses on.
+2In reality, there may be a delay between an offer being made and accepted - indeed, customers often have up to 14 days to
+decide whether to accept an offer. In this case, a proxy measure, such as click-through from the PCW to the insurer’s website,
+may be used in place.
+3The choice to initialise the portfolio as empty corresponds to optimising the portfolio of new customers obtained over some
+time horizon. If instead the firm is interested in its total portfolio - including all existing customers - the portfolio can be
+initialised to that instead, with only minor adjustments required elsewhere in our method.
+3a loss which measures the discrepancy between the final and desired portfolio4,i.e.,
+TX
+t=1ytProfit( st, at)−λL(ρT+1, ρ∗). (1)
+Here, λis a coefficient which controls the relative importance of profit vs. pursuit of a particular portfolio.
+In the MDP formalism, the states consist of customer, portfolio, and time-step triples, ( st, ρt, t). The reward
+signal following action atisytProfit( st, at), with an additional reward −λL(ρT+1, ρ∗) administered after the
+final customer interaction.
+2.2 Specification of portfolio loss function
+We stress that the algorithm we present in Sec. 3.3 makes no assumptions whatsoever about the nature of the
+loss function L. However, for concreteness in our numerical experiments, we adopt one particular formulation
+of the loss.
+The loss function used in our numerical experiment is defined via a collection of Iindicators functions
+1Ai, i= 1, . . . , I over the customer features. Each indicator is specified by set Ai, i= 1, . . . , I in the
+space of customer features. These indicators allow us to represent portfolios as vectors in RI, with the i-th
+component given by fi=P
+s∈ρ1Ai(s), where 1Ai(s) is equal to 1 if s∈Ai, and 0 otherwise. Given these
+vector representations of portfolios, we can implement the loss Lvia any distance measure on RI. Note
+that in practice we specify the target portfolio ρ∗only through its vector representation f∗
+i:=P
+s∈ρ∗ 1Ai(s);
+similarly, we will track the insurer’s portfolio only via its frequency representation. For our numerical
+experiments we adopt the loss function:
+L(f,f∗):=1
+IIX
+i=1|fi−f∗
+i|
+max( fi, f∗
+i). (2)
+We choose this loss for the following properties: it is zero precisely when fi=f∗
+i; it is bounded between [0 ,1];
+and it is symmetric in fandf∗. Note that because the loss is bounded between 0 and 1, the coefficient λcan
+be interpreted as answering the question: if the firm had the worst possible portfolio, how much short-term
+profit would they be willing to give up in order to trade it for the best possible portfolio?
+Our reinforcement learning algorithm (detailed in Sec. 3.3) trivially extends to alternative loss functions which
+provide other ways of quantifying the distance between the obtained and target portfolio. This includes, for
+example, adding weights to each indicator to penalise discrepancies along different feature sets differently, or
+using an optimal transport distance to provide a more detailed measure of differences between sets. We leave
+exploration of alternative loss formulations to future work.
+3 Methods
+3.1 Standard industry methodology
+We compare our method to a pipeline which mimics current industry approaches to insurance pricing and
+price modulation. In this section we describe a methodology which does not make reference to a target
+portfolio. This pipeline mimics standard industry pricing methods. We will then modify this method in two
+ways - firstly, to mimic standard industry methodology for modulating prices to attain a target portfolio,
+and secondly according to our new proposed algorithm.
+The insurance firm is assumed to have a dataset of interactions from previous epochs. Each entry in this
+interaction dataset includes:
+1. The customer features, st
+4Note that this encompasses the case where the loss is a function of only the final portfolio.
+42. The expected cost of serving the customer, C(st)
+3. The action taken by the insurance firm, at
+4. The offers made by other insurance firms, ot
+5. Whether the customer accepted the offer of the firm, yt
+From the offers made by other firms, ot, and the expected cost, C(st), the insurer calculates market variables ,
+mt. The market variables for the insurer are the average of the top-1, top-3, and top-5 offers made to the
+customer by other firms within the market, normalised by dividing by the expected cost C(st) of serving
+the customer. Note that the market variables are not available to the insurer at inference time, but become
+available after the fact through the purchasing of historic data from PCWs.
+From this dataset, the insurer trains the following models:
+1. The market model M, which maps from customer features, st, to market variables mt,st7→M(st)≈mt.
+2. The conversion model p, which maps from the market variables, mt, and action, at, to the probability
+the customer accepts the offer, ( mt, at)7→p(mt, at)≈P(yt= 1|mt, at).
+3. The action model , orpolicy π, which maps from market variables, mt, tooptimal actions a∗
+t,mt7→
+π(mt)≈a∗
+t.
+For our numerical simulations, we used a random forest for the market model, a Multi-Layer Perceptron
+(MLP) for the conversion model, and a Gaussian Process with Matern kernel for the action models (Rasmussen
+and Williams, 2005). Our overall methodology places no restrictions on any of the models, although in practice
+we found it better to use continuous conversion and action models. If it is necessary to ensure these models
+are interpretable, simpler models - such as Generalised Linear Models (GLMs) - may be used instead of
+MLPs (de Jong and Heller, 2008). More expressive models may work better for larger scale simulations, with
+correspondingly larger datasets, than those explored here.
+The market model Mand conversion model pare trained directly on the historic dataset available to the
+insurer. To train the action model, we use regression-based amortised optimisation (Amos, 2023). Firstly,
+note that the expected profit, given that the customer accepts the insurer’s offer, is C(st)(at−1). Accordingly,
+the insurer’s expected profit, for action at, given market variables mt, isC(st)(at−1)p(mt, at). Therefore,
+for a random sample of market variables mtfrom the dataset, we use a one-dimensional optimiser to find
+a∗
+t∈arg max ap(mt, a)(a−1) within the range at∈[1,2]. We then fit the action model πto 500 ( mt, a∗
+t)
+pairs.
+At inference time, the features for a customer stare fed into a market model to obtain estimates for the
+market variables5,mt=M(st). These are then fed into the action model to obtain the action at=π(mt).
+An offer of C(st)atis then made to the customer. On 12% of customers we explore by multiplying the offer
+by a randomly chosen modulation factor sampled from [0 .93,0.95,0.97,1.03,1.05,1.07].
+Before continuing, we briefly remark that in practice the training and use of auxiliary models may be more
+complicated than presented here. To begin with, information about whether a customer accepts an offer
+is not available instantaneously, but only after a “cooling-off” period, typically 14 days. Likewise, there
+may be a delay in obtaining information about market variables for a given customer. Finally, insurers may
+choose to forgo the use of an action model all-together, instead solving the one-dimensional optimisation
+problem directly at inference time (rather than amortising as we do here). None of these observations
+present substantial difficulty to the RL algorithm we describe below. Indeed, our approach can be seen as
+a methodology which accepts as input auxiliary models and adjusts the prices returned by those models to
+solve the portfolio pursuit problem. It is therefore agnostic as to both the types of models used, and the data
+which those models are trained on.
+5As the market variables are predictive of customer behaviour, and available historically but not at inference time, the use
+of a market model can be seen as a form of data imputation.
+53.2 Baseline methods for portfolio pursuit
+It is standard practice to modulate the output prices offered to customers from the bidding model according
+to other features of interest for the customer, corresponding to the customer’s desirability within the portfolio.
+This modulation is typically performed using domain experts’ knowledge, rather than according to a data-
+driven or formal scheme. We attempt here to give a method which mimics this type of modulation as
+a baseline against which to compare our method, fully recognising that it does not accurately capture the
+complexity of standard industry practices. We encourage future work to implement more realistic and nuanced
+methodologies, and have facilitated this by making our codebase implementing the market environment
+publicly available.
+The baseline method makes use of historical assessments of the frequency with which the insurer encountered
+customers of the type relevant to their portfolio. In particular, for each indicator set Ai, compute the
+frequency representation fi=P
+s∈ρT+11Ai(s) for terminal portfolios ρT+1for epochs during which there was
+no portfolio-based action modulation, i.e., where actions were chosen via the method described in the previous
+section, Sec. 3.1. We average this value over such historical epochs, giving us a frequency ¯fi.¯fitherefore
+acts as an estimate of how many customers within set Aiwe are likely to get without action modulation.
+We compare this to the desired frequency, f∗
+i=P
+s∈ρ∗ 1Ai(s). For each incoming customer, we look at each
+setAithat they call into, and compute the corresponding ratio of frequencies, ¯fi/f∗
+i. If this ratio is greater
+than 1 it indicates that, in order to achieve the desired portfolio, we should increase the offer price made to
+that customer. If the ratio is less than 1, we should decrease the offer price. At inference time, we therefore
+modulate the offer price made to a customer sby multiplying the action by
+Y
+i:s∈Aig¯fi
+f∗
+i
+. (3)
+The map gis given by
+g(z) = 1 + βzn−1
+zn+ 1, (4)
+where n, β≥0. The functional form of gwas selected because it is monotonically increasing and bounded,
+with g(z)∈[1−β,1 +β]. The function parameters n∈ {0.5,1,2}andβ∈ {0.02,0.05,0.1,0.25}are found by
+a grid-search; in our experiments we used values of n= 1, β= 0.02 for a loss coefficient of λ= 2000. Note
+that for a baseline method, β, nmust be chosen differently for each value of the loss coefficient λ. This is in
+contrast to our method, which applies equally well for any value of λ.
+3.3 A Reinforcement Learning approach to Portfolio Pursuit
+Mathematical Preliminaries
+Our reinforcement learning algorithm uses a dynamic programming approach with function approximation to
+provide a policy which modulates customer prices according to the current portfolio possessed by the insurer.
+We define the portfolio value function ,Vπ(ρ, t), which gives the value of having portfolio ρat time t, given
+that future actions are selected by a (time-step dependent, deterministic) policy π=π(s, ρ, t ):
+Vπ(ρ, t):=Eπ"TX
+k=tykProfit( sk, ak)−λL(ρT+1, ρ∗)|ρt=ρ#
+. (5)
+The corresponding action value function Qπ(s, a, ρ, t ) is defined by:
+Qπ(s, a, ρ, t ):=Eπ"TX
+k=tykProfit( sk, ak)−λL(ρT+1, ρ∗)|ρt=ρ, st=s, at=a#
+. (6)
+The policy is optimal for all time steps if it satisfies the appropriate Bellman optimality equation, i.e.,
+π(s, ρ, t )∈arg max
+aQπ(s, a, ρ, t ). (7)
+6In App. A, we show by expanding the action value function that Eq. (7) is equivalent to:
+π(s, ρ, t )∈arg max
+aP(yt= 1|st=s, at=a) (a−kπ(s, ρ, t + 1)) , (8)
+where kπ(s, ρ, t + 1) is defined by:
+kπ(s, ρ, t ):= 1−Vπ(ρ∪ {s}, t)−Vπ(ρ, t)
+C(s). (9)
+An important consequence of the above result is that the optimal policy is a function only of the customer
+features stand the value kπ, and not of the portfolio or time-step directly except via kπ.
+We also obtain (see App. A) the following recursion relationship for the portfolio value function:
+Vπ(ρ, t) =Vπ(ρ, t+ 1) + E[C(s)P(yt= 1|st=s, at=π(s, ρ, t )) (π(s, ρ, t )−kπ(s, ρ, t + 1))] , (10)
+with boundary condition Vπ(ρ, T+ 1) = −λL(ρ, ρ∗). Here, the expectation is taken over the customer
+distribution.
+Outline of our method
+As with the industry baseline method, our method will make use of a market, conversion, and action model.
+We will use the conversion model p(m, a)≈P(yt= 1|mt=m, a t=a) in place of the P(yt= 1|st=s, at=a)
+in both the value recursion relationship Eq. (10) and the optimal action relationship Eq. (8)6. Additionally,
+our action model (or policy) πwill now be a function of both the market variables mand the k-values K,
+π(m, k).
+Our method begins by training these models in much the same manner as the pipeline described in Sec. 3.1,
+namely by fitting models to a previously obtained dataset. However, our method for generating the dataset
+for fitting the action model πis slightly different. We first sample market variables mtfrom our dataset.
+For each market variable sample, we independently sample a k-value, kt, from a Laplace distribution with
+location 1 and scale 0 .1. We then compute
+a∗
+t∈arg max
+ap(mt, a)(a−kt), (11)
+where pis our conversion model. We then fit the action model to approximate π(mt, kt)≈a∗
+t. We used a
+sample of 500 ( m, k, a∗)-triples to fit our conversion model. We additionally train a value function Vϕ(ρ, t),
+with parameters ϕ, as outlined in the next section.
+At inference time, for a customer stwith expected cost C(st) and portfolio ρtat time t, we use Eq. (9) to
+compute the k-value ktvia:
+kt= 1−Vϕ(ρt∪ {st}, t+ 1)−Vϕ(ρt, t+ 1)
+C(st). (12)
+We then feed the customer features stinto the market model to obtain estimates for the market variable
+mt=M(st). We then use the bidding model to obtain the action at=π(mt, kt). Finally, we make an offer
+ofC(st)atto the customer.
+Value function training
+In order to train our inference-time value function Vϕ(ρ, t), we make use of an next-step value function ,U(ρ).
+This function is used during training, but not at inference time. Throughout training, it approximates the
+values of portfolios at the next time step. Uis used to create value estimates, which are then stored in a
+dataset. Our value function Vϕ(which will be used at inference time) is then fit to this dataset. As discussed in
+Sec. 2.2, portfolios are specified only through their frequency representation, ρ7→(fi)I
+i=1, fi=P
+s∈ρ1Ai(s),
+6We stress that this is only an approximation. In reality – owing to how we constructed the market environment – the
+probability of acceptance also depends on various customer features.
+7since this preserves all information relevant for computing the loss. Accordingly, both UandVϕact on
+frequency representations, i.e., vectors in RI. In the remainder of this section we do not distinguish between
+a portfolio and its frequency representation.
+We iterate backwards through time, setting t=T, . . . , 1. At each time step, we use U(ρ) to approximate
+Vπ(ρ, t+ 1). Initially, we set U(ρ) =−λL(ρ, ρ∗) =Vπ(ρ, T+ 1). At each time step, we use the next-step
+value function Uto form value estimates via Eq. (9) and Eq. (10). To approximate the expectation over
+the customer distribution in Eq. (10), we compute an empirical average over samples from a customer reply
+buffer , which stores the features, market variables, and expected cost of previous customers. We then fit U
+to these value estimates thus obtained, such that Unow approximates Vπ(ρ, t). Having fit U, we sample an
+augmenting set of portfolios, and use Uto estimate each of their values. We finally store the value estimates
+in a dataset, D, and then iterate backwards, t←t−1. Once we have completed the backwards iteration
+through time, we fit our value function Vϕto the value estimates found in D.
+Before fitting, we apply a trick to make our dataset easier to learn. Notice that at inference time, Vϕis used
+only to compute kvalues via Eq. (12). However, this equation is invariant to shifting all values at same
+time step tby the same amount. Therefore, before fitting Vϕ, we recentre all the value estimates Vat each
+time step by subtracting the mean value estimate, ¯V. We then fit our value function Vϕto the residuals,
+ˆV=V−¯V. We found that this step is critical to effective learning, as it requires the value function Vϕto
+learn the differences in value between portfolios, rather than overall magnitude. These differences are what
+drives decision making - indeed, the centring of our value estimates makes Vϕanalogous to an advantage
+function used in other RL methods.
+Our approach is summarised in Alg. 1. In our experiments, we set Uto be linear model, and Vϕto be an
+MLP. As with the conversion, market, and action models, nothing in our algorithm necessitates the use of
+these particular models for UandVϕ. We use N= 500 samples from the customer reply buffer, and J= 24
+portfolio samples for fitting the next-step model, and an additional J+= 120 augmenting portfolios.
+Algorithm 1 Training the value function V
+Initialise U(ρ)← −λL(ρ, ρ∗). ▷Boundary condition for values.
+Initialise empty dataset D ← ∅ .
+fort=T, . . . , 1do
+Sample portfolios {ρj}J
+j=1.
+forj= 1, . . . , J do
+fori= 1, . . . , N do
+Sample ( si, mi, C(si)) from the customer reply buffer.
+Compute kvalue: ki←1−U(ρj∪{si})−U(ρj)
+C(si). ▷Using Eq. (9)
+Compute action: ai←π(mi, ki).
+end for
+Compute value estimate for ρj:Vj←U(ρj) +1
+NPN
+i=1C(si)p(ai, mi)(ai−ki).▷Using Eq. (10).
+end for
+FitUto the input-output pairs ( ρj, Vj). ▷U now approximates Vπ(ρ, t).
+Sample augmenting portfolio set {ρ+
+j}J+
+j=1.
+Create t-dataset Dt← {(ρj, t, V j)}J
+j=1∪ {(ρ+
+j, t, U(ρ+
+j))}J+
+j=1.
+Recentre values in Dt:ˆV←V−¯Vfor¯V=1
+|Dt|P
+(ρ,t,V )∈DtV.
+Add points to the main dataset: D ← D ∪ D t.
+end for
+Fit value function Vϕto inputs ρ, tand outputs ˆVfromD.
+In our algorithm, there are two points at which we sample portfolios. We have not yet specified how this
+sampling occurs. Ideally, these portfolios would be on-policy ,i.e., the portfolios sampled for time step t
+would be taken from the distribution of portfolios our policy encounters at time t. However, since we do not
+have access to any such data, our method is forced to be off-policy. The sampling of portfolios comes from
+three sources: previously on-policy portfolios ,target on-policy portfolios , and high-coverage portfolios . The
+8sampling is done in a ratio of 1:1:2. We explain each of these methods in turn.
+Much like the baseline method discussed in Sec. 3.2, the previously on-policy portfolio sampling makes use
+of historic data about the frequency with which customers in each category appear naturally i.e., without
+action modulation. As before, we denote by ¯fithe average of the frequency representationsP
+s∈ρt+11Ai(s)
+over historic epochs in which no portfolio was being pursued. We can then define a historic rate, given by
+¯pi=¯fi/T. To sample previously on-policy portfolios at time t, we sample each component of the portfolio’s
+frequency representation independently from the Binomial distribution with parameters pi+ 1/T, t. The
+addition of 1 /Tto the rate was made to ensure that, for each category, we have a strictly positive probability
+of sampling portfolios with customers in that category. Sampling these portfolios ensures we have a good
+representation of value for portfolios that we would encounter if we did not adjust our pricing methodology.
+Thetarget on-policy portfolio sampling method works in the same manner as the previously on-policy portfolio
+sampling, except we use p∗
+i=f∗
+i/Twhere f∗
+i=P
+s∈ρ∗ 1Ai(s) is the target frequency.
+The last method we use is high-coverage portfolios . This method is parametrised by a slope parameter ,
+σ∈[0,1]. We first define pmax= (1 + σ) max( p∗,¯p),pmin= (1−σ) min( p∗,¯p), where the maximum and
+minimum are taken element-wise. At time t, we consider evenly spaced points ω∈[0,1]. For each ωpoint,
+we construct the frequency representation ft(ω) =t(ωpmax+ (1−ω)pmin), which interpolates between the
+frequency representation if customers were acquired at either the maximum rate or minimum rate. This will
+in general not be integer valued, so we therefore take the integer part of each element, and then add on a
+Bernoulli sample which is one with probability equal to the remainder term. The high-coverage portfolios
+thus sampled ensures a wide sampling outside the on-policy distributions. The contribution of these portfolios
+is crucial, as it ensures our method still has accurate assessments of portfolio values outside the on-policy
+distribution, providing stability at inference time. We used a value of σ= 0.9.
+3.4 Relationship to existing RL methods
+Here we briefly discuss the relationship of our proposed RL algorithm to existing algorithms within the
+literature. Our method can be viewed as an actor-critic algorithm, in the sense that it learns both a
+policy π(m, k) and a value function Vϕ(ρ, t). However, our method displays substantial differences to more
+conventional actor-critic methods, such as A3C (Mnih et al., 2016), PPO (Schulman et al., 2017), SAC
+(Haarnoja et al., 2018), and DDPG (Lillicrap et al., 2019).
+Firstly, our method is nota policy-gradient algorithm. Unlike the methods listed above, our policy is not
+learned by finding the gradient of a value measure (such as total return (Mnih et al., 2016), or a Q-function
+(Lillicrap et al., 2019)) with respect to the policy parameters. Instead, we exploit the fact that - because the
+action space is one-dimensional - the relevant value measure, given in Eq. (11), can be optimised directly with
+a non-gradient-based optimiser. We then fit our policy directly to the optimised values - a form of regression-
+based amortised optimisation (Amos, 2023). This allows us to avoid problems relating to local maxima which
+arise in gradient-based methods. It also frees us from the necessity of having a policy which is differentiable
+in the parameters; indeed, in our experiments we use a Gaussian process as our policy (Rasmussen and
+Williams, 2005). In fitting the policy to a dataset of actions which maximise a value measure, our method is
+akin to the cross-entropy method (Simmons-Edler et al., 2019).
+Secondly, our value function is not a function of the full MDP state. The full MDP state is the (customer,
+portfolio, time-step) triple, ( s, ρ, t ). Instead, our value function only depends on the portfolio and the time-
+step, ( ρ, t). This substantially reduces the dimensionality of the input space to our value function, since the
+number of customer features is (typically) much larger than the number of portfolio categories. From Eq. (8),
+we know that the optimal action depends only on the next portfolio, time-step pair. This means that, for
+the purposes of action-selection, it suffices to learn only these values, rather than the full MDP state values
+(or, indeed, the value of state-action pairs (Mnih et al., 2015; Haarnoja et al., 2018; Lillicrap et al., 2019)).
+We also note that the dependence is only through the k-value. This enables us to learn a policy which takes
+kdirectly as input, rather than the full MDP state. Importantly, this policy can be learned fully before
+learning any value functions (as we do in our algorithm), and does not require re-training while the value
+function is learned, unlike a typical actor-critic method (Mnih et al., 2016; Lillicrap et al., 2019).
+Lastly, our method utilises a memory-reply buffer to act as a model of the arrival of new customers. However,
+9unlike many other methods which use a memory reply buffer for value-learning (Mnih et al., 2015; Haarnoja
+et al., 2018; Lillicrap et al., 2019), we do not sample states randomly. Rather, (portfolio, time-step) pairs,
+(ρ, t), are sampled systematically by iterating tbackwards in time. In iterating backwards, our method
+is analogous to a dynamic programming algorithm, which starts at terminal states of known value (in our
+case, terminal portfolios) and applies backwards induction to find the value of all states recursively. Similar
+to the Fitted Q-Iteration algorithm (Ernst et al., 2005), our method avoids the curse of dimensionality
+associated with exact dynamic programming in MDPs by approximating the value function at each time-step
+by a linear model, U. Because we are applying an approximate dynamic programming method we need
+only sweep through the state-space once. This is in contrast to methods which apply a Bellman optimality
+equation but do not recurse backwards from terminal states (Mnih et al., 2015), where each state must be
+sampled many times in order to approximate the correct value.
+3.5 Additional simulation details
+Our simulations use a realistic agent-based model of an insurance market, mediate through a PCW (Macal,
+2016; England et al., 2022). The insurance firm implementing each method – baseline (Sec. 3.2) or RL
+(Sec. 3.3) – competes with 5 other insurance firms (none of which are pursuing a portfolio, as in Sec. 3.1).
+Each customer is randomly generated by sampling features from a complex generative distribution, with
+realistic interdependencies between features. For example, customer income depends on the location, age,
+and occupation of the customer. Only a subset of features are revealed to the insurers though the PCW
+interface. On the basis of these features, each insurer makes the customer an offer. The customer then either
+selects an offer or chooses to walk away from the market. Full details of the market environment can be
+found in the code repository that accompanies this paper.
+Target portfolios are generated at random by sampling I= 5 customer features, and setting the target
+quantity f∗
+ifor those features to be twice ¯fiif¯fi≤10, and otherwise half or twice of ¯fiat random (rounding
+up or down respectively to ensure integer values). We have 6 burn-in epochs, during which historic data
+is gathered for training models. Insurers use the past 4 epochs to train models, and all burn-in epochs for
+computing historical frequency representations. For the first burn-in epoch, before any models are trained,
+insurers take actions randomly and uniformly in [1 ,1.2]. Following the burn-in epochs, we then have 8 testing
+epochs. Each epoch consists of T= 1000 steps. No re-training of any models occurs following a testing epoch,
+meaning the testing epochs are independent trials of the same value function Vϕ. In the results below, we
+aggregate statistics across testing epochs. We set the loss-coefficient λ= 2000. The results shown in Sec. 4
+are obtained by aggregating statistics across both the 8 testing epochs and 24 independent trials, with each
+trial having a different randomly generated target portfolios. To ensure a fair comparison between the RL
+and baseline methods, we use the same set of random seeds for both methods. This means that, up until
+the testing epochs, both methods interact with the market identically, ensuring the same historic data to
+train on and target portfolio to aim towards. Thus, any differences in performance are attributable only to
+differences over the testing epoch.
+4 Results
+Fig. 1 shows the results of comparing our method to the baseline averaged over 24 trials. On each trial,
+both methods have the same interaction history, and thus have the same training data, up until the testing
+epochs. They also pursue identical target portfolios. Thus, differences in performance stem only from
+different behaviour on the test epochs. From panels (A-B) we see that, on average, our method generates
+more profit than the baseline (one-sided Mann-Whitney U test, p <0.0001; CLES = 65%; Cohen′s d = 0 .51,
+moderate effect size). Over the course of 1000 customer interactions, on average our method generates an
+additional £472 (or a 7% increase) in profit. Panels (C-D) show the loss between the target portfolio and the
+obtained portfolio at each time step. The final loss distribution of both methods is very similar (two-sided
+Mann-Whitney U test, p= 0.16, not significant), showing that our method has not compromised portfolio
+quality in order to generate additional profit. Thus we can conclude that our method brings in additional
+revenue while getting comparably close to the desired portfolio as the baseline. Panels (E-F) show the total
+reward (profit minus loss) of both methods, which is the objective that both methods are optimising. We
+1002000400060008000ProfitsA RL method B Baseline
+75010001250150017502000LossC D
+0 200 400 600 800 1000
+Time step2000
+0200040006000RewardE
+0 200 400 600 800 1000
+Time stepFFigure 1: A side-by-side comparison of our method with an industry baseline . We plot the
+mean (with standard deviation error bars) of three quantities of interest over the testing epoch: (A-B) the
+profitPt
+k=1ykProfit( sk, ak), (C-D) the loss between the current and target portfolio λL(ρt, ρ∗), and (E-F)
+the difference between them. Left-hand panels (A,C,E) correspond to our method, Sec. 3.3, and right-hand
+panels (B, D, F) correspond to the baseline method, Sec. 3.2. The black dashed line in each panel corresponds
+to the mean value at the terminal time-step. See Sec. 3.5 for further information about our experimental
+set-up.
+see that our method outperforms the baseline, achieving higher reward on average over the trials (one-sided
+Mann-Whitney U test, p <0.0001; CLES = 63%; Cohen′s d = 0 .48, moderate effect size). In Table 1 we
+11tabulate the average final profit, loss, and reward of both methods.
+Profit Loss Reward
+Reinforcement learning method 6916 856 6060
+Baseline method 6444 834 5610
+RL minus baseline 472 22 450
+Table 1: The performance of both the reinforcement learning and baseline methods on key
+metrics . Across the columns we show the final profit,PT
+k=1ykProfit( sk, ak), loss λL(ρT+1, ρ∗), and total
+reward,PT
+k=1ykProfit( sk, ak)−λL(ρT+1, ρ∗). Across rows we show the metric values for the reinforcement
+learning agent, baseline agent, and the difference between them.
+5 Discussion
+Limitations and opportunities for future work
+We believe that our work presents an important first step in the application of ideas from reinforcement
+learning to the portfolio pursuit problem. However, our work has several limitations, with corresponding
+opportunities for future research.
+In our investigation, we limited the time span over which insurers pursued a particular portfolio to only
+T= 1000 time-steps, with one customer arriving per time-step. This is a relatively short length of time for
+a large insurer, who may see orders of magnitude more customers per day. Our choice to limit the number
+of time-steps was motivated primarily by the prohibitive computational cost of running dozens of market
+simulations for larger numbers of time steps. Preliminary experiments provided evidence that our method will
+likely continue to work for larger numbers of time-steps. However, for much larger lengths of time, e.g., on the
+order of months, a different approach may well be needed. Accordingly, we believe that the framework and
+methods we have develop above could be integrated naturally with RL methods which attempt to perform
+temporal abstraction, e.g., goal-conditioned policies (Nasiriany et al., 2019) or the options framework (Precup,
+2000). Indeed, longer time-scale portfolio pursuit can be accomplished by chaining together shorter time-
+scale portfolio pursuit with the appropriately chosen intermediate target portfolios. We leave the problem of
+selecting such intermediate target portfolios to future research.
+In our framework, we have also made the simplifying assumption that customers do not leave the portfolio
+once they have entered. This is justified when the number of time-steps is small, since few customers will
+both accept and then cancel a contract over the course of, e.g., one day. However, for longer time-scales, it
+may begin to become necessary to model the exit of customers from the portfolio. In App. B we expand our
+analytic derivation to consider this case, and provide some preliminary suggestions for how to integrate this
+into our algorithm.
+Lastly, our method is model-based, with optimal actions and values computed using a conversion model
+which estimates the probability of customers accepting any given offer. Consequently, if the conversion
+model is incorrect, our bidding strategy will accordingly be sub-optimal. For example, the bidding model
+may underestimate the probability that a customer accepts an offer at a given price, and make offers too
+low. Model uncertainty could be incorporated into the algorithm by explicitly penalising the value of actions
+about which the insurer is uncertain. A core step in making the algorithm more robust would be allowing
+for online updates of the models in light of new data coming in. This is an increasingly pressing problem
+within insurance pricing in particular, since such markets tend to be very non-stationary, shifting rapidly as
+individual insurers change their pricing strategy and inflation drives changes in prices. An effective pricing
+strategy will need to precisely trade-off between profit and the value of the information generated by making
+particular offers. Although we do not address it in this paper, we expect this to be a fruitful area for future
+research into the application of RL to insurance pricing.
+12Conclusion
+Our paper has introduced a new formalism for a problem within the insurance industry - that of portfolio
+pursuit. Portfolio pursuit asks the question of how to modulate the offers made to individual consumers,
+in light of a desired target portfolio which describes the higher-level strategy of the insurance firm. We
+formulated portfolio pursuit it as an MDP in Sec. 2. Given its formal description, in Sec. 3 we discussed
+both industry standard methodologies for addressing this problem, and gave our own reinforcement learning
+solution. We then showed in Sec. 4 that our method outperforms the industry baseline, generating more profit
+while getting equally close to the target portfolio. It is our hope that this paper will stimulate additional
+research into this area, laying the groundwork for better algorithms and methodologies for portfolio pursuit.
+Acknowledgements
+EJY is supported by the UKRI Engineering and Physical Sciences Research Council Doctoral Training
+Program grant EP/T517847/1. Work was completed during an internship at Accenture (UK) Limited, in
+connection with the Turing Institute.
+Declaration of competing interest
+The authors declare no competing interests.
+Codebase
+The GitHub code repository associated with this paper can be found here. The code is licensed under Creative
+Commons Attribution-NonCommercial 4.0 International Public License (CC BY-NC 4.0)
+Author contributions
+Problem statement was formulated jointly by EJY, AR, and JJ. Market environment designed by EJY.
+Mathematical derivations, algorithm design, and numerical experiments were preformed by EJY. EJY drafted
+the manuscript, with additional comments and feedback provided by ET, AR, and JJ.
+13References
+Amos, B. (2023). Tutorial on Amortized Optimization. Found. Trends Mach. Learn. , 16(5):592–732.
+Benhamou, E., Saltiel, D., Ohana, J. J., Atif, J., and Laraki, R. (2021). Deep Reinforcement Learning (DRL)
+for Portfolio Allocation. In Dong, Y., Ifrim, G., Mladeni´ c, D., Saunders, C., and Van Hoecke, S., editors,
+Machine Learning and Knowledge Discovery in Databases. Applied Data Science and Demo Track , pages
+527–531, Cham. Springer International Publishing.
+de Jong, P. and Heller, G. Z. (2008). Generalized Linear Models for Insurance Data . International Series on
+Actuarial Science. Cambridge University Press, Cambridge.
+England, R., Owadally, I., and Wright, D. (2022). An Agent-Based Model of Motor Insurance Customer
+Behaviour in the UK with Word of Mouth. Journal of Artificial Societies and Social Simulation , 25(2).
+Number: 2 Publisher: University of Surrey.
+Ernst, D., Geurts, P., and Wehenkel, L. (2005). Tree-Based Batch Mode Reinforcement Learning. J. Mach.
+Learn. Res. , 6:503–556.
+Haarnoja, T., Zhou, A., Abbeel, P., and Levine, S. (2018). Soft Actor-Critic: Off-Policy Maximum Entropy
+Deep Reinforcement Learning with a Stochastic Actor. arXiv:1801.01290 [cs, stat].
+Hieu, L. T. (2020). Deep Reinforcement Learning for Stock Portfolio Optimization. International Journal of
+Modeling and Optimization , 10(5):139–144. arXiv:2012.06325 [cs, math, q-fin].
+Jiang, Z., Xu, D., and Liang, J. (2017). A Deep Reinforcement Learning Framework for the Financial
+Portfolio Management Problem. arXiv:1706.10059 [cs, q-fin].
+Krasheninnikova, E., Garc´ ıa, J., Maestre, R., and Fern´ andez, F. (2019). Reinforcement learning for pricing
+strategy optimization in the insurance industry. Engineering Applications of Artificial Intelligence , 80:8–19.
+Lillicrap, T. P., Hunt, J. J., Pritzel, A., Heess, N., Erez, T., Tassa, Y., Silver, D., and Wierstra, D. (2019).
+Continuous control with deep reinforcement learning. arXiv:1509.02971 [cs, stat].
+Macal, C. M. (2016). Everything you need to know about agent-based modelling and simulation. Journal of
+Simulation , 10(2):144–156. Publisher: Taylor & Francis eprint: https://doi.org/10.1057/jos.2016.7.
+Mnih, V., Badia, A. P., Mirza, M., Graves, A., Lillicrap, T. P., Harley, T., Silver, D., and Kavukcuoglu, K.
+(2016). Asynchronous Methods for Deep Reinforcement Learning. arXiv:1602.01783 [cs].
+Mnih, V., Kavukcuoglu, K., Silver, D., Rusu, A. A., Veness, J., Bellemare, M. G., Graves, A., Riedmiller, M.,
+Fidjeland, A. K., Ostrovski, G., Petersen, S., Beattie, C., Sadik, A., Antonoglou, I., King, H., Kumaran,
+D., Wierstra, D., Legg, S., and Hassabis, D. (2015). Human-level control through deep reinforcement
+learning. Nature , 518(7540):529–533. Publisher: Nature Publishing Group.
+Nasiriany, S., Pong, V. H., Lin, S., and Levine, S. (2019). Planning with Goal-Conditioned Policies.
+arXiv:1911.08453 [cs, stat].
+Precup, D. (2000). Temporal abstraction in reinforcement learning . phd, University of Massachusetts
+Amherst. AAI9978540 ISBN-10: 0599844884.
+Rasmussen, C. E. and Williams, C. K. I. (2005). Gaussian Processes for Machine Learning . The MIT Press.
+Schulman, J., Wolski, F., Dhariwal, P., Radford, A., and Klimov, O. (2017). Proximal Policy Optimization
+Algorithms. arXiv:1707.06347 [cs].
+Simmons-Edler, R., Eisner, B., Mitchell, E., Seung, S., and Lee, D. (2019). Q-Learning for Continuous
+Actions with Cross-Entropy Guided Policies. arXiv:1903.10605 [cs].
+Treetanthiploet, T., Zhang, Y., Szpruch, L., Bowers-Barnard, I., Ridley, H., Hickey, J., and Pearce, C. (2023).
+Insurance pricing on price comparison websites via reinforcement learning. arXiv:2308.06935 [cs, q-fin].
+Yang, S. (2023). Deep reinforcement learning for portfolio management. Knowledge-Based Systems ,
+278:110905.
+14A Bellman recursions for portfolio values
+In this appendix we expand out the Bellman equations for the portfolio and action value functions, given by
+Eq. (5) and Eq. (6) respectively. We start with the action value function. We will expand this in terms of
+the portfolio value function. Firstly, we denote the returns by
+Gt=TX
+k=tykProfit( sk, ak)−λL(ρT+1, ρ∗). (13)
+Then we have
+Qπ(s, a, ρ, t ):=Eπ[Gt|ρt=ρ, st=s, at=a]
+=P(yt= 1|st=s, at=a)E[Gt|ρt=ρ, st=s, at=a, yt= 1]
++ (1−P(yt= 1|st=s, at=a))E[Gt|ρt=ρ, st+1=s, at+1=a, yt= 0]
+=P(yt= 1|st=s, at=a) (Profit( s, a) +E[Gt+1|ρt+1=ρ∪ {s}])
++ (1−P(yt= 1|st=s, at=a))E[Gt+1|ρt+1=ρ]
+=P(yt= 1|st=s, at=a) (Profit( s, a) +Vπ(ρ∪ {s}, t+ 1))
++ (1−P(yt= 1|st=s, at=a))Vπ(ρ, t+ 1)
+=Vπ(ρ, t+ 1) + P(yt= 1|st=s, at=a) (Profit( s, a) +Vπ(ρ∪ {s}, t+ 1)−Vπ(ρ, t+ 1)) .
+Note that, since the profit is the offer price C(s)aminus the expected cost C(s), the profit is thus given by:
+Profit( s, a) =C(s)(a−1). We can then say that:
+Qπ(s, a, ρ, t ) =Vπ(ρ, t+ 1) + P(yt= 1|st=s, at=a) (C(s)(a−1) +Vπ(ρ∪ {s}, t+ 1)−Vπ(ρ, t+ 1))
+=Vπ(ρ, t+ 1) + C(s)P(yt= 1|st=s, at=a) (a−kπ(s, ρ, t + 1)) ,
+where kπ(s, ρ, t + 1) is defined in Eq. (9). Since the first term is a constant in a, and C(s)>0, this shows
+that maximisation of Qπoverais equivalent to maximising:
+P(yt= 1|st=s, at=a) (a−kπ(s, ρ, t + 1)) . (14)
+Furthermore, note that Vπ(ρ, t) =E[Qπ(s, a, ρ, t )]. Assuming a deterministic policy π=π(s, ρ, t ), this gives
+us the following recursion:
+Vπ(ρ, t) =Vπ(ρ, t+ 1) + E[C(s)P(yt= 1|st=s, at=π(s, ρ, t )) (π(s, ρ, t )−kπ(s, ρ, t + 1))] . (15)
+B Generalisation to customers leaving
+In this section we generalise the analysis is App. A to the case where customers can leave the portfolio.
+We define the action-value function as:
+Qπ(s, a, ρ, t ):=Eπ[Gt|ρt=ρ, st=s, at=a] (16)
+We will now compute the Bellman recursion for Qπ. To do so, we introduce a portfolio transition distribution,
+p(ρ′|ρ). This gives the probability of having portfolio ρ′at time t+ 1, given that you ended time-step twith
+15portfolio ρ.
+Qπ(s, a, ρ, t ) =P(yt= 1|st=s, at=a)E[Gt|ρt=ρ, st=s, at=a, yt= 1]
++ (1−P(yt= 1|st=s, at=a))E[Gt|ρt=ρ, st+1=s, at+1=a, yt= 0]
+=P(yt= 1|st=s, at=a)
+Profit( s, a) +Z
+E[Gt+1|ρt+1=ρ′]p(ρ′|ρ∪ {s})dρ′
++ (1−P(yt= 1|st=s, at=a))Z
+E[Gt+1|ρt+1=ρ′]p(ρ′|ρ)dρ′
+=P(yt= 1|st=s, at=a)
+Profit( s, a) +Z
+Vπ(ρ′, t+ 1)p(ρ′|ρ∪ {s})dρ′
++ (1−P(yt= 1|st=s, at=a))Z
+Vπ(ρ′, t+ 1)p(ρ′|ρ)dρ′
+=Z
+Vπ(ρ′, t+ 1)p(ρ′|ρ)dρ′
++P(yt= 1|st=s, at=a)
+Profit( s, a) +Z
+Vπ(ρ′, t+ 1) [ p(ρ′|ρ∪ {s})−p(ρ′|ρ)]dρ′
+=E[Vπ(ρ′, t+ 1)|ρ]
++P(yt= 1|st=s, at=a) (Profit( s, a) +E[Vπ(ρ′, t+ 1)|ρ∪ {s}]−E[Vπ(ρ′, t+ 1)|ρ])
+We now use the substitution that Profit( s, a) =C(s)(a−1). Following the derivation in App. A, we define:
+kπ(s, ρ, t ) = 1−E[Vπ(ρ′, t)|ρ∪ {s}]−E[Vπ(ρ′, t)|ρ]
+C(s)(17)
+Our optimal policy is then the same. Integrating over customers and actions, we obtain the following recursion
+for the portfolio value function Vπ:
+Vπ(ρ, t) =E[Vπ(ρ′, t+ 1)|ρ] +E[C(s)P(yt= 1|st= 1, at=π(s, ρ, t ))(π(s, ρ, t )−kπ(s, ρ, t + 1))] (18)
+Given access to p(ρ′|ρ), we can easily adapt Alg. 1 to use this recursion instead, by sampling portfolios from
+pand averaging to approximate the expectations in Eq. (17) and Eq. (18). This adds some computational
+overhead, but is not prohibitive. The transition model p(ρ′|ρ) can be learned from historic data.
+One issue we encounter when we account for the possibility of customers leaving the portfolio is that the
+portfolio objects become considerably more complicated. Recall from Sec. 3.3 that, when customers do not
+leave the portfolio, we can specify portfolios only through their frequency representation, since (i) it was
+unimportant when a customer joined the portfolio, and (ii) the other customer features were unimportant.
+However, in this case, neither of this conditions are true. Firstly, the probability of any given customer leaving
+depends how long they have been in the portfolio. Secondly, the probability of a customer leaving after being
+in the portfolio for any length of time may be a function of their other features. This necessitates a more
+detailed and possibly high-dimensional portfolio representation. We do not explore these issues further in
+our paper.
+16

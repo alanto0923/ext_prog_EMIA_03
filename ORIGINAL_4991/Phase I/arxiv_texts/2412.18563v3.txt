@@ -1,0 +1,687 @@
+A Deep Reinforcement Learning Framework for 
+Dynamic Portfolio Optimization: Evidence from 
+China's Stock Market 
+ 
+Gang Huang1*, Xiaohua Zhou1† and Qingyang Song2† 
+1*Depar tment of Applied Economics, Chongqing University, 174 Shazheng 
+Street, Chongqing, 400044, China. 
+2Department of Technology Economics and Management , Chongqing 
+University, 174 Shazheng Street, Chongqing, 400044, China.  
+ 
+*Corresponding author(s). E -mail(s): huanggangvoyager@163.com ; 
+Contributing authors: zhxiaoh@aliyun.com; song211@126.com ; 
+†These authors contributed equally to this work. 
+ 
+  
+Abstract  
+Artificial intelligence is transforming financial investment decision -making 
+frameworks, with deep reinforcement learning demonstrating substantial potential in 
+robo- advisory applications. This paper addresses the limitations of traditional portfolio 
+optim ization methods in dynamic asset weight adjustment through the development of 
+a deep reinforcement learning -based dynamic optimization model grounded in practical 
+trading processes. The research advances two key innovations: first, the introduction of a novel Sharpe ratio reward function engineered for Actor -Critic deep reinforcement 
+learning algorithms, which ensures stable convergence during training while consistently achieving positive average Sharpe ratios; second, the development of an innovative comprehensive approach to portfolio optimization utilizing deep reinforcement learning, which significantly enhances model optimization capability through the integration of random sampling strategies during training with image -based 
+deep neural network archit ectures for multi- dimensional financial time series data 
+processing, average Sharpe ratio reward functions, and deep reinforcement learning algorithms. The empirical analysis validates the model using randomly selected constituent stocks from the CSI 300 Index, benchmarking against established financial econometric optimization models. Backtesting results demonstrate the model's efficacy in optimizing portfolio allocation and mitigating investment risk, yielding superior comprehensive performance metrics.  
+ Keywords
+：Portfolio Management; Decision Optimization; Dynamic Optimization; 
+Deep Reinforcement Learning  
+  1 INTRODUCTION  
+In recent years, Artificial Intelligence (AI) has achieved significant technological 
+advances, notably in natural language processing. ChatGPT, developed by OpenAI, has 
+catalyzed extensive discourse on AI's potential through its exceptional language 
+comprehension and generation capabilities. The system's success is predominantly attributed to "Reinforcement Learning from Human  Feedback" (RLHF), an innovative 
+methodology that substantially enhances AI system performance and alignment through the integration of human feedback into the reinforcement learning process. The technological foundation of RLHF is Deep Reinforcement Learn ing (DRL), an 
+advanced machine learning paradigm that synthesizes deep learning and reinforcement learning methodologies. While DRL has demonstrated remarkable efficacy in natural language processing and exhibited substantial potential across domains including game AI and robotic control, its applications in finance remain predominantly exploratory, particularly in the complex domain of portfolio optimization.  
+Portfolio optimization constitutes a fundamental challenge in finance, focusing on 
+the systematic allocation of funds across multiple assets based on investment decisions, manifesting through dynamic adjustments in portfolio asset weights. Traditional portfolio optimization methodologies, originating from Modern Portfolio Theory [1] 
+and evolving through subsequent enhancements, have contributed substantially to the field's development. However, these approaches present inherent limitations, including restrictive assumptions regarding asset return distributions, subjective utility fun ction 
+specifications, and insufficient adaptability to dynamic market conditions.  
+This research examines the implementation potential of deep reinforcement 
+learning in portfolio optimization through the development of novel reward functions and deep neural network architectures, aimed at constructing an intelligent model for effective d ynamic asset allocation. The study advances both theoretical and practical 
+contributions by introducing innovative approaches to portfolio optimization while establishing new trajectories for artificial intelligence applications in financial domains.  
+ 
+2 LITERATURE REVIEW  
+Markowitz [1] established modern portfolio theory, pioneering the application of 
+quantitative analysis methods in portfolio optimization. Samuelson [2]  contended that 
+Markowitz's model addressed single -period investment problems but was inadequate 
+for multi- period asset allocation, consequently proposing a utility function for 
+analyzing wealth planning problems. Subsequent researchers, including Kelly [3] , 
+Merton [4], and numerous scholars in behavioral finance, extended the application of 
+utility functions in asset allocation optimization. However, utility function -based 
+optimization approaches exhibit inherent limitations, particularly in the inherent subjectivity of function selection and the unverified universal applicability of chosen functions. The Black- Litterman (BL) model [5,6] represents another approach 
+incorporating subjective elements, proposing that markets possess an implicit equilibrium return, where asset returns under equilibrium allocation serve as prior returns. In this model, expected returns represent a weighted average of prior returns and investors' subjective expectations. However, the significant subjectivity in establishing confidence levels for investors' subjective expectations has resulted in the 
+absence of a unified standard for measuring the equilibrium return rate of portfolio assets.  
+Beyond traditional financial econometric analysis methods, operations researchers 
+Charnes et al. [7] introduced Data Envelopment Analysis (DEA), a non- parametric 
+analytical framework for asset allocation optimization. Subsequently, Kirkpatrick [8] 
+integrated the simulated annealing algorithm into portfolio optimization, based on principles derived from natural sciences. In parallel, Arnone et al. [9] implemented 
+genetic algorithms for portfolio selection to minimize investment risk. However, these models universally treat the portfolio weight adjustment process as static, neglecting the temporal dimension and failing to incorporate how asset allocatio ns evolve in 
+response to the sequential nature of trading activities.  
+Furthermore, classical asset allocation models, including Markowitz's framework, 
+compute portfolio returns by multiplying contemporaneous asset weights with 
+Expected Returns to derive the period's portfolio return. This is expressed as 𝑅𝑅=
+∑𝜔𝜔
+𝑖𝑖𝛾𝛾𝑖𝑖𝑛𝑛
+𝑖𝑖=1 , where R represents the portfolio return, i denotes the number of assets, 𝜔𝜔𝑖𝑖 
+signifies the asset weight, and 𝛾𝛾𝑖𝑖  represents the corresponding Expected Return. 
+However, in a realistic dynamic trading environment, the portfolio's terminal return 
+should be computed by multiplying the previous period's asset weights with the 
+subsequent period's asset returns, expressed as 𝑅𝑅𝑡𝑡=∑𝜔𝜔𝑖𝑖,𝑡𝑡−1𝛾𝛾𝑖𝑖,𝑡𝑡𝑛𝑛
+𝑖𝑖=1  , where 𝛾𝛾𝑖𝑖,𝑡𝑡 
+represents the realized return of asset i in period t (not the Expected Return), and 𝜔𝜔𝑖𝑖,𝑡𝑡−1 
+represents the portfolio's asset weight allocation in period t -1. This fundamental 
+distinction can lead to significant discrepancies -  modeling errors in the trading process 
+inevitably compromise the practical efficacy of these models. Notably, numerous 
+widely -implemented optimization models in finance, including the Conditional Value 
+at Risk model [10], Risk Parity model[11] , and Hierarchical Risk Parity model[12] , 
+entirely disregard the temporal evolution of asset weights. Consequently, neither conventional financial econometric analysis methods nor sophisticated approaches such as DEA, simulated annealing algorithms, and genetic algorithms can adequately capture 
+the dynamic nature of portfolio weight adjustments during the trading process, thereby 
+failing to achieve optimal asset allocation strategies.  
+Deep Reinforcement Learning (DRL) represents a dynamic modeling paradigm. 
+The "Deep" denomination in DRL derives from its incorporation of deep neural 
+networks, which supersede the conventional artificial neural networks employed in 
+early Reinforcement Learning (RL), including fully connected and recurrent neural 
+networks. This architectural enhancement has substantially improved RL's capacity for 
+objective function approximation. Early applications of RL in asset management 
+primarily employed Policy Gradie nt (PG) [13,14]  and Q -learning algorithms. Moody[15]  
+introduced a single -asset management model utilizing the PG algorithm, with 
+subsequent derivative models predominantly focusing on single -risk asset management 
+or fixed investment decision frameworks, as exemplified by Dempster et al.'s [16] 
+automated forex trading model and Zhang et al.'s [17] asset management framework. In 
+parallel, Ralph Neuneier [18], Gao et al. [19], and Lee et al. [20] implemented Q -learning 
+algorithms for asset management, though these models remained confined to single -asset management. Furthermore, notable contributions to the research field of DRL 
+applications in single -asset trading have been made by Wu et al. [21], Liu et al. [22], 
+Pourahmadi  et al. [23], and Kochliaridis et al. [24], among others. However, some 
+scholars have neglected the design of deep neural networks when applying DRL to optimize asset allocation, such as Wang et al. [25], while others have overlooked the 
+allocation of asset weights and missed the basic constraint condition that asset weights 
+sum to 1 ( ∑𝜔𝜔
+𝑖𝑖,𝑡𝑡=1), such as Jiang  et al. [26]. 
+Recent advancements in computational capabilities and dynamic optimization 
+theory have led to the widespread adoption of DRL in portfolio asset management 
+research. Jiang et al. [27] proposed a DRL portfolio management model for asset 
+optimization in the cryptocurrency market. The model incorporated the definitions of relative price vectors and transaction costs from Ormos et al. [28]. However, Ormos et 
+al. misinterpreted the dynamic changes of assets in their paper, resulting in incorrect transaction cost derivations. Due to the adoption of the same derivation methodology, 
+Jiang et al. [27]'s derivation of transaction cost rates exhibited comparable mathematical 
+inconsistencies. While Jiang et al. [27] subsequently provided correct implementation 
+formulas through approximation methods, the model's effectiveness in alternative capital markets requires further validation [29]. 
+Under short -selling restrictions (long -only positions), the reward function in 
+current DRL portfolio weight optimization models primarily consists of portfolio returns [30]. However, DRL models using this reward function have not performed well 
+in Chinese stock market [29], leading Qi Yue et al. [31] to artificially set fixed investment 
+weights to achieve satisfactory backtesting results. This approach, however, contradicts the original intention of using DRL models for automatic asset weight optimization.  
+In the field of DRL portfolio applications, researchers have demonstrated that 
+implementing reward functions to enhance DRL's asset optimization performance represents an effective approach. Multiple scholars have developed new reward functions to improve DRL's portfolio optimization performance:  Wu et al. [32] 
+investigated Taiwan stock market portfolios using a customized Sharpe ratio reward 
+function (Annual Return/Annualized Standard Deviation of Return). However, their research did not specify the underlying RL algorithm implemented. Almahdi et al. [33] 
+incorporated the Calmar ratio as the optimization objective in the reward function, integrating it with Recurrent Reinforcement Learning (RRL), a derivative algorithm of PG, to optimize US stocks and emerging market assets. Aboussalah et al. [34] developed 
+a Sharpe ratio reward function compatible with RRL derivative algorithms for asset allocation, though this reward function is fundamentally equivalent to the Sharpe ratio reward function of the PG algorithm. Furthermore, Lim et al[35]  employ a reward 
+function based on the Net Asset Value of the portfolio to develop an RL -based strategy 
+for dynamic portfolio rebalancing that optimizes investment performance under varying market conditions .
+ A comprehensive review of existing literature reveals that 
+no research has established appropriate Sharpe ratio reward functions specifically 
+designed for the algorithmic characteristics of Actor -Critic.  
+A critical review of existing DRL portfolio optimization literature reveals a 
+significant limitation: most studies fail to demonstrate the convergence of their reward functions during experimentation [36, 37, 38, 39, 40]. Even in cases where reward 
+function convergence is presented, the convergence exhibits substantial deficiencies. 
+For example, Yang[41] 's TC -MAC algorithm, which employs GNN to capture dynamic 
+relationships between assets, demonstrates concerning convergence behavior: despite an initial capital of $10,000, the reward function converges to merely $3,000, indicating potentially significant losses. Similarly, Sun et al. [42], in their integration of DRL with 
+the Black -Litterman model, artificially constrain portfolio weights through 
+predetermined long- short position limits, fundamentally contradicting DRL's 
+autonomous optimization capability. These cases exemplify fundamental limitations in 
+current approaches, raising concerns about the models' stability and reliability in practical applications. This methodological gap undermines the robustness of existing DRL -based portfolio optimization frameworks and calls into question th eir practical 
+applicability in real- world investment scenarios.  
+This paper implements DRL methodology based on artificial intelligence 
+principles to optimize portfolio asset weights, effectively eliminating subjective bias in model implementation while comprehensively addressing the dynamic characteristics of asset wei ght variations in real -world trading environments. The research presents 
+two primary innovations:  
+First, we introduce a novel Sharpe ratio reward function specifically engineered 
+for Actor -Critic DRL algorithm characteristics. While seminal research in RL asset 
+management applications by Moody [15] and Gao [19] employed the Sharpe ratio as a 
+reward function, their designs were constrained to simple structures of PG algorithm 
+and Q -learning algorithm. Similarly, the Sharpe ratio reward function developed by 
+Aboussalah et al. [34] did not adequately address the specific requirements of Actor -
+Critic algorithms. Our proposed reward function incorporates the architectural characteristics of Actor -Critic systems, implementing step -size normalization to 
+enhance model stability and optimi ze the guidance of portfolio dynamic optimization 
+processes.
+ Notably, our reward function design ensures stable convergence during 
+model training and consistently achieves positive average Sharpe ratios, addressing a critical gap in current DRL portfolio optimization applications where reward function convergence remains a significant challenge.  
+Second, this research introduces an innovative comprehensive methodology for 
+portfolio optimization utilizing deep reinforcement learning. This approach 
+significantly enhances model optimization capability through the integration of random sampling strategies during training with image -based deep neural network architectures 
+for multi -dimens ional financial time series data processing, average Sharpe ratio 
+reward functions, and deep reinforcement learning algorithms. Specifically, the network architecture incorporates VGG network design principles from computer vision to construct a deep neura l network framework for processing three -dimensional 
+time series data. Additionally, the model's generalization capability is enhanced and overfitting risk is minimized through the random selection of continuous trading data from the dataset during trainin g, establishing a robust technical framework for effective 
+dynamic portfolio optimization.  
+This research implements long -only position constraints and applies the proposed DRL model to optimize portfolios comprising CSI300 constituent stocks. The 
+optimization outcomes are systematically benchmarked against multiple econometric optimization models to evaluate the DRL model's efficacy in asset allocation optimization. The rese arch methodology adheres rigorously to the DRL model's 
+modeling framework, establishing comprehensive guidelines for future research endeavors. The significance of this study extends across both theoretical and practical domains: it introduces a novel port folio optimization methodology to the academic 
+literature while providing an effective solution for portfolio management practitioners. The model systematically incorporates the dynamic characteristics of asset weight variations in real trading environments, demonstrating significant potential for enhanced performance in practical applications.  
+ 
+3 DRL MODEL CONFIGURATION 
+Deep Reinforcement Learning (DRL) represents a dynamic optimization method 
+conforming to the Markov Decision Process (MDP) framework. The portfolio trading process can be conceptualized as an MDP, where the trajectory from account initiation 
+to trading com pletion is represented by 𝜏𝜏=(𝑆𝑆
+0,𝐴𝐴0,𝑅𝑅1,𝑆𝑆1,𝐴𝐴1,𝑅𝑅2,𝑆𝑆2,𝐴𝐴2,𝑅𝑅3,⋯) , 
+constituting an episode. This framework enables the application of DRL theory for 
+modeling the trading process. Following the DRL modeling framework, this study defines a portfolio trader as an agent, establishes the state (environment), action, and rewa rd specifications, and implements a DRL algorithm with deep neural networks for 
+portfolio optimization.  
+ 
+3.1 State Space Configuration  
+The state space in DRL constitutes the environment for agent interaction. 
+Following the Efficient Market Hypothesis, all information affecting asset values is embedded in asset prices; consequently, the state space is constructed exclusively using daily asset price data. This study adopts the t hree-dimensional state space configuration 
+proposed by Jiang et al.[27]  in modeling the DRL environment, based on two 
+fundamental considerations. First, DRL achieved its breakthrough in artificial 
+intelligence through video game applications [43]. Video game displays comprise three -
+dimensional data structures, which are inherently suitable for deep neural network processing. Deep neural networks had previously demonstrated exceptional progress in 
+image recognition, achieving human -comparable perfo rmance in this domain. Second, 
+traditional financial econometric models typically employ dimensionality reduction 
+techniques, such as Principal Component Analysis (PCA), to reduce analytical 
+complexity. However, these methods frequently result in significa nt loss of valuable 
+information, with the loss magnitude increasing proportionally with the number of data 
+features. In contrast, deep neural networks possess superior nonlinear function approximation capabilities, enabling effective analysis of complex fe ature 
+interrelationships and addressing the limitations of traditional financial econometric models. Consequently, this study implements a three -dimensional temporal data 
+structure for the state space, effectively leveraging the advanced data processing 
+capabilities of deep neural networks.   
+ 
+Fig1 Data structure of state X t 
+The state is defined as 𝑆𝑆𝑡𝑡=𝑋𝑋𝑡𝑡, where the price tensor 𝑋𝑋𝑡𝑡 comprises four data 
+features: daily opening price 𝑉𝑉𝑡𝑡(𝑜𝑜𝑜𝑜) , lowest price 𝑉𝑉𝑡𝑡(𝑙𝑙𝑜𝑜) , highest price 𝑉𝑉𝑡𝑡(ℎ𝑖𝑖) , and 
+closing price 𝑉𝑉𝑡𝑡(𝑐𝑐𝑙𝑙) . The data structure is illustrated in Figure 1, with the tensor 𝑋𝑋𝑡𝑡 
+calculation formula given by:  
+ 
+ 𝑽𝑽𝒕𝒕(𝒐𝒐𝒐𝒐)=[𝝂𝝂𝒕𝒕−𝒏𝒏+𝟏𝟏(𝒐𝒐𝒐𝒐)⊘𝝂𝝂𝒕𝒕|𝝂𝝂𝒕𝒕−𝒏𝒏+𝟐𝟐(𝒐𝒐𝒐𝒐)⊘𝝂𝝂𝒕𝒕|⋯|𝝂𝝂𝒕𝒕−𝟏𝟏(𝒐𝒐𝒐𝒐)⊘𝝂𝝂𝒕𝒕|𝝂𝝂𝒕𝒕(𝒐𝒐𝒐𝒐)⊘𝝂𝝂𝒕𝒕] 
+𝑽𝑽𝒕𝒕(𝒍𝒍𝒐𝒐)=[𝝂𝝂𝒕𝒕−𝒏𝒏+𝟏𝟏(𝒍𝒍𝒐𝒐)⊘𝝂𝝂𝒕𝒕|𝝂𝝂𝒕𝒕−𝒏𝒏+𝟐𝟐(𝒍𝒍𝒐𝒐)⊘𝝂𝝂𝒕𝒕|⋯|𝝂𝝂𝒕𝒕−𝟏𝟏(𝒍𝒍𝒐𝒐)⊘𝝂𝝂𝒕𝒕|𝝂𝝂𝒕𝒕(𝒍𝒍𝒐𝒐)⊘𝝂𝝂𝒕𝒕] 
+𝑽𝑽𝒕𝒕(𝒉𝒉𝒉𝒉)=[𝝂𝝂𝒕𝒕−𝒏𝒏+𝟏𝟏(𝒉𝒉𝒉𝒉)⊘𝝂𝝂𝒕𝒕|𝝂𝝂𝒕𝒕−𝒏𝒏+𝟐𝟐(𝒉𝒉𝒉𝒉)⊘𝝂𝝂𝒕𝒕|⋯|𝝂𝝂𝒕𝒕−𝟏𝟏(𝒉𝒉𝒉𝒉)⊘𝝂𝝂𝒕𝒕|𝝂𝝂𝒕𝒕(𝒉𝒉𝒉𝒉)⊘𝝂𝝂𝒕𝒕] 
+𝑽𝑽𝒕𝒕(𝒄𝒄𝒍𝒍)=[𝝂𝝂𝒕𝒕−𝒏𝒏+𝟏𝟏⊘𝝂𝝂𝒕𝒕|𝝂𝝂𝒕𝒕−𝒏𝒏+𝟐𝟐⊘𝝂𝝂𝒕𝒕|⋯|𝝂𝝂𝒕𝒕−𝟏𝟏⊘𝝂𝝂𝒕𝒕|𝟏𝟏] 
+ ⑴ 
+Here, 𝒗𝒗𝒕𝒕denotes the closing price vector of assets on trading day t, and the symbol 
+⊘ represents element -wise division, where each vector element is divided by its 
+counterpart at the corresponding position. Each element in the price tensor 𝑿𝑿𝒕𝒕  is 
+normalized through division by the closing price vector 𝝂𝝂𝒕𝒕 . The window length 
+(windows) specifies the temporal span of observable data for the agent's trading 
+decisions, with each feature layer containing the corresponding features of all risky assets in the portfolio (i.e., assets_num in Figure 1).  
+ 3.2 Action Space Configuration  
+The model only considers long positions without short selling. The portfolio 
+weights (i.e., the ratio of asset value to total assets) represent the model's action vector:  
+ 𝑾𝑾𝒕𝒕=�𝝎𝝎𝟎𝟎,𝒕𝒕,𝝎𝝎𝟏𝟏,𝒕𝒕,𝝎𝝎𝟐𝟐,𝒕𝒕,⋯,𝝎𝝎𝒎𝒎,𝒕𝒕� ⑵ 
+where 𝝎𝝎𝟎𝟎,𝒕𝒕 represents the weight of the risk -free asset, specifically defined as the 
+cash asset weight in this study. At time t , the portfolio weights satisfy the following 
+constraint:  
+ �𝜔𝜔𝑖𝑖,𝑡𝑡𝑚𝑚
+𝑖𝑖=0=1 ⑶ 
+Under the long- only constraint, 𝜔𝜔𝑖𝑖,𝑡𝑡≥0 . The portfolio is initialized with 
+exclusively cash assets, characterized by the initial weight vector 𝑾𝑾𝟎𝟎=(1,0,⋯,0)T. 
+ 
+3.3 Other Elements Derivation and Reward Function Setting  
+Let vector 𝐏𝐏𝐭𝐭 denote the closing prices of assets in the portfolio at period t , and 
+𝐘𝐘𝐭𝐭 denote the relative price vector:  
+ 𝒀𝒀𝒕𝒕≜𝑷𝑷𝒕𝒕⊘𝑷𝑷𝒕𝒕−𝟏𝟏=�1,𝑝𝑝1,𝑡𝑡∕𝑝𝑝1,𝑡𝑡−1,⋯,𝑝𝑝𝑖𝑖,𝑡𝑡∕𝑝𝑝𝑖𝑖,𝑡𝑡−1�T ⑷ 
+Let 𝐶𝐶𝑡𝑡  denote the transaction cost rate of the entire portfolio in period t. The 
+portfolio price 𝜌𝜌𝑡𝑡 is expressed as:  
+ 𝜌𝜌𝑡𝑡=𝜌𝜌𝑡𝑡−1(1−𝐶𝐶𝑡𝑡)exp[(𝐥𝐥𝐥𝐥𝒀𝒀𝒕𝒕)⋅𝑾𝑾𝒕𝒕−𝟏𝟏] ⑸ 
+The daily logarithmic return rate 𝛾𝛾𝑡𝑡 of the portfolio is defined as:  
+ 𝛾𝛾𝑡𝑡=ln(𝜌𝜌𝑡𝑡∕𝜌𝜌𝑡𝑡−1) ⑹ 
+The mean 𝑅𝑅� and standard deviation 𝑆𝑆𝑆𝑆𝑆𝑆(𝛾𝛾𝑡𝑡) of daily logarithmic return rates are 
+calculated as:  
+ 𝑅𝑅�=1
+𝑆𝑆𝑛𝑛�𝛾𝛾𝑡𝑡𝑡𝑡𝑛𝑛
+𝑡𝑡=1 ⑺ 
+ 𝑠𝑠𝑆𝑆𝑆𝑆(𝛾𝛾𝑡𝑡)=�∑ (𝛾𝛾𝑡𝑡−𝑅𝑅�)2𝑡𝑡𝑛𝑛
+𝑡𝑡=1𝑆𝑆𝑛𝑛� ⑻ 
+In formulas ⑺ and ⑻, 𝑆𝑆𝑛𝑛  denotes the nth trading period, and 𝛾𝛾𝑡𝑡  is derived 
+from the closing price at the end of period t. At market entry, investors hold exclusively 
+cash assets. With the initial trading time point defined as 𝑆𝑆=0  and 𝛾𝛾0=0 , and 
+considering no allocation to risky assets at this point, formulas ⑸ and ⑹ indicate 
+that 𝛾𝛾1=0. Consequently, the return -generating period initiates at t=2. 
+The reward function employs the average annualized Sharpe ratio:  
+ reward：𝐴𝐴𝐴𝐴_𝐴𝐴𝑉𝑉𝐴𝐴𝑆𝑆ℎ𝑎𝑎𝑎𝑎𝑝𝑝𝑎𝑎𝑡𝑡=�𝐹𝐹𝑎𝑎𝑎𝑎𝐹𝐹⋅(𝑅𝑅�−𝑎𝑎𝑓𝑓)
+𝑆𝑆𝑆𝑆𝑎𝑎𝑝𝑝𝑠𝑠⋅𝑠𝑠𝑆𝑆𝑆𝑆(𝛾𝛾𝑡𝑡−𝑎𝑎𝑓𝑓)�  ⑼ 
+Freq denotes the annual trading days, set at 252  in this paper . 𝑎𝑎𝑓𝑓 represents the 
+risk-free rate, set to 0 for cash assets. Steps denotes the step length in a training episode, 
+with one trading decision per step. The model's training objective consists of 
+maximizing this reward function.  
+𝐶𝐶𝑡𝑡 is determined by:   𝐶𝐶𝑡𝑡=𝜇𝜇𝑡𝑡���𝝎𝝎𝑖𝑖,𝑡𝑡，−𝜔𝜔𝑖𝑖,𝑡𝑡�𝑚𝑚
+𝑖𝑖=1� ⑽ 
+𝜇𝜇𝑡𝑡 represents the transaction cost rate per asset in period t, set at 𝜇𝜇𝑡𝑡=0.0025  in 
+this study, constituting a substantially high rate. 𝝎𝝎𝑖𝑖,𝑡𝑡， denotes a component of weight 
+vector 𝑾𝑾𝒕𝒕′, given by:  
+ 𝑾𝑾𝒕𝒕′=(𝒀𝒀𝒕𝒕⊙𝑾𝑾𝒕𝒕−𝟏𝟏)∕(𝒀𝒀𝒕𝒕⋅𝑾𝑾𝒕𝒕−𝟏𝟏) ⑾ 
+where ⊙ denotes the Hadamard product and ⋅ denotes the inner product. 𝑾𝑾𝒕𝒕′ 
+represents the weight values resulting from autonomous price movements between 
+post-trading at t-1 and pre -trading at t , as illustrated in Figure 2 below:  
+ 
+ 
+Figure 2 Changes in asset weights  
+ 
+4 DRL ALGORITHM SELECTION AND NETWORK STRUCTURE  
+4.1 Design of Average Sharpe Ratio Reward Function for Actor -Critic Architecture  
+In Deep Reinforcement Learning (DRL), algorithms serve as strategic frameworks 
+enabling agents to explore environments and maximize returns through optimal action selection in the action space and reward acquisition in the state space. DRL algorithms compr ise two primary categories: on -policy and off -policy approaches, each exhibiting 
+distinct performance characteristics across various tasks. Through comprehensive experimental evaluation of multiple algorithmic structures, we determined that off-policy algorithms demand greater computational resources and demonstrate slower convergence rates. Given hardware constraints, we selected Proximal Policy Optimization (PPO), an on -policy algorithm.  
+PPO incorporates multiple performance optimization techniques, including 
+Generalized Advantage Estimation (GAE) and value function clipping, fundamentally extending Trust Region Policy Optimization (TRPO)[44] , which itself enhances PG  
+algorithms [13,14]. PG algorithms implement episode -based update mechanisms, 
+parallel to policy iteration, optimizing through complete episode sampling. PPO's Actor -Critic architecture uniquely combines both episode -level updates and step -wise 
+updates within episodes. The original PPO paper[45]  elegantly presents the algorithm 
+through concise pseudocode utilizing two nested for -loops: an outer loop managing 
+episode updates and an inner loop executing step -wise updates.  
+Capitalizing on the distinct update mechanism of Actor -Critic algorithms, we 
+developed an innovative average Sharpe ratio reward function calculation method 
+optimized for Actor -Critic frameworks, illustrated through PPO implementation. The 
+methodology initializes an empty list R for storing returns from each trading step. 
+During episode execution, the Actor network generates portfolio weight w1, prompting the environment to return price change information y1 (the relative price vector). These 
+parameters, combined with transaction cost c1, determine the portfolio value change p1 at each time step. The value change converts to logarithmic return r1 and appends to  
+returns list R, enabling Sharpe ratio computation at each trading step using the cumulative returns.  The detailed implementation methodology is outlined in Definition 
+1. 
+PPO extends the episode update mechanism from PG algorithms while 
+implementing step -wise updates within episodes. For optimizing agent performance 
+during training, we normalize the annualized Sharpe ratio by the number of steps in episode updates (formula 9), computing the agent's average Sharpe ratio at each temporal point per episode. This methodology ensures reward comparability across varied episode lengths and trading sequences, substantially enhancing model training stability.  
+ 
+Definition 1 . Average Sharpe Ratio Reward Function for PPO(Actor -Critic) Algorithm  
+Environment Parameters:  
+    steps: total number of steps T in an episode  
+    w0: portfolio weight vector at previous timestep  
+    p0: portfolio value at previous timestep  
+ 
+Environment Variables:  
+    R = []  # Initialize cumulative returns list for Sharpe ratio calculation  
+ Reward Definition:  
+    for each episode do:  
+        for t = 1 to T do:  
+            1. State- Action Interaction: 
+                w1 = πθ( st) 
+                y1 = price relative vector from environment  
+         
+            2. Portfolio Value Update:  
+                compute transaction cost c1  
+                p1 = p0 * (1 - c1) * exp(dot(log(y1), w0))  
+         
+            3. Return Calculation:  
+                r1 = log(p1 / p0)  
+                append r1 to R  
+         
+            4. Reward Function:  
+                reward = sharpe(R) / T  
+                     5. State Update:  
+                store (st, w1, r1, st+1, reward) 
+                w0 ← w1 
+                p0 ← p1 
+        end for  
+    end for  
+ 
+Output: Timestep reward signals for DRL training  
+ 
+The implementation leverages the Stable -Baselines3 (SB3) framework for PPO 
+deployment, incorporating the innovative average Sharpe ratio reward function within the environment state for portfolio optimization. Crucially, the environment state maintains independence from the DRL algorithm,  with the reward function 
+implementation residing in the environment without modifying the core PPO algorithm logic in SB3. Empirical results demonstrate that this average Sharpe ratio reward function effectively harnesses PPO (Actor -Critic) algorithm characteristics, yielding 
+significant improvements in out -of-sample performance.  
+ 
+4.2 Neural Network Design  
+Early artificial neural networks encountered limitations in developing data -driven 
+theoretical models due to challenges in balancing function approximation accuracy and gradient stability while increasing network depth. Advances in deep neural networks enabled reinforcement learning (RL) algorithm progression[43] , facilitating deep 
+reinforcement learning (DRL) development. Deep neural network architecture constitutes a critical component in DRL, with empirical evidence indicating that an efficient network design enhances DRL performance.  
+Given the three -dimensional state space (i.e., price tensor), we conducted 
+comprehensive experiments comparing several mainstream deep neural architectures, including ResNet [46], VGG[47] , and Vision Transformer (ViT)[48] . While ResNet 
+demonstrated superior performance in both training and backtesting phases, its computational overhead and slower training speed posed practical limitations. After 
+careful consideration of the trade -off between model performance and computati onal 
+efficiency, we implemented the VGG architecture as our baseline network structure, as illustrated in Figure 3:  Input
+DataConv2D 
+3×3
+Padding
+=2Max
+Pool
+2×2Conv2D 
+3×3
+Padding
+=1Conv2D 
+3×3
+Padding
+=1Max
+Pool
+2×2Conv2D 
+3×3
+Padding
+=1Conv2D 
+3×3
+Padding
+=1Max
+Pool
+2×2relu relu relu relu relu
+fc fc
+Flatten
+Softmax
+output_num =11relu
+Drop
+out
+=0.1
+in=4,out=64
+in=64,out=64in=64,out=128
+in=128,out=128in=128,out=256
+128 128
+ 
+Figure 3 Neural  Network Structure  
+ 
+In Figure 3, 'in' specifies the input channel count, while 'out' defines the output 
+channel count. The network architecture incorporates 5 convolutional layers, each employing 3×3 convolution kernels for feature extraction, complemented by Max Pool layers for feature pooling. Post max pooling at the f inal convolutional layer, a Flatten 
+operation transforms the feature data into a one -dimensional vector, followed by two 
+fully connected (fc) layers executing linear processing, each containing 128 neurons. The Actor network concludes with a softmax activa tion function, generating the action 
+vector for asset weights, while the Critic network produces the value function output without activation functions. The Actor network's softmax output structure accommodates 11 assets (10 risky assets + 1 risk -free asset).  
+ 5 EMPIRICAL TESTS  
+5.1 Data Selection, Preprocessing and Assumptions  
+This study constructs an investment portfolio using randomly selected constituent 
+stocks from the CSI300 index for empirical analysis. The portfolio consists of 1 risk -
+free asset (cash) and 10 risky assets. The data is obtained from the Wind database's daily trading records, with all prices forward -adjusted. The study restricts trading to one 
+transaction per stock per day.  
+This research implements random portfolio selection, departing from traditional 
+investment theory's selective strategies based on liquidity, diversification, and other 
+factors. The methodology stems from the premise that an effective DRL model should demonstrate adaptability across diverse portfolios, beyond carefully selected asset combinations. Superior backtesting performance of randomly selected portfolios provides empirical validation of the DRL model's decision -making capabilities and 
+generalization e ffectiveness. This approach exemplifies DRL's fundamental advantage 
+as a data- driven model: autonomous adaptation to market environments without manual 
+asset screening procedures.  
+For asset selection, the study applies a single temporal criterion: assets must have 
+been listed before December 31, 2012. This requirement reflects the data -driven nature 
+of DRL models, which require substantial historical data for training. Extended list ing histories provide comprehensive trading data, enabling enhanced market feature 
+learning. In the random asset selection process, preference is given to stocks exhibiting overall upward price trends historically, as these patterns provide more meaningful training signals for long -only DRL models. The study assumes sufficient liquidity for 
+risky assets, immediate transaction execution, and negligible market impact from trading activities.  
+ 
+5.2 Performance Metrics, Backtesting Period and Comparative Optimization Models  
+Following Zhang et al.[17, 40], this study incorporates performance metrics 
+encompassing annualized average return E (R), annualized volatility S td(R), annualized 
+Sharpe ratio (Sharpe), annualized Sortino ratio (Sortino), maximum drawdown (MDD), Calmar ratio (Calmar), percentage of positive returns (%of+Ret), and average profit -
+loss ratio (Ave P/Ave L).  
+The research implements a six -month backtesting period to evaluate model 
+optimization effectiveness. With 252 trading days per year, the selected 128 trading days represent approximately six months of trading time.  To address overfitting 
+concerns, the methodology adapts Wassname's [50]  open- source github implementation, 
+sampling 128 consecutive trading days randomly from the complete dataset for each training episode. The six- month backtesting period selection aligns with this sampling 
+framework.  
+Figure 4 depicts the training and testing sets. Price data undergoes standardization, 
+with each asset's price normalized by its final trading day opening price, enabling clear 
+trend visualization across portfolio assets with diverse price levels.  
+ 
+Fig4 Normalized Price Trends with Train -Test Split  
+ The backtesting period encompasses exclusively out -of-sample data, independent 
+from the training dataset. The agent (i.e., the investor) processes these data exclusively during backtesting, without prior exposure to  future  price movements. Table 1 
+delineates the specific time periods for training and backtesting data:  
+ 
+Table 1 Data ranges for training and backtesting  
+Asset  Training Period   Testing Period  
+Stock Portfolio  03/17/2010 - 08/02/2023  08/07/2023 - 02/20/2024 
+ 
+The comparative analysis framework incorporates multiple established 
+optimization models benchmarked against the DRL model. These models are implemented through the Riskfolio -lib asset optimization package, maintaining default 
+configurations across all comparative models with asset returns derived from closing prices. The optimization framework encompasses: Classic Mean Variance (MV), Conditional Value at Risk (CVaR), Entropic Value at Risk (EVaR), Risk Parity (RP), Hierarchical Risk Parity (HRP), Hierarchical Equal Risk Contribution (HERC),  and 
+Nested Clustered Optimization (NCO). While these models support various objective functions including risk minimization (MinRisk), Sharpe ratio maximization (Sharpe), utility function maximization (Utility), and net asset value maximization (MaxRet), the comparative analysis focuses exclusively on risk minimization and Sharpe ratio maximization, given the subjective nature of utility functions and the empirical underperformance of utility and net asset value maximization strategies.  
+The historical data window selection for comparative models adheres to the 
+methodological framework established by the original authors of EVaR [51] and 
+HRP [12], employing 4- year and 1 -year periods respectively. With an annual trading 
+calendar of 252 days, the 4- year period encompasses 1,008 trading days (252 * 4). 
+Given that these quantitative optimization models conceptualize asset weight modifications as static processes, disregarding weight dynamics in continuous trading, the study implements a rolling window methodology for weight prediction. Specifically, weight predictions for September 1, 2021, utilize historical data from the preceding 4 or 1 years through August 31, 2021, with this process continuing throughout the 
+backtesting period. Transaction costs emanating from weight adjustments are computed using formula 10, maintaining consistency with the transaction cost parameters established in the DRL model.  
+ 5.3 Training Results and Robustness Testing  
+Deep Reinforcement Learning (DRL) constitutes a novel sequential statistical 
+decision- making methodology that leverages neural networks to model and estimate 
+conditional probability distributions and expected returns across the state -action space. 
+At each timestep, the agent executes online statistical inference based on current 
+observations while optimizing its decision strategy through systematic exploration and experience accumulation, implementing an iterative statistical learning process designed to ma ximize expected cumulative rewards. This methodology integrates the 
+function approximation capabilities of deep learning with the sequential decision -
+making framework of reinforcement learning, establishing an end -to-end statistical 
+modeling and optimizati on approach. 
+While traditional econometric testing methods based on linear assumptions 
+struggle to effectively evaluate the statistical significance of DRL models, the convergence of training rewards provides a more appropriate evaluation criterion. The 
+convergence behavior indicates the agent's ability to consistently generate profits in historical market environments, serving as a necessary condition for model stabilit y and 
+robustness. This necessity stems from DRL's non- linear nature and its adaptive learning 
+mechanisms - a converged reward function demonstrates the model has learned stable 
+patterns rather than overfitting to market noise. Furthermore, reward convergence implies the agent has developed a generalizable strategy that maintains consistent performance across various market conditions within the training distribution. 
+Figure 5 Training rewards  
+ 
+As demonstrated in Figure 5, the model underwent training for 9 million steps. 
+The agent's acquired rewards exhibit a positive correlation with the progression of training steps, indicating systematic improvement in the training process and agent performance. Throughout the training period, the reward values demonstrate 
+convergence, with the annualized Sharpe ratio stabilizing within the range of - 0.3 to 0.8, 
+and the predominant portion of training reward values maintaining convergence above zero. These results indicate that the agent demonstrates consistent return generation capability within the known environment, supporting the robustness of the trained model.  
+  
+5.4 B acktest ing results  
+5.4.1 Portfolio Value, Asset Allocation and Trading Costs  
+ 
+ 
+ 
+Figure 6 DRL Portfolio Value, Asset Allocation and Trading Costs  
+(2023.08 -2024.02)  
+ 
+The upper panel of Figure 6 presents the relative prices of assets (calculated 
+according to formula  4). The relative price can be viewed as a standardization method 
+to adjust the portfolio assets' prices to the same scale. The lower panels display the 
+portfolio's asset weights and transaction costs respectively.  
+The DRL  portfolio value demonstrated a consistent upward trajectory throughout 
+the backtesting period, appreciating from an initial value of 1.0 to 1.1256, generating a 
+total return of 12.56%. Two significant upward movements materialized during mid -
+November to D ecember 2023 and late January 2024. Despite experiencing a drawdown 
+in mid -September 2023, where the portfolio value temporarily declined to 
+approximately 0.98, the drawdown magnitude remained modest, followed by robust recovery momentum.  
+Regarding weight allocation, DRL implemented a robust asset allocation strategy. 
+The portfolio comprises cash and 10 stocks, with initial allocations approximating uniform distribution at 0.0909 per asset. Throughout the trading period, DRL maintained consistent weight adjustment patterns, with weight standard deviation stabilizing between 0.031 and 0.033, demonstrating effective diversification characteristics. The cash position fluctuated within a narrow range of 0.11 to 0.12, 
+ensuring adequate portfolio liquidity. In terms of stock weights, CN002027.SZ and 
+CN002371.SZ exhibited relatively active weight adjustments, while CN600029.SH and 
+CN600183.SH maintained consistently lower allocation ratios. 
+Throughout the backtesting period, the strategy exhibited efficient transaction cost 
+management. Substantial transaction costs (approximately 0.22%) were incurred solely 
+during initial capital allocation, with subsequent transaction cost rates maintaining 
+minimal levels between 0.002% and 0.01% on most trading days. This performance 
+indicates the implementation of a measured trading approach in asset allocation adjustments, effectively mitigating the impact of transaction costs on portfolio returns.  
+The PPO algorithm -based portfolio demonstrated favorable risk- return 
+characteristics, generating positive investment returns through maintained 
+diversification and dynamic weight adjustments, while effectively managing downside 
+risk. These results suggest significant potential for deep reinforcement learning applications in portfolio management.  
+5.4.2 Performance Comparison of Stock Optimization Models 
+Table 2 presents the performance comparison of various stock optimization 
+models. Models are designated according to the convention "model type -optimization 
+objective- data window", illustrated as follows:  
+ MV-MinRisk: Mean -variance model, with risk minimization as the 
+optimization objective, employing a 1- year historical data rolling window.  
+ CVaR -Sharpe- 4yr: Conditional Value -at-Risk model, with Sharpe ratio 
+maximization as the optimization objective, employing a 4- year historical 
+data rolling window. 
+Additional models follow this naming convention. 
+ 
+Table 2 Results of various optimization model s for stocks 
+ E(R) Std(R) Sharpe Sortino MDD Calmar %of+Ret  𝐀𝐀𝐀𝐀𝐀𝐀 .𝐏𝐏
+𝐀𝐀𝐀𝐀𝐀𝐀 .𝐋𝐋 
+DRL  0.1956 0.1258 1.5550 2.9567 5.85% 3.3395 0.4728 1.4204 
+MV-MinRisk  0.0892 0.1158  0.7707 1.2357 5.88% 1.5175 0.5156 1.0641 
+MV-MinRisk -4yr 0.1016 0.1195  0.8501 1.4115  6.37%  1.5940 0.4843 1.2285 
+MV-Sharpe  0.0738 0.1584 0.4662 0.7835 8.20%  0.8998 0.4609 1.2726 
+MV-Sharpe -4yr 0.0283 0.1288 0.2199 0.3920 9.41%  0.3011  0.4687 1.1738 
+CVaR- MinRisk  0.0817 0.1155  0.7073 1.1312 6.26%  1.3039 0.5156 1.0566 
+CVaR- MinRisk -4yr 0.1508 0.1227 1.2290 2.0967 5.38%  2.8041 0.4843 1.3101 
+CVaR- Sharpe  0.0326 0.1772 0.1840 0.2844 9.01%  0.3618 0.4531 1.2492 
+CVaR- Sharpe -4yr 0.0049 0.1349 0.0367 0.0638 10.80%  0.0459 0.4609 1.1763 
+EVaR -MinRisk  0.0350 0.1187  0.2953 0.4870 7.92% 0.4423 0.4843 1.1175  
+EVaR -MinRisk -4yr 0.1450 0.1297 1.1172  1.9260 6.13%  2.3635 0.5312 1.0660 
+EVaR -Sharpe  -0. 0007  0.1742 -0.0042  -0.0059  9.16%  -0.0080  0.4218 1.3692 
+EVaR -Sharpe -4yr 0.0339 0.1392 0.2435 0.4341 9.40%  0.3607 0.4609 1.2154 
+RP-MinRisk  -0.0231  0.1342 -0.1721  -0.2736  9.38%  -0.2461  0.4453 1.2106 
+RP-MinRisk -4yr -0.0154  0.1318 -0.1169  -0.1833  9.20%  -0.1675  0.4375 1.2606 
+RP-Sharpe  -0.0231  0.1342 -0.1721  -0.2736  9.38%  -0.2461  0.4453 1
+.2106 
+RP-Sharpe -4yr -0.0154  0.1318 -0.1169  -0.1833  9.20%  -0.1675  0.4375 1.2606 
+HRP 0.0359 0.1241 0.2893 0.4553 7.19%  0.4988 0.4609 1.2269  
+Adopting Ernest P. Chan[52] 's approach of utilizing the Sharpe ratio as the primary 
+metric, Table 2 demonstrates that the Deep Reinforcement Learning (DRL) model 
+exhibits significant advantages in portfolio optimization.  The model achieved the 
+highest annualized average return of 19.56%, maintained moderate volatility (12.58%), 
+and notably outperformed other models with a Sharpe ratio of 1.5550, demonstrating superior risk -adjusted returns. The model attained the highest Sortino ratio (2.9567), 
+validating its exceptional performance when considering downside risk. In terms of risk management, the DRL model exhibited a maximum drawdown of merely 5.85%, approaching optimal levels, while achieving the highest Calmar ratio (3.3395), indicating superior downside risk management capabilitie s. 
+Among traditional optimization models, CVaR -MinRisk -4yr demonstrated 
+optimal performance, generating a 15.08% annualized return and the lowest maximum drawdown (5.38%). This model achieved a Sharpe ratio of 1.2290, which, although lower than the DRL model, represented the highest among traditional models. The 
+superior performance may be attributed to its 4 -year lookback period design, facilitating 
+more stable historical data analysis. Notably, models implementing the MinRisk strategy consistently outperform ed their Sharpe strategy counterparts, suggesting 
+superior effectiveness of risk minimization compared to risk -adjusted return 
+maximization in the current market environment.  
+Significantly, Risk Parity (RP) series models and Hierarchical Equal Risk 
+Contribution (HERC) strategy exhibited suboptimal performance. RP models consistently generated negative returns and Sharpe ratios, while HERC models 
+recorded a maximum negative return of - 10.07% and maximum drawdown of 11.86%, 
+indicating that excessive dependence on historical correlations or simplified risk allocation methodologies may insufficiently address market dynamics.  
+From a trading efficiency perspective, the DRL model achieved superior 
+performance with an investment win rate of 47.28% and optimal average gain- loss ratio 
+of 1.4204, demonstrating proficiency in both market opportunity capture and loss mitigation. Compre hensively, whether assessed through the primary Sharpe ratio metric 
+or alternative risk -adjusted return indicators, the DRL model effectively integrated 
+return generation capabilities with risk management efficiency, surpassing traditional methodologies ac ross all dimensions while exhibiting adaptability and robustness in HRP-4yr 0.03100  0.1243 0.2492 0.3946 7.98%  0.3880 0.4843 1.1106  
+HERC -0.1007  0.1372 -0.7339  -1.1000  11.86%  -0.8488  0.4375 1.1361 
+HERC- 4yr 0.0288 0.1249 0.2310 0.3630 7.99%  0.3610 0.4687 1.1787 
+NCO-MinRisk  0.0768 0.1155  0.6652 1.0334 6.00%  1.2806 0.5 1.1162  
+NCO-MinRisk -4yr 0.1064 0.1188  0.8961 1.4863 5.99%  1.7750 0.4843 1.2404 
+NCO- Sharpe  0.0529 0.1600 0.3310 0.5574 8.07%  0.6557 0.4531 1.2816 
+NCO- Sharpe  -4yr 0.0155 0.1265 0.1228 0.2186 9.89%  0.1571 0.4609 1.1926 complex market environments. These findings validate the application potential of deep 
+reinforcement learning in finance, particularly its efficacy in portfolio management requiring dynamic decision- making and multi -objective optimization.  
+ 
+Figure 7 Performance Comparison between DRL and Other Optimization Models  
+ 
+To facilitate quantitative comparison, this study examines the top 11 traditional 
+optimization models ranked by annualized Sharpe ratio in comparison with the DRL model (as shown in Figure 7). The empirical results indicate that throughout the backtesting period, the DRL model exhibits superior performance relative to tradit ional 
+optimization models, as evidenced by the following findings:  
+i. Return metrics: The DRL model consistently outperforms traditional optimization models across the backtesting period, generating substantial positive returns. Within the traditional optimization framework, CVaR -
+MinRisk -4yr, EVaR -MinRisk -4yr, NCO- MinRisk -4yr, and MV -MinRisk -4yr 
+yield the highest performance metrics, yet remain below those of the DRL model.  
+ii. Strategic characteristics: Traditional optimization models demonstrate strong homogeneity, with portfolio value trajectories following virtually identical patterns post -optimization. In contrast, the DRL -optimized portfolio value 
+trajectories display disti nct patterns from those of traditional optimization 
+approaches. This suggests that the data -driven DRL framework demonstrates 
+enhanced capability in capturing asset price dynamics, leading to more efficient asset weight allocation.  
+Empirical evidence from extensive experimental studies indicates that the DRL 
+model exhibits substantial efficacy in portfolio optimization of CSI300 constituent stocks. This performance can be attributed to two key factors: firstly, the backtesting 
+period coincided with an upward trajectory of CSI300 constituent stocks, creating 
+favorable conditions for long -strategy validation; secondly, CSI300 constituent stocks 
+maintain a stable investor composition characterized by a higher concentration of institution al investors, resulting in more systematic investment patterns. Relative to 
+small and medium -cap segments, the price and trading data of CSI300 constituent 
+stocks demonstrate enhanced reliability in reflecting market fundamentals and investor sentiment, thereby establishing a more robust learning environment for the DRL model. These structural characteristics facilitate improved learning and market adaptation capabilities of the DRL model, leading to enhanced performance in CSI300 constituent 
+stock portfolio optimization. 
+ 
+6 CONCLUSIONS  
+Traditional financial econometric optimization models demonstrate inherent 
+limitations in portfolio asset allocation due to their static frameworks and homogeneous 
+characteristics. While these approaches facilitate theoretical analysis, they struggle to capture the dynamic evolution of asset weights in real trading environments and show insufficient adaptability to market volatility.  
+This research advances the application of Deep Reinforcement Learning (DRL) in 
+portfolio optimization through two key innovations. First, we introduce a novel Sharpe ratio reward function specifically designed for Actor -Critic DRL algorithms, achieving 
+stable convergence during training and consistently positive Sharpe ratios in practice. Second, we develop a comprehensive DRL methodology integrating VGG -based neural 
+networks for multi- dime nsional financial data processing with random sampling 
+strategies, effectively enhancing model generalization while minimizing overfitting risk. Empirical results demonstrate the superior performance of our DRL framework 
+compared to traditional optimizatio n models across multiple metrics. The DRL model 
+consistently achieves higher returns than leading traditional approaches including CVaR -MinRisk -4yr and EVaR -MinRisk -4yr, while exhibiting distinct portfolio value 
+trajectories that indicate enhanced capabili ty in capturing asset price dynamics.  
+With the continuous advancement of deep reinforcement learning (DRL) theory, 
+its applications in finance are demonstrating significant potential. DRL optimization 
+methods integrate knowledge across multiple disciplines including machine learning, finance, and statistics. This interdisciplinary convergence provides novel research 
+perspectives and methodological foundations for portfolio optimization. We observe that researchers frequently underemphasize the importance of DRL environment modeling when applyin g DRL models to portfolio optimization. The modeling of DRL 
+environments encompasses the operational logic of the entire model. The innovative average Sharpe ratio reward function introduced in this paper is implemented within the environment modeling fram ework, and the quality of environment modeling 
+directly impacts model performance. Furthermore, financial data inherently contains substantial noise. The effective utilization of this data for environment modeling in DRL and extraction of valuable trading signals is crucial for enhancing model performance. 
+Looking forward, research directions should focus not only on optimizing DRL 
+algorithms but also on deeply exploring innovative approaches to environment modeling. As a core component of the DRL framework, environment modeling directly determines the model 's capacity to perceive and adapt to market dynamics, which is of 
+decisive importance for increasing the practical application value of DRL in portfolio optimization.  
+ REFERENCES  
+[1] H. M. Markowitz, “Portfolio selection,” J. Financ. , vol. 7, no. 1, p. 77, 1952.  
+[2] P . A. Samuelson, “Lifetime portfolio selection by dynamic stochastic programming,” Rev. Econ. Stat. , vol. 51, no. 3, p. 239, 1969.  
+[3] J. L. Kelly, “A new interpretation of information rate,” Bell Syst. Tech. J., vol. 35, no. 4, pp. 917 –
+926, 1956.  
+[4] R. C. Merton, “Optimum consumption and portfolio rules in a continuous -time model,” in 
+Stochastic optimization models in finance , Elsevier, 1975, pp. 621– 661.  
+[5] F. Black and R. Litterman, “Global asset allocation with equities, bonds, and currencies,” Fixed 
+Income Res. , vol. 2, no. 15 –28, pp. 1 –44, 1991.  
+[6] F. Black and R. Litterman, “Global portfolio optimization,” Financ. Anal. J., vol. 48, no. 5, pp. 
+28–43, 1992.  
+[7] A. Charnes, W. W. Cooper, and E. Rhodes, “Measuring the efficiency of decision making units,” Eur. J. Oper. Res., vol. 2, no. 6, pp. 429– 444, 1978.  
+[8] S. Kirkpatrick, C. D. Gelatt Jr, and M. P . Vecchi, “Optimization by simulated annealing,” Science , 
+vol. 220, no. 4598, pp. 671– 680, 1983.  
+[9] S. Arnone, A. Loraschi, A. Tettamanzi, and Others, “A genetic approach to portfolio selection,” 
+Neural Netw. World, vol. 3, no. 6, pp. 597 –604, 1993.  
+[10] R. T. Rockafellar, S. Uryasev, and Others, “Optimization of conditional value -at-risk,” J. Risk , vol. 
+2, pp. 21 –42, 2000.  
+[11] E. Qian, “Risk parity and diversification,” J. Invest. , vol. 20, no. 1, pp. 119– 127, 2011.  
+[12] M. L. De Prado, “Building diversified portfolios that outperform out of sample,” J. Portfolio Manage. , vol. 42, no. 4, pp. 59 –69, 2016.  
+[13] R. S. Sutton, D. McAllester, S. Singh, and Y . Mansour, “Policy gradient methods for reinforcement learning with function approximation,” in Advances in Neural Information 
+Processing Systems , S. Solla, T. Leen, and K. Müller, Eds., MIT Press, 1999.  
+[14] R. J. Williams, “Simple statistical gradient -following algorithms for connectionist reinforcement 
+learning,” Mach. Learn. , vol. 8, pp. 229– 256, 1992.  
+[15] J. Moody, “Reinforcement learning for trading,” Adv. Neur. In. , vol. 11, pp. 917 –923, 1999.  
+[16] M. A. Dempster and V. Leemans, “An automated FX trading system using adaptive reinforcement learning,” Expert Syst. Appl. , vol. 30, no. 3, pp. 543– 552, 2006.  
+[17] Z. Zhang, S. Zohren, and R. Stephen, “Deep reinforcement learning for trading,” J. Financ. Data Sci., 2020.  
+[18] R. Neuneier, “Enhancing Q -learning for optimal asset allocation,” Adv. Neur. In. , vol. 10, 1997.  
+[19] X. Gao and L. Chan, “An algorithm for trading and portfolio management using q -learning and 
+sharpe ratio maximization,” in Proceedings of the international conference on neural 
+information processing, Citeseer, 2000, pp. 832 –837.  
+[20] J. W. Lee, J. Park, O. Jangmin, J. Lee, and E. Hong, “A multiagent approach to q - learning for 
+daily stock trading,” IEEE Trans. Syst. Man Cybern. Part A Syst. Humans, vol. 37, no. 6, pp. 864 –
+877, 2007.  
+[21] X. Wu, H. Chen, J. Wang, L. Troiano, V. Loia, and H. Fujita, “Adaptive stock trading strategies 
+with deep reinforcement learning methods,” Inf. Sci., vol. 538, pp. 142– 158, Oct. 2020, doi: 
+10.1016/j.ins.2020.05.066.  
+[22] P . Liu, Y . Zhang, F. Bao, X. Yao, and C. Zhang, “Multi -type data fusion framework based on deep 
+reinforcement learning for algorithmic trading,” Appl. Intell., vol. 53, no. 2, pp. 1683– 1706, Jan. 
+2023, doi: 10.1007/s10489- 022- 03321- w. 
+[23] Z. Pourahmadi, D. Fareed, and H. R. Mirzaei, “A novel stock trading model based on reinforcement learning and technical analysis,” Ann. Data Sci., vol. 11, no. 5, pp. 1653– 1674, 
+Oct. 2024, doi: 10.1007/s40745 -023-00469 -1. 
+[24] V. Kochliaridis, E. Kouloumpris, and I. Vlahavas, “Combining deep reinforcement learning with 
+technical analysis and trend monitoring on cryptocurrency markets,” Neural Comput. Appl. , 
+vol. 35, no. 29, pp. 21445 –21462, Oct. 2023, doi: 10.1007/s00521 -023-08516- x. 
+[25] H. Wang and X. Y . Zhou, “Continuous -time mean– variance portfolio selection: a reinforcement 
+learning framework,” Math. Finance , vol. 30, no. 4, pp. 1273 –1308, 2020, doi: 
+10.1111/mafi.12281.  
+[26] Y . Jiang, J. Olmo, and M. Atwi, “Deep reinforcement learning for portfolio selection,” Glob. Finance J. , vol. 62, p. 101016, Sep. 2024, doi: 10.1016/j.gfj.2024.101016.  
+[27] Z. Jiang, D. Xu, and J. Liang, “A deep reinforcement learning framework for the financial portfolio management problem,” Jul. 16, 2017, arXiv : arXiv:1706.10059. doi: 
+10.48550/arXiv.1706.10059.  
+[28] M. Ormos and A. Urbán, “Performance analysis of log -optimal portfolio strategies with 
+transaction costs,” Quant. Finance , Oct. 2013.  
+[29] Z. Liang, H. Chen, J. Zhu, K. Jiang, and Y . Li, “Adversarial deep reinforcement learning in portfolio management,” arXiv prepr. arXiv:1808,09940 , 2018.  
+[30] J. Jang and N. Seong, “Deep reinforcement learning for stock portfolio optimization by 
+connecting with modern portfolio theory,” Expert Syst. Appl. , vol. 218, p. 119556, May 2023, 
+doi: 10.1016/j.eswa.2023.119556.  
+[31] H. S. QI Yue 1，2，3, “Portfolio management based on DDPG algorithm of deep reinforcement 
+learning,” Comput. Mod. , vol. 0, no. 5, p. 93, 27AD.  
+[32] M.-E. Wu, J. -H. Syu, J. C. -W. Lin, and J. -M. Ho, “Portfolio management system in equity market 
+neutral using reinforcement learning,” Appl. Intell., vol. 51, no. 11, pp. 8119– 8131, Nov. 2021, 
+doi: 10.1007/s10489 -021-02262- 0. 
+[33] S. Almahdi and S. Y . Yang, “An adaptive portfolio trading system: a risk -return portfolio 
+optimization using recurrent reinforcement learning with expected maximum drawdown,” Expert Syst. Appl. , vol. 87, pp. 267– 279, Nov. 2017, doi: 10.1016/j.eswa.2017.06.023.  
+[34] A. M. Aboussalah and C. -G. Lee, “Continuous control with stacked deep dynamic recurrent 
+reinforcement learning for portfolio optimization,” Expert Syst. Appl. , vol. 140, p. 112891, Feb. 
+2020, doi: 10.1016/j.eswa.2019.112891.  
+[35] Q. Y . E. Lim, Q. Cao, and C. Quek, “Dynamic portfolio rebalancing through reinforcement learning,” Neural Comput & Applic , vol. 34, no. 9, pp. 7125– 7139, May 2022, doi: 
+10.1007/s00521- 021-06853 -3. 
+[36] Z. Wei, D. Chen, Y . Zhang, D. Wen, X. Nie, and L. Xie, “Deep reinforcement learning portfolio 
+model based on mixture of experts,” Appl. Intell., vol. 55, no. 5, pp. 1 –16, Apr. 2025, doi: 
+10.1007/s10489- 025-06242 -6. 
+[37] H. Li and M. Hai, “Deep reinforcement learning model for stock portfolio management based 
+on data fusion,” Neural Process. Lett. , vol. 56, no. 2, pp. 1 –24, Apr. 2024, doi: 10.1007/s11063 -
+024- 11582- 4. 
+[38] M.-Y. Day, C. -Y . Yang, and Y . Ni, “Portfolio dynamic trading strategies using deep reinforcement 
+learning,” Soft Comput. , vol. 28, no. 15, pp. 8715– 8730, Aug. 2024, doi: 10.1007/s00500- 023-
+08973- 5. 
+[39] D. Ramya and Suresha, “Reinforcement learning driven trading algorithm with optimized stock portfolio management scheme to control financial risk,” SN Comput. Sci., vol. 6, no. 1, pp. 1 –
+16, Jan. 2025, doi: 10.1007/s42979- 024-03555- 0. 
+[40] S. Liu, B. Wang, H. Li, C. Chen, and Z. Wang, “Continual portfolio selection in dynamic 
+environments via incremental reinforcement learning,” Int. J. Mach. Learn. Cybern. , vol. 14, no. 
+1, pp. 269– 279, Jan. 2023, doi: 10.1007/s13042 -022-01639 -y. 
+[41] S. Yang, “Deep reinforcement learning for portfolio management,” Knowledge -Based Syst. , vol. 
+278, p. 110905, Oct. 2023, doi: 10.1016/j.knosys.2023.110905.  
+[42] R. Sun, A. Stefanidis, Z. Jiang, and J. Su, “Combining transformer based deep reinforcement 
+learning with black -litterman model for portfolio optimization,” Neural Comput. Appl. , vol. 36, 
+no. 32, pp. 20111 –20146, Nov. 2024, doi: 10.1007/s00521 -024-09805 -9. 
+[43] V. Mnih et al. , “Human -level control through deep reinforcement learning,” Nature , vol. 518, 
+no. 7540, pp. 529 –533, 2015.  
+[44] J. Schulman, S. Levine, P . Moritz, M. I. Jordan, and P . Abbeel, “Trust region policy optimization,” Apr. 20, 2017, arXiv: arXiv:1502.05477. doi: 10.48550/arXiv.1502.05477.  
+[45] J. Schulman, F. Wolski, P . Dhariwal, A. Radford, and O. Klimov, “Proximal policy optimization algorithms,” Aug. 28, 2017, arXiv: arXiv:1707.06347. doi: 10.48550/arXiv.1707.06347.  
+[46] K. He, X. Zhang, S. Ren, and J. Sun, “Deep residual learning for image recognition,” in Proceedings of the IEEE conference on computer vision and pattern recognition (CVPR), Jun. 2016.  
+[47] K. Simonyan and A. Zisserman, “Very deep convolutional networks for large -scale image 
+recognition,” Apr. 10, 2015, arXiv: arXiv:1409.1556. doi: 10.48550/arXiv.1409.1556.  
+[48] A. Dosovitskiy et al. , “An image is worth 16x16 words: transformers for image recognition at 
+scale,” Jun. 03, 2021, arXiv: arXiv:2010.11929. doi: 10.48550/arXiv.2010.11929.  
+[49] Z. Zhang, S. Zohren, and S. Roberts, “Deep learning for portfolio optimization,” J. Financ. Data Sci., vol. 2, no. 4, pp. 8– 20, Oct. 2020, doi: 10.3905/jfds.2020.1.042.  
+[50] Wassname, “Reinforcement learning for portfolio management.” Year of Access. [Online]. Available: https://github.com/wassname/rl- portfolio -management  
+[51] D. Cajas, “Entropic portfolio optimization: a disciplined convex programming framework,” Feb. 
+24, 2021, Social Science Research Network, Rochester, NY : 3792520. doi: 
+10.2139/ssrn.3792520.  
+[52] E. P . Chan, Quantitative trading: how to build your own algorithmic trading business . John 
+Wiley & Sons, 2021.  
+ 
+  APPENDIX 
+Results of other optimization models for Stock s 
+Column 1: Portfolio value ; Column 2: Asset weights ; Column 3: Transaction cost rate  
+ 
+ 
+ 
