@@ -1,14 +1,9 @@
 # Quantitative Trading Models Using Deep Learning (EMIA-03)
 
-> ## 📌 Project Status & Future Direction
+> ## 📌 Project Status
 >
 > **The official EMIA 4991 capstone project is now complete.** The code in this repository utilizing the open source llama model represents the final, successful submission from the original team.
 >
-> Moving forward, this repository will serve as a platform for my (**TO, Cheuk Man**) personal exploration and enhancement of this work. I will be building upon the team's established three-stage framework to push the boundaries of the strategy's performance.
->
-> **My current focus is integrating a more powerful, state-of-the-art LLM: `gemma3:27b`.**
->
-> **Status of New Development:** 🚧 Under Development
 
 ---
 
